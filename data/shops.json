@@ -1,0 +1,17 @@
+[
+  {
+    "id": "company_armory",
+    "name": "Company Armory",
+    "inventory": [
+      { "item_id": "rusty_pike", "buy_price": 18, "sell_price": 8, "stock": 3 },
+      { "item_id": "chipped_sword", "buy_price": 22, "sell_price": 10, "stock": 2 },
+      { "item_id": "arquebus_with_worn_stock", "buy_price": 42, "sell_price": 20, "stock": 1 },
+      { "item_id": "cheap_morion", "buy_price": 20, "sell_price": 8, "stock": 2 },
+      { "item_id": "dented_cuirass", "buy_price": 45, "sell_price": 20, "stock": 1 },
+      { "item_id": "old_boots", "buy_price": 12, "sell_price": 5, "stock": 2 },
+      { "item_id": "clean_bandage", "buy_price": 9, "sell_price": 4, "stock": 6 },
+      { "item_id": "wine_skin", "buy_price": 7, "sell_price": 3, "stock": 5 },
+      { "item_id": "hard_bread", "buy_price": 3, "sell_price": 1, "stock": 10 }
+    ]
+  }
+]

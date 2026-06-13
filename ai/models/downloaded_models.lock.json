@@ -1,0 +1,157 @@
+{
+  "models": [
+    {
+      "base_model": "SDXL",
+      "category": "portrait",
+      "downloaded_at": "2026-06-13T05:47:39+00:00",
+      "file_size": 93065304,
+      "filename": "cinematic_anamorphic_portraits_sdxl.safetensors",
+      "id": "cinematic_anamorphic_portraits_sdxl",
+      "license_notes": "Civitai API commercial use flags: Image,RentCivit,Rent,Sell. No credit required; no POI; nsfw=false. Avoid celebrity or real-person likeness prompts.",
+      "local_path": "C:\\AI\\RPGMakerAgenticLab\\comfyui\\ComfyUI\\models\\loras\\tercios_portraits\\cinematic_anamorphic_portraits_sdxl.safetensors",
+      "name": "Cinematic Anamorphic Portraits with SDXL LoRA",
+      "provider": "civitai",
+      "sha256": "b8046d92d0dd888c716fad7ae2b76615db1892387f344420e59ede51dc0f9efe",
+      "source_url": "https://civitai.com/models/2665669?modelVersionId=2993252",
+      "trigger_words": [],
+      "version_id": "2993252"
+    },
+    {
+      "base_model": "SDXL",
+      "category": "utility",
+      "downloaded_at": "2026-06-13T05:47:32+00:00",
+      "file_size": 228452344,
+      "filename": "add-detail-xl.safetensors",
+      "id": "detail_tweaker_xl",
+      "license_notes": "Civitai API commercial use flags: Image,RentCivit,Rent. Credit required; no POI; nsfw=false. Use lightly for extra texture or lower detail if images overcook.",
+      "local_path": "C:\\AI\\RPGMakerAgenticLab\\comfyui\\ComfyUI\\models\\loras\\tercios_utility\\add-detail-xl.safetensors",
+      "name": "Detail Tweaker XL",
+      "provider": "civitai",
+      "sha256": "0d9bd1b873a7863e128b4672e3e245838858f71469a3cec58123c16c06f83bd7",
+      "source_url": "https://civitai.com/models/122359?modelVersionId=135867",
+      "trigger_words": [],
+      "version_id": "135867"
+    },
+    {
+      "base_model": "SDXL",
+      "category": "base",
+      "downloaded_at": "2026-06-13T05:47:31+00:00",
+      "file_size": 6939220250,
+      "filename": "dreamshaperXL_sfwLightningDPMSDE.safetensors",
+      "id": "dreamshaper_xl_sfw_lightning",
+      "license_notes": "Civitai API commercial use flags: Image,RentCivit,Rent. No credit required; no POI; nsfw=false. Use as versatile fallback for stylized scenes and icons.",
+      "local_path": "C:\\AI\\RPGMakerAgenticLab\\comfyui\\ComfyUI\\models\\checkpoints\\dreamshaperXL_sfwLightningDPMSDE.safetensors",
+      "name": "DreamShaper XL SFW Lightning DPM++ SDE",
+      "provider": "civitai",
+      "sha256": "832e7bb2302c3cd67c818ca4fe9dcbedf696d3070dab5463127263ec4db9899f",
+      "source_url": "https://civitai.com/models/112902?modelVersionId=355868",
+      "trigger_words": [],
+      "version_id": "355868"
+    },
+    {
+      "base_model": "SDXL",
+      "category": "scenes",
+      "downloaded_at": "2026-06-13T05:47:36+00:00",
+      "file_size": 228454060,
+      "filename": "historical_c0urty4rd.safetensors",
+      "id": "historical_courtyard_sdxl",
+      "license_notes": "Civitai API commercial use flags: Image,RentCivit,Rent,Sell. No credit required; no POI; nsfw=false. Use for mission hubs, company yards, city interiors.",
+      "local_path": "C:\\AI\\RPGMakerAgenticLab\\comfyui\\ComfyUI\\models\\loras\\tercios_scenes\\historical_c0urty4rd.safetensors",
+      "name": "historical courtyard",
+      "provider": "civitai",
+      "sha256": "1218ed1bd24dc4a662367c07b778f332c5f178ca602a5db2c09176971bd9d460",
+      "source_url": "https://civitai.com/models/1577717?modelVersionId=1785372",
+      "trigger_words": [
+        "historical c0urty4rd"
+      ],
+      "version_id": "1785372"
+    },
+    {
+      "base_model": "SDXL",
+      "category": "scenes",
+      "downloaded_at": "2026-06-13T05:47:35+00:00",
+      "file_size": 228454164,
+      "filename": "military_b4rr4cks.safetensors",
+      "id": "military_barracks_sdxl",
+      "license_notes": "Civitai API commercial use flags: Image,RentCivit,Rent,Sell. No credit required; no POI; nsfw=false. Steer away from modern gear in prompts.",
+      "local_path": "C:\\AI\\RPGMakerAgenticLab\\comfyui\\ComfyUI\\models\\loras\\tercios_scenes\\military_b4rr4cks.safetensors",
+      "name": "military barracks",
+      "provider": "civitai",
+      "sha256": "4789729848ce6b6d7e522e80e7984e00fa2a45ae76250f5d4f0cbdb550abc7fe",
+      "source_url": "https://civitai.com/models/1870501?modelVersionId=2117165",
+      "trigger_words": [
+        "military b4rr4cks"
+      ],
+      "version_id": "2117165"
+    },
+    {
+      "base_model": "SDXL",
+      "category": "scenes",
+      "downloaded_at": "2026-06-13T05:47:37+00:00",
+      "file_size": 228454276,
+      "filename": "old-world_medieval_t4v3rn.safetensors",
+      "id": "old_world_medieval_tavern_sdxl",
+      "license_notes": "Civitai API commercial use flags: Image,RentCivit,Rent,Sell. No credit required; no POI; nsfw=false. Use for tavern duel and camp-pay scenes.",
+      "local_path": "C:\\AI\\RPGMakerAgenticLab\\comfyui\\ComfyUI\\models\\loras\\tercios_scenes\\old-world_medieval_t4v3rn.safetensors",
+      "name": "old-world medieval tavern",
+      "provider": "civitai",
+      "sha256": "c36c12f7e16f88300da8a9565ac22f159fb2bf1dc692a7b2d48dc60bb8c06798",
+      "source_url": "https://civitai.com/models/2132767?modelVersionId=2412579",
+      "trigger_words": [
+        "old-world medieval t4v3rn"
+      ],
+      "version_id": "2412579"
+    },
+    {
+      "base_model": "SDXL",
+      "category": "base",
+      "downloaded_at": "2026-06-13T05:47:24+00:00",
+      "file_size": 6938065512,
+      "filename": "realvisxlV50_v50LightningBakedvae.safetensors",
+      "id": "realvisxl_v5_lightning",
+      "license_notes": "Civitai API commercial use flags: Image,RentCivit,Rent. Credit required; no POI; nsfw=false. Use for realistic portraits, scenes, and gritty material detail.",
+      "local_path": "C:\\AI\\RPGMakerAgenticLab\\comfyui\\ComfyUI\\models\\checkpoints\\realvisxlV50_v50LightningBakedvae.safetensors",
+      "name": "RealVisXL V5.0 Lightning (BakedVAE)",
+      "provider": "civitai",
+      "sha256": "fabcadd9330dcc4f9702063428d40b9d4d07168d8acefc819b8d1d9db466b3ec",
+      "source_url": "https://civitai.com/models/139562?modelVersionId=798204",
+      "trigger_words": [],
+      "version_id": "798204"
+    },
+    {
+      "base_model": "SDXL",
+      "category": "scenes",
+      "downloaded_at": "2026-06-13T05:47:34+00:00",
+      "file_size": 228454148,
+      "filename": "Renaissance_w0rksh0p.safetensors",
+      "id": "renaissance_workshop_sdxl",
+      "license_notes": "Civitai API commercial use flags: Image,RentCivit,Rent,Sell. No credit required; no POI; nsfw=false. Use for armory, workshop, repair, quartermaster scenes.",
+      "local_path": "C:\\AI\\RPGMakerAgenticLab\\comfyui\\ComfyUI\\models\\loras\\tercios_scenes\\Renaissance_w0rksh0p.safetensors",
+      "name": "Renaissance workshop",
+      "provider": "civitai",
+      "sha256": "e372d073c1b86936f10ebc4d7eb4b7e3a7c2876a689d1f9824f3c602958e1a75",
+      "source_url": "https://civitai.com/models/1934215?modelVersionId=2189183",
+      "trigger_words": [
+        "Renaissance w0rksh0p"
+      ],
+      "version_id": "2189183"
+    },
+    {
+      "base_model": "SDXL",
+      "category": "icons",
+      "downloaded_at": "2026-06-13T05:47:40+00:00",
+      "file_size": 185717712,
+      "filename": "[SDXL] RPG Item Icons.safetensors",
+      "id": "rpg_item_icons_sdxl",
+      "license_notes": "Civitai API commercial use flags: Image,RentCivit,Rent. No credit required; no POI; nsfw=false. Use only with historically grounded item prompts.",
+      "local_path": "C:\\AI\\RPGMakerAgenticLab\\comfyui\\ComfyUI\\models\\loras\\tercios_icons\\[SDXL] RPG Item Icons.safetensors",
+      "name": "[SDXL] RPG Item Icons",
+      "provider": "civitai",
+      "sha256": "9d64968156b63ad50f034763232fd7aa8c674ec6bb07f8a3b14a331ada8369ce",
+      "source_url": "https://civitai.com/models/2507819?modelVersionId=2818920",
+      "trigger_words": [],
+      "version_id": "2818920"
+    }
+  ],
+  "schema_version": 1
+}

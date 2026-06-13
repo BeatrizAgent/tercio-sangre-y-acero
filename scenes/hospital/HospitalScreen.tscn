@@ -1,0 +1,30 @@
+[gd_scene load_steps=2 format=3 uid="uid://tercio_hospital"]
+
+[ext_resource type="Script" path="res://scripts/ui/HospitalScreen.gd" id="1_hospital"]
+
+[node name="HospitalScreen" type="VBoxContainer"]
+script = ExtResource("1_hospital")
+
+[node name="Header" type="HBoxContainer" parent="."]
+layout_mode = 2
+
+[node name="Title" type="Label" parent="Header"]
+layout_mode = 2
+size_flags_horizontal = 3
+text = "Hospital"
+
+[node name="BackButton" type="Button" parent="Header"]
+layout_mode = 2
+text = "Back"
+
+[node name="WoundList" type="ItemList" parent="."]
+layout_mode = 2
+size_flags_vertical = 3
+
+[node name="TreatButton" type="Button" parent="."]
+layout_mode = 2
+text = "Use Clean Bandage"
+
+[node name="MessageLabel" type="Label" parent="."]
+layout_mode = 2
+autowrap_mode = 3

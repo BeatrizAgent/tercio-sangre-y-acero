@@ -1,0 +1,412 @@
+@import "tailwindcss";
+
+:root {
+  --background: #090806;
+  --panel: #15110d;
+  --panel-soft: #1d1711;
+  --panel-raised: #241b13;
+  --parchment: #d7c29a;
+  --parchment-dark: #a78b5f;
+  --gold: #c9a24f;
+  --gold-soft: #e0c47a;
+  --iron: #3b3832;
+  --iron-light: #5a5448;
+  --blood: #8f1f1f;
+  --blood-bright: #b83232;
+  --ember: #d16632;
+  --success: #5f8a55;
+  --warning: #c58b37;
+  --danger: #b3342d;
+  --muted: #8d8170;
+  --text: #f3ead7;
+  --text-muted: #b8a98d;
+}
+
+@theme {
+  --color-background: var(--background);
+  --color-panel: var(--panel);
+  --color-panel-soft: var(--panel-soft);
+  --color-panel-raised: var(--panel-raised);
+  --color-parchment: var(--parchment);
+  --color-parchment-dark: var(--parchment-dark);
+  --color-gold: var(--gold);
+  --color-gold-soft: var(--gold-soft);
+  --color-iron: var(--iron);
+  --color-iron-light: var(--iron-light);
+  --color-blood: var(--blood);
+  --color-blood-bright: var(--blood-bright);
+  --color-ember: var(--ember);
+  --color-success: var(--success);
+  --color-warning: var(--warning);
+  --color-danger: var(--danger);
+  --color-muted: var(--muted);
+  --color-text: var(--text);
+  --color-text-muted: var(--text-muted);
+
+  --font-cinzel: var(--font-cinzel), serif;
+  --font-cormorant: var(--font-cormorant), serif;
+  --font-sans: var(--font-inter), sans-serif;
+  --font-blackletter: var(--font-blackletter), serif;
+}
+
+body {
+  background-color: var(--background);
+  color: var(--text);
+  font-family: var(--font-inter), sans-serif;
+  margin: 0;
+  padding: 0;
+  min-height: 100vh;
+}
+
+/* Custom visual styles for Tercio */
+
+.game-panel {
+  background-color: var(--panel);
+  /* Wood texture background using CSS gradients */
+  background-image: 
+    linear-gradient(to right, rgba(0, 0, 0, 0.15) 0%, transparent 10%, transparent 90%, rgba(0, 0, 0, 0.15) 100%),
+    linear-gradient(rgba(0, 0, 0, 0.03) 1px, transparent 1px),
+    linear-gradient(to right, rgba(54, 43, 33, 0.1) 0%, rgba(38, 28, 20, 0.1) 100%);
+  background-size: 100% 100%, 100% 3px, 100% 100%;
+  border: 1px solid rgba(141, 129, 112, 0.25);
+  box-shadow: 0 8px 30px rgba(0, 0, 0, 0.45);
+  position: relative;
+  border-radius: 4px;
+}
+
+/* Corner metal reinforcements with rivet styling */
+.game-panel::before {
+  content: "";
+  position: absolute;
+  inset: 5px;
+  border: 1px solid rgba(201, 162, 79, 0.06);
+  pointer-events: none;
+  border-radius: 2px;
+}
+
+/* Decorative iron corner brackets */
+.game-panel::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border: 1px solid rgba(255, 255, 255, 0.01);
+  pointer-events: none;
+  background-image: 
+    /* Top-left rivet */
+    radial-gradient(circle, #5a5448 1.2px, #262420 2px, transparent 3px),
+    /* Top-right rivet */
+    radial-gradient(circle, #5a5448 1.2px, #262420 2px, transparent 3px),
+    /* Bottom-left rivet */
+    radial-gradient(circle, #5a5448 1.2px, #262420 2px, transparent 3px),
+    /* Bottom-right rivet */
+    radial-gradient(circle, #5a5448 1.2px, #262420 2px, transparent 3px);
+  background-position: 
+    6px 6px,
+    calc(100% - 7px) 6px,
+    6px calc(100% - 7px),
+    calc(100% - 7px) calc(100% - 7px);
+  background-repeat: no-repeat;
+}
+
+/* Parchment scroll card for documents and reports */
+.parchment-card {
+  background-color: #f3ebd4;
+  /* Authentic parchment design with warm stains, paper fibers, and a Burgundy Cross watermark */
+  background-image: 
+    /* Burgundy Cross watermark (red saltire with saw-tooth edges) */
+    url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100' opacity='0.05' fill='%238f1f1f'><path d='M12 8 L22 5 L50 35 L78 5 L88 8 L54 42 L88 76 L78 80 L50 50 L22 80 L12 76 L46 42 Z'/><path d='M23 20 L27 16' stroke='%238f1f1f' stroke-width='2'/><path d='M33 30 L37 26' stroke='%238f1f1f' stroke-width='2'/><path d='M77 20 L73 16' stroke='%238f1f1f' stroke-width='2'/><path d='M67 30 L63 26' stroke='%238f1f1f' stroke-width='2'/><path d='M23 70 L27 74' stroke='%238f1f1f' stroke-width='2'/><path d='M33 60 L37 64' stroke='%238f1f1f' stroke-width='2'/><path d='M77 70 L73 74' stroke='%238f1f1f' stroke-width='2'/><path d='M67 60 L63 64' stroke='%238f1f1f' stroke-width='2'/></svg>"),
+    radial-gradient(circle at 10% 20%, rgba(215, 185, 142, 0.2) 0%, transparent 60%),
+    radial-gradient(circle at 90% 80%, rgba(139, 115, 85, 0.2) 0%, transparent 70%),
+    linear-gradient(rgba(0, 0, 0, 0.01) 1px, transparent 1px),
+    linear-gradient(to right, rgba(0, 0, 0, 0.005) 1px, transparent 1px);
+  background-size: 100% 100%, 100% 100%, 100% 100%, 100% 4px, 4px 100%;
+  border: 1px solid #997e56;
+  border-top-color: #aa8e64;
+  border-bottom-color: #806842;
+  box-shadow: 
+    inset 0 0 20px rgba(139, 115, 85, 0.15), 
+    0 8px 16px rgba(0, 0, 0, 0.25);
+  color: #261b0c;
+  font-family: var(--font-cormorant), serif;
+  border-radius: 2px;
+  position: relative;
+}
+
+/* Torn and burned edges style using a pseudo shadow overlay */
+.parchment-card::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  box-shadow: inset 0 0 8px rgba(0, 0, 0, 0.05);
+  border: 1px solid rgba(255, 255, 255, 0.3);
+  pointer-events: none;
+}
+
+.iron-border {
+  border: 1px solid var(--iron);
+  position: relative;
+}
+
+.gold-border {
+  border: 1px solid rgba(201, 162, 79, 0.5);
+}
+
+/* Forged steel/iron buttons with metallic glint */
+.iron-button {
+  background: linear-gradient(180deg, #4d463d 0%, #2f2a24 100%);
+  border: 1px solid var(--iron-light);
+  border-top-color: #72685a;
+  border-bottom-color: #1a1815;
+  color: var(--text);
+  font-family: var(--font-cinzel), serif;
+  font-size: 12px;
+  font-weight: bold;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  padding: 10px 20px;
+  text-shadow: 0 -1px 1px rgba(0, 0, 0, 0.5);
+  box-shadow: 
+    0 2px 4px rgba(0, 0, 0, 0.3), 
+    inset 0 1px 0 rgba(255, 255, 255, 0.05);
+  transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+  position: relative;
+  overflow: hidden;
+  border-radius: 2px;
+}
+
+/* Steel glint animation on hover */
+.iron-button::after {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 50%;
+  height: 100%;
+  background: linear-gradient(to right, transparent, rgba(255, 255, 255, 0.05), transparent);
+  transform: skewX(-25deg);
+  transition: 0.75s;
+}
+
+.iron-button:hover:not(:disabled)::after {
+  left: 150%;
+}
+
+.iron-button:hover:not(:disabled) {
+  background: linear-gradient(180deg, #5c5449 0%, #3a342c 100%);
+  border-color: var(--gold);
+  color: var(--gold-soft);
+  box-shadow: 
+    0 0 6px rgba(201, 162, 79, 0.2),
+    0 2px 4px rgba(0, 0, 0, 0.3);
+  cursor: pointer;
+  transform: translateY(-1px);
+}
+
+.iron-button:active:not(:disabled) {
+  transform: translateY(1px);
+  box-shadow: 
+    0 1px 2px rgba(0, 0, 0, 0.4), 
+    inset 0 1px 2px rgba(0, 0, 0, 0.3);
+}
+
+.iron-button:disabled {
+  opacity: 0.35;
+  background: #25221e;
+  border-color: #3b3730;
+  text-shadow: none;
+  cursor: not-allowed;
+  box-shadow: none;
+}
+
+/* Blood-red wax seal button */
+.blood-button {
+  background: linear-gradient(180deg, #991f1f 0%, #5d1212 100%);
+  border: 1px solid #b83232;
+  border-top-color: #d84444;
+  border-bottom-color: #3b0a0a;
+  color: #fff;
+  font-family: var(--font-cinzel), serif;
+  font-size: 12px;
+  font-weight: bold;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  padding: 10px 20px;
+  text-shadow: 0 1px 1px rgba(0, 0, 0, 0.5);
+  box-shadow: 
+    0 2px 4px rgba(0, 0, 0, 0.3), 
+    inset 0 1px 0 rgba(255, 255, 255, 0.1);
+  transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+  border-radius: 2px;
+}
+
+.blood-button:hover:not(:disabled) {
+  background: linear-gradient(180deg, #b32525 0%, #701515 100%);
+  border-color: var(--gold-soft);
+  box-shadow: 
+    0 0 8px rgba(184, 50, 50, 0.25),
+    0 2px 4px rgba(0, 0, 0, 0.3);
+  cursor: pointer;
+  transform: translateY(-1px);
+}
+
+.blood-button:active:not(:disabled) {
+  transform: translateY(1px);
+  box-shadow: 
+    0 1px 2px rgba(0, 0, 0, 0.4), 
+    inset 0 1px 2px rgba(0, 0, 0, 0.3);
+}
+
+.blood-button:disabled {
+  opacity: 0.35;
+  background: #3b1c1c;
+  border-color: #572020;
+  text-shadow: none;
+  cursor: not-allowed;
+  box-shadow: none;
+}
+
+.muted-button {
+  background: linear-gradient(180deg, #201c18 0%, #151210 100%);
+  border: 1px solid var(--iron);
+  color: var(--muted);
+  font-family: var(--font-cinzel), serif;
+  font-size: 11px;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  padding: 8px 14px;
+  transition: all 0.2s ease;
+  border-radius: 2px;
+}
+
+.muted-button:hover:not(:disabled) {
+  color: var(--text);
+  border-color: var(--iron-light);
+  cursor: pointer;
+  background: linear-gradient(180deg, #2b2621 0%, #1c1815 100%);
+}
+
+.stat-bar {
+  height: 8px;
+  background-color: #0c0a09;
+  border: 1px solid var(--iron);
+  position: relative;
+  overflow: hidden;
+  border-radius: 2px;
+  box-shadow: inset 0 1px 2px rgba(0, 0, 0, 0.5);
+}
+
+.stat-bar-fill {
+  height: 100%;
+  background: linear-gradient(90deg, #7a1515 0%, #c42929 70%, #e04848 100%);
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.15);
+}
+
+.stat-bar-fill-gold {
+  height: 100%;
+  background: linear-gradient(90deg, #856124 0%, #d4a74c 70%, #f7d283 100%);
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.15);
+}
+
+.equipment-slot {
+  width: 68px;
+  height: 68px;
+  background-color: var(--panel-soft);
+  background-image: radial-gradient(rgba(0, 0, 0, 0.2) 0%, transparent 80%);
+  border: 1px solid rgba(90, 84, 72, 0.35);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+  transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+  box-shadow: inset 0 1px 3px rgba(0,0,0,0.4);
+  border-radius: 4px;
+}
+
+.equipment-slot:hover {
+  border-color: var(--gold);
+  border-style: solid;
+  background-color: var(--panel-raised);
+  box-shadow: 0 0 4px rgba(201, 162, 79, 0.2);
+}
+
+.report-text {
+  font-family: var(--font-cormorant), serif;
+  font-size: 18px;
+  line-height: 1.5;
+  color: #2e2112;
+  text-shadow: 0.2px 0.2px 0px rgba(0,0,0,0.05);
+}
+
+.gothic-heading {
+  font-family: var(--font-cinzel), serif;
+  letter-spacing: 0.08em;
+  color: var(--gold);
+  text-shadow: 0 2px 4px rgba(0, 0, 0, 0.8);
+}
+
+.section-title {
+  font-family: var(--font-cinzel), serif;
+  font-size: 16px;
+  color: var(--gold-soft);
+  border-bottom: 2px solid var(--iron);
+  padding-bottom: 6px;
+  margin-bottom: 14px;
+  letter-spacing: 0.06em;
+  position: relative;
+}
+
+/* Ornate Underline divider for headers */
+.section-title::after {
+  content: "";
+  position: absolute;
+  bottom: -2px;
+  left: 0;
+  width: 35px;
+  height: 2px;
+  background-color: var(--gold);
+}
+
+.font-blackletter {
+  font-family: var(--font-blackletter), serif;
+  letter-spacing: 0.02em;
+}
+
+/* Custom scrollbar utility matching the dark medieval theme */
+.game-scrollbar::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+
+.game-scrollbar::-webkit-scrollbar-track {
+  background: #090806;
+  border-left: 1px solid var(--iron);
+}
+
+.game-scrollbar::-webkit-scrollbar-thumb {
+  background: linear-gradient(180deg, #423b32 0%, #29241e 100%);
+  border: 1px solid var(--iron-light);
+  border-radius: 1px;
+}
+
+.game-scrollbar::-webkit-scrollbar-thumb:hover {
+  background: linear-gradient(180deg, #534b3f 0%, #352e27 100%);
+  border-color: var(--gold-soft);
+}
+
+.game-scrollbar {
+  scrollbar-width: thin;
+  scrollbar-color: #423b32 #090806;
+}
+
+/* Flashing smoke/battle scene animation */
+@keyframes powderSmoke {
+  0% { opacity: 0.2; transform: scale(1) translate(0, 0); }
+  50% { opacity: 0.35; transform: scale(1.05) translate(2%, -1%); }
+  100% { opacity: 0.2; transform: scale(1) translate(0, 0); }
+}
+
+.smoke-overlay {
+  animation: powderSmoke 8s ease-in-out infinite;
+  pointer-events: none;
+}
+

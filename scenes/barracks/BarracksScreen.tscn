@@ -1,0 +1,37 @@
+[gd_scene load_steps=2 format=3 uid="uid://tercio_barracks"]
+
+[ext_resource type="Script" path="res://scripts/ui/BarracksScreen.gd" id="1_barracks"]
+
+[node name="BarracksScreen" type="VBoxContainer"]
+script = ExtResource("1_barracks")
+
+[node name="SummaryLabel" type="RichTextLabel" parent="."]
+layout_mode = 2
+fit_content = true
+
+[node name="Menu" type="HBoxContainer" parent="."]
+layout_mode = 2
+
+[node name="TrainingButton" type="Button" parent="Menu"]
+layout_mode = 2
+text = "Training"
+
+[node name="InventoryButton" type="Button" parent="Menu"]
+layout_mode = 2
+text = "Inventory"
+
+[node name="ArmoryButton" type="Button" parent="Menu"]
+layout_mode = 2
+text = "Armory"
+
+[node name="MissionsButton" type="Button" parent="Menu"]
+layout_mode = 2
+text = "Missions"
+
+[node name="HospitalButton" type="Button" parent="Menu"]
+layout_mode = 2
+text = "Hospital"
+
+[node name="LogButton" type="Button" parent="Menu"]
+layout_mode = 2
+text = "Log"

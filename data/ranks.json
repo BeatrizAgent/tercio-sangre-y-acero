@@ -1,0 +1,9 @@
+[
+  { "id": "bisono", "name": "bisoño", "min_xp": 0, "min_honor": 0 },
+  { "id": "soldado", "name": "soldado", "min_xp": 20, "min_honor": 2 },
+  { "id": "soldado_viejo", "name": "soldado viejo", "min_xp": 60, "min_honor": 8 },
+  { "id": "cabo_de_escuadra", "name": "cabo de escuadra", "min_xp": 110, "min_honor": 18 },
+  { "id": "sargento", "name": "sargento", "min_xp": 180, "min_honor": 32 },
+  { "id": "alferez", "name": "alférez", "min_xp": 260, "min_honor": 50 },
+  { "id": "capitan", "name": "capitán", "min_xp": 380, "min_honor": 80 }
+]

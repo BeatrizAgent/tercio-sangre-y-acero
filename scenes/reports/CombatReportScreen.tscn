@@ -1,0 +1,19 @@
+[gd_scene load_steps=2 format=3 uid="uid://tercio_report"]
+
+[ext_resource type="Script" path="res://scripts/ui/CombatReportScreen.gd" id="1_report"]
+
+[node name="CombatReportScreen" type="VBoxContainer"]
+script = ExtResource("1_report")
+
+[node name="Title" type="Label" parent="."]
+layout_mode = 2
+text = "Combat Report"
+
+[node name="ReportText" type="RichTextLabel" parent="."]
+layout_mode = 2
+size_flags_vertical = 3
+fit_content = true
+
+[node name="BackButton" type="Button" parent="."]
+layout_mode = 2
+text = "Return to Barracks"

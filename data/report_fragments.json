@@ -1,0 +1,32 @@
+[
+  {
+    "id": "rain_open",
+    "type": "opening",
+    "tags": ["rain", "watch"],
+    "text": "Rain worked through cloak and doublet before midnight. The matchcord smoked badly, and every cough sounded like an alarm."
+  },
+  {
+    "id": "mud_open",
+    "type": "opening",
+    "tags": ["mud", "patrol"],
+    "text": "The road had become a ditch with ambition. Boots sank, wheels cursed, and the company banner hung wet against its pole."
+  },
+  {
+    "id": "powder_open",
+    "type": "opening",
+    "tags": ["powder", "escort"],
+    "text": "The powder barrels rode under patched canvas. Every spark, oath, and stumble felt too close."
+  },
+  {
+    "id": "held_line",
+    "type": "success",
+    "tags": ["rain", "watch", "mud", "patrol", "powder", "escort"],
+    "text": "You kept your place and let {power} do the work when courage thinned. The company held."
+  },
+  {
+    "id": "line_wavered",
+    "type": "failure",
+    "tags": ["rain", "watch", "mud", "patrol", "powder", "escort"],
+    "text": "The file wavered, and {power} could not mend every mistake. You came back alive, which is not the same as clean."
+  }
+]

@@ -1,0 +1,24 @@
+.env
+.env.*
+!.env.example
+.demo/
+.next/
+node_modules/
+web/.next/
+web/node_modules/
+*.log
+*.pid
+.next-dev.*
+
+# Generated AI/model assets. Never commit model weights.
+*.safetensors
+*.ckpt
+*.pt
+*.pth
+*.bin
+*.gguf
+*.onnx
+*.vae.pt
+*.vae.safetensors
+/ai/downloads/
+/models/

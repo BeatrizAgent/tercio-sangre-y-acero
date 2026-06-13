@@ -1,0 +1,23 @@
+[gd_scene load_steps=2 format=3 uid="uid://tercio_event_log"]
+
+[ext_resource type="Script" path="res://scripts/ui/EventLogScreen.gd" id="1_log"]
+
+[node name="EventLogScreen" type="VBoxContainer"]
+script = ExtResource("1_log")
+
+[node name="Header" type="HBoxContainer" parent="."]
+layout_mode = 2
+
+[node name="Title" type="Label" parent="Header"]
+layout_mode = 2
+size_flags_horizontal = 3
+text = "Event Log"
+
+[node name="BackButton" type="Button" parent="Header"]
+layout_mode = 2
+text = "Back"
+
+[node name="LogText" type="RichTextLabel" parent="."]
+layout_mode = 2
+size_flags_vertical = 3
+fit_content = true

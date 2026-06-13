@@ -1,0 +1,20 @@
+[
+  {
+    "id": "watch_loot",
+    "drops": [
+      { "id": "hard_bread", "quantity": 1 }
+    ]
+  },
+  {
+    "id": "patrol_loot",
+    "drops": [
+      { "id": "captured_banner_fragment", "quantity": 1 }
+    ]
+  },
+  {
+    "id": "powder_loot",
+    "drops": [
+      { "id": "wet_powder_flask", "quantity": 1 }
+    ]
+  }
+]

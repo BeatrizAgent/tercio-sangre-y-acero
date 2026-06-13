@@ -1,0 +1,41 @@
+[gd_scene load_steps=2 format=3 uid="uid://frontera_shop"]
+
+[ext_resource type="Script" path="res://scripts/ui/ShopScreen.gd" id="1_shop"]
+
+[node name="ShopScreen" type="VBoxContainer"]
+script = ExtResource("1_shop")
+
+[node name="Header" type="HBoxContainer" parent="."]
+layout_mode = 2
+
+[node name="Title" type="Label" parent="Header"]
+layout_mode = 2
+size_flags_horizontal = 3
+text = "Company Armory"
+
+[node name="MoneyLabel" type="Label" parent="Header"]
+layout_mode = 2
+text = "Money"
+
+[node name="BackButton" type="Button" parent="Header"]
+layout_mode = 2
+text = "Back"
+
+[node name="ShopList" type="ItemList" parent="."]
+layout_mode = 2
+size_flags_vertical = 3
+
+[node name="Actions" type="HBoxContainer" parent="."]
+layout_mode = 2
+
+[node name="BuyButton" type="Button" parent="Actions"]
+layout_mode = 2
+text = "Buy Selected"
+
+[node name="SellButton" type="Button" parent="Actions"]
+layout_mode = 2
+text = "Sell Selected"
+
+[node name="MessageLabel" type="Label" parent="."]
+layout_mode = 2
+autowrap_mode = 3

@@ -1,0 +1,45 @@
+[gd_scene load_steps=2 format=3 uid="uid://tercio_inventory"]
+
+[ext_resource type="Script" path="res://scripts/ui/InventoryScreen.gd" id="1_inventory"]
+
+[node name="InventoryScreen" type="VBoxContainer"]
+script = ExtResource("1_inventory")
+
+[node name="Header" type="HBoxContainer" parent="."]
+layout_mode = 2
+
+[node name="Title" type="Label" parent="Header"]
+layout_mode = 2
+size_flags_horizontal = 3
+text = "Inventory / Equipment"
+
+[node name="BackButton" type="Button" parent="Header"]
+layout_mode = 2
+text = "Back"
+
+[node name="WeightLabel" type="Label" parent="."]
+layout_mode = 2
+text = "Weight"
+
+[node name="EquippedLabel" type="RichTextLabel" parent="."]
+layout_mode = 2
+fit_content = true
+
+[node name="ItemList" type="ItemList" parent="."]
+layout_mode = 2
+size_flags_vertical = 3
+
+[node name="Actions" type="HBoxContainer" parent="."]
+layout_mode = 2
+
+[node name="EquipButton" type="Button" parent="Actions"]
+layout_mode = 2
+text = "Equip Selected"
+
+[node name="UseButton" type="Button" parent="Actions"]
+layout_mode = 2
+text = "Use Selected"
+
+[node name="MessageLabel" type="Label" parent="."]
+layout_mode = 2
+autowrap_mode = 3

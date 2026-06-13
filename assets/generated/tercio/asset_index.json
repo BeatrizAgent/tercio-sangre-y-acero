@@ -1,0 +1,22 @@
+{
+  "assets": {
+    "rusty_pike": {
+      "category": "icons",
+      "checkpoint": "dreamshaperXL_sfwLightningDPMSDE.safetensors",
+      "loras": [
+        {
+          "name": "game_icon_diablo_style.safetensors",
+          "strength": 0.15
+        }
+      ],
+      "primary": "assets/generated/tercio/icons/rusty_pike_v01.png",
+      "prompt": "game icon, very long straight infantry pike, clean wooden shaft, steel leaf spear tip, no rust, no axe blade, no halberd, no fantasy polearm, single centered object, readable silhouette, isolated inventory asset, 2d painted game icon, full object visible with padding, clean material texture, polished metal, smooth leather, fine wood, clear details, no text, no hands, no character, flat pure chroma key magenta background, solid #ff00ff backdrop, black background acceptable for character cg cutout, no gradient, floating asset, no floor, no ground contact, no cast shadow, no floor contact shadow, clean mask edge, easy background removal, clean material texture, polished metal, smooth leather, fine wood, Renaissance game icon, no heroic shine, clear details",
+      "variants": [
+        "assets/generated/tercio/icons/rusty_pike_v01.png"
+      ]
+    }
+  },
+  "expected_total": 100,
+  "schema_version": 1,
+  "style": "clean_painterly"
+}

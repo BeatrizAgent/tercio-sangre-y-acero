@@ -1,0 +1,23 @@
+[
+  {
+    "id": "unpaid_wages_argument",
+    "title": "Unpaid Wages",
+    "text": "The pay chest arrives light again. Men argue in low voices while the sergeant watches the door.",
+    "choices": [
+      {
+        "id": "hold_tongue",
+        "label": "Hold your tongue",
+        "costs": {},
+        "effects": { "honor": 1, "fatigue": 1 },
+        "result_text": "You swallow the insult and keep your place in the file."
+      },
+      {
+        "id": "demand_pay",
+        "label": "Demand owed pay",
+        "costs": {},
+        "effects": { "coins": 5, "reputation": -1 },
+        "result_text": "A few coins appear, and a name is written down."
+      }
+    ]
+  }
+]

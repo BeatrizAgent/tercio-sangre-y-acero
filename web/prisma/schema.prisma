@@ -1,0 +1,163 @@
+generator client {
+  provider = "prisma-client"
+  output   = "../src/generated/prisma"
+}
+
+datasource db {
+  provider = "postgresql"
+}
+
+model User {
+  id        String   @id @default(cuid())
+  email     String   @unique
+  name      String
+  createdAt DateTime @default(now())
+  soldier   Soldier?
+}
+
+model Soldier {
+  id          String         @id @default(cuid())
+  userId      String         @unique
+  name        String
+  rank        String
+  coins       Int
+  honor       Int
+  xp          Int
+  fatigue     Int
+  unpaidWages Int
+  reputation  Int
+  user        User           @relation(fields: [userId], references: [id])
+  stats       SoldierStats?
+  inventory   InventoryItem[]
+  equipment   Equipment?
+  wounds      ActiveWound[]
+  results     MissionResult[]
+  trainingLog TrainingLog[]
+}
+
+model SoldierStats {
+  id         String  @id @default(cuid())
+  soldierId  String  @unique
+  pike       Int
+  sword      Int
+  arquebus   Int
+  discipline Int
+  vigor      Int
+  cunning    Int
+  command    Int
+  soldier    Soldier @relation(fields: [soldierId], references: [id])
+}
+
+model ItemDefinition {
+  id          String          @id
+  name        String
+  category    String
+  slot        String
+  value       Int
+  effects     Json
+  description String
+  inventory   InventoryItem[]
+  shopItems   ShopItem[]
+}
+
+model InventoryItem {
+  id        String         @id @default(cuid())
+  soldierId String
+  itemId    String
+  quantity  Int
+  soldier   Soldier        @relation(fields: [soldierId], references: [id])
+  item      ItemDefinition @relation(fields: [itemId], references: [id])
+
+  @@unique([soldierId, itemId])
+}
+
+model Equipment {
+  id         String  @id @default(cuid())
+  soldierId  String  @unique
+  head       String?
+  body       String?
+  mainHand   String?
+  offHand    String?
+  firearm    String?
+  accessory  String?
+  boots      String?
+  consumable String?
+  soldier    Soldier @relation(fields: [soldierId], references: [id])
+}
+
+model MissionDefinition {
+  id          String          @id
+  title       String
+  type        String
+  difficulty  Int
+  enemyId     String
+  rewards     Json
+  fatigue     Int
+  woundChance Int
+  woundId     String?
+  lootTableId String?
+  reportTags  String[]
+  results     MissionResult[]
+}
+
+model MissionResult {
+  id        String   @id @default(cuid())
+  soldierId String
+  missionId String
+  success   Boolean
+  report    String
+  rewards   Json
+  wounds    Json
+  loot      Json
+  createdAt DateTime @default(now())
+  soldier   Soldier  @relation(fields: [soldierId], references: [id])
+  mission   MissionDefinition @relation(fields: [missionId], references: [id])
+}
+
+model WoundDefinition {
+  id          String        @id
+  name        String
+  severity    Int
+  effects     Json
+  description String
+  active      ActiveWound[]
+}
+
+model ActiveWound {
+  id        String          @id @default(cuid())
+  soldierId String
+  woundId   String
+  treated   Boolean         @default(false)
+  soldier   Soldier         @relation(fields: [soldierId], references: [id])
+  wound     WoundDefinition @relation(fields: [woundId], references: [id])
+}
+
+model ShopItem {
+  id        String         @id @default(cuid())
+  itemId    String
+  buyPrice  Int
+  sellPrice Int
+  stock     Int
+  item      ItemDefinition @relation(fields: [itemId], references: [id])
+}
+
+model TrainingLog {
+  id        String   @id @default(cuid())
+  soldierId String
+  stat      String
+  cost      Json
+  createdAt DateTime @default(now())
+  soldier   Soldier  @relation(fields: [soldierId], references: [id])
+}
+
+model LootTable {
+  id    String @id
+  drops Json
+}
+
+model ReportFragment {
+  id   String   @id
+  type String
+  tags String[]
+  text String
+}

@@ -1,0 +1,145 @@
+[
+  {
+    "id": "rusty_pike",
+    "name": "Rusty Pike",
+    "type": "pike",
+    "slot": "main_hand",
+    "weight": 4.5,
+    "value": 14,
+    "stackable": false,
+    "effects": { "pike": 2, "discipline": 1 },
+    "description": "A long pike with a tired head. Still enough to keep a horseman honest."
+  },
+  {
+    "id": "chipped_sword",
+    "name": "Chipped Sword",
+    "type": "sword",
+    "slot": "main_hand",
+    "weight": 1.2,
+    "value": 18,
+    "stackable": false,
+    "effects": { "sword": 2 },
+    "description": "A sidearm with old nicks along the edge."
+  },
+  {
+    "id": "arquebus_with_worn_stock",
+    "name": "Arquebus with Worn Stock",
+    "type": "arquebus",
+    "slot": "firearm",
+    "weight": 5.0,
+    "value": 34,
+    "stackable": false,
+    "effects": { "arquebus": 3 },
+    "description": "Heavy matchlock, slow to love and slower to load."
+  },
+  {
+    "id": "wet_powder_flask",
+    "name": "Wet Powder Flask",
+    "type": "ammunition",
+    "slot": "accessory",
+    "weight": 0.6,
+    "value": 6,
+    "stackable": true,
+    "effects": { "arquebus": -1, "cunning": 1 },
+    "description": "Powder that has known too much rain."
+  },
+  {
+    "id": "cheap_morion",
+    "name": "Cheap Morion",
+    "type": "helmet",
+    "slot": "head",
+    "weight": 1.8,
+    "value": 16,
+    "stackable": false,
+    "effects": { "vigor": 1 },
+    "description": "Thin iron with a proud shape and little mercy."
+  },
+  {
+    "id": "dented_cuirass",
+    "name": "Dented Cuirass",
+    "type": "cuirass",
+    "slot": "body",
+    "weight": 7.0,
+    "value": 38,
+    "stackable": false,
+    "effects": { "vigor": 2, "discipline": -1 },
+    "description": "A breastplate that has already argued with steel."
+  },
+  {
+    "id": "patched_doublet",
+    "name": "Patched Doublet",
+    "type": "coat",
+    "slot": "body",
+    "weight": 1.0,
+    "value": 7,
+    "stackable": false,
+    "effects": { "vigor": 1 },
+    "description": "Threadbare cloth under old sweat and new mud."
+  },
+  {
+    "id": "old_boots",
+    "name": "Old Boots",
+    "type": "boots",
+    "slot": "boots",
+    "weight": 1.4,
+    "value": 9,
+    "stackable": false,
+    "effects": { "vigor": 1 },
+    "description": "Cracked leather, still better than marching barefoot."
+  },
+  {
+    "id": "clean_bandage",
+    "name": "Clean Bandage",
+    "type": "medicine",
+    "slot": "consumable",
+    "weight": 0.1,
+    "value": 8,
+    "stackable": true,
+    "effects": { "wound_treatment": 1 },
+    "description": "Washed linen, rare enough that no one wastes it."
+  },
+  {
+    "id": "wine_skin",
+    "name": "Wine Skin",
+    "type": "food",
+    "slot": "consumable",
+    "weight": 1.0,
+    "value": 6,
+    "stackable": true,
+    "effects": { "fatigue": -8, "discipline": -1 },
+    "description": "Sour wine. Comfort first, regret after."
+  },
+  {
+    "id": "hard_bread",
+    "name": "Hard Bread",
+    "type": "food",
+    "slot": "consumable",
+    "weight": 0.3,
+    "value": 2,
+    "stackable": true,
+    "effects": { "fatigue": -2 },
+    "description": "Bread so dry it sounds like musketry when broken."
+  },
+  {
+    "id": "doubtful_relic",
+    "name": "Doubtful Relic",
+    "type": "relic",
+    "slot": "accessory",
+    "weight": 0.1,
+    "value": 12,
+    "stackable": true,
+    "effects": { "honor": 1 },
+    "description": "A saint's splinter, or someone's trade in fear."
+  },
+  {
+    "id": "captured_banner_fragment",
+    "name": "Captured Banner Fragment",
+    "type": "trade_good",
+    "slot": "accessory",
+    "weight": 0.2,
+    "value": 20,
+    "stackable": true,
+    "effects": { "honor": 2 },
+    "description": "Torn cloth from another company's shame."
+  }
+]

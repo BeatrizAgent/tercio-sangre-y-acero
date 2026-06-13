@@ -1,0 +1,20 @@
+[
+  {
+    "id": "hungry_deserters",
+    "name": "hungry deserters",
+    "power": 1,
+    "description": "Men who know drill badly and hunger well."
+  },
+  {
+    "id": "road_raiders",
+    "name": "road raiders",
+    "power": 3,
+    "description": "Quick knives near broken carts."
+  },
+  {
+    "id": "enemy_skirmishers",
+    "name": "enemy skirmishers",
+    "power": 4,
+    "description": "Loose shot and fast retreat."
+  }
+]

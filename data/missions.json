@@ -1,0 +1,41 @@
+[
+  {
+    "id": "night_watch_rain",
+    "title": "Night Watch Under Rain",
+    "type": "night_watch",
+    "difficulty": 1,
+    "enemy_id": "hungry_deserters",
+    "rewards": { "coins": 8, "xp": 6, "honor": 1 },
+    "fatigue": 8,
+    "wound_chance": 12,
+    "wound_id": "fever",
+    "loot_table": "watch_loot",
+    "report_tags": ["rain", "watch"]
+  },
+  {
+    "id": "muddy_road_patrol",
+    "title": "Patrol on the Muddy Road",
+    "type": "patrol",
+    "difficulty": 2,
+    "enemy_id": "road_raiders",
+    "rewards": { "coins": 12, "xp": 10, "honor": 2 },
+    "fatigue": 10,
+    "wound_chance": 20,
+    "wound_id": "shallow_cut",
+    "loot_table": "patrol_loot",
+    "report_tags": ["mud", "patrol"]
+  },
+  {
+    "id": "powder_escort_front",
+    "title": "Escort Powder to the Front",
+    "type": "escort",
+    "difficulty": 2,
+    "enemy_id": "enemy_skirmishers",
+    "rewards": { "coins": 15, "xp": 12, "honor": 2 },
+    "fatigue": 12,
+    "wound_chance": 26,
+    "wound_id": "powder_burn",
+    "loot_table": "powder_loot",
+    "report_tags": ["powder", "escort"]
+  }
+]

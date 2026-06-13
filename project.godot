@@ -1,0 +1,31 @@
+; Engine configuration file.
+; Open with Godot 4.x.
+
+config_version=5
+
+[application]
+
+config/name="Tercio: Sangre y Acero"
+run/main_scene="res://scenes/main/Main.tscn"
+config/features=PackedStringArray("4.3", "GL Compatibility")
+config/icon="res://assets/placeholders/icon.svg"
+
+[autoload]
+
+DataLoader="*res://scripts/data/DataLoader.gd"
+GameState="*res://scripts/core/GameState.gd"
+SoldierManager="*res://scripts/managers/SoldierManager.gd"
+InventoryManager="*res://scripts/managers/InventoryManager.gd"
+EquipmentManager="*res://scripts/managers/EquipmentManager.gd"
+TrainingManager="*res://scripts/managers/TrainingManager.gd"
+EventManager="*res://scripts/managers/EventManager.gd"
+ShopManager="*res://scripts/managers/ShopManager.gd"
+MissionManager="*res://scripts/managers/MissionManager.gd"
+CombatResolver="*res://scripts/resolution/CombatResolver.gd"
+ReportGenerator="*res://scripts/resolution/ReportGenerator.gd"
+WoundManager="*res://scripts/managers/WoundManager.gd"
+SaveManager="*res://scripts/managers/SaveManager.gd"
+
+[rendering]
+
+renderer/rendering_method="gl_compatibility"

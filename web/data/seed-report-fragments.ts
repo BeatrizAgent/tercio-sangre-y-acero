@@ -1,0 +1,7 @@
+export const reportFragments = [
+  { id: "rain_open", type: "opening", tags: ["rain", "watch"], text: "La lluvia arruinó parte de la pólvora antes del alba. Los hombres maldijeron bajo el ala de los moriones." },
+  { id: "mud_open", type: "opening", tags: ["mud", "patrol"], text: "El camino era barro hasta el tobillo. La compañía avanzó despacio, con las picas como ramas negras." },
+  { id: "powder_open", type: "opening", tags: ["powder", "escort"], text: "Los barriles de pólvora viajaron bajo lona remendada. Cada chispa parecía una sentencia." },
+  { id: "success_line", type: "success", tags: ["rain", "watch", "mud", "patrol", "powder", "escort"], text: "Mantuviste la formación y dejaste que {power} hiciera su trabajo. La compañía resistió." },
+  { id: "failure_line", type: "failure", tags: ["rain", "watch", "mud", "patrol", "powder", "escort"], text: "La línea cedió lo justo para recordar el miedo. {power} no bastó para borrar todos los errores." },
+] as const;

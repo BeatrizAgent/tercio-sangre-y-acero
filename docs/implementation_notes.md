@@ -57,4 +57,4 @@ To shift this prototype from local-state mock storage into a production multipla
 2. **Server Actions Migration**: Replace client store updates inside `game-store.ts` with calls to Server Actions (`src/lib/actions.ts`) that read and write directly to PostgreSQL via Prisma Client.
 3. **Authentication**: Wrap layout with NextAuth or Supabase Auth to assign a `User` record to each player.
 4. **Mission Timer**: Implement async workers to make missions take real-world time (e.g. 5 minutes) rather than instant resolution.
-5. **ComfyUI Assets**: Swap SVG placeholders in `src/components/game/placeholder-art.tsx` with generated graphics loaded from `/public/assets` once the local ComfyUI asset pipeline finishes generation.
+5. **Manual ChatGPT Assets**: Swap SVG placeholders in `src/components/game/placeholder-art.tsx` with selected graphics from `GPT-ASSETS` after they are indexed in `data/assets.json` and copied to the web public asset folder when needed.

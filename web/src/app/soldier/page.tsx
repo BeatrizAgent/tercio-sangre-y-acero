@@ -3,7 +3,7 @@
 import React, { useEffect, useState } from "react";
 import { useGameStore } from "@/lib/game-store";
 import { Card, Badge } from "@/components/ui/card";
-import { getRankName, getNextRank, getItem, rankDefinitions } from "@/lib/game-data";
+import { featuredAssetPaths, getItem, getItemImagePath, getRankName, getNextRank, rankDefinitions } from "@/lib/game-data";
 import { SoldierPortraitPlaceholder } from "@/components/game/placeholder-art";
 import { Shield, Sparkles, ScrollText, Award, Calendar, Heart } from "lucide-react";
 import { playPageSound } from "@/lib/sounds";
@@ -170,6 +170,17 @@ export default function SoldierPage() {
               {/* Biography & Equipment details */}
               <Card title="Equipo e Historial de Armas">
                 <div className="space-y-3">
+                  <div className="asset-icon-frame h-40 overflow-hidden rounded-xs border border-iron bg-stone-950">
+                    <img
+                      src={featuredAssetPaths.diegoReady}
+                      alt="Diego de Arce armado"
+                      className="h-full w-full object-contain p-3"
+                      onError={(e) => {
+                        e.currentTarget.style.display = "none";
+                      }}
+                    />
+                  </div>
+
                   <p className="text-xs text-text-muted leading-relaxed font-serif">
                     El equipo actual influye directamente en los atributos básicos del soldado. Asegúrate de equipar los mejores morriones y picas disponibles desde el almacén para aumentar las probabilidades de supervivencia en la campaña de Flandes.
                   </p>
@@ -193,9 +204,19 @@ export default function SoldierPage() {
                             {slot === "consumable" && "Consumible"}
                           </span>
                           {item ? (
-                            <div className="text-right">
-                              <p className="text-gold font-sans font-medium">{item.name}</p>
-                              <p className="text-[10px] text-muted italic font-sans">{item.description}</p>
+                            <div className="flex max-w-[68%] items-center justify-end gap-2 text-right">
+                              <img
+                                src={getItemImagePath(item.id)}
+                                alt=""
+                                className="h-10 w-10 shrink-0 object-contain"
+                                onError={(e) => {
+                                  e.currentTarget.style.display = "none";
+                                }}
+                              />
+                              <div className="min-w-0">
+                                <p className="truncate text-gold font-sans font-medium">{item.name}</p>
+                                <p className="truncate text-[10px] text-muted italic font-sans">{item.description}</p>
+                              </div>
                             </div>
                           ) : (
                             <span className="text-muted/65 italic">- Sin equipar -</span>

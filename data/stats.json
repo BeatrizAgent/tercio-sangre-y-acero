@@ -1,9 +1,37 @@
 [
-  { "id": "pike", "name": "Pike", "description": "Formation reach, bracing, and work in the push." },
-  { "id": "sword", "name": "Sword", "description": "Close violence when the line breaks." },
-  { "id": "arquebus", "name": "Arquebus", "description": "Firearm handling under smoke and rain." },
-  { "id": "discipline", "name": "Discipline", "description": "Holding formation, obeying orders, surviving fear." },
-  { "id": "vigor", "name": "Vigor", "description": "Marching, carrying, healing, and taking blows." },
-  { "id": "cunning", "name": "Cunning", "description": "Reading danger, cheating death, spotting chances." },
-  { "id": "command", "name": "Command", "description": "Authority over other soldiers." }
+  {
+    "id": "pike",
+    "name": "Pike",
+    "description": "Formation reach, bracing, and work in the push."
+  },
+  {
+    "id": "sword",
+    "name": "Sword",
+    "description": "Close violence when the line breaks."
+  },
+  {
+    "id": "arquebus",
+    "name": "Arquebus",
+    "description": "Firearm handling under smoke and rain."
+  },
+  {
+    "id": "discipline",
+    "name": "Discipline",
+    "description": "Holding formation, obeying orders, surviving fear."
+  },
+  {
+    "id": "vigor",
+    "name": "Vigor",
+    "description": "Marching, carrying, healing, and taking blows."
+  },
+  {
+    "id": "cunning",
+    "name": "Cunning",
+    "description": "Reading danger, cheating death, spotting chances."
+  },
+  {
+    "id": "command",
+    "name": "Command",
+    "description": "Authority over other soldiers."
+  }
 ]

@@ -3,14 +3,15 @@
 import React, { useEffect, useState } from "react";
 import { useGameStore } from "@/lib/game-store";
 import { Card, Badge, SubmitButton } from "@/components/ui/card";
-import { trainingOptions } from "@/lib/game-data";
-import { Shield, Dumbbell, Zap, HelpCircle, Info } from "lucide-react";
-import { playDrumSound, playDefeatSound } from "@/lib/sounds";
+import { trainingAssetPaths, trainingOptions } from "@/lib/game-data";
+import { playDrumSound, playDefeatSound, playCoinSound } from "@/lib/sounds";
+import { UiAssetIcon } from "@/components/game/ui-asset-icon";
+import { Tooltip } from "@/components/ui/tooltip";
 
 import { PageTransition } from "@/components/game/page-transition";
 
 export default function TrainingPage() {
-  const { soldier, trainStat } = useGameStore();
+  const { soldier, trainStat, payTownBribe } = useGameStore();
   const [mounted, setMounted] = useState(false);
   const [message, setMessage] = useState<{ text: string; isError: boolean } | null>(null);
 
@@ -20,6 +21,57 @@ export default function TrainingPage() {
 
   if (!mounted) {
     return <div className="text-center font-cinzel py-12 text-gold animate-pulse">Cargando zona de entrenamiento...</div>;
+  }
+
+  if (soldier.banMissionsLeft > 0) {
+    return (
+      <PageTransition>
+        <div className="max-w-xl mx-auto text-center space-y-6 py-12">
+          <Card title="¡ACCESO PROHIBIDO!">
+            <div className="p-6 space-y-6 text-center">
+              <div className="w-20 h-20 bg-danger/10 border border-danger/30 rounded-full flex items-center justify-center mx-auto animate-pulse">
+                <UiAssetIcon id="confirm" label="Acceso prohibido" className="h-12 w-12" />
+              </div>
+              <div className="space-y-2">
+                <h3 className="font-cinzel text-xl font-bold text-gold uppercase">Expulsado del Pueblo</h3>
+                <p className="text-xs text-text-muted font-mono uppercase">
+                  Falta de disciplina y desmanes en la comarca
+                </p>
+              </div>
+              <p className="text-sm font-serif italic text-text-muted leading-relaxed">
+                "¡Fuera de aquí, ralea del Tercio! Los mercaderes han cerrado sus tiendas y el cirujano ha trancado su puerta. No toleramos a ladrones ni saqueadores en nuestras murallas. Volved al camino y no regreséis hasta que hayáis cumplido vuestro castigo militar."
+              </p>
+              <div className="p-3 bg-stone-900 border border-iron rounded-xs text-xs font-mono">
+                <p>Quedan <strong className="text-danger">{soldier.banMissionsLeft}</strong> misiones de destierro para expiar tus faltas.</p>
+              </div>
+              <div className="pt-4 border-t border-iron/50 space-y-3">
+                <p className="text-[10px] text-text-muted font-sans">
+                  Puedes sobornar al alguacil del pueblo para que haga la vista gorda y te permita volver de inmediato.
+                </p>
+                <button
+                  onClick={() => {
+                    const res = payTownBribe();
+                    if (res.ok) {
+                      playCoinSound();
+                    } else {
+                      playDefeatSound();
+                    }
+                  }}
+                  disabled={soldier.coins < 50}
+                  className={`px-6 py-2.5 text-xs font-mono font-bold uppercase tracking-wider border rounded-xs transition-all cursor-pointer ${
+                    soldier.coins >= 50
+                      ? "bg-gold/15 border-gold text-gold hover:bg-gold/25"
+                      : "bg-stone-900 border-iron text-muted cursor-not-allowed"
+                  }`}
+                >
+                  Sobornar al Alguacil (50 doblones)
+                </button>
+              </div>
+            </div>
+          </Card>
+        </div>
+      </PageTransition>
+    );
   }
 
   const handleTrain = (stat: any, name: string) => {
@@ -80,15 +132,27 @@ export default function TrainingPage() {
                     className="p-4 bg-stone-900/60 border border-iron rounded-xs flex flex-col justify-between gap-4 transition-all hover:border-gold/20"
                   >
                     <div>
-                      <div className="flex justify-between items-start">
-                        <h3 className="font-cinzel text-base font-bold text-text-muted capitalize">
-                          {option.name}
-                        </h3>
-                        <span className="font-mono text-sm font-bold text-gold">{currentVal}</span>
+                      <div className="mb-3 flex items-start gap-3">
+                        <div className="asset-icon-frame h-16 w-16 shrink-0 overflow-hidden rounded-xs p-1.5">
+                          <img
+                            src={trainingAssetPaths[option.stat]}
+                            alt={option.name}
+                            className="asset-icon-image h-full w-full object-contain"
+                            onError={(e) => {
+                              e.currentTarget.style.display = "none";
+                            }}
+                          />
+                        </div>
+                        <div className="min-w-0 flex-1">
+                          <div className="flex justify-between gap-2">
+                            <h3 className="font-cinzel text-base font-bold text-text-muted capitalize flex items-center gap-1.5">
+                              <span>{option.name}</span>
+                              <Tooltip content={option.description} />
+                            </h3>
+                            <span className="font-mono text-sm font-bold text-gold">{currentVal}</span>
+                          </div>
+                        </div>
                       </div>
-                      <p className="text-xs text-text-muted font-serif italic mt-1 min-h-[32px]">
-                        "{option.description}"
-                      </p>
                       
                       {/* Cost details */}
                       <div className="mt-3 space-y-1 font-mono text-[11px] text-text-muted">
@@ -145,15 +209,15 @@ export default function TrainingPage() {
                 />
               </div>
 
-              <div className="bg-stone-900/60 p-3 border border-iron rounded-xs text-[11px] text-text-muted space-y-2 font-sans">
+              <div className="bg-stone-900/60 p-3 border border-iron rounded-xs text-sm text-text-muted space-y-2 font-sans">
                 <p className="flex gap-2 items-start">
-                  <Zap className="w-4 h-4 text-gold shrink-0 mt-0.5" />
+                  <UiAssetIcon id="fatigue" label="Fatiga" className="h-5 w-5 mt-0.5" />
                   <span>
                     El entrenamiento físico aumenta tu fatiga. Si llega a <strong>100</strong>, no podrás entrenar más hasta que descanses o completes misiones.
                   </span>
                 </p>
                 <p className="flex gap-2 items-start border-t border-iron/60 pt-2">
-                  <Info className="w-4 h-4 text-blood-bright shrink-0 mt-0.5" />
+                  <UiAssetIcon id="info" label="Informacion" className="h-5 w-5 mt-0.5" />
                   <span>
                     Una fatiga alta perjudica tu efectividad en las misiones. Cura tus heridas o descansa en el hospital si necesitas rebajarla.
                   </span>

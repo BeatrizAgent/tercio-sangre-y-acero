@@ -1,4 +1,4 @@
-import { reportFragmentDefinitions } from "./game-data";
+import { reportFragmentDefinitions, getItem, getWound } from "./game-data";
 import type { MissionDefinition, MissionResult, Soldier } from "./types";
 
 export function generateReport(
@@ -8,10 +8,16 @@ export function generateReport(
 ) {
   const opening = findFragment("opening", mission.reportTags);
   const outcome = findFragment(result.success ? "success" : "failure", mission.reportTags).replace("{power}", result.bestPower);
-  const wounds = result.wounds.length ? `Fresh wound recorded: ${result.wounds.join(", ")}.` : "No fresh wound was recorded.";
-  const loot = result.loot.length ? `Loot: ${result.loot.map((drop) => `${drop.itemId} x${drop.quantity}`).join(", ")}.` : "No useful loot was taken.";
+  
+  const wounds = result.wounds.length 
+    ? `Nuevas heridas sufridas: ${result.wounds.map((wId) => getWound(wId)?.name ?? wId).join(", ")}.` 
+    : "No se registraron nuevas heridas.";
+    
+  const loot = result.loot.length 
+    ? `Botín obtenido: ${result.loot.map((drop) => `${getItem(drop.itemId)?.name ?? drop.itemId} x${drop.quantity}`).join(", ")}.` 
+    : "No se obtuvo ningún botín de valor.";
 
-  return `${opening}\n\n${outcome}\n\n${soldier.name} returned with ${result.rewards.coins} coins, ${result.rewards.xp} XP, ${result.rewards.honor} honor, and ${result.fatigue} fatigue. ${wounds} ${loot}`;
+  return `${opening}\n\n${outcome}\n\n${soldier.name} regresó con ${result.rewards.coins} doblones, ${result.rewards.xp} XP, ${result.rewards.honor} de honor y ${result.fatigue} de fatiga. ${wounds} ${loot}`;
 }
 
 function findFragment(type: string, tags: string[]) {

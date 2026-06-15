@@ -1,16 +1,23 @@
-# Inventory Icon Prompts
+# Item Icon Prompts
 
-Use clean centered item composition, transparent or simple neutral background, readable silhouette, no text.
+Use these as manual ChatGPT prompts for inventory icons. Save outputs into `GPT-ASSETS`, then run the local cleanup/index flow.
 
-- Morion: polished but scratched morion helmet, 2d painted game inventory icon.
-- Pike: long infantry pike head with worn wooden shaft, 2d painted game inventory icon.
-- Arquebus: early matchlock arquebus, worn wood and iron, 2d painted game inventory icon.
-- Powder flask: leather powder flask with brass cap, 2d painted game inventory icon.
-- Bandage: rough linen bandage roll with small red stain, 2d painted game inventory icon.
-- Hard bread: stale campaign bread ration, 2d painted game inventory icon.
-- Wineskin: dark leather wineskin, 2d painted game inventory icon.
-- Cuirass: scratched steel cuirass, early modern infantry armor, 2d painted game inventory icon.
-- Boots: muddy worn leather boots, 2d painted game inventory icon.
-- Relic: small devotional relic in tarnished metal case, 2d painted game inventory icon.
-- Banner fragment: torn tercio banner fragment, faded cloth, 2d painted game inventory icon.
-- Coin pouch: small leather coin pouch with a few coins, 2d painted game inventory icon.
+## Base Style
+
+Clean historical painterly game asset, early modern Spanish tercio era, isolated object, transparent or flat magenta background, full object visible, readable silhouette, no text, no hands, no modern gear, no fantasy ornament, natural iron, leather, linen, wood, muted premium palette.
+
+## Negative Style
+
+No magic, no fantasy weapon, no glowing runes, no modern firearm, no modern military gear, no logo, no readable text, no UI frame, no busy background, no explicit gore.
+
+## Output Contract
+
+- One centered object.
+- Plenty of padding for cropping.
+- PNG preferred.
+- Use `scripts/process_gpt_assets.py --commit` after saving a batch.
+- Use `scripts/build_asset_bank.py` to refresh `data/assets.json`.
+
+## Mature SFW Variant
+
+For harsh historical props, show aftermath indirectly: broken straps, dirty cloth, covered bundle, smoke, mud, stained ground, bandages. Mark linked event `mature: true` and `presentation: "blurred"` in data.

@@ -2,51 +2,51 @@
 
 ## Project
 
-This repository is for **Tercio: Sangre y Acero**, a web-first browser management RPG inspired by games like Gladiatus, but set around Spanish tercios and early modern military hardship.
+This repository is for **Tercio: Sangre y Acero**, a web-first browser management RPG inspired by Gladiatus, but set around Spanish tercios and early modern military hardship.
 
-The player starts as a poor **bisoño** and progresses through training, equipment, missions, wounds, fatigue, honor, delayed pay, and rank.
+The player starts as a poor **bisono** and progresses through training, equipment, missions, wounds, fatigue, honor, delayed pay, and rank.
 
 ## Core Direction
 
-This is a web application first. The main client lives in `/web`.
+The main client lives in `/web`. Use normal web UI for most gameplay:
 
-Use normal web UI for most gameplay:
+- barracks (barracones)
+- soldier profile (perfil del soldado)
+- inventory (inventario)
+- equipment (equipo)
+- shop/armory (armería)
+- training (entrenamiento)
+- missions (misiones con mapa de nodos)
+- reports (reportes de combate con simulador visual)
+- hospital (cirujano de campaña)
+- rankings (clasificación)
+- company systems (compañías/gremios)
 
-- barracks
-- soldier profile
-- inventory
-- equipment
-- shop/armory
-- training
-- missions
-- reports
-- hospital
-- rankings
-- company systems
-
-Canvas is optional and should only be used for visual flavor:
+Canvas is built using PIXI.js and GSAP/Motion, and is used strictly for visual flavor:
 
 - soldier avatar preview
 - duel preview
-- mission scene
+- mission/combat canvas resolver (with animated sprites, sound effects, coin rain, and status text)
 - campaign map decoration
 - banner visuals
 - small effects
 
-Do not build the entire UI in canvas.
+Do not build the whole UI in canvas. Keep navigation, buttons, stats, and dialogs as standard HTML/React components styled with Tailwind CSS.
 
-### Layout & Design System
-- **Sidebar Integration**: The player's main status metrics (name, rank, coins, honor, XP, fatigue) are integrated directly at the top of the left sidebar (`SidebarNav`), maximizing screen space for actual gameplay viewports.
-- **Independent Scroll**: Both the Sidebar and the Main viewport scroll independently (`overflow-y-auto` and `h-screen`) to prevent viewport scrolling conflicts.
-- **Menu Typography**: Menu labels in the sidebar must be large enough to be easily readable (using `text-[13px]` or larger rather than tiny `text-[9px]`).
-- **Vector Menu Icons**: The navigation menu uses Lucide React SVG vector icons with gold and iron interactive transitions for a sleek, lightweight, and modern feel.
-- **Thinner Borders & Less Glow**: Panels and buttons use 1px solid borders rather than heavy 2px lines, and glows/inset shadows are kept subtle for a cleaner layout.
+## Layout & Design System
+
+- Player status metrics live at the top of the left sidebar.
+- Sidebar and main viewport scroll independently.
+- Sidebar labels use `text-[13px]` or larger.
+- Navigation uses Lucide React vector icons.
+- Panels and buttons use subtle 1px borders and restrained shadows (gritty, early-modern aesthetic).
+- Tooltips: Use custom hover tooltips for stats, equipment slots, and status effects. Avoid inline help text to keep the layout clean and modern.
 
 ## Not This
 
 This is not:
 
-- a Godot-first game
+- a Godot-first game (Godot files exist only as legacy references)
 - an open-world RPG
 - a real-time action game
 - a tactical grid combat game
@@ -54,149 +54,113 @@ This is not:
 - a fantasy RPG
 - a multiplayer game yet
 
-The previous Godot scaffold may remain as reference, but do not reintroduce Godot as the main client unless explicitly requested.
+Do not reintroduce Godot as the main client.
 
 ## Preferred Stack
 
-- Next.js
+- Next.js (App Router, Turbopack)
 - React
 - TypeScript
 - Tailwind CSS
 - PostgreSQL
 - Prisma ORM
-- Seed data for initial content
+- JSON seed data in `data/` as the single source of truth for items, ranks, missions, and assets.
 
-Optional later:
+Use `pnpm` for package management.
 
-- PixiJS
-- Phaser
-- plain Canvas modules
-- Supabase/Auth.js
-- ranking backend
-- asynchronous PvP
+## Asset Bank
 
-## AI Asset Pipeline
-
-Local AI asset generation support lives in `/ai` and `/scripts`.
-
-- Use ComfyUI installed outside this repo.
-- Set `COMFYUI_DIR` to the absolute ComfyUI folder.
-- Optional Civitai token env var: `CIVITAI_API_TOKEN`. Local fallback `CIVITAI_TOKEN` may exist, but never print or commit tokens.
-- Model manifests live in `ai/models/`.
-- Prompt templates live in `ai/prompts/`.
-- Downloaded model weights must never be committed.
-- First approved pack is SDXL-only. Do not add Pony, Illustrious, SD1.5, Flux, anime, celebrity, POI, NSFW, fetish, or modern military models unless explicitly approved.
-- Style is a **clean, historical painterly style** (illustrative Renaissance game art) using the **DreamShaper XL** checkpoint. Prompts and settings must avoid dirty realism/mud/soot textures in visual assets to maintain a clean, high-contrast, premium look.
+`GPT-ASSETS` is the canonical visual bank. Images are prompted manually in ChatGPT, saved into `GPT-ASSETS`, cleaned locally, then indexed into JSON.
 
 Useful commands:
 
 ```text
-python scripts/print_model_plan.py
-python scripts/download_civitai_models.py --dry-run
-python scripts/download_civitai_models.py --download
-python scripts/verify_comfyui_models.py
+python scripts/process_gpt_assets.py --commit
+python scripts/build_asset_bank.py
+node web/scripts/sync-data.mjs
 ```
 
-Before downloading, fill exact Civitai model version IDs, review licenses manually, and enable entries one by one.
+Rules:
+
+- Keep `GPT-ASSETS` as source of truth for new image assets.
+- Keep `data/assets.json` synchronized with real PNG files.
+- Link gameplay data through `assetId`, `portraitAssetId`, and `sceneAssetId`.
+- Do not commit secrets or external model weights.
+- Do not add copyrighted assets.
+- Use placeholder assets only when no generated asset exists yet.
+
+## Mature SFW Policy
+
+Historical cruelty can exist in text and events, but visuals must stay SFW.
+
+- No explicit gore.
+- No sexualized content.
+- No anime as main style.
+- Use `mature: true` and `presentation: "blurred"` for harsh events.
+- Prefer indirect imagery: silhouettes, smoke, broken gear, bandages, covered bodies, stained ground, tense faces.
 
 ## Main Routes
 
 Expected MVP routes:
 
 ```text
-/barracks
-/soldier
-/training
-/inventory
-/equipment
-/armory
-/missions
-/missions/[id]
-/reports/[id]
-/hospital
+/barracks       - Barracks hub
+/soldier        - Soldier stats & level up
+/training       - Stat training & cost resolver
+/inventory      - Grid-based inventory
+/equipment      - Interactive drag-and-drop slots
+/armory         - Buying & selling equipment
+/missions       - Interactive map node selection
+/missions/[id]  - Map mission setup
+/reports/[id]   - Animated Pixi.js combat solver & narrative report
+/hospital       - Campaigns wounds healing
 ```
 
 Future routes:
 
 ```text
-/company
-/rankings
-/duels
-/market
-/admin
-/map
+/company        - Guild/Tercio company management
+/rankings       - Soldier rankings
+/duels          - Tavern duels (PvP/PvE)
+/market         - Player-to-player trade
+/admin          - Admin dashboard
+/map            - Full map screen
 ```
 
 ## Core Systems
 
 Required systems:
 
-- Soldier profile
-- Stats
-- Ranks
-- Training
-- Inventory
-- Equipment
-- Shop/Armory
-- Missions/Campaigns
-- Automatic resolver
-- Report generator
-- Wounds/status effects
-- Fatigue
-- Rewards and loot
-
-Future systems:
-
-- Companies/guilds
-- Rankings
-- PvP duels
-- Market
-- Campaign seasons
-- Canvas visuals
-
-Do not implement future systems unless explicitly requested.
+- **Soldier profile:** Tracks experience, stats, rank, and unpaid wages.
+- **Stats & Training:** Pike, Sword, Arquebus, Discipline, Vigor, Cunning, Command.
+- **Inventory & Equipment:** Supports interactive drag-and-drop between inventory grid and slot components.
+- **Shop/Armory:** Interactive buying, selling, and status updates.
+- **Missions/Campaigns:** Map-based node navigation.
+- **Combat Resolver:** Animated canvas with state machines (Idle, Walk, Attack, Hurt, Dead), coin rains, sound effects, and transitions.
+- **Report generator:** Creates detailed combat narrative logs.
+- **Wounds & Status effects:** Healing cost scales based on wound severity.
+- **Fatigue:** Controls mission eligibility.
+- **Rewards and loot:** Loot tables resolve item drops based on probabilities.
 
 ## AI Agent Rules
-
-When working on this repo:
 
 1. Read this file first.
 2. Inspect the repo before editing.
 3. Keep the project web-first.
 4. Do not move core UI into canvas.
-5. Do not reintroduce Godot as the main client.
-6. Do not add real-time combat.
-7. Do not add open-world exploration.
-8. Do not add multiplayer/PvP until the single-player MVP works.
-9. Keep data and formulas simple.
-10. Preserve Prisma schema unless explicitly instructed.
-11. Make small, reviewable changes.
-12. Use placeholder assets only.
-13. Do not add copyrighted assets.
-14. Document schema or behavior changes.
-15. Summarize files changed after each task.
-
-## MVP Goal
-
-The MVP should allow this loop:
-
-1. Open barracks.
-2. View soldier profile.
-3. Train one stat.
-4. Buy an item in the armory.
-5. Equip that item.
-6. Select a mission.
-7. Resolve the mission automatically.
-8. Read the generated report.
-9. Receive coins, XP, honor, fatigue, wounds, and loot.
-10. Return to barracks and see updated state.
-
-Combat is a resolver plus report, not an animated tactical system.
+5. Do not add real-time combat.
+6. Do not add open-world exploration.
+7. Do not add multiplayer/PvP until the single-player MVP works.
+8. Keep data and formulas simple.
+9. Preserve Prisma schema unless explicitly instructed.
+10. Make small, reviewable changes.
+11. Document schema or behavior changes.
+12. Summarize files changed after each task.
 
 ## Default Soldier
 
 Name: Diego de Arce
-Rank: bisoño
+Rank: bisono
 Coins: 25
 Honor: 0
 XP: 0

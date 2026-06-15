@@ -33,6 +33,8 @@ export type SoldierAvgAggregateOutputType = {
   fatigue: number | null
   unpaidWages: number | null
   reputation: number | null
+  corruption: number | null
+  banMissionsLeft: number | null
 }
 
 export type SoldierSumAggregateOutputType = {
@@ -42,6 +44,8 @@ export type SoldierSumAggregateOutputType = {
   fatigue: number | null
   unpaidWages: number | null
   reputation: number | null
+  corruption: number | null
+  banMissionsLeft: number | null
 }
 
 export type SoldierMinAggregateOutputType = {
@@ -55,6 +59,8 @@ export type SoldierMinAggregateOutputType = {
   fatigue: number | null
   unpaidWages: number | null
   reputation: number | null
+  corruption: number | null
+  banMissionsLeft: number | null
 }
 
 export type SoldierMaxAggregateOutputType = {
@@ -68,6 +74,8 @@ export type SoldierMaxAggregateOutputType = {
   fatigue: number | null
   unpaidWages: number | null
   reputation: number | null
+  corruption: number | null
+  banMissionsLeft: number | null
 }
 
 export type SoldierCountAggregateOutputType = {
@@ -81,6 +89,8 @@ export type SoldierCountAggregateOutputType = {
   fatigue: number
   unpaidWages: number
   reputation: number
+  corruption: number
+  banMissionsLeft: number
   _all: number
 }
 
@@ -92,6 +102,8 @@ export type SoldierAvgAggregateInputType = {
   fatigue?: true
   unpaidWages?: true
   reputation?: true
+  corruption?: true
+  banMissionsLeft?: true
 }
 
 export type SoldierSumAggregateInputType = {
@@ -101,6 +113,8 @@ export type SoldierSumAggregateInputType = {
   fatigue?: true
   unpaidWages?: true
   reputation?: true
+  corruption?: true
+  banMissionsLeft?: true
 }
 
 export type SoldierMinAggregateInputType = {
@@ -114,6 +128,8 @@ export type SoldierMinAggregateInputType = {
   fatigue?: true
   unpaidWages?: true
   reputation?: true
+  corruption?: true
+  banMissionsLeft?: true
 }
 
 export type SoldierMaxAggregateInputType = {
@@ -127,6 +143,8 @@ export type SoldierMaxAggregateInputType = {
   fatigue?: true
   unpaidWages?: true
   reputation?: true
+  corruption?: true
+  banMissionsLeft?: true
 }
 
 export type SoldierCountAggregateInputType = {
@@ -140,6 +158,8 @@ export type SoldierCountAggregateInputType = {
   fatigue?: true
   unpaidWages?: true
   reputation?: true
+  corruption?: true
+  banMissionsLeft?: true
   _all?: true
 }
 
@@ -240,6 +260,8 @@ export type SoldierGroupByOutputType = {
   fatigue: number
   unpaidWages: number
   reputation: number
+  corruption: number
+  banMissionsLeft: number
   _count: SoldierCountAggregateOutputType | null
   _avg: SoldierAvgAggregateOutputType | null
   _sum: SoldierSumAggregateOutputType | null
@@ -276,6 +298,8 @@ export type SoldierWhereInput = {
   fatigue?: Prisma.IntFilter<"Soldier"> | number
   unpaidWages?: Prisma.IntFilter<"Soldier"> | number
   reputation?: Prisma.IntFilter<"Soldier"> | number
+  corruption?: Prisma.IntFilter<"Soldier"> | number
+  banMissionsLeft?: Prisma.IntFilter<"Soldier"> | number
   user?: Prisma.XOR<Prisma.UserScalarRelationFilter, Prisma.UserWhereInput>
   stats?: Prisma.XOR<Prisma.SoldierStatsNullableScalarRelationFilter, Prisma.SoldierStatsWhereInput> | null
   inventory?: Prisma.InventoryItemListRelationFilter
@@ -296,6 +320,8 @@ export type SoldierOrderByWithRelationInput = {
   fatigue?: Prisma.SortOrder
   unpaidWages?: Prisma.SortOrder
   reputation?: Prisma.SortOrder
+  corruption?: Prisma.SortOrder
+  banMissionsLeft?: Prisma.SortOrder
   user?: Prisma.UserOrderByWithRelationInput
   stats?: Prisma.SoldierStatsOrderByWithRelationInput
   inventory?: Prisma.InventoryItemOrderByRelationAggregateInput
@@ -319,6 +345,8 @@ export type SoldierWhereUniqueInput = Prisma.AtLeast<{
   fatigue?: Prisma.IntFilter<"Soldier"> | number
   unpaidWages?: Prisma.IntFilter<"Soldier"> | number
   reputation?: Prisma.IntFilter<"Soldier"> | number
+  corruption?: Prisma.IntFilter<"Soldier"> | number
+  banMissionsLeft?: Prisma.IntFilter<"Soldier"> | number
   user?: Prisma.XOR<Prisma.UserScalarRelationFilter, Prisma.UserWhereInput>
   stats?: Prisma.XOR<Prisma.SoldierStatsNullableScalarRelationFilter, Prisma.SoldierStatsWhereInput> | null
   inventory?: Prisma.InventoryItemListRelationFilter
@@ -339,6 +367,8 @@ export type SoldierOrderByWithAggregationInput = {
   fatigue?: Prisma.SortOrder
   unpaidWages?: Prisma.SortOrder
   reputation?: Prisma.SortOrder
+  corruption?: Prisma.SortOrder
+  banMissionsLeft?: Prisma.SortOrder
   _count?: Prisma.SoldierCountOrderByAggregateInput
   _avg?: Prisma.SoldierAvgOrderByAggregateInput
   _max?: Prisma.SoldierMaxOrderByAggregateInput
@@ -360,6 +390,8 @@ export type SoldierScalarWhereWithAggregatesInput = {
   fatigue?: Prisma.IntWithAggregatesFilter<"Soldier"> | number
   unpaidWages?: Prisma.IntWithAggregatesFilter<"Soldier"> | number
   reputation?: Prisma.IntWithAggregatesFilter<"Soldier"> | number
+  corruption?: Prisma.IntWithAggregatesFilter<"Soldier"> | number
+  banMissionsLeft?: Prisma.IntWithAggregatesFilter<"Soldier"> | number
 }
 
 export type SoldierCreateInput = {
@@ -372,6 +404,8 @@ export type SoldierCreateInput = {
   fatigue: number
   unpaidWages: number
   reputation: number
+  corruption?: number
+  banMissionsLeft?: number
   user: Prisma.UserCreateNestedOneWithoutSoldierInput
   stats?: Prisma.SoldierStatsCreateNestedOneWithoutSoldierInput
   inventory?: Prisma.InventoryItemCreateNestedManyWithoutSoldierInput
@@ -392,6 +426,8 @@ export type SoldierUncheckedCreateInput = {
   fatigue: number
   unpaidWages: number
   reputation: number
+  corruption?: number
+  banMissionsLeft?: number
   stats?: Prisma.SoldierStatsUncheckedCreateNestedOneWithoutSoldierInput
   inventory?: Prisma.InventoryItemUncheckedCreateNestedManyWithoutSoldierInput
   equipment?: Prisma.EquipmentUncheckedCreateNestedOneWithoutSoldierInput
@@ -410,6 +446,8 @@ export type SoldierUpdateInput = {
   fatigue?: Prisma.IntFieldUpdateOperationsInput | number
   unpaidWages?: Prisma.IntFieldUpdateOperationsInput | number
   reputation?: Prisma.IntFieldUpdateOperationsInput | number
+  corruption?: Prisma.IntFieldUpdateOperationsInput | number
+  banMissionsLeft?: Prisma.IntFieldUpdateOperationsInput | number
   user?: Prisma.UserUpdateOneRequiredWithoutSoldierNestedInput
   stats?: Prisma.SoldierStatsUpdateOneWithoutSoldierNestedInput
   inventory?: Prisma.InventoryItemUpdateManyWithoutSoldierNestedInput
@@ -430,6 +468,8 @@ export type SoldierUncheckedUpdateInput = {
   fatigue?: Prisma.IntFieldUpdateOperationsInput | number
   unpaidWages?: Prisma.IntFieldUpdateOperationsInput | number
   reputation?: Prisma.IntFieldUpdateOperationsInput | number
+  corruption?: Prisma.IntFieldUpdateOperationsInput | number
+  banMissionsLeft?: Prisma.IntFieldUpdateOperationsInput | number
   stats?: Prisma.SoldierStatsUncheckedUpdateOneWithoutSoldierNestedInput
   inventory?: Prisma.InventoryItemUncheckedUpdateManyWithoutSoldierNestedInput
   equipment?: Prisma.EquipmentUncheckedUpdateOneWithoutSoldierNestedInput
@@ -449,6 +489,8 @@ export type SoldierCreateManyInput = {
   fatigue: number
   unpaidWages: number
   reputation: number
+  corruption?: number
+  banMissionsLeft?: number
 }
 
 export type SoldierUpdateManyMutationInput = {
@@ -461,6 +503,8 @@ export type SoldierUpdateManyMutationInput = {
   fatigue?: Prisma.IntFieldUpdateOperationsInput | number
   unpaidWages?: Prisma.IntFieldUpdateOperationsInput | number
   reputation?: Prisma.IntFieldUpdateOperationsInput | number
+  corruption?: Prisma.IntFieldUpdateOperationsInput | number
+  banMissionsLeft?: Prisma.IntFieldUpdateOperationsInput | number
 }
 
 export type SoldierUncheckedUpdateManyInput = {
@@ -474,6 +518,8 @@ export type SoldierUncheckedUpdateManyInput = {
   fatigue?: Prisma.IntFieldUpdateOperationsInput | number
   unpaidWages?: Prisma.IntFieldUpdateOperationsInput | number
   reputation?: Prisma.IntFieldUpdateOperationsInput | number
+  corruption?: Prisma.IntFieldUpdateOperationsInput | number
+  banMissionsLeft?: Prisma.IntFieldUpdateOperationsInput | number
 }
 
 export type SoldierNullableScalarRelationFilter = {
@@ -492,6 +538,8 @@ export type SoldierCountOrderByAggregateInput = {
   fatigue?: Prisma.SortOrder
   unpaidWages?: Prisma.SortOrder
   reputation?: Prisma.SortOrder
+  corruption?: Prisma.SortOrder
+  banMissionsLeft?: Prisma.SortOrder
 }
 
 export type SoldierAvgOrderByAggregateInput = {
@@ -501,6 +549,8 @@ export type SoldierAvgOrderByAggregateInput = {
   fatigue?: Prisma.SortOrder
   unpaidWages?: Prisma.SortOrder
   reputation?: Prisma.SortOrder
+  corruption?: Prisma.SortOrder
+  banMissionsLeft?: Prisma.SortOrder
 }
 
 export type SoldierMaxOrderByAggregateInput = {
@@ -514,6 +564,8 @@ export type SoldierMaxOrderByAggregateInput = {
   fatigue?: Prisma.SortOrder
   unpaidWages?: Prisma.SortOrder
   reputation?: Prisma.SortOrder
+  corruption?: Prisma.SortOrder
+  banMissionsLeft?: Prisma.SortOrder
 }
 
 export type SoldierMinOrderByAggregateInput = {
@@ -527,6 +579,8 @@ export type SoldierMinOrderByAggregateInput = {
   fatigue?: Prisma.SortOrder
   unpaidWages?: Prisma.SortOrder
   reputation?: Prisma.SortOrder
+  corruption?: Prisma.SortOrder
+  banMissionsLeft?: Prisma.SortOrder
 }
 
 export type SoldierSumOrderByAggregateInput = {
@@ -536,6 +590,8 @@ export type SoldierSumOrderByAggregateInput = {
   fatigue?: Prisma.SortOrder
   unpaidWages?: Prisma.SortOrder
   reputation?: Prisma.SortOrder
+  corruption?: Prisma.SortOrder
+  banMissionsLeft?: Prisma.SortOrder
 }
 
 export type SoldierScalarRelationFilter = {
@@ -677,6 +733,8 @@ export type SoldierCreateWithoutUserInput = {
   fatigue: number
   unpaidWages: number
   reputation: number
+  corruption?: number
+  banMissionsLeft?: number
   stats?: Prisma.SoldierStatsCreateNestedOneWithoutSoldierInput
   inventory?: Prisma.InventoryItemCreateNestedManyWithoutSoldierInput
   equipment?: Prisma.EquipmentCreateNestedOneWithoutSoldierInput
@@ -695,6 +753,8 @@ export type SoldierUncheckedCreateWithoutUserInput = {
   fatigue: number
   unpaidWages: number
   reputation: number
+  corruption?: number
+  banMissionsLeft?: number
   stats?: Prisma.SoldierStatsUncheckedCreateNestedOneWithoutSoldierInput
   inventory?: Prisma.InventoryItemUncheckedCreateNestedManyWithoutSoldierInput
   equipment?: Prisma.EquipmentUncheckedCreateNestedOneWithoutSoldierInput
@@ -729,6 +789,8 @@ export type SoldierUpdateWithoutUserInput = {
   fatigue?: Prisma.IntFieldUpdateOperationsInput | number
   unpaidWages?: Prisma.IntFieldUpdateOperationsInput | number
   reputation?: Prisma.IntFieldUpdateOperationsInput | number
+  corruption?: Prisma.IntFieldUpdateOperationsInput | number
+  banMissionsLeft?: Prisma.IntFieldUpdateOperationsInput | number
   stats?: Prisma.SoldierStatsUpdateOneWithoutSoldierNestedInput
   inventory?: Prisma.InventoryItemUpdateManyWithoutSoldierNestedInput
   equipment?: Prisma.EquipmentUpdateOneWithoutSoldierNestedInput
@@ -747,6 +809,8 @@ export type SoldierUncheckedUpdateWithoutUserInput = {
   fatigue?: Prisma.IntFieldUpdateOperationsInput | number
   unpaidWages?: Prisma.IntFieldUpdateOperationsInput | number
   reputation?: Prisma.IntFieldUpdateOperationsInput | number
+  corruption?: Prisma.IntFieldUpdateOperationsInput | number
+  banMissionsLeft?: Prisma.IntFieldUpdateOperationsInput | number
   stats?: Prisma.SoldierStatsUncheckedUpdateOneWithoutSoldierNestedInput
   inventory?: Prisma.InventoryItemUncheckedUpdateManyWithoutSoldierNestedInput
   equipment?: Prisma.EquipmentUncheckedUpdateOneWithoutSoldierNestedInput
@@ -765,6 +829,8 @@ export type SoldierCreateWithoutStatsInput = {
   fatigue: number
   unpaidWages: number
   reputation: number
+  corruption?: number
+  banMissionsLeft?: number
   user: Prisma.UserCreateNestedOneWithoutSoldierInput
   inventory?: Prisma.InventoryItemCreateNestedManyWithoutSoldierInput
   equipment?: Prisma.EquipmentCreateNestedOneWithoutSoldierInput
@@ -784,6 +850,8 @@ export type SoldierUncheckedCreateWithoutStatsInput = {
   fatigue: number
   unpaidWages: number
   reputation: number
+  corruption?: number
+  banMissionsLeft?: number
   inventory?: Prisma.InventoryItemUncheckedCreateNestedManyWithoutSoldierInput
   equipment?: Prisma.EquipmentUncheckedCreateNestedOneWithoutSoldierInput
   wounds?: Prisma.ActiveWoundUncheckedCreateNestedManyWithoutSoldierInput
@@ -817,6 +885,8 @@ export type SoldierUpdateWithoutStatsInput = {
   fatigue?: Prisma.IntFieldUpdateOperationsInput | number
   unpaidWages?: Prisma.IntFieldUpdateOperationsInput | number
   reputation?: Prisma.IntFieldUpdateOperationsInput | number
+  corruption?: Prisma.IntFieldUpdateOperationsInput | number
+  banMissionsLeft?: Prisma.IntFieldUpdateOperationsInput | number
   user?: Prisma.UserUpdateOneRequiredWithoutSoldierNestedInput
   inventory?: Prisma.InventoryItemUpdateManyWithoutSoldierNestedInput
   equipment?: Prisma.EquipmentUpdateOneWithoutSoldierNestedInput
@@ -836,6 +906,8 @@ export type SoldierUncheckedUpdateWithoutStatsInput = {
   fatigue?: Prisma.IntFieldUpdateOperationsInput | number
   unpaidWages?: Prisma.IntFieldUpdateOperationsInput | number
   reputation?: Prisma.IntFieldUpdateOperationsInput | number
+  corruption?: Prisma.IntFieldUpdateOperationsInput | number
+  banMissionsLeft?: Prisma.IntFieldUpdateOperationsInput | number
   inventory?: Prisma.InventoryItemUncheckedUpdateManyWithoutSoldierNestedInput
   equipment?: Prisma.EquipmentUncheckedUpdateOneWithoutSoldierNestedInput
   wounds?: Prisma.ActiveWoundUncheckedUpdateManyWithoutSoldierNestedInput
@@ -853,6 +925,8 @@ export type SoldierCreateWithoutInventoryInput = {
   fatigue: number
   unpaidWages: number
   reputation: number
+  corruption?: number
+  banMissionsLeft?: number
   user: Prisma.UserCreateNestedOneWithoutSoldierInput
   stats?: Prisma.SoldierStatsCreateNestedOneWithoutSoldierInput
   equipment?: Prisma.EquipmentCreateNestedOneWithoutSoldierInput
@@ -872,6 +946,8 @@ export type SoldierUncheckedCreateWithoutInventoryInput = {
   fatigue: number
   unpaidWages: number
   reputation: number
+  corruption?: number
+  banMissionsLeft?: number
   stats?: Prisma.SoldierStatsUncheckedCreateNestedOneWithoutSoldierInput
   equipment?: Prisma.EquipmentUncheckedCreateNestedOneWithoutSoldierInput
   wounds?: Prisma.ActiveWoundUncheckedCreateNestedManyWithoutSoldierInput
@@ -905,6 +981,8 @@ export type SoldierUpdateWithoutInventoryInput = {
   fatigue?: Prisma.IntFieldUpdateOperationsInput | number
   unpaidWages?: Prisma.IntFieldUpdateOperationsInput | number
   reputation?: Prisma.IntFieldUpdateOperationsInput | number
+  corruption?: Prisma.IntFieldUpdateOperationsInput | number
+  banMissionsLeft?: Prisma.IntFieldUpdateOperationsInput | number
   user?: Prisma.UserUpdateOneRequiredWithoutSoldierNestedInput
   stats?: Prisma.SoldierStatsUpdateOneWithoutSoldierNestedInput
   equipment?: Prisma.EquipmentUpdateOneWithoutSoldierNestedInput
@@ -924,6 +1002,8 @@ export type SoldierUncheckedUpdateWithoutInventoryInput = {
   fatigue?: Prisma.IntFieldUpdateOperationsInput | number
   unpaidWages?: Prisma.IntFieldUpdateOperationsInput | number
   reputation?: Prisma.IntFieldUpdateOperationsInput | number
+  corruption?: Prisma.IntFieldUpdateOperationsInput | number
+  banMissionsLeft?: Prisma.IntFieldUpdateOperationsInput | number
   stats?: Prisma.SoldierStatsUncheckedUpdateOneWithoutSoldierNestedInput
   equipment?: Prisma.EquipmentUncheckedUpdateOneWithoutSoldierNestedInput
   wounds?: Prisma.ActiveWoundUncheckedUpdateManyWithoutSoldierNestedInput
@@ -941,6 +1021,8 @@ export type SoldierCreateWithoutEquipmentInput = {
   fatigue: number
   unpaidWages: number
   reputation: number
+  corruption?: number
+  banMissionsLeft?: number
   user: Prisma.UserCreateNestedOneWithoutSoldierInput
   stats?: Prisma.SoldierStatsCreateNestedOneWithoutSoldierInput
   inventory?: Prisma.InventoryItemCreateNestedManyWithoutSoldierInput
@@ -960,6 +1042,8 @@ export type SoldierUncheckedCreateWithoutEquipmentInput = {
   fatigue: number
   unpaidWages: number
   reputation: number
+  corruption?: number
+  banMissionsLeft?: number
   stats?: Prisma.SoldierStatsUncheckedCreateNestedOneWithoutSoldierInput
   inventory?: Prisma.InventoryItemUncheckedCreateNestedManyWithoutSoldierInput
   wounds?: Prisma.ActiveWoundUncheckedCreateNestedManyWithoutSoldierInput
@@ -993,6 +1077,8 @@ export type SoldierUpdateWithoutEquipmentInput = {
   fatigue?: Prisma.IntFieldUpdateOperationsInput | number
   unpaidWages?: Prisma.IntFieldUpdateOperationsInput | number
   reputation?: Prisma.IntFieldUpdateOperationsInput | number
+  corruption?: Prisma.IntFieldUpdateOperationsInput | number
+  banMissionsLeft?: Prisma.IntFieldUpdateOperationsInput | number
   user?: Prisma.UserUpdateOneRequiredWithoutSoldierNestedInput
   stats?: Prisma.SoldierStatsUpdateOneWithoutSoldierNestedInput
   inventory?: Prisma.InventoryItemUpdateManyWithoutSoldierNestedInput
@@ -1012,6 +1098,8 @@ export type SoldierUncheckedUpdateWithoutEquipmentInput = {
   fatigue?: Prisma.IntFieldUpdateOperationsInput | number
   unpaidWages?: Prisma.IntFieldUpdateOperationsInput | number
   reputation?: Prisma.IntFieldUpdateOperationsInput | number
+  corruption?: Prisma.IntFieldUpdateOperationsInput | number
+  banMissionsLeft?: Prisma.IntFieldUpdateOperationsInput | number
   stats?: Prisma.SoldierStatsUncheckedUpdateOneWithoutSoldierNestedInput
   inventory?: Prisma.InventoryItemUncheckedUpdateManyWithoutSoldierNestedInput
   wounds?: Prisma.ActiveWoundUncheckedUpdateManyWithoutSoldierNestedInput
@@ -1029,6 +1117,8 @@ export type SoldierCreateWithoutResultsInput = {
   fatigue: number
   unpaidWages: number
   reputation: number
+  corruption?: number
+  banMissionsLeft?: number
   user: Prisma.UserCreateNestedOneWithoutSoldierInput
   stats?: Prisma.SoldierStatsCreateNestedOneWithoutSoldierInput
   inventory?: Prisma.InventoryItemCreateNestedManyWithoutSoldierInput
@@ -1048,6 +1138,8 @@ export type SoldierUncheckedCreateWithoutResultsInput = {
   fatigue: number
   unpaidWages: number
   reputation: number
+  corruption?: number
+  banMissionsLeft?: number
   stats?: Prisma.SoldierStatsUncheckedCreateNestedOneWithoutSoldierInput
   inventory?: Prisma.InventoryItemUncheckedCreateNestedManyWithoutSoldierInput
   equipment?: Prisma.EquipmentUncheckedCreateNestedOneWithoutSoldierInput
@@ -1081,6 +1173,8 @@ export type SoldierUpdateWithoutResultsInput = {
   fatigue?: Prisma.IntFieldUpdateOperationsInput | number
   unpaidWages?: Prisma.IntFieldUpdateOperationsInput | number
   reputation?: Prisma.IntFieldUpdateOperationsInput | number
+  corruption?: Prisma.IntFieldUpdateOperationsInput | number
+  banMissionsLeft?: Prisma.IntFieldUpdateOperationsInput | number
   user?: Prisma.UserUpdateOneRequiredWithoutSoldierNestedInput
   stats?: Prisma.SoldierStatsUpdateOneWithoutSoldierNestedInput
   inventory?: Prisma.InventoryItemUpdateManyWithoutSoldierNestedInput
@@ -1100,6 +1194,8 @@ export type SoldierUncheckedUpdateWithoutResultsInput = {
   fatigue?: Prisma.IntFieldUpdateOperationsInput | number
   unpaidWages?: Prisma.IntFieldUpdateOperationsInput | number
   reputation?: Prisma.IntFieldUpdateOperationsInput | number
+  corruption?: Prisma.IntFieldUpdateOperationsInput | number
+  banMissionsLeft?: Prisma.IntFieldUpdateOperationsInput | number
   stats?: Prisma.SoldierStatsUncheckedUpdateOneWithoutSoldierNestedInput
   inventory?: Prisma.InventoryItemUncheckedUpdateManyWithoutSoldierNestedInput
   equipment?: Prisma.EquipmentUncheckedUpdateOneWithoutSoldierNestedInput
@@ -1117,6 +1213,8 @@ export type SoldierCreateWithoutWoundsInput = {
   fatigue: number
   unpaidWages: number
   reputation: number
+  corruption?: number
+  banMissionsLeft?: number
   user: Prisma.UserCreateNestedOneWithoutSoldierInput
   stats?: Prisma.SoldierStatsCreateNestedOneWithoutSoldierInput
   inventory?: Prisma.InventoryItemCreateNestedManyWithoutSoldierInput
@@ -1136,6 +1234,8 @@ export type SoldierUncheckedCreateWithoutWoundsInput = {
   fatigue: number
   unpaidWages: number
   reputation: number
+  corruption?: number
+  banMissionsLeft?: number
   stats?: Prisma.SoldierStatsUncheckedCreateNestedOneWithoutSoldierInput
   inventory?: Prisma.InventoryItemUncheckedCreateNestedManyWithoutSoldierInput
   equipment?: Prisma.EquipmentUncheckedCreateNestedOneWithoutSoldierInput
@@ -1169,6 +1269,8 @@ export type SoldierUpdateWithoutWoundsInput = {
   fatigue?: Prisma.IntFieldUpdateOperationsInput | number
   unpaidWages?: Prisma.IntFieldUpdateOperationsInput | number
   reputation?: Prisma.IntFieldUpdateOperationsInput | number
+  corruption?: Prisma.IntFieldUpdateOperationsInput | number
+  banMissionsLeft?: Prisma.IntFieldUpdateOperationsInput | number
   user?: Prisma.UserUpdateOneRequiredWithoutSoldierNestedInput
   stats?: Prisma.SoldierStatsUpdateOneWithoutSoldierNestedInput
   inventory?: Prisma.InventoryItemUpdateManyWithoutSoldierNestedInput
@@ -1188,6 +1290,8 @@ export type SoldierUncheckedUpdateWithoutWoundsInput = {
   fatigue?: Prisma.IntFieldUpdateOperationsInput | number
   unpaidWages?: Prisma.IntFieldUpdateOperationsInput | number
   reputation?: Prisma.IntFieldUpdateOperationsInput | number
+  corruption?: Prisma.IntFieldUpdateOperationsInput | number
+  banMissionsLeft?: Prisma.IntFieldUpdateOperationsInput | number
   stats?: Prisma.SoldierStatsUncheckedUpdateOneWithoutSoldierNestedInput
   inventory?: Prisma.InventoryItemUncheckedUpdateManyWithoutSoldierNestedInput
   equipment?: Prisma.EquipmentUncheckedUpdateOneWithoutSoldierNestedInput
@@ -1205,6 +1309,8 @@ export type SoldierCreateWithoutTrainingLogInput = {
   fatigue: number
   unpaidWages: number
   reputation: number
+  corruption?: number
+  banMissionsLeft?: number
   user: Prisma.UserCreateNestedOneWithoutSoldierInput
   stats?: Prisma.SoldierStatsCreateNestedOneWithoutSoldierInput
   inventory?: Prisma.InventoryItemCreateNestedManyWithoutSoldierInput
@@ -1224,6 +1330,8 @@ export type SoldierUncheckedCreateWithoutTrainingLogInput = {
   fatigue: number
   unpaidWages: number
   reputation: number
+  corruption?: number
+  banMissionsLeft?: number
   stats?: Prisma.SoldierStatsUncheckedCreateNestedOneWithoutSoldierInput
   inventory?: Prisma.InventoryItemUncheckedCreateNestedManyWithoutSoldierInput
   equipment?: Prisma.EquipmentUncheckedCreateNestedOneWithoutSoldierInput
@@ -1257,6 +1365,8 @@ export type SoldierUpdateWithoutTrainingLogInput = {
   fatigue?: Prisma.IntFieldUpdateOperationsInput | number
   unpaidWages?: Prisma.IntFieldUpdateOperationsInput | number
   reputation?: Prisma.IntFieldUpdateOperationsInput | number
+  corruption?: Prisma.IntFieldUpdateOperationsInput | number
+  banMissionsLeft?: Prisma.IntFieldUpdateOperationsInput | number
   user?: Prisma.UserUpdateOneRequiredWithoutSoldierNestedInput
   stats?: Prisma.SoldierStatsUpdateOneWithoutSoldierNestedInput
   inventory?: Prisma.InventoryItemUpdateManyWithoutSoldierNestedInput
@@ -1276,6 +1386,8 @@ export type SoldierUncheckedUpdateWithoutTrainingLogInput = {
   fatigue?: Prisma.IntFieldUpdateOperationsInput | number
   unpaidWages?: Prisma.IntFieldUpdateOperationsInput | number
   reputation?: Prisma.IntFieldUpdateOperationsInput | number
+  corruption?: Prisma.IntFieldUpdateOperationsInput | number
+  banMissionsLeft?: Prisma.IntFieldUpdateOperationsInput | number
   stats?: Prisma.SoldierStatsUncheckedUpdateOneWithoutSoldierNestedInput
   inventory?: Prisma.InventoryItemUncheckedUpdateManyWithoutSoldierNestedInput
   equipment?: Prisma.EquipmentUncheckedUpdateOneWithoutSoldierNestedInput
@@ -1352,6 +1464,8 @@ export type SoldierSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs 
   fatigue?: boolean
   unpaidWages?: boolean
   reputation?: boolean
+  corruption?: boolean
+  banMissionsLeft?: boolean
   user?: boolean | Prisma.UserDefaultArgs<ExtArgs>
   stats?: boolean | Prisma.Soldier$statsArgs<ExtArgs>
   inventory?: boolean | Prisma.Soldier$inventoryArgs<ExtArgs>
@@ -1373,6 +1487,8 @@ export type SoldierSelectCreateManyAndReturn<ExtArgs extends runtime.Types.Exten
   fatigue?: boolean
   unpaidWages?: boolean
   reputation?: boolean
+  corruption?: boolean
+  banMissionsLeft?: boolean
   user?: boolean | Prisma.UserDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["soldier"]>
 
@@ -1387,6 +1503,8 @@ export type SoldierSelectUpdateManyAndReturn<ExtArgs extends runtime.Types.Exten
   fatigue?: boolean
   unpaidWages?: boolean
   reputation?: boolean
+  corruption?: boolean
+  banMissionsLeft?: boolean
   user?: boolean | Prisma.UserDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["soldier"]>
 
@@ -1401,9 +1519,11 @@ export type SoldierSelectScalar = {
   fatigue?: boolean
   unpaidWages?: boolean
   reputation?: boolean
+  corruption?: boolean
+  banMissionsLeft?: boolean
 }
 
-export type SoldierOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "userId" | "name" | "rank" | "coins" | "honor" | "xp" | "fatigue" | "unpaidWages" | "reputation", ExtArgs["result"]["soldier"]>
+export type SoldierOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "userId" | "name" | "rank" | "coins" | "honor" | "xp" | "fatigue" | "unpaidWages" | "reputation" | "corruption" | "banMissionsLeft", ExtArgs["result"]["soldier"]>
 export type SoldierInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   user?: boolean | Prisma.UserDefaultArgs<ExtArgs>
   stats?: boolean | Prisma.Soldier$statsArgs<ExtArgs>
@@ -1443,6 +1563,8 @@ export type $SoldierPayload<ExtArgs extends runtime.Types.Extensions.InternalArg
     fatigue: number
     unpaidWages: number
     reputation: number
+    corruption: number
+    banMissionsLeft: number
   }, ExtArgs["result"]["soldier"]>
   composites: {}
 }
@@ -1883,6 +2005,8 @@ export interface SoldierFieldRefs {
   readonly fatigue: Prisma.FieldRef<"Soldier", 'Int'>
   readonly unpaidWages: Prisma.FieldRef<"Soldier", 'Int'>
   readonly reputation: Prisma.FieldRef<"Soldier", 'Int'>
+  readonly corruption: Prisma.FieldRef<"Soldier", 'Int'>
+  readonly banMissionsLeft: Prisma.FieldRef<"Soldier", 'Int'>
 }
     
 

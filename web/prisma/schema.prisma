@@ -16,23 +16,25 @@ model User {
 }
 
 model Soldier {
-  id          String         @id @default(cuid())
-  userId      String         @unique
-  name        String
-  rank        String
-  coins       Int
-  honor       Int
-  xp          Int
-  fatigue     Int
-  unpaidWages Int
-  reputation  Int
-  user        User           @relation(fields: [userId], references: [id])
-  stats       SoldierStats?
-  inventory   InventoryItem[]
-  equipment   Equipment?
-  wounds      ActiveWound[]
-  results     MissionResult[]
-  trainingLog TrainingLog[]
+  id              String         @id @default(cuid())
+  userId          String         @unique
+  name            String
+  rank            String
+  coins           Int
+  honor           Int
+  xp              Int
+  fatigue         Int
+  unpaidWages     Int
+  reputation      Int
+  corruption      Int            @default(0)
+  banMissionsLeft Int            @default(0)
+  user            User           @relation(fields: [userId], references: [id])
+  stats           SoldierStats?
+  inventory       InventoryItem[]
+  equipment       Equipment?
+  wounds          ActiveWound[]
+  results         MissionResult[]
+  trainingLog     TrainingLog[]
 }
 
 model SoldierStats {

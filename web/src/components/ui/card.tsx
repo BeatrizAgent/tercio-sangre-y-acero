@@ -1,14 +1,26 @@
 "use client";
 
-import type { ReactNode } from "react";
+import type { ComponentProps, ReactNode } from "react";
 import { motion } from "motion/react";
 import { playSwordSound, playDrumSound } from "@/lib/sounds";
+import { UiAssetIcon } from "@/components/game/ui-asset-icon";
 
-export function Card({ title, children, className = "" }: { title: string; children: ReactNode; className?: string }) {
+export function Card({
+  title,
+  children,
+  className = "",
+  iconId,
+}: {
+  title: string;
+  children: ReactNode;
+  className?: string;
+  iconId?: ComponentProps<typeof UiAssetIcon>["id"];
+}) {
   return (
     <section className={`game-panel p-5 rounded-xs ${className}`}>
-      <h2 className="section-title mb-4 font-cinzel text-lg tracking-wider text-gold-soft border-b border-iron pb-1.5 font-bold uppercase">
-        {title}
+      <h2 className="section-title mb-4 flex items-center gap-3 font-cinzel text-xl tracking-wider text-gold-soft border-b border-iron pb-1.5 font-bold uppercase">
+        {iconId && <UiAssetIcon id={iconId} label="" className="h-11 w-11" />}
+        <span>{title}</span>
       </h2>
       <div className="relative z-10">{children}</div>
     </section>
@@ -24,7 +36,7 @@ export function Badge({ children, variant = "default" }: { children: ReactNode; 
   };
 
   return (
-    <span className={`border px-2 py-0.5 text-xs font-mono rounded-xs ${styles[variant]}`}>
+    <span className={`border px-3 py-1 text-sm font-mono font-bold rounded-xs ${styles[variant]}`}>
       {children}
     </span>
   );
@@ -69,4 +81,3 @@ export function SubmitButton({
     </motion.button>
   );
 }
-

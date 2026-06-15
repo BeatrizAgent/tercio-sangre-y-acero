@@ -2,7 +2,10 @@
   {
     "stat_id": "pike",
     "name": "Pike Drill",
-    "cost": { "coins": 4, "xp": 0 },
+    "cost": {
+      "coins": 4,
+      "xp": 0
+    },
     "gain": 1,
     "fatigue": 4,
     "description": "Hours in formation until shoulders burn."
@@ -10,7 +13,10 @@
   {
     "stat_id": "sword",
     "name": "Sword Yard",
-    "cost": { "coins": 5, "xp": 0 },
+    "cost": {
+      "coins": 5,
+      "xp": 0
+    },
     "gain": 1,
     "fatigue": 5,
     "description": "Dull blades, bruised hands, fewer mistakes."
@@ -18,7 +24,10 @@
   {
     "stat_id": "arquebus",
     "name": "Match and Powder",
-    "cost": { "coins": 6, "xp": 0 },
+    "cost": {
+      "coins": 6,
+      "xp": 0
+    },
     "gain": 1,
     "fatigue": 4,
     "description": "Slow loading in damp air while the sergeant curses."
@@ -26,7 +35,10 @@
   {
     "stat_id": "discipline",
     "name": "Company Discipline",
-    "cost": { "coins": 3, "xp": 0 },
+    "cost": {
+      "coins": 3,
+      "xp": 0
+    },
     "gain": 1,
     "fatigue": 3,
     "description": "Stand still, move together, fear later."
@@ -34,7 +46,10 @@
   {
     "stat_id": "vigor",
     "name": "Pack March",
-    "cost": { "coins": 2, "xp": 0 },
+    "cost": {
+      "coins": 2,
+      "xp": 0
+    },
     "gain": 1,
     "fatigue": 6,
     "description": "Mud road, full pack, no complaint that helps."

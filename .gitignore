@@ -22,3 +22,11 @@ web/node_modules/
 *.vae.safetensors
 /ai/downloads/
 /models/
+
+# Local testing, build output, and Python cache files
+.playwright-cli/
+output/
+__pycache__/
+*.pyc
+.DS_Store
+Thumbs.db

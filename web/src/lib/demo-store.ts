@@ -16,6 +16,8 @@ export function createInitialState(): GameState {
       fatigue: 0,
       unpaidWages: 0,
       reputation: 0,
+      corruption: 0,
+      banMissionsLeft: 0,
       stats: {
         pike: 2,
         sword: 1,
@@ -44,6 +46,8 @@ export function createInitialState(): GameState {
       wounds: [],
     },
     reports: [],
+    activeEvent: null,
+    pendingMissionId: null,
   };
 }
 

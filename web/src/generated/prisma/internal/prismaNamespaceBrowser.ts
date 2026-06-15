@@ -103,7 +103,9 @@ export const SoldierScalarFieldEnum = {
   xp: 'xp',
   fatigue: 'fatigue',
   unpaidWages: 'unpaidWages',
-  reputation: 'reputation'
+  reputation: 'reputation',
+  corruption: 'corruption',
+  banMissionsLeft: 'banMissionsLeft'
 } as const
 
 export type SoldierScalarFieldEnum = (typeof SoldierScalarFieldEnum)[keyof typeof SoldierScalarFieldEnum]

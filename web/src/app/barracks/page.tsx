@@ -2,37 +2,44 @@
 
 import React, { useEffect, useState } from "react";
 import Link from "next/link";
-import { useGameStore } from "@/lib/game-store";
-import { Card, Badge, SubmitButton } from "@/components/ui/card";
-import { getRankName, getWound } from "@/lib/game-data";
-import { getItem } from "@/lib/game-data";
-import { SoldierPortraitPlaceholder } from "@/components/game/placeholder-art";
-import { 
-  User, 
-  Dumbbell, 
-  Backpack, 
-  Store, 
-  Flag, 
-  HeartPulse, 
-  Flame, 
-  DollarSign, 
-  ScrollText, 
-  FileText,
-  AlertTriangle
-} from "lucide-react";
-
+import { Badge, Card } from "@/components/ui/card";
 import { PageTransition } from "@/components/game/page-transition";
+import { UiAssetIcon } from "@/components/game/ui-asset-icon";
+import { useGameStore } from "@/lib/game-store";
+import { featuredAssetPaths, getItem, getItemImagePath, getRankName, getWound } from "@/lib/game-data";
+
+const statLabels: Record<string, string> = {
+  pike: "Pica",
+  sword: "Espada",
+  arquebus: "Arcabuz",
+  discipline: "Disciplina",
+  vigor: "Vigor",
+  cunning: "Astucia",
+  command: "Mando",
+};
+
+const slotLabels: Record<string, string> = {
+  head: "Cabeza",
+  body: "Cuerpo",
+  mainHand: "Arma",
+  offHand: "Apoyo",
+  firearm: "Arcabuz",
+  accessory: "Reliquia",
+  boots: "Botas",
+  consumable: "Uso",
+};
 
 export default function BarracksPage() {
   const { soldier, reports } = useGameStore();
   const [mounted, setMounted] = useState(false);
 
   useEffect(() => {
-    setMounted(true);
+    const timer = window.setTimeout(() => setMounted(true), 0);
+    return () => window.clearTimeout(timer);
   }, []);
 
   if (!mounted) {
-    return <div className="text-center font-cinzel py-12 text-gold animate-pulse">Cargando cuartel...</div>;
+    return <div className="py-12 text-center font-cinzel text-xl text-gold animate-pulse">Cargando cuartel...</div>;
   }
 
   const latestReport = reports[0];
@@ -40,345 +47,293 @@ export default function BarracksPage() {
   return (
     <PageTransition>
       <div className="space-y-6">
-      {/* Page Title */}
-      <div className="flex justify-between items-center border-b border-iron pb-3">
-        <div>
-          <h1 className="font-cinzel text-3xl font-extrabold tracking-wider text-gold">EL CUARTEL</h1>
-          <p className="text-xs text-text-muted">Centro de mando y descanso del Tercio</p>
-        </div>
-        <Badge variant="gold">Estado: Campaña Activa</Badge>
-      </div>
+        <section className="visual-hero scene-frame relative overflow-hidden rounded-sm">
+          <img
+            src={featuredAssetPaths.barracks}
+            alt="Cuartel de campana"
+            className="scene-image-realism absolute inset-0 h-full w-full object-cover"
+            onError={(event) => {
+              event.currentTarget.style.display = "none";
+            }}
+          />
+          <div className="absolute inset-0 bg-gradient-to-r from-background/95 via-background/62 to-background/12" />
+          <div className="absolute inset-0 bg-gradient-to-t from-background/75 via-transparent to-transparent" />
+          <div className="relative z-10 flex min-h-[270px] flex-col justify-between p-6 md:p-8">
+            <div className="flex items-center justify-between gap-4">
+              <UiAssetIcon id="barracks" label="Cuartel" className="h-20 w-20 md:h-24 md:w-24" />
+              <Badge variant="gold">Campana Activa</Badge>
+            </div>
+            <div>
+              <h1 className="visual-hero-title font-blackletter font-extrabold tracking-wide text-gold drop-shadow-[0_4px_12px_rgba(0,0,0,0.85)]">
+                El Cuartel
+              </h1>
+              <p className="mt-3 max-w-2xl font-cinzel text-xl font-bold uppercase tracking-[0.12em] text-gold-soft md:text-2xl">
+                Descanso, paga, heridas y nuevas ordenes.
+              </p>
+            </div>
+          </div>
+        </section>
 
-      {/* Main Grid */}
-      <div className="grid gap-6 lg:grid-cols-[2fr_1fr]">
-        {/* Left Column: Soldier details and progress */}
-        <div className="space-y-6">
-          {/* Soldier Profile Panel */}
-          <Card title="Perfil del Soldado">
-            <div className="grid gap-6 md:grid-cols-[240px_1fr]">
-              {/* Portrait */}
-              <div className="w-full h-72 rounded-xs overflow-hidden shadow-lg border border-iron">
-                <SoldierPortraitPlaceholder className="w-full h-full" />
-              </div>
+        <div className="grid gap-6 lg:grid-cols-[2fr_1fr]">
+          <div className="space-y-6">
+            <Card title={soldier.name} iconId="soldier">
+              <div className="grid gap-6 md:grid-cols-[260px_1fr]">
+                <div className="scene-frame relative h-80 overflow-hidden rounded-xs border border-iron">
+                  <img
+                    src={featuredAssetPaths.diegoPortrait}
+                    alt={soldier.name}
+                    className="portrait-realism h-full w-full object-cover"
+                    onError={(event) => {
+                      event.currentTarget.style.display = "none";
+                    }}
+                  />
+                </div>
 
-              {/* Bio & Details */}
-              <div className="space-y-4">
-                <div>
-                  <h3 className="font-cinzel text-2xl font-bold text-text">{soldier.name}</h3>
-                  <p className="text-sm font-mono text-gold-soft uppercase tracking-wider">
-                    {getRankName(soldier.rank)} · Infantería de Línea
+                <div className="space-y-5">
+                  <div>
+                    <h2 className="font-cinzel text-4xl font-bold text-text">{soldier.name}</h2>
+                    <p className="mt-1 font-mono text-lg uppercase tracking-wider text-gold-soft">
+                      {getRankName(soldier.rank)} / Infanteria de Linea
+                    </p>
+                  </div>
+
+                  <div className="grid grid-cols-2 gap-3">
+                    <ProfileTile icon="missions" label="Origen" value="Toledo" />
+                    <ProfileTile icon="rank" label="Edad" value="28 anos" />
+                    <ProfileTile icon="coins" label="Soldada" value="6 sueldos" />
+                    <ProfileTile icon="info" label="Filiacion" value="1620" />
+                  </div>
+
+                  <p className="border-l-4 border-gold/45 bg-background/40 p-4 font-serif text-xl italic leading-relaxed text-text-muted">
+                    Pica firme. Botas mojadas. Paga tarde.
                   </p>
                 </div>
-
-                <div className="grid grid-cols-2 gap-4 text-xs font-mono text-text-muted">
-                  <div className="border-l border-iron pl-3">
-                    <p className="uppercase text-[10px] text-muted">Origen</p>
-                    <p className="text-text font-sans">Toledo, Castilla</p>
-                  </div>
-                  <div className="border-l border-iron pl-3">
-                    <p className="uppercase text-[10px] text-muted">Edad</p>
-                    <p className="text-text font-sans">28 Años</p>
-                  </div>
-                  <div className="border-l border-iron pl-3">
-                    <p className="uppercase text-[10px] text-muted">Soldada / Sueldo</p>
-                    <p className="text-text font-sans">6 sueldos / mes</p>
-                  </div>
-                  <div className="border-l border-iron pl-3">
-                    <p className="uppercase text-[10px] text-muted">Filiación</p>
-                    <p className="text-text font-sans">12 de marzo de 1620</p>
-                  </div>
-                </div>
-
-                <p className="text-xs font-serif italic text-text-muted leading-relaxed">
-                  "Un veterano bisoño de Toledo. Ha marchado por el camino español y ha probado el barro de Flandes. 
-                  Lucha con la pica y el alma, a la espera de que la paga de Su Majestad llegue antes que el frío."
-                </p>
               </div>
-            </div>
-          </Card>
+            </Card>
 
-          {/* Quick Stats Grid */}
-          <div className="grid gap-4 md:grid-cols-2">
-            {/* Core Stats */}
-            <Card title="Habilidades del Soldado">
-              <div className="space-y-3 text-xs font-mono">
-                {Object.entries(soldier.stats).map(([stat, value]) => {
-                  const statLabels: Record<string, string> = {
-                    pike: "Pica (Pike)",
-                    sword: "Espada (Sword)",
-                    arquebus: "Arcabuz (Arquebus)",
-                    discipline: "Disciplina (Discipline)",
-                    vigor: "Vigor",
-                    cunning: "Astucia (Cunning)",
-                    command: "Mando (Command)",
-                  };
-                  return (
+            <div className="grid gap-4 md:grid-cols-2">
+              <Card title="Habilidades" iconId="training">
+                <div className="space-y-4 font-mono">
+                  {Object.entries(soldier.stats).map(([stat, value]) => (
                     <div key={stat} className="space-y-1">
-                      <div className="flex justify-between">
-                        <span className="text-text-muted font-sans capitalize">{statLabels[stat] || stat}</span>
-                        <span className="font-bold text-gold-soft">{value}</span>
+                      <div className="flex items-center justify-between">
+                        <span className="font-cinzel text-lg font-bold text-text-muted">{statLabels[stat] || stat}</span>
+                        <span className="text-2xl font-bold text-gold-soft">{value}</span>
                       </div>
                       <div className="stat-bar rounded-xs">
-                        <div 
+                        <div
                           className="stat-bar-fill-gold transition-all duration-300"
                           style={{ width: `${Math.min(100, (value / 80) * 100)}%` }}
                         />
                       </div>
                     </div>
-                  );
-                })}
-              </div>
-            </Card>
-
-            {/* Quick Equipment List */}
-            <Card title="Equipo Equipado">
-              <div className="space-y-2 text-xs font-mono">
-                {Object.entries(soldier.equipment).map(([slot, itemId]) => {
-                  const slotLabels: Record<string, string> = {
-                    head: "Cabeza (Morrión)",
-                    body: "Cuerpo (Coraza/Jubón)",
-                    mainHand: "Arma Principal",
-                    offHand: "Escudo/Daga",
-                    firearm: "Arcabuz",
-                    accessory: "Accesorio",
-                    boots: "Calzado",
-                    consumable: "Consumible",
-                  };
-                  const item = itemId ? getItem(itemId) : null;
-                  return (
-                    <div key={slot} className="flex justify-between items-center border-b border-iron pb-1.5 last:border-0">
-                      <span className="text-text-muted font-sans text-xs">{slotLabels[slot] || slot}</span>
-                      {item ? (
-                        <span className="text-gold font-sans font-medium text-xs bg-panel-soft px-2 py-0.5 border border-iron rounded-xs">
-                          {item.name}
-                        </span>
-                      ) : (
-                        <span className="text-muted italic text-[11px] font-sans">- Vacío -</span>
-                      )}
-                    </div>
-                  );
-                })}
-              </div>
-            </Card>
-          </div>
-
-          {/* Latest Report Preview */}
-          {latestReport ? (
-            <Card title="Último Informe de Campaña">
-              <div className="parchment-card p-4 rounded-xs border border-parchment-dark/40 shadow-inner">
-                <div className="flex items-center gap-2 mb-2 pb-2 border-b border-parchment-dark/30 text-stone-850 font-serif text-sm">
-                  <ScrollText className="w-4 h-4 text-stone-700" />
-                  <span className="font-bold uppercase tracking-wider">Informe de Misión</span>
-                  <span className="ml-auto font-mono text-xs">
-                    {latestReport.success ? (
-                      <span className="text-success bg-success/15 border border-success/30 px-1.5 py-0.5 font-bold uppercase rounded-xs">
-                        ÉXITO
-                      </span>
-                    ) : (
-                      <span className="text-danger bg-danger/15 border border-danger/30 px-1.5 py-0.5 font-bold uppercase rounded-xs">
-                        DERROTA
-                      </span>
-                    )}
-                  </span>
+                  ))}
                 </div>
-                <p className="whitespace-pre-line text-stone-800 report-text leading-relaxed italic text-sm md:text-base">
-                  "{latestReport.report}"
-                </p>
-                <div className="mt-4 pt-2 border-t border-parchment-dark/30 flex justify-between items-center">
-                  <div className="flex gap-3 text-[11px] font-mono text-stone-700 font-semibold">
-                    <span>Doblones +{latestReport.rewards.coins}</span>
-                    <span>XP +{latestReport.rewards.xp}</span>
-                    <span>Honor +{latestReport.rewards.honor}</span>
-                  </div>
-                  <Link 
-                    className="text-xs font-serif font-bold text-blood hover:text-blood-bright underline decoration-blood flex items-center gap-1"
-                    href={`/reports/${latestReport.id}`}
-                  >
-                    <FileText className="w-3.5 h-3.5" />
-                    <span>Leer informe completo</span>
-                  </Link>
-                </div>
-              </div>
-            </Card>
-          ) : (
-            <Card title="Último Informe de Campaña">
-              <div className="border border-dashed border-iron p-6 text-center text-xs text-muted">
-                <p>No se han registrado misiones recientes en esta campaña.</p>
-                <Link href="/missions" className="text-gold hover:underline mt-2 inline-block">
-                  Selecciona una misión para empezar.
-                </Link>
-              </div>
-            </Card>
-          )}
-        </div>
+              </Card>
 
-        {/* Right Column: Status & Navigation actions */}
-        <div className="space-y-6">
-          {/* Barracks Illustration */}
-          <div className="relative w-full h-64 rounded-md overflow-hidden border border-iron bg-background shadow-md">
-            <img
-              src="/assets/generated/scenes/barracks_v01.png"
-              alt="Cuartel de Campaña"
-              className="w-full h-full object-cover"
-              onError={(e) => {
-                e.currentTarget.style.display = "none";
-              }}
-            />
-            <div className="absolute inset-0 bg-gradient-to-t from-background/90 via-transparent to-transparent pointer-events-none" />
-            <div className="absolute bottom-2 left-3 font-cinzel text-xs text-gold uppercase tracking-wider">
-              Alojamiento
+              <Card title="Equipo" iconId="equipment">
+                <div className="space-y-3 font-mono">
+                  {Object.entries(soldier.equipment).map(([slot, itemId]) => {
+                    const item = itemId ? getItem(itemId) : null;
+                    return (
+                      <div key={slot} className="flex items-center justify-between gap-3 border-b border-iron pb-2 last:border-0">
+                        <span className="font-cinzel text-base font-bold text-text-muted">{slotLabels[slot] || slot}</span>
+                        {item ? (
+                          <span className="flex max-w-[70%] items-center justify-end gap-3 border border-iron bg-panel-soft px-3 py-1 text-right font-sans text-base font-medium text-gold">
+                            <img
+                              src={getItemImagePath(item.id)}
+                              alt=""
+                              className="h-10 w-10 shrink-0 object-contain"
+                              onError={(event) => {
+                                event.currentTarget.style.display = "none";
+                              }}
+                            />
+                            <span className="truncate">{item.name}</span>
+                          </span>
+                        ) : (
+                          <span className="font-sans text-base italic text-muted">Vacio</span>
+                        )}
+                      </div>
+                    );
+                  })}
+                </div>
+              </Card>
             </div>
-          </div>
 
-          {/* Status & Vitals Card */}
-          <Card title="Estado Físico">
-            <div className="space-y-4">
-              {/* Fatigue meter */}
-              <div className="space-y-1.5">
-                <div className="flex justify-between text-xs font-mono">
-                  <span className="flex items-center gap-1">
-                    <Flame className="w-3.5 h-3.5 text-ember" />
-                    <span>Nivel de Fatiga</span>
-                  </span>
-                  <span className={soldier.fatigue > 70 ? "text-danger font-bold" : "text-text"}>
-                    {soldier.fatigue} / 100
-                  </span>
-                </div>
-                <div className="stat-bar rounded-xs">
-                  <div 
-                    className={`h-full transition-all duration-300 ${soldier.fatigue > 70 ? "bg-danger" : "bg-ember"}`}
-                    style={{ width: `${soldier.fatigue}%` }}
-                  />
-                </div>
-                {soldier.fatigue > 70 && (
-                  <p className="text-[10px] text-danger font-mono flex items-center gap-1 animate-pulse">
-                    <AlertTriangle className="w-3 h-3" />
-                    <span>La fatiga alta reduce el poder de combate.</span>
-                  </p>
-                )}
-              </div>
-
-              {/* Active Wounds list */}
-              <div className="space-y-2 border-t border-iron pt-3">
-                <div className="flex items-center gap-1 text-xs font-mono">
-                  <HeartPulse className="w-3.5 h-3.5 text-blood-bright" />
-                  <span>Heridas Activas</span>
-                </div>
-                
-                {soldier.wounds.length === 0 ? (
-                  <p className="text-xs text-text-muted italic bg-stone-900/40 p-2 rounded-xs border border-iron/50">
-                    Sin heridas. Diego está en plenas facultades.
-                  </p>
-                ) : (
-                  <div className="space-y-1.5">
-                    {soldier.wounds.map((active) => {
-                      const wound = getWound(active.woundId);
-                      return (
-                        <div 
-                          key={active.id} 
-                          className="flex justify-between items-center text-xs p-2 bg-background/50 border border-iron rounded-xs"
-                        >
-                          <div>
-                            <span className="font-semibold text-text">{wound?.name ?? active.woundId}</span>
-                            {!active.treated && (
-                              <span className="block text-[9px] text-danger font-mono uppercase">Abierta (-2 Combate)</span>
-                            )}
-                          </div>
-                          {active.treated ? (
-                            <span className="text-[10px] font-mono text-success bg-success/10 border border-success/30 px-1.5 py-0.5 rounded-xs uppercase">
-                              Vendada
-                            </span>
-                          ) : (
-                            <span className="text-[10px] font-mono text-danger bg-danger/10 border border-danger/30 px-1.5 py-0.5 rounded-xs uppercase animate-pulse">
-                              Sangrando
-                            </span>
-                          )}
-                        </div>
-                      );
-                    })}
-                  </div>
-                )}
-              </div>
-
-              {/* Wages & Finances */}
-              <div className="space-y-2 border-t border-iron pt-3 text-xs font-mono">
-                <div className="flex items-center gap-1">
-                  <DollarSign className="w-3.5 h-3.5 text-gold" />
-                  <span>Finanzas de la Soldada</span>
-                </div>
-                <div className="bg-stone-900/60 p-2 border border-iron rounded-xs space-y-1">
-                  <div className="flex justify-between">
-                    <span className="text-text-muted">Atraso de Sueldos:</span>
-                    <span className={`font-bold ${soldier.unpaidWages > 0 ? "text-danger" : "text-success"}`}>
-                      {soldier.unpaidWages} sueldos
+            {latestReport ? (
+              <Card title="Ultimo Informe" iconId="info">
+                <div className="parchment-card p-5 shadow-inner">
+                  <div className="mb-3 flex items-center gap-3 border-b border-parchment-dark/30 pb-3 font-serif text-base text-stone-850">
+                    <UiAssetIcon id="info" label="Informe" className="h-9 w-9" />
+                    <span className="font-bold uppercase tracking-wider">Informe de Mision</span>
+                    <span className="ml-auto font-mono text-sm">
+                      {latestReport.success ? (
+                        <span className="border border-success/30 bg-success/15 px-2 py-1 font-bold uppercase text-success">Exito</span>
+                      ) : (
+                        <span className="border border-danger/30 bg-danger/15 px-2 py-1 font-bold uppercase text-danger">Derrota</span>
+                      )}
                     </span>
                   </div>
-                  <div className="flex justify-between">
-                    <span className="text-text-muted">Paga base mes:</span>
-                    <span className="text-text">6 sueldos</span>
+                  <p className="report-text whitespace-pre-line text-stone-800 line-clamp-4">{latestReport.report}</p>
+                  <div className="mt-4 flex flex-wrap items-center justify-between gap-3 border-t border-parchment-dark/30 pt-3">
+                    <div className="flex flex-wrap gap-2 font-mono text-base font-bold text-stone-700">
+                      <Reward icon="coins" label={`+${latestReport.rewards.coins}`} />
+                      <Reward icon="xp" label={`+${latestReport.rewards.xp} XP`} />
+                      <Reward icon="honor" label={`+${latestReport.rewards.honor}`} />
+                    </div>
+                    <Link className="flex items-center gap-2 font-serif text-lg font-bold text-blood hover:text-blood-bright" href={`/reports/${latestReport.id}`}>
+                      <UiAssetIcon id="info" label="Leer informe" className="h-7 w-7" />
+                      Leer
+                    </Link>
                   </div>
                 </div>
+              </Card>
+            ) : (
+              <Card title="Ultimo Informe" iconId="info">
+                <div className="border border-dashed border-iron p-6 text-center text-lg text-muted">
+                  <p>Sin misiones recientes.</p>
+                  <Link href="/missions" className="mt-3 inline-flex items-center gap-2 text-gold hover:underline">
+                    <UiAssetIcon id="missions" label="Misiones" className="h-8 w-8" />
+                    Ir a misiones
+                  </Link>
+                </div>
+              </Card>
+            )}
+          </div>
+
+          <div className="space-y-6">
+            <Card title="Estado" iconId="hospital">
+              <div className="space-y-5">
+                <div className="asset-icon-frame relative h-36 overflow-hidden rounded-xs border border-iron bg-stone-950">
+                  <img
+                    src={featuredAssetPaths.diegoSpriteWalk}
+                    alt="Diego de Arce en marcha"
+                    className="h-full w-full object-contain p-3"
+                    onError={(event) => {
+                      event.currentTarget.style.display = "none";
+                    }}
+                  />
+                </div>
+
+                <div className="space-y-2">
+                  <div className="flex items-center justify-between font-mono text-lg">
+                    <span className="flex items-center gap-3">
+                      <UiAssetIcon id="fatigue" label="Fatiga" className="h-9 w-9" />
+                      Fatiga
+                    </span>
+                    <span className={soldier.fatigue > 70 ? "font-bold text-danger" : "text-text"}>{soldier.fatigue} / 100</span>
+                  </div>
+                  <div className="stat-bar rounded-xs">
+                    <div className={`h-full transition-all duration-300 ${soldier.fatigue > 70 ? "bg-danger" : "bg-ember"}`} style={{ width: `${soldier.fatigue}%` }} />
+                  </div>
+                </div>
+
+                <div className="space-y-2 border-t border-iron pt-4">
+                  <div className="flex items-center gap-3 font-mono text-lg">
+                    <UiAssetIcon id="hospital" label="Heridas" className="h-9 w-9" />
+                    Heridas
+                  </div>
+                  {soldier.wounds.length === 0 ? (
+                    <p className="border border-iron/50 bg-stone-900/40 p-3 text-lg italic text-text-muted">Sin heridas.</p>
+                  ) : (
+                    <div className="space-y-2">
+                      {soldier.wounds.map((active) => {
+                        const wound = getWound(active.woundId);
+                        return (
+                          <div key={active.id} className="flex items-center justify-between border border-iron bg-background/50 p-3 text-base">
+                            <span className="font-semibold text-text">{wound?.name ?? active.woundId}</span>
+                            <span className={`font-mono font-bold uppercase ${active.treated ? "text-success" : "text-danger"}`}>
+                              {active.treated ? "Vendado" : "Abierta"}
+                            </span>
+                          </div>
+                        );
+                      })}
+                    </div>
+                  )}
+                </div>
+
+                <div className="grid grid-cols-2 gap-3 border-t border-iron pt-4">
+                  <ProfileTile icon="coins" label="Atraso" value={`${soldier.unpaidWages}`} danger={soldier.unpaidWages > 0} />
+                  <ProfileTile icon="coins" label="Paga" value="6" />
+                </div>
               </div>
+            </Card>
+
+            <Card title="Ordenes" iconId="missions">
+              <div className="grid gap-3">
+                <ActionLink href="/training" icon="training" label="Entrenar" />
+                <ActionLink href="/inventory" icon="inventory" label="Inventario" />
+                <ActionLink href="/armory" icon="armory" label="Armeria" />
+                <ActionLink href="/hospital" icon="hospital" label="Hospital" />
+                <ActionLink href="/missions" icon="missions" label="Mision" danger />
+              </div>
+            </Card>
+
+            <div className="game-panel border border-iron p-5 text-center">
+              <p className="font-serif text-2xl italic leading-snug text-text-muted">
+                Espana mi natura, Italia mi ventura, Flandes mi sepultura.
+              </p>
             </div>
-          </Card>
-
-          {/* Quick Actions Panel */}
-          <Card title="Órdenes de Cuartel">
-            <div className="grid grid-cols-1 gap-2.5">
-              <Link 
-                href="/training" 
-                className="flex items-center gap-3 px-3 py-2 border border-iron hover:border-gold/30 hover:bg-panel-soft text-xs text-text hover:text-gold uppercase tracking-wider font-mono transition-all rounded-xs"
-              >
-                <Dumbbell className="w-4 h-4 text-gold/60" />
-                <span>Entrenar Habilidades</span>
-              </Link>
-              
-              <Link 
-                href="/inventory" 
-                className="flex items-center gap-3 px-3 py-2 border border-iron hover:border-gold/30 hover:bg-panel-soft text-xs text-text hover:text-gold uppercase tracking-wider font-mono transition-all rounded-xs"
-              >
-                <Backpack className="w-4 h-4 text-gold/60" />
-                <span>Equipar & Inventario</span>
-              </Link>
-
-              <Link 
-                href="/armory" 
-                className="flex items-center gap-3 px-3 py-2 border border-iron hover:border-gold/30 hover:bg-panel-soft text-xs text-text hover:text-gold uppercase tracking-wider font-mono transition-all rounded-xs"
-              >
-                <Store className="w-4 h-4 text-gold/60" />
-                <span>Armería del Tercio</span>
-              </Link>
-
-              <Link 
-                href="/hospital" 
-                className="flex items-center gap-3 px-3 py-2 border border-iron hover:border-gold/30 hover:bg-panel-soft text-xs text-text hover:text-gold uppercase tracking-wider font-mono transition-all rounded-xs"
-              >
-                <HeartPulse className="w-4 h-4 text-gold/60" />
-                <span>Tratar en Hospital</span>
-              </Link>
-
-              <Link 
-                href="/missions" 
-                className="flex items-center gap-3 px-3 py-2 border border-blood-bright/35 bg-blood/10 hover:bg-blood/20 text-xs text-text hover:text-blood-bright uppercase tracking-wider font-mono transition-all rounded-xs mt-2"
-              >
-                <Flag className="w-4 h-4 text-blood-bright" />
-                <span>Iniciar Campaña / Misión</span>
-              </Link>
-            </div>
-          </Card>
-
-          {/* Historical Quote Card */}
-          <div className="game-panel p-4 text-center border border-iron bg-linear-to-b from-stone-900 to-stone-950 rounded-xs">
-            <p className="font-serif italic text-xs text-text-muted leading-relaxed">
-              "España mi natura, Italia mi ventura, Flandes mi sepultura."
-            </p>
-            <p className="text-[10px] uppercase font-mono text-gold-soft/50 tracking-wider mt-2">
-              — Dicho popular de los Tercios
-            </p>
           </div>
         </div>
       </div>
-    </div>
     </PageTransition>
+  );
+}
+
+function ProfileTile({
+  icon,
+  label,
+  value,
+  danger = false,
+}: {
+  icon: React.ComponentProps<typeof UiAssetIcon>["id"];
+  label: string;
+  value: string;
+  danger?: boolean;
+}) {
+  return (
+    <div className="icon-stat-tile flex min-h-28 flex-col items-start justify-center gap-2 p-3">
+      <UiAssetIcon id={icon} label={label} className="h-12 w-12" />
+      <div className="min-w-0">
+        <p className="text-sm uppercase text-muted">{label}</p>
+        <p className={`font-cinzel text-2xl font-bold leading-tight ${danger ? "text-danger" : "text-text"}`}>{value}</p>
+      </div>
+    </div>
+  );
+}
+
+function Reward({ icon, label }: { icon: React.ComponentProps<typeof UiAssetIcon>["id"]; label: string }) {
+  return (
+    <span className="inline-flex items-center gap-1 border border-stone-500/30 bg-stone-900/10 px-2 py-1">
+      <UiAssetIcon id={icon} label={label} className="h-6 w-6" />
+      {label}
+    </span>
+  );
+}
+
+function ActionLink({
+  href,
+  icon,
+  label,
+  danger = false,
+}: {
+  href: string;
+  icon: React.ComponentProps<typeof UiAssetIcon>["id"];
+  label: string;
+  danger?: boolean;
+}) {
+  return (
+    <Link
+      href={href}
+      className={`flex min-h-16 items-center gap-4 border px-4 py-3 font-cinzel text-xl font-bold uppercase tracking-wider transition-all ${
+        danger
+          ? "border-blood-bright/35 bg-blood/12 text-text hover:bg-blood/22 hover:text-blood-bright"
+          : "border-iron text-text hover:border-gold/35 hover:bg-panel-soft hover:text-gold"
+      }`}
+    >
+      <UiAssetIcon id={icon} label={label} className="h-12 w-12" />
+      <span>{label}</span>
+    </Link>
   );
 }

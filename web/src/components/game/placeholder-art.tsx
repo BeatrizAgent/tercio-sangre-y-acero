@@ -1,15 +1,16 @@
 import React, { useState } from "react";
 import { User, Swords, Shield, HeartPulse, Sparkles } from "lucide-react";
+import { featuredAssetPaths, getMissionSceneImagePath } from "@/lib/game-data";
 
 export function SoldierPortraitPlaceholder({ className = "w-full h-full" }: { className?: string }) {
   const [error, setError] = useState(false);
   return (
-    <div className={`relative flex items-center justify-center overflow-hidden border border-gold/40 bg-radial from-panel-raised to-background ${className}`}>
+    <div className={`scene-frame relative flex items-center justify-center overflow-hidden bg-radial from-panel-raised to-background ${className}`}>
       {!error ? (
         <img
-          src="/assets/generated/portraits/bisono_recruit_v01.png"
+          src={featuredAssetPaths.diegoFullBody}
           alt="Diego de Arce"
-          className="w-full h-full object-cover object-top"
+          className="portrait-realism h-full w-full object-contain object-bottom p-2"
           onError={() => setError(true)}
         />
       ) : (
@@ -35,17 +36,15 @@ export function SoldierPortraitPlaceholder({ className = "w-full h-full" }: { cl
 
 export function MissionRainyWatchPlaceholder({ className = "w-full h-48", missionId }: { className?: string; missionId?: string }) {
   const [error, setError] = useState(false);
-  const src = missionId 
-    ? `/assets/generated/scenes/${missionId}_v01.png`
-    : "/assets/generated/scenes/night_watch_rain_v01.png";
+  const src = getMissionSceneImagePath(missionId);
 
   return (
-    <div className={`relative flex flex-col items-center justify-center overflow-hidden border border-iron bg-linear-to-b from-stone-900 to-stone-950 ${className}`}>
+    <div className={`scene-frame relative flex flex-col items-center justify-center overflow-hidden bg-linear-to-b from-stone-900 to-stone-950 ${className}`}>
       {!error ? (
         <img
           src={src}
           alt="Misión"
-          className="w-full h-full object-cover"
+          className="scene-image-realism w-full h-full object-cover"
           onError={() => setError(true)}
         />
       ) : (
@@ -78,12 +77,12 @@ export function MissionRainyWatchPlaceholder({ className = "w-full h-48", missio
 export function ArmoryInteriorPlaceholder({ className = "w-full h-48" }: { className?: string }) {
   const [error, setError] = useState(false);
   return (
-    <div className={`relative flex items-center justify-center overflow-hidden border border-iron bg-linear-to-br from-panel-raised via-stone-900 to-stone-950 ${className}`}>
+    <div className={`scene-frame relative flex items-center justify-center overflow-hidden bg-linear-to-br from-panel-raised via-stone-900 to-stone-950 ${className}`}>
       {!error ? (
         <img
-          src="/assets/generated/scenes/armory_workshop_v01.png"
+          src={featuredAssetPaths.armory}
           alt="Armería Real"
-          className="w-full h-full object-cover"
+          className="scene-image-realism w-full h-full object-cover"
           onError={() => setError(true)}
         />
       ) : (
@@ -107,12 +106,12 @@ export function ArmoryInteriorPlaceholder({ className = "w-full h-48" }: { class
 export function HospitalSurgeonPlaceholder({ className = "w-full h-48" }: { className?: string }) {
   const [error, setError] = useState(false);
   return (
-    <div className={`relative flex items-center justify-center overflow-hidden border border-iron bg-linear-to-tr from-stone-950 via-stone-900 to-panel-raised ${className}`}>
+    <div className={`scene-frame relative flex items-center justify-center overflow-hidden bg-linear-to-tr from-stone-950 via-stone-900 to-panel-raised ${className}`}>
       {!error ? (
         <img
-          src="/assets/generated/scenes/hospital_v01.png"
+          src={featuredAssetPaths.hospital}
           alt="Hospital de Sangre"
-          className="w-full h-full object-cover"
+          className="scene-image-realism w-full h-full object-cover"
           onError={() => setError(true)}
         />
       ) : (

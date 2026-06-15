@@ -85,6 +85,8 @@ async function main() {
       fatigue: 0,
       unpaidWages: 0,
       reputation: 0,
+      corruption: 0,
+      banMissionsLeft: 0,
       stats: {
         create: { pike: 2, sword: 1, arquebus: 1, discipline: 2, vigor: 2, cunning: 1, command: 0 },
       },

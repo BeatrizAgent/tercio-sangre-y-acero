@@ -1,11 +1,7 @@
 # UI Mockup Prompts
 
-Use as mood references only. Final UI remains hand-built in Next.js.
+Manual ChatGPT prompt base for UI art references:
 
-- Barracks page: browser RPG barracks screen for early modern tercio soldier management, profile panel, stats, fatigue, wounds, dark steel and parchment accents.
-- Soldier profile: detailed soldier profile page, rank, XP, honor, equipment slots, scars and campaign record, dense browser RPG layout.
-- Inventory: grid inventory for pikes, morions, cuirasses, bandages, rations, painted item icons, practical management RPG UI.
-- Armory: shop page with equipment list, prices, buy and sell buttons, early modern military armory theme, dense browser UI.
-- Missions: mission selection page with risk, fatigue, reward, honor, small scene thumbnails, campaign contract feel.
-- Report screen: written campaign report screen, parchment report area, rewards summary, wounds, loot, return button.
-- Hospital: wound treatment page, surgeon panel, injury list, cost and recovery options, grim campaign UI.
+Browser management RPG interface, early modern Spanish tercio theme, dark iron panels, restrained gold accents, readable dense layout, thin borders, Lucide-style icon direction, no oversized marketing hero, no fantasy MMORPG gloss, no modern military imagery.
+
+Use generated UI images as reference only. Implement UI with React, TypeScript, Tailwind CSS, and real components.

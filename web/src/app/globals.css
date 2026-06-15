@@ -1,10 +1,10 @@
 @import "tailwindcss";
 
 :root {
-  --background: #090806;
-  --panel: #15110d;
-  --panel-soft: #1d1711;
-  --panel-raised: #241b13;
+  --background: #070604;
+  --panel: #11100d;
+  --panel-soft: #181613;
+  --panel-raised: #211d18;
   --parchment: #d7c29a;
   --parchment-dark: #a78b5f;
   --gold: #c9a24f;
@@ -51,8 +51,15 @@
 
 body {
   background-color: var(--background);
+  background-image:
+    radial-gradient(circle at 18% 0%, rgba(94, 72, 42, 0.12), transparent 34rem),
+    linear-gradient(180deg, rgba(255, 255, 255, 0.018), transparent 8rem),
+    linear-gradient(90deg, rgba(255, 255, 255, 0.012) 1px, transparent 1px),
+    linear-gradient(rgba(255, 255, 255, 0.01) 1px, transparent 1px);
+  background-size: auto, auto, 34px 34px, 34px 34px;
   color: var(--text);
   font-family: var(--font-inter), sans-serif;
+  font-size: 17px;
   margin: 0;
   padding: 0;
   min-height: 100vh;
@@ -62,16 +69,37 @@ body {
 
 .game-panel {
   background-color: var(--panel);
-  /* Wood texture background using CSS gradients */
   background-image: 
-    linear-gradient(to right, rgba(0, 0, 0, 0.15) 0%, transparent 10%, transparent 90%, rgba(0, 0, 0, 0.15) 100%),
-    linear-gradient(rgba(0, 0, 0, 0.03) 1px, transparent 1px),
-    linear-gradient(to right, rgba(54, 43, 33, 0.1) 0%, rgba(38, 28, 20, 0.1) 100%);
-  background-size: 100% 100%, 100% 3px, 100% 100%;
-  border: 1px solid rgba(141, 129, 112, 0.25);
-  box-shadow: 0 8px 30px rgba(0, 0, 0, 0.45);
+    url("/assets/gpt-bank/icons-ui/textura_madera_oscura.png"),
+    linear-gradient(180deg, rgba(255, 255, 255, 0.035), rgba(255, 255, 255, 0) 34%),
+    linear-gradient(90deg, rgba(255, 255, 255, 0.018) 1px, transparent 1px),
+    linear-gradient(rgba(255, 255, 255, 0.012) 1px, transparent 1px);
+  background-size: 420px 420px, auto, 28px 28px, 28px 28px;
+  background-blend-mode: soft-light, normal, normal, normal;
+  border: 1px solid rgba(141, 129, 112, 0.22);
+  box-shadow: 0 10px 26px rgba(0, 0, 0, 0.42);
   position: relative;
   border-radius: 4px;
+  font-size: 16px;
+  line-height: 1.5;
+}
+
+.game-panel [class~="text-[8px]"],
+.game-panel [class~="text-[9px]"],
+.game-panel [class~="text-[10px]"],
+.game-panel [class~="text-[11px]"] {
+  font-size: 14px;
+  line-height: 1.45;
+}
+
+.game-panel [class~="text-xs"] {
+  font-size: 15px;
+  line-height: 1.5;
+}
+
+.game-panel [class~="text-sm"] {
+  font-size: 16px;
+  line-height: 1.5;
 }
 
 /* Corner metal reinforcements with rivet styling */
@@ -79,33 +107,26 @@ body {
   content: "";
   position: absolute;
   inset: 5px;
-  border: 1px solid rgba(201, 162, 79, 0.06);
+  border: 1px solid rgba(201, 162, 79, 0.04);
   pointer-events: none;
   border-radius: 2px;
 }
 
-/* Decorative iron corner brackets */
 .game-panel::after {
   content: "";
   position: absolute;
-  inset: 0;
-  border: 1px solid rgba(255, 255, 255, 0.01);
-  pointer-events: none;
-  background-image: 
-    /* Top-left rivet */
-    radial-gradient(circle, #5a5448 1.2px, #262420 2px, transparent 3px),
-    /* Top-right rivet */
-    radial-gradient(circle, #5a5448 1.2px, #262420 2px, transparent 3px),
-    /* Bottom-left rivet */
-    radial-gradient(circle, #5a5448 1.2px, #262420 2px, transparent 3px),
-    /* Bottom-right rivet */
-    radial-gradient(circle, #5a5448 1.2px, #262420 2px, transparent 3px);
-  background-position: 
-    6px 6px,
-    calc(100% - 7px) 6px,
-    6px calc(100% - 7px),
-    calc(100% - 7px) calc(100% - 7px);
+  inset: -1px;
+  background-image:
+    url("/assets/gpt-bank/icons-ui/esquina_marco_dorada_superior_izquierda.png"),
+    url("/assets/gpt-bank/icons-ui/esquina_marco_dorada_superior_derecha.png"),
+    url("/assets/gpt-bank/icons-ui/esquina_marco_dorada_inferior_izquierda.png"),
+    url("/assets/gpt-bank/icons-ui/esquina_marco_dorada_inferior_derecha.png");
+  background-position: left top, right top, left bottom, right bottom;
   background-repeat: no-repeat;
+  background-size: 38px 38px;
+  opacity: 0.42;
+  pointer-events: none;
+  z-index: 0;
 }
 
 /* Parchment scroll card for documents and reports */
@@ -113,13 +134,15 @@ body {
   background-color: #f3ebd4;
   /* Authentic parchment design with warm stains, paper fibers, and a Burgundy Cross watermark */
   background-image: 
+    url("/assets/gpt-bank/icons-ui/textura_pergamino_envejecido.png"),
     /* Burgundy Cross watermark (red saltire with saw-tooth edges) */
     url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100' opacity='0.05' fill='%238f1f1f'><path d='M12 8 L22 5 L50 35 L78 5 L88 8 L54 42 L88 76 L78 80 L50 50 L22 80 L12 76 L46 42 Z'/><path d='M23 20 L27 16' stroke='%238f1f1f' stroke-width='2'/><path d='M33 30 L37 26' stroke='%238f1f1f' stroke-width='2'/><path d='M77 20 L73 16' stroke='%238f1f1f' stroke-width='2'/><path d='M67 30 L63 26' stroke='%238f1f1f' stroke-width='2'/><path d='M23 70 L27 74' stroke='%238f1f1f' stroke-width='2'/><path d='M33 60 L37 64' stroke='%238f1f1f' stroke-width='2'/><path d='M77 70 L73 74' stroke='%238f1f1f' stroke-width='2'/><path d='M67 60 L63 64' stroke='%238f1f1f' stroke-width='2'/></svg>"),
     radial-gradient(circle at 10% 20%, rgba(215, 185, 142, 0.2) 0%, transparent 60%),
     radial-gradient(circle at 90% 80%, rgba(139, 115, 85, 0.2) 0%, transparent 70%),
     linear-gradient(rgba(0, 0, 0, 0.01) 1px, transparent 1px),
     linear-gradient(to right, rgba(0, 0, 0, 0.005) 1px, transparent 1px);
-  background-size: 100% 100%, 100% 100%, 100% 100%, 100% 4px, 4px 100%;
+  background-size: cover, 100% 100%, 100% 100%, 100% 100%, 100% 4px, 4px 100%;
+  background-blend-mode: multiply, normal, normal, normal, normal, normal;
   border: 1px solid #997e56;
   border-top-color: #aa8e64;
   border-bottom-color: #806842;
@@ -159,7 +182,7 @@ body {
   border-bottom-color: #1a1815;
   color: var(--text);
   font-family: var(--font-cinzel), serif;
-  font-size: 12px;
+  font-size: 15px;
   font-weight: bold;
   letter-spacing: 0.08em;
   text-transform: uppercase;
@@ -226,7 +249,7 @@ body {
   border-bottom-color: #3b0a0a;
   color: #fff;
   font-family: var(--font-cinzel), serif;
-  font-size: 12px;
+  font-size: 15px;
   font-weight: bold;
   letter-spacing: 0.08em;
   text-transform: uppercase;
@@ -270,7 +293,7 @@ body {
   border: 1px solid var(--iron);
   color: var(--muted);
   font-family: var(--font-cinzel), serif;
-  font-size: 11px;
+  font-size: 14px;
   letter-spacing: 0.04em;
   text-transform: uppercase;
   padding: 8px 14px;
@@ -286,7 +309,7 @@ body {
 }
 
 .stat-bar {
-  height: 8px;
+  height: 12px;
   background-color: #0c0a09;
   border: 1px solid var(--iron);
   position: relative;
@@ -311,7 +334,12 @@ body {
   width: 68px;
   height: 68px;
   background-color: var(--panel-soft);
-  background-image: radial-gradient(rgba(0, 0, 0, 0.2) 0%, transparent 80%);
+  background-image:
+    url("/assets/gpt-bank/icons-ui/textura_metal_oscuro_remaches.png"),
+    radial-gradient(circle at 50% 38%, rgba(148, 134, 105, 0.16) 0%, rgba(51, 42, 31, 0.14) 48%, transparent 74%),
+    radial-gradient(rgba(0, 0, 0, 0.46) 0%, transparent 80%);
+  background-size: 120px 120px, auto, auto;
+  background-blend-mode: soft-light, normal, normal;
   border: 1px solid rgba(90, 84, 72, 0.35);
   display: flex;
   align-items: center;
@@ -320,6 +348,182 @@ body {
   transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
   box-shadow: inset 0 1px 3px rgba(0,0,0,0.4);
   border-radius: 4px;
+}
+
+.asset-icon-frame {
+  position: relative;
+  background:
+    url("/assets/gpt-bank/icons-ui/textura_cuero_marron.png"),
+    radial-gradient(circle at 50% 40%, rgba(86, 76, 60, 0.32) 0%, rgba(29, 25, 20, 0.92) 66%, rgba(7, 6, 4, 0.98) 100%),
+    linear-gradient(180deg, rgba(255, 255, 255, 0.035), rgba(0, 0, 0, 0.28));
+  background-size: 260px 260px, auto, auto;
+  background-blend-mode: soft-light, normal, normal;
+  border: 1px solid rgba(141, 129, 112, 0.32);
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.08),
+    inset 0 -14px 26px rgba(0, 0, 0, 0.32),
+    0 8px 18px rgba(0, 0, 0, 0.26);
+}
+
+.asset-icon-frame::after {
+  content: "";
+  position: absolute;
+  inset: 3px;
+  border: 1px solid rgba(201, 162, 79, 0.08);
+  pointer-events: none;
+}
+
+.asset-icon-frame--tile {
+  min-height: 96px;
+}
+
+.asset-icon-frame--showcase {
+  min-height: 176px;
+}
+
+.asset-icon-image {
+  filter: drop-shadow(0 10px 14px rgba(0, 0, 0, 0.42)) saturate(0.86) contrast(1.08) brightness(0.82);
+  mix-blend-mode: normal;
+}
+
+.ui-asset-icon {
+  filter: drop-shadow(0 1px 2px rgba(0, 0, 0, 0.65)) saturate(0.86) contrast(1.08);
+}
+
+.ui-asset-icon img {
+  display: block;
+}
+
+.sidebar-shell {
+  background:
+    url("/assets/gpt-bank/icons-ui/textura_madera_oscura.png"),
+    linear-gradient(180deg, rgba(255, 255, 255, 0.025), rgba(0, 0, 0, 0.18)),
+    radial-gradient(circle at 50% 0%, rgba(108, 75, 36, 0.14), transparent 18rem),
+    #0b0907;
+  background-size: 360px 360px, auto, auto, auto;
+  background-blend-mode: soft-light, normal, normal, normal;
+  box-shadow:
+    inset -1px 0 0 rgba(201, 162, 79, 0.12),
+    8px 0 28px rgba(0, 0, 0, 0.36);
+}
+
+.sidebar-brand {
+  background:
+    linear-gradient(180deg, rgba(34, 24, 14, 0.84), rgba(8, 7, 5, 0.94)),
+    radial-gradient(circle at 20% 0%, rgba(143, 31, 31, 0.18), transparent 12rem);
+}
+
+.sidebar-nav-item {
+  background:
+    url("/assets/gpt-bank/icons-ui/barra_panel_negra_dorada.png"),
+    linear-gradient(180deg, rgba(255, 255, 255, 0.025), rgba(0, 0, 0, 0.18)),
+    rgba(14, 12, 9, 0.86);
+  background-size: 100% 100%, auto, auto;
+  background-blend-mode: soft-light, normal, normal;
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.045),
+    inset 0 -1px 0 rgba(0, 0, 0, 0.48);
+}
+
+.sidebar-nav-item::before {
+  content: "";
+  position: absolute;
+  inset: 4px;
+  border: 1px solid rgba(201, 162, 79, 0.045);
+  pointer-events: none;
+}
+
+.sidebar-nav-item.is-active {
+  background:
+    linear-gradient(180deg, rgba(119, 78, 32, 0.42), rgba(38, 24, 12, 0.82)),
+    rgba(24, 18, 12, 0.98);
+  box-shadow:
+    inset 0 1px 0 rgba(255, 238, 177, 0.12),
+    inset 4px 0 0 rgba(201, 162, 79, 0.42),
+    0 8px 18px rgba(0, 0, 0, 0.34);
+}
+
+.top-command-bar {
+  background:
+    url("/assets/gpt-bank/icons-ui/textura_metal_oscuro_remaches.png"),
+    linear-gradient(180deg, rgba(18, 15, 11, 0.98), rgba(7, 6, 4, 0.96)),
+    radial-gradient(circle at 16% 0%, rgba(143, 31, 31, 0.14), transparent 18rem);
+  background-size: 320px 320px, auto, auto;
+  background-blend-mode: soft-light, normal, normal;
+  box-shadow:
+    inset 0 -1px 0 rgba(201, 162, 79, 0.16),
+    0 10px 24px rgba(0, 0, 0, 0.28);
+}
+
+.top-resource {
+  display: grid;
+  grid-template-columns: 48px auto;
+  grid-template-rows: auto auto;
+  column-gap: 10px;
+  min-width: 160px;
+  align-items: center;
+  padding: 10px 12px;
+  background:
+    url("/assets/gpt-bank/icons-ui/barra_panel_negra_ornamento.png"),
+    linear-gradient(180deg, rgba(255, 255, 255, 0.025), rgba(0, 0, 0, 0.18)),
+    rgba(12, 10, 8, 0.72);
+  background-size: 100% 100%, auto, auto;
+  background-blend-mode: soft-light, normal, normal;
+  border: 1px solid rgba(141, 129, 112, 0.2);
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.04);
+}
+
+.top-resource .ui-asset-icon {
+  grid-row: 1 / 3;
+}
+
+.top-resource span {
+  font-family: var(--font-cinzel), serif;
+  font-size: 13px;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--gold-soft);
+  overflow-wrap: anywhere;
+}
+
+.top-resource strong {
+  font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", monospace;
+  font-size: 22px;
+  line-height: 1.15;
+  color: var(--text);
+}
+
+.scene-frame {
+  border: 1px solid rgba(141, 129, 112, 0.28);
+  background: #070604;
+  box-shadow:
+    inset 0 0 0 1px rgba(255, 255, 255, 0.02),
+    0 12px 26px rgba(0, 0, 0, 0.36);
+}
+
+.scene-frame::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background-image:
+    url("/assets/gpt-bank/icons-ui/esquina_marco_dorada_superior_izquierda.png"),
+    url("/assets/gpt-bank/icons-ui/esquina_marco_dorada_superior_derecha.png"),
+    url("/assets/gpt-bank/icons-ui/esquina_marco_dorada_inferior_izquierda.png"),
+    url("/assets/gpt-bank/icons-ui/esquina_marco_dorada_inferior_derecha.png");
+  background-position: left top, right top, left bottom, right bottom;
+  background-repeat: no-repeat;
+  background-size: 30px 30px;
+  opacity: 0.34;
+  pointer-events: none;
+}
+
+.scene-image-realism {
+  filter: saturate(0.82) contrast(1.06) brightness(0.88);
+}
+
+.portrait-realism {
+  filter: saturate(0.86) contrast(1.06) brightness(0.92);
 }
 
 .equipment-slot:hover {
@@ -331,7 +535,7 @@ body {
 
 .report-text {
   font-family: var(--font-cormorant), serif;
-  font-size: 18px;
+  font-size: 20px;
   line-height: 1.5;
   color: #2e2112;
   text-shadow: 0.2px 0.2px 0px rgba(0,0,0,0.05);
@@ -346,24 +550,64 @@ body {
 
 .section-title {
   font-family: var(--font-cinzel), serif;
-  font-size: 16px;
+  font-size: 24px;
   color: var(--gold-soft);
   border-bottom: 2px solid var(--iron);
-  padding-bottom: 6px;
+  padding-bottom: 12px;
   margin-bottom: 14px;
   letter-spacing: 0.06em;
   position: relative;
+}
+
+.sidebar-shell [class~="text-[8px]"],
+.sidebar-shell [class~="text-[9px]"],
+.sidebar-shell [class~="text-[10px]"] {
+  font-size: 14px;
+  line-height: 1.35;
+}
+
+.sidebar-shell [class~="text-xs"] {
+  font-size: 15px;
+}
+
+.visual-hero {
+  min-height: 270px;
+  border: 1px solid rgba(141, 129, 112, 0.28);
+  background: #070604;
+  box-shadow:
+    inset 0 0 0 1px rgba(255, 255, 255, 0.025),
+    0 14px 32px rgba(0, 0, 0, 0.4);
+}
+
+.visual-hero-title {
+  font-size: clamp(2.8rem, 5vw, 5.8rem);
+  line-height: 0.9;
+}
+
+.icon-stat-tile {
+  background:
+    url("/assets/gpt-bank/icons-ui/barra_panel_negra_ornamento.png"),
+    linear-gradient(180deg, rgba(255, 255, 255, 0.035), rgba(0, 0, 0, 0.22)),
+    rgba(12, 10, 8, 0.78);
+  background-size: 100% 100%, auto, auto;
+  background-blend-mode: soft-light, normal, normal;
+  border: 1px solid rgba(141, 129, 112, 0.24);
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.055);
 }
 
 /* Ornate Underline divider for headers */
 .section-title::after {
   content: "";
   position: absolute;
-  bottom: -2px;
+  bottom: -10px;
   left: 0;
-  width: 35px;
-  height: 2px;
-  background-color: var(--gold);
+  width: min(210px, 100%);
+  height: 14px;
+  background-image: url("/assets/gpt-bank/icons-ui/ornamento_dorado_horizontal.png");
+  background-repeat: no-repeat;
+  background-size: contain;
+  background-position: left center;
+  opacity: 0.62;
 }
 
 .font-blackletter {
@@ -410,3 +654,332 @@ body {
   pointer-events: none;
 }
 
+/* ============================================================
+   REPORT STAGE — Sealed letter, wax seal, reward tiles
+   ============================================================ */
+
+/* Envelope holding the sealed scroll before opening */
+.sealed-letter {
+  position: relative;
+  width: min(520px, 92vw);
+  min-height: 460px;
+  padding: 56px 40px 40px;
+  background-color: #e8dcb8;
+  background-image:
+    url("/assets/gpt-bank/icons-ui/textura_pergamino_envejecido.png"),
+    radial-gradient(ellipse at 12% 14%, rgba(255, 240, 200, 0.5) 0%, transparent 55%),
+    radial-gradient(ellipse at 88% 88%, rgba(120, 90, 50, 0.25) 0%, transparent 60%),
+    linear-gradient(rgba(0, 0, 0, 0.012) 1px, transparent 1px);
+  background-size: cover, 100% 100%, 100% 100%, 100% 4px;
+  border: 2px solid #876537;
+  border-top-color: #b6945a;
+  border-bottom-color: #5a3f1d;
+  box-shadow:
+    inset 0 0 40px rgba(80, 50, 20, 0.25),
+    0 18px 40px rgba(0, 0, 0, 0.55),
+    0 4px 0 rgba(0, 0, 0, 0.25);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 4px;
+  overflow: visible;
+}
+
+.sealed-letter.defeat {
+  filter: saturate(0.7) brightness(0.92);
+  background-color: #c7b896;
+}
+
+.sealed-letter.breaking {
+  animation: sealedShake 0.5s cubic-bezier(0.36, 0.07, 0.19, 0.97) both;
+}
+
+@keyframes sealedShake {
+  0%, 100% { transform: translate(0, 0) rotate(0); }
+  10% { transform: translate(-3px, 1px) rotate(-0.6deg); }
+  20% { transform: translate(4px, -1px) rotate(0.6deg); }
+  30% { transform: translate(-4px, 2px) rotate(-0.4deg); }
+  40% { transform: translate(4px, -1px) rotate(0.4deg); }
+  50% { transform: translate(-3px, 2px) rotate(-0.6deg); }
+  60% { transform: translate(3px, 1px) rotate(0.5deg); }
+  70% { transform: translate(-2px, 1px) rotate(-0.3deg); }
+  80% { transform: translate(2px, -1px) rotate(0.3deg); }
+  90% { transform: translate(-1px, 0) rotate(-0.1deg); }
+}
+
+.sealed-letter .sealed-corner {
+  position: absolute;
+  width: 64px;
+  height: 64px;
+  background-repeat: no-repeat;
+  background-size: contain;
+  pointer-events: none;
+  filter: drop-shadow(0 2px 3px rgba(0, 0, 0, 0.45));
+}
+.sealed-letter .sealed-corner.tl {
+  top: -10px; left: -10px;
+  background-image: url("/assets/gpt-bank/icons-ui/esquina_marco_dorada_superior_izquierda.png");
+}
+.sealed-letter .sealed-corner.tr {
+  top: -10px; right: -10px;
+  background-image: url("/assets/gpt-bank/icons-ui/esquina_marco_dorada_superior_derecha.png");
+}
+.sealed-letter .sealed-corner.bl {
+  bottom: -10px; left: -10px;
+  background-image: url("/assets/gpt-bank/icons-ui/esquina_marco_dorada_inferior_izquierda.png");
+}
+.sealed-letter .sealed-corner.br {
+  bottom: -10px; right: -10px;
+  background-image: url("/assets/gpt-bank/icons-ui/esquina_marco_dorada_inferior_derecha.png");
+}
+
+.sealed-body {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 14px;
+  text-align: center;
+  color: #2a1a06;
+  font-family: var(--font-cormorant), serif;
+  width: 100%;
+}
+
+.seal-wrap {
+  position: relative;
+  width: 160px;
+  height: 160px;
+  margin: 6px 0 4px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.seal-wrap .seal-left,
+.seal-wrap .seal-right {
+  position: absolute;
+  top: 0;
+  width: 50%;
+  height: 100%;
+  overflow: hidden;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.seal-wrap .seal-left { left: 0; }
+.seal-wrap .seal-right { right: 0; }
+
+.seal-wrap .seal-img {
+  width: 160px;
+  height: 160px;
+  object-fit: contain;
+  filter: drop-shadow(0 6px 10px rgba(60, 10, 10, 0.6));
+  transition: transform 0.6s cubic-bezier(0.5, 0, 0.75, 0), opacity 0.5s ease;
+}
+
+.seal-wrap .seal-left .seal-img { transform-origin: right center; }
+.seal-wrap .seal-right .seal-img { transform-origin: left center; }
+
+.sealed-letter.breaking .seal-left .seal-img {
+  transform: translateX(-30px) translateY(20px) rotate(-25deg) scale(0.85);
+  opacity: 0;
+}
+.sealed-letter.breaking .seal-right .seal-img {
+  transform: translateX(30px) translateY(20px) rotate(25deg) scale(0.85);
+  opacity: 0;
+}
+
+.seal-crack {
+  position: absolute;
+  inset: 0;
+  background-image: url("/assets/gpt-bank/icons-ui/humo_negro_transparente.png");
+  background-size: cover;
+  background-position: center;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.4s ease;
+}
+
+.sealed-letter.breaking .seal-crack {
+  opacity: 0.55;
+  animation: crackPulse 0.7s ease-out;
+}
+
+@keyframes crackPulse {
+  0% { opacity: 0; transform: scale(0.6); }
+  40% { opacity: 0.7; transform: scale(1.1); }
+  100% { opacity: 0.4; transform: scale(1.4); }
+}
+
+.sealed-letter.defeat .seal-wrap .seal-img {
+  filter: drop-shadow(0 6px 10px rgba(0, 0, 0, 0.7)) saturate(0.6) hue-rotate(20deg);
+}
+
+/* Stamped badge on the unrolled scroll */
+.stamp-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 8px 22px;
+  font-family: var(--font-cinzel), serif;
+  font-size: 13px;
+  font-weight: 700;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  border: 2px solid;
+  border-radius: 2px;
+  box-shadow:
+    0 2px 6px rgba(0, 0, 0, 0.3),
+    inset 0 0 0 1px rgba(255, 255, 255, 0.15);
+  position: relative;
+}
+
+.stamp-victory {
+  color: #2d5a2a;
+  border-color: #3d7d3a;
+  background:
+    repeating-linear-gradient(45deg, rgba(61, 125, 58, 0.08) 0 4px, transparent 4px 8px),
+    rgba(220, 240, 215, 0.7);
+}
+
+.stamp-defeat {
+  color: #6e1414;
+  border-color: #8a1a1a;
+  background:
+    repeating-linear-gradient(45deg, rgba(138, 26, 26, 0.1) 0 4px, transparent 4px 8px),
+    rgba(240, 220, 215, 0.7);
+}
+
+.parchment-card.defeat-mode {
+  filter: saturate(0.78) brightness(0.94);
+}
+
+/* Smoke pillar rising from the seal when broken (defeat path) */
+.smoke-pillar {
+  position: absolute;
+  left: 50%;
+  bottom: 0;
+  width: 220px;
+  height: 320px;
+  transform: translateX(-50%);
+  background-image: url("/assets/gpt-bank/icons-ui/humo_negro_transparente.png");
+  background-size: cover;
+  background-position: bottom center;
+  background-repeat: no-repeat;
+  pointer-events: none;
+  opacity: 0;
+  animation: smokeRise 3.2s ease-out forwards;
+  z-index: 5;
+}
+
+@keyframes smokeRise {
+  0% { opacity: 0; transform: translateX(-50%) translateY(40px) scale(0.7); }
+  20% { opacity: 0.55; }
+  100% { opacity: 0; transform: translateX(-50%) translateY(-160px) scale(1.3); }
+}
+
+/* ============================================================
+   REWARD TILES — Loot reveal grid
+   ============================================================ */
+
+.reward-tile {
+  position: relative;
+  min-height: 150px;
+  border: none;
+  background-color: #110d09;
+  background-image: url("/assets/gpt-bank/icons-ui/marco_panel_negro_claveteado.png");
+  background-size: 100% 100%;
+  background-repeat: no-repeat;
+  box-shadow:
+    inset 0 0 0 1px rgba(201, 162, 79, 0.15),
+    0 4px 12px rgba(0, 0, 0, 0.5);
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.reward-tile:hover {
+  transform: translateY(-2px);
+  box-shadow:
+    inset 0 0 0 1px rgba(201, 162, 79, 0.4),
+    0 0 16px var(--tile-glow, rgba(201, 162, 79, 0.35)),
+    0 6px 18px rgba(0, 0, 0, 0.6);
+}
+
+.reward-tile::before {
+  content: "";
+  position: absolute;
+  inset: 6px;
+  border: 1px solid rgba(201, 162, 79, 0.18);
+  pointer-events: none;
+}
+
+.reward-icon-frame {
+  position: relative;
+  width: 64px;
+  height: 64px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+  background:
+    radial-gradient(circle at 35% 30%, rgba(247, 210, 131, 0.18) 0%, transparent 60%),
+    rgba(0, 0, 0, 0.5);
+  border: 1px solid rgba(201, 162, 79, 0.35);
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.08),
+    0 0 18px var(--tile-glow, rgba(201, 162, 79, 0.3));
+}
+
+.reward-counter {
+  font-size: 2.2rem;
+  letter-spacing: 0.02em;
+}
+
+.reward-tile-shine {
+  background: linear-gradient(
+    115deg,
+    transparent 0%,
+    transparent 40%,
+    rgba(247, 210, 131, 0.18) 50%,
+    transparent 60%,
+    transparent 100%
+  );
+  background-size: 250% 250%;
+  background-position: 100% 100%;
+  animation: tileShine 5s ease-in-out infinite;
+}
+
+@keyframes tileShine {
+  0%, 100% { background-position: 100% 100%; }
+  50% { background-position: 0% 0%; }
+}
+
+/* Loot chip (item picked up in the field) */
+.loot-chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 6px 10px 6px 6px;
+  background:
+    linear-gradient(180deg, #1c1814 0%, #100c08 100%);
+  border: 1px solid rgba(201, 162, 79, 0.3);
+  border-radius: 2px;
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.04);
+}
+
+.loot-chip img {
+  background: rgba(0, 0, 0, 0.5);
+  border: 1px solid rgba(201, 162, 79, 0.2);
+  padding: 2px;
+}
+
+/* Defeat: smoke layer over the whole stage */
+.defeat-smoke {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  z-index: 4;
+  background-image: url("/assets/gpt-bank/icons-ui/humo_negro_transparente.png");
+  background-size: cover;
+  background-position: center;
+  opacity: 0.15;
+  mix-blend-mode: multiply;
+}

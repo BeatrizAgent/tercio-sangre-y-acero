@@ -1,0 +1,313 @@
+{
+  "count": 77,
+  "renames": [
+    {
+      "source": "CG/sprites_events/ChatGPT Image 15 jun 2026, 17_54_05 (1).png",
+      "asset": "CG/sprites_events/tercio_lluvia_con_estandarte.png"
+    },
+    {
+      "source": "CG/sprites_events/ChatGPT Image 15 jun 2026, 17_54_05 (2).png",
+      "asset": "CG/sprites_events/cirujano_atendiendo_herido.png"
+    },
+    {
+      "source": "CG/sprites_events/ChatGPT Image 15 jun 2026, 17_54_06 (3).png",
+      "asset": "CG/sprites_events/soldado_arrodillado_ante_ensenia.png"
+    },
+    {
+      "source": "CG/sprites_events/ChatGPT Image 15 jun 2026, 17_54_06 (4).png",
+      "asset": "CG/sprites_events/soldados_jugando_dados_mesa.png"
+    },
+    {
+      "source": "CG/sprites_events/ChatGPT Image 15 jun 2026, 17_54_06 (5).png",
+      "asset": "CG/sprites_events/rifa_cadaveres_campamento.png"
+    },
+    {
+      "source": "CG/sprites_events/ChatGPT Image 15 jun 2026, 17_54_06 (6).png",
+      "asset": "CG/sprites_events/entierro_campamento_humo.png"
+    },
+    {
+      "source": "CG/sprites_events/ChatGPT Image 15 jun 2026, 17_54_07 (7).png",
+      "asset": "CG/sprites_events/discusion_oficiales_pertrechos.png"
+    },
+    {
+      "source": "CG/sprites_events/ChatGPT Image 15 jun 2026, 17_54_07 (8).png",
+      "asset": "CG/sprites_events/taberna_soldados_mesa.png"
+    },
+    {
+      "source": "icons-ui/ChatGPT Image 15 jun 2026, 16_50_40 (1).png",
+      "asset": "icons-ui/espada_martillo_cruzados.png"
+    },
+    {
+      "source": "icons-ui/ChatGPT Image 15 jun 2026, 16_50_40 (2).png",
+      "asset": "icons-ui/medalla_cruz_roja_bronce.png"
+    },
+    {
+      "source": "icons-ui/ChatGPT Image 15 jun 2026, 16_50_40 (3).png",
+      "asset": "icons-ui/sol_dorado_cara.png"
+    },
+    {
+      "source": "icons-ui/ChatGPT Image 15 jun 2026, 16_50_41 (4).png",
+      "asset": "icons-ui/calavera_medallon.png"
+    },
+    {
+      "source": "icons-ui/ChatGPT Image 15 jun 2026, 16_50_41 (5).png",
+      "asset": "icons-ui/bolsa_monedas_pequena.png"
+    },
+    {
+      "source": "icons-ui/ChatGPT Image 15 jun 2026, 16_50_41 (6).png",
+      "asset": "icons-ui/venda_lino_enrollada.png"
+    },
+    {
+      "source": "icons-ui/ChatGPT Image 15 jun 2026, 16_50_41 (7).png",
+      "asset": "icons-ui/botella_vidrio_verde.png"
+    },
+    {
+      "source": "icons-ui/ChatGPT Image 15 jun 2026, 16_50_42 (10).png",
+      "asset": "icons-ui/medallon_calavera_oscuro.png"
+    },
+    {
+      "source": "icons-ui/ChatGPT Image 15 jun 2026, 16_50_42 (8).png",
+      "asset": "icons-ui/condecoracion_estrella_laurel.png"
+    },
+    {
+      "source": "icons-ui/ChatGPT Image 15 jun 2026, 16_50_42 (9).png",
+      "asset": "icons-ui/escudo_partido_cruz_roja.png"
+    },
+    {
+      "source": "icons-ui/ChatGPT Image 15 jun 2026, 16_58_24 (1).png",
+      "asset": "icons-ui/bolsa_monedas_cruz.png"
+    },
+    {
+      "source": "icons-ui/ChatGPT Image 15 jun 2026, 16_58_25 (2).png",
+      "asset": "icons-ui/saquito_monedas_documento.png"
+    },
+    {
+      "source": "icons-ui/ChatGPT Image 15 jun 2026, 16_58_25 (3).png",
+      "asset": "icons-ui/peto_morion_dorado.png"
+    },
+    {
+      "source": "icons-ui/ChatGPT Image 15 jun 2026, 16_58_26 (4).png",
+      "asset": "icons-ui/morion_peto_correas.png"
+    },
+    {
+      "source": "icons-ui/ChatGPT Image 15 jun 2026, 16_58_26 (5).png",
+      "asset": "icons-ui/orden_sellada_daga.png"
+    },
+    {
+      "source": "icons-ui/ChatGPT Image 15 jun 2026, 16_58_27 (6).png",
+      "asset": "icons-ui/camastro_manta_lana.png"
+    },
+    {
+      "source": "icons-ui/ChatGPT Image 15 jun 2026, 16_58_27 (7).png",
+      "asset": "icons-ui/vendas_tarros_medicina.png"
+    },
+    {
+      "source": "icons-ui/ChatGPT Image 15 jun 2026, 16_58_28 (8).png",
+      "asset": "icons-ui/pergamino_pluma_sello.png"
+    },
+    {
+      "source": "icons-ui/ChatGPT Image 15 jun 2026, 16_58_29 (9).png",
+      "asset": "icons-ui/bolsa_monedas_medalla.png"
+    },
+    {
+      "source": "icons-ui/ChatGPT Image 15 jun 2026, 16_58_31 (10).png",
+      "asset": "icons-ui/casco_cuero_monedas.png"
+    },
+    {
+      "source": "icons-ui/ChatGPT Image 15 jun 2026, 17_03_42 (1).png",
+      "asset": "icons-ui/espada_martillo_yunque.png"
+    },
+    {
+      "source": "icons-ui/ChatGPT Image 15 jun 2026, 17_03_42 (2).png",
+      "asset": "icons-ui/morion_flecha_engranaje.png"
+    },
+    {
+      "source": "icons-ui/ChatGPT Image 15 jun 2026, 17_03_43 (3).png",
+      "asset": "icons-ui/morion_peto_martillo.png"
+    },
+    {
+      "source": "icons-ui/ChatGPT Image 15 jun 2026, 17_03_43 (4).png",
+      "asset": "icons-ui/candado_bronce.png"
+    },
+    {
+      "source": "icons-ui/ChatGPT Image 15 jun 2026, 17_03_43 (5).png",
+      "asset": "icons-ui/reloj_arena_bronce.png"
+    },
+    {
+      "source": "icons-ui/ChatGPT Image 15 jun 2026, 17_03_43 (6).png",
+      "asset": "icons-ui/flecha_circular_laurel.png"
+    },
+    {
+      "source": "icons-ui/ChatGPT Image 15 jun 2026, 17_10_04 (1).png",
+      "asset": "icons-ui/marco_panel_negro_ancho.png"
+    },
+    {
+      "source": "icons-ui/ChatGPT Image 15 jun 2026, 17_10_04 (2).png",
+      "asset": "icons-ui/marco_panel_negro_claveteado.png"
+    },
+    {
+      "source": "icons-ui/ChatGPT Image 15 jun 2026, 17_10_04 (3).png",
+      "asset": "icons-ui/barra_panel_negra_estrecha.png"
+    },
+    {
+      "source": "icons-ui/ChatGPT Image 15 jun 2026, 17_10_05 (4).png",
+      "asset": "icons-ui/barra_panel_roja_larga.png"
+    },
+    {
+      "source": "icons-ui/ChatGPT Image 15 jun 2026, 17_10_07 (5).png",
+      "asset": "icons-ui/barra_panel_marron_larga.png"
+    },
+    {
+      "source": "icons-ui/ChatGPT Image 15 jun 2026, 17_10_07 (6).png",
+      "asset": "icons-ui/barra_panel_roja_remaches.png"
+    },
+    {
+      "source": "icons-ui/ChatGPT Image 15 jun 2026, 17_10_07 (7).png",
+      "asset": "icons-ui/marco_panel_cuadrado_negro.png"
+    },
+    {
+      "source": "icons-ui/ChatGPT Image 15 jun 2026, 17_10_07 (8).png",
+      "asset": "icons-ui/marco_panel_vertical_negro.png"
+    },
+    {
+      "source": "icons-ui/ChatGPT Image 15 jun 2026, 17_10_08 (10).png",
+      "asset": "icons-ui/barra_panel_negra_dorada.png"
+    },
+    {
+      "source": "icons-ui/ChatGPT Image 15 jun 2026, 17_10_08 (9).png",
+      "asset": "icons-ui/barra_panel_negra_ornamento.png"
+    },
+    {
+      "source": "icons-ui/ChatGPT Image 15 jun 2026, 17_16_27 (1).png",
+      "asset": "icons-ui/esquina_marco_dorada_superior_izquierda.png"
+    },
+    {
+      "source": "icons-ui/ChatGPT Image 15 jun 2026, 17_16_28 (2).png",
+      "asset": "icons-ui/esquina_marco_dorada_superior_derecha.png"
+    },
+    {
+      "source": "icons-ui/ChatGPT Image 15 jun 2026, 17_16_28 (3).png",
+      "asset": "icons-ui/esquina_marco_dorada_inferior_izquierda.png"
+    },
+    {
+      "source": "icons-ui/ChatGPT Image 15 jun 2026, 17_16_28 (4).png",
+      "asset": "icons-ui/esquina_marco_dorada_inferior_derecha.png"
+    },
+    {
+      "source": "icons-ui/ChatGPT Image 15 jun 2026, 17_16_28 (5).png",
+      "asset": "icons-ui/divisor_dorado_horizontal.png"
+    },
+    {
+      "source": "icons-ui/ChatGPT Image 15 jun 2026, 17_16_29 (6).png",
+      "asset": "icons-ui/ornamento_dorado_horizontal.png"
+    },
+    {
+      "source": "icons-ui/ChatGPT Image 15 jun 2026, 17_16_29 (7).png",
+      "asset": "icons-ui/broquel_acero_redondo.png"
+    },
+    {
+      "source": "icons-ui/ChatGPT Image 15 jun 2026, 17_16_29 (8).png",
+      "asset": "icons-ui/broquel_dorado_redondo.png"
+    },
+    {
+      "source": "icons-ui/ChatGPT Image 15 jun 2026, 17_16_29 (9).png",
+      "asset": "icons-ui/estandarte_cruz_roja_colgante.png"
+    },
+    {
+      "source": "icons-ui/ChatGPT Image 15 jun 2026, 17_16_30 (10).png",
+      "asset": "icons-ui/sello_lacre_cruz_roja.png"
+    },
+    {
+      "source": "icons-ui/ChatGPT Image 15 jun 2026, 17_28_10 (1).png",
+      "asset": "icons-ui/textura_madera_oscura.png"
+    },
+    {
+      "source": "icons-ui/ChatGPT Image 15 jun 2026, 17_28_11 (2).png",
+      "asset": "icons-ui/textura_metal_oscuro_remaches.png"
+    },
+    {
+      "source": "icons-ui/ChatGPT Image 15 jun 2026, 17_28_11 (3).png",
+      "asset": "icons-ui/textura_cuero_marron.png"
+    },
+    {
+      "source": "icons-ui/ChatGPT Image 15 jun 2026, 17_28_12 (4).png",
+      "asset": "icons-ui/textura_pergamino_envejecido.png"
+    },
+    {
+      "source": "icons-ui/ChatGPT Image 15 jun 2026, 17_28_12 (5).png",
+      "asset": "icons-ui/humo_negro_transparente.png"
+    },
+    {
+      "source": "icons-ui/ChatGPT Image 15 jun 2026, 17_28_12 (6).png",
+      "asset": "icons-ui/salpicadura_barro_transparente.png"
+    },
+    {
+      "source": "prota/ChatGPT Image 15 jun 2026, 17_35_28 (1).png",
+      "asset": "prota/diego_piquero_frontal_descanso.png"
+    },
+    {
+      "source": "prota/ChatGPT Image 15 jun 2026, 17_35_28 (2).png",
+      "asset": "prota/diego_piquero_frontal_firme.png"
+    },
+    {
+      "source": "prota/ChatGPT Image 15 jun 2026, 17_35_29 (3).png",
+      "asset": "prota/diego_piquero_tres_cuartos.png"
+    },
+    {
+      "source": "prota/ChatGPT Image 15 jun 2026, 17_35_29 (4).png",
+      "asset": "prota/diego_arrodillado_con_pica.png"
+    },
+    {
+      "source": "prota/emociones/ChatGPT Image 15 jun 2026, 17_47_03 (1).png",
+      "asset": "prota/emociones/diego_retrato_serio.png"
+    },
+    {
+      "source": "prota/emociones/ChatGPT Image 15 jun 2026, 17_47_03 (2).png",
+      "asset": "prota/emociones/diego_retrato_brazos_cruzados.png"
+    },
+    {
+      "source": "prota/emociones/ChatGPT Image 15 jun 2026, 17_47_03 (3).png",
+      "asset": "prota/emociones/diego_retrato_neutral.png"
+    },
+    {
+      "source": "prota/emociones/ChatGPT Image 15 jun 2026, 17_47_03 (4).png",
+      "asset": "prota/emociones/diego_retrato_cansado.png"
+    },
+    {
+      "source": "prota/emociones/ChatGPT Image 15 jun 2026, 17_47_05 (5).png",
+      "asset": "prota/emociones/campesino_miserable_retrato.png"
+    },
+    {
+      "source": "prota/emociones/ChatGPT Image 15 jun 2026, 17_47_06 (6).png",
+      "asset": "prota/emociones/mozo_con_jarrilla_retrato.png"
+    },
+    {
+      "source": "prota/emociones/ChatGPT Image 15 jun 2026, 17_47_06 (7).png",
+      "asset": "prota/emociones/diego_senalando_acusador.png"
+    },
+    {
+      "source": "prota/emociones/ChatGPT Image 15 jun 2026, 17_47_07 (8).png",
+      "asset": "prota/emociones/capellan_libro_retrato.png"
+    },
+    {
+      "source": "prota/emociones/ChatGPT Image 15 jun 2026, 17_47_08 (10).png",
+      "asset": "prota/emociones/diego_cuerpo_entero_firme.png"
+    },
+    {
+      "source": "prota/emociones/ChatGPT Image 15 jun 2026, 17_47_08 (9).png",
+      "asset": "prota/emociones/diego_cuerpo_entero_pica.png"
+    },
+    {
+      "source": "prota/sprites-animation/ChatGPT Image 15 jun 2026, 17_43_02 (1).png",
+      "asset": "prota/sprites-animation/diego_sprite_caminar.png"
+    },
+    {
+      "source": "prota/sprites-animation/ChatGPT Image 15 jun 2026, 17_43_02 (2).png",
+      "asset": "prota/sprites-animation/diego_sprite_ataque_pica.png"
+    },
+    {
+      "source": "prota/sprites-animation/ChatGPT Image 15 jun 2026, 17_43_02 (3).png",
+      "asset": "prota/sprites-animation/diego_sprite_golpe_espada.png"
+    }
+  ]
+}

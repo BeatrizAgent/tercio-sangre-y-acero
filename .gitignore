@@ -26,6 +26,10 @@ web/node_modules/
 # Local testing, build output, and Python cache files
 .playwright-cli/
 output/
+/.codegraph/
+/.cursor/
+/web/test-results/
+/web/{
 __pycache__/
 *.pyc
 .DS_Store

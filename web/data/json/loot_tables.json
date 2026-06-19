@@ -1,28 +1,200 @@
 [
   {
     "id": "watch_loot",
+    "description": "Botín de guardia nocturna. Pólvora, mendrugos, reliquias dudosas.",
     "drops": [
       {
-        "id": "hard_bread",
-        "quantity": 1
+        "id": "objeto_013",
+        "quantity": 1,
+        "weight": 40
+      },
+      {
+        "id": "objeto_011",
+        "quantity": 1,
+        "weight": 25
+      },
+      {
+        "id": "objeto_001",
+        "quantity": 1,
+        "weight": 15
+      },
+      {
+        "id": "objeto_009",
+        "quantity": 1,
+        "weight": 10
+      },
+      {
+        "id": "objeto_020",
+        "quantity": 1,
+        "weight": 5
+      },
+      {
+        "id": "objeto_017",
+        "quantity": 1,
+        "weight": 5
       }
     ]
   },
   {
     "id": "patrol_loot",
+    "description": "Patrulla de camino. Comida, monedas, fragmentos de estandarte.",
     "drops": [
       {
-        "id": "captured_banner_fragment",
-        "quantity": 1
+        "id": "objeto_013",
+        "quantity": 2,
+        "weight": 30
+      },
+      {
+        "id": "objeto_008",
+        "quantity": 1,
+        "weight": 20
+      },
+      {
+        "id": "objeto_006",
+        "quantity": 1,
+        "weight": 15
+      },
+      {
+        "id": "objeto_011",
+        "quantity": 1,
+        "weight": 15
+      },
+      {
+        "id": "objeto_015",
+        "quantity": 1,
+        "weight": 10
+      },
+      {
+        "id": "objeto_018",
+        "quantity": 1,
+        "weight": 5
+      },
+      {
+        "id": "aux_001",
+        "quantity": 1,
+        "weight": 4
+      },
+      {
+        "id": "objeto_019",
+        "quantity": 1,
+        "weight": 1
       }
     ]
   },
   {
     "id": "powder_loot",
+    "description": "Escolta de pólvora. Munición fiable, alguna pieza uncommon.",
     "drops": [
       {
-        "id": "wet_powder_flask",
-        "quantity": 1
+        "id": "aux_007",
+        "quantity": 2,
+        "weight": 25
+      },
+      {
+        "id": "objeto_009",
+        "quantity": 2,
+        "weight": 20
+      },
+      {
+        "id": "objeto_014",
+        "quantity": 1,
+        "weight": 15
+      },
+      {
+        "id": "uncommon_pike_011",
+        "quantity": 1,
+        "weight": 10
+      },
+      {
+        "id": "uncommon_sword_016",
+        "quantity": 1,
+        "weight": 10
+      },
+      {
+        "id": "objeto_007",
+        "quantity": 1,
+        "weight": 10
+      },
+      {
+        "id": "rare_pike_031",
+        "quantity": 1,
+        "weight": 5
+      },
+      {
+        "id": "aux_005",
+        "quantity": 1,
+        "weight": 4
+      },
+      {
+        "id": "objeto_016",
+        "quantity": 1,
+        "weight": 1
+      }
+    ]
+  },
+  {
+    "id": "siege_loot",
+    "description": "Botín de sitio. Piezas raras y épicas. Honor antes que vida.",
+    "drops": [
+      {
+        "id": "rare_sword_036",
+        "quantity": 1,
+        "weight": 20
+      },
+      {
+        "id": "rare_arquebus_041",
+        "quantity": 1,
+        "weight": 15
+      },
+      {
+        "id": "rare_pike_031",
+        "quantity": 1,
+        "weight": 15
+      },
+      {
+        "id": "epic_pike_051",
+        "quantity": 1,
+        "weight": 10
+      },
+      {
+        "id": "epic_sword_054",
+        "quantity": 1,
+        "weight": 10
+      },
+      {
+        "id": "epic_arquebus_057",
+        "quantity": 1,
+        "weight": 8
+      },
+      {
+        "id": "aux_002",
+        "quantity": 1,
+        "weight": 8
+      },
+      {
+        "id": "objeto_019",
+        "quantity": 1,
+        "weight": 6
+      },
+      {
+        "id": "aux_008",
+        "quantity": 1,
+        "weight": 4
+      },
+      {
+        "id": "legendary_main_hand_003",
+        "quantity": 1,
+        "weight": 2
+      },
+      {
+        "id": "legendary_body_001",
+        "quantity": 1,
+        "weight": 1
+      },
+      {
+        "id": "legendary_firearm_005",
+        "quantity": 1,
+        "weight": 1
       }
     ]
   }

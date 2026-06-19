@@ -98,12 +98,29 @@ def main() -> None:
     if len(assets) < 328:
         failures.append(f"expected at least 328 GPT assets, found {len(assets)}")
 
+    # Coverage checks. The bank tracks an explicit floor (442 today) and a
+    # stretch goal. We only fail on floor so the bank can grow naturally.
+    bank_floor = 442
+    if len(assets) < bank_floor:
+        failures.append(f"bank below floor {bank_floor}: {len(assets)}")
+
     for png in GPT_ASSETS.rglob("*.png"):
         if "ChatGPT Image" in png.name:
             failures.append(f"unrenamed GPT asset: {png.relative_to(ROOT)}")
 
-    for data_file in ["items.json", "enemies.json", "events.json", "missions.json"]:
+    for data_file in [
+        "items.json",
+        "enemies.json",
+        "events.json",
+        "missions.json",
+        "ranks.json",
+        "shops.json",
+        "training.json",
+        "report_fragments.json",
+    ]:
         path = DATA / data_file
+        if not path.exists():
+            continue
         payload = load_json(path)
         for key, ref in collect_asset_refs(payload):
             if ref not in asset_ids:

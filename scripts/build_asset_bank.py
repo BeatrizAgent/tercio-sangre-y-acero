@@ -18,6 +18,8 @@ CATEGORY_BY_DIR = {
     "auxiliares": "support",
     "CG/cg_events": "scene",
     "CG/portraits": "portrait",
+    "CG/portrait_variants": "portrait_variant",
+    "CG/screen_bg": "screen_background",
     "CG/sprites_events": "event_sprite",
     "enemigos/chusma": "enemy",
     "enemigos/franceses": "enemy",
@@ -25,14 +27,22 @@ CATEGORY_BY_DIR = {
     "enemigos/moros": "enemy",
     "enemigos/protestantes": "enemy",
     "enemigos/turcos": "enemy",
+    "enemigos/sprites": "enemy_sprite_base",
     "epics": "scene",
     "icons-ui": "ui",
     "otros": "prop",
     "prota": "character",
     "prota/emociones": "character_emotion",
     "prota/sprites-animation": "character_sprite",
+    "prota/sprites-base": "character_sprite_base",
     "tercios": "character",
     "tercios/emociones": "character_emotion",
+    "ui/sidebar": "sidebar_icon",
+    "ui/resource": "resource_icon",
+    "ui/action": "action_icon",
+    "ui/frames": "ui_frame",
+    "ui/ornaments": "ornament",
+    "ui/textures": "ui_texture",
 }
 
 ITEM_ASSETS = {
@@ -72,6 +82,43 @@ EVENT_ASSETS = {
     "equipment_broken": ("armory_bg", False),
     "stolen_baggage": ("stolen_baggage_blurred", True),
     "rotten_rations": ("rotten_rations_blurred", True),
+}
+
+# Rank icons. The bank does not yet contain these; the audit script flags
+# the gap and the user generates them via ai/prompts/sidebar-icons.md.
+RANK_ASSETS = {
+    "bisono": "icono_sidebar_cuartel",  # placeholder, will be replaced by rank badge
+    "soldado": "icono_recurso_experiencia",
+    "soldado_viejo": "icono_recurso_honor",
+    "cabo_de_escuadra": "icono_recurso_honor",
+    "sargento": "icono_recurso_honor",
+    "alferez": "icono_recurso_honor",
+    "capitan": "icono_recurso_honor",
+}
+
+# Training drill icons. Will be wired once the resource_icon batch lands.
+TRAINING_ASSETS = {
+    "pike": "icono_recurso_experiencia",
+    "sword": "icono_recurso_experiencia",
+    "arquebus": "icono_recurso_experiencia",
+    "discipline": "icono_recurso_honor",
+    "vigor": "icono_recurso_fatiga",
+}
+
+# Shopkeep portraits. Wired once the portrait_variant batch lands.
+SHOP_ASSETS = {
+    "company_armory": "retrato_armero_neutral",
+    "flanders_merchant": "retrato_capellan_neutral",
+    "old_smithy": "retrato_armero_neutral",
+}
+
+# Report fragment icons. Wired once the action_icon batch lands.
+REPORT_FRAGMENT_ASSETS = {
+    "rain_open": "icono_accion_leer_reporte",
+    "mud_open": "icono_accion_leer_reporte",
+    "powder_open": "icono_accion_leer_reporte",
+    "held_line": "icono_accion_cobrar_recompensa",
+    "line_wavered": "icono_accion_curar_herida",
 }
 
 
@@ -157,7 +204,27 @@ def write_json(name: str, payload: Any) -> None:
     (DATA / name).write_text(json.dumps(payload, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
 
 
-def apply_links() -> None:
+def stamp_link(records: list[dict[str, Any]], id_field: str, link_field: str, mapping: dict[str, str], asset_ids: set[str]) -> int:
+    """Write ``link_field`` on each record whose id maps to a known asset.
+
+    Returns the number of records stamped. Records whose target asset
+    does not exist are left untouched so the audit can flag the gap.
+    """
+    stamped = 0
+    for record in records:
+        if not isinstance(record, dict):
+            continue
+        rec_id = record.get(id_field)
+        if not rec_id or rec_id not in mapping:
+            continue
+        target = mapping[rec_id]
+        if target in asset_ids:
+            record[link_field] = target
+            stamped += 1
+    return stamped
+
+
+def apply_links(asset_ids: set[str]) -> None:
     items = load_data("items.json")
     for item in items:
         if item["id"] in ITEM_ASSETS:
@@ -184,7 +251,26 @@ def apply_links() -> None:
         event["presentation"] = "blurred" if mature else "normal"
     write_json("events.json", events)
 
-    for name in ["loot_tables.json", "ranks.json", "report_fragments.json", "shops.json", "stats.json", "training.json", "wounds.json"]:
+    # New stamping tables. These only write the link when the target
+    # asset already exists in the bank, so the script is a no-op until
+    # the user generates the new waves. The audit script catches the gap.
+    ranks = load_data("ranks.json")
+    stamp_link(ranks, "id", "iconAssetId", RANK_ASSETS, asset_ids)
+    write_json("ranks.json", ranks)
+
+    training = load_data("training.json")
+    stamp_link(training, "stat_id", "assetId", TRAINING_ASSETS, asset_ids)
+    write_json("training.json", training)
+
+    shops = load_data("shops.json")
+    stamp_link(shops, "id", "portraitAssetId", SHOP_ASSETS, asset_ids)
+    write_json("shops.json", shops)
+
+    report_fragments = load_data("report_fragments.json")
+    stamp_link(report_fragments, "id", "assetId", REPORT_FRAGMENT_ASSETS, asset_ids)
+    write_json("report_fragments.json", report_fragments)
+
+    for name in ["loot_tables.json", "stats.json", "wounds.json"]:
         path = DATA / name
         if path.exists():
             write_json(name, load_data(name))
@@ -193,7 +279,8 @@ def apply_links() -> None:
 def main() -> None:
     assets = build_assets()
     write_json("assets.json", assets)
-    apply_links()
+    asset_ids = {asset["id"] for asset in assets if "id" in asset}
+    apply_links(asset_ids)
     print(json.dumps({"assets": len(assets), "data": "linked"}, indent=2))
 
 

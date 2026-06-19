@@ -1,11 +1,15 @@
 import { mkdir, readFile, writeFile } from "node:fs/promises";
 import path from "node:path";
 import type { GameState } from "./types";
+import { inventoryWithAutoLayout } from "./inventory-grid";
+import { createCharacterStates } from "./game-data";
+
+const PLAYER_CHARACTER_ID = "diego_de_arce";
 
 const statePath = path.join(process.cwd(), ".demo", "state.json");
 
 export function createInitialState(): GameState {
-  return {
+  const state: GameState = {
     soldier: {
       id: "diego_de_arce",
       name: "Diego de Arce",
@@ -27,16 +31,16 @@ export function createInitialState(): GameState {
         cunning: 1,
         command: 0,
       },
-      inventory: [
-        { itemId: "rusty_pike", quantity: 1 },
-        { itemId: "patched_doublet", quantity: 1 },
-        { itemId: "hard_bread", quantity: 2 },
-        { itemId: "clean_bandage", quantity: 2 },
-      ],
+      inventory: inventoryWithAutoLayout([
+        { itemId: "common_pike_001", quantity: 1 },
+        { itemId: "armadura_003", quantity: 1 },
+        { itemId: "objeto_004", quantity: 2 },
+        { itemId: "objeto_002", quantity: 2 },
+      ]),
       equipment: {
         head: null,
-        body: "patched_doublet",
-        mainHand: "rusty_pike",
+        body: "armadura_003",
+        mainHand: "common_pike_001",
         offHand: null,
         firearm: null,
         accessory: null,
@@ -45,10 +49,26 @@ export function createInitialState(): GameState {
       },
       wounds: [],
     },
+    characters: createCharacterStates(),
+    activeCharacterId: PLAYER_CHARACTER_ID,
     reports: [],
+    arenaResults: [],
     activeEvent: null,
     pendingMissionId: null,
   };
+  state.characters = state.characters.map((character) =>
+    character.id === PLAYER_CHARACTER_ID
+      ? {
+          ...character,
+          name: state.soldier.name,
+          rank: state.soldier.rank,
+          fatigue: state.soldier.fatigue,
+          stats: { ...state.soldier.stats },
+          equipment: { ...state.soldier.equipment },
+        }
+      : character,
+  );
+  return state;
 }
 
 export async function getState(): Promise<GameState> {

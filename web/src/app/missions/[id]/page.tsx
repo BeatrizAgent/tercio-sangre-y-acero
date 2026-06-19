@@ -2,13 +2,71 @@
 
 import React, { useEffect, useState } from "react";
 import { useParams, useRouter } from "next/navigation";
-import { useGameStore } from "@/lib/game-store";
-import { Card, Badge } from "@/components/ui/card";
-import { getAsset, getAssetPublicPath, getMission, getMissionSceneImagePath, getEquipmentBonuses, enemyDefinitions, getItem } from "@/lib/game-data";
+import { Card } from "@/components/ui/card";
 import { UiAssetIcon } from "@/components/game/ui-asset-icon";
-import { playDrumSound, playCoinSound } from "@/lib/sounds";
 import { PageTransition } from "@/components/game/page-transition";
 import { MissionCanvasResolver } from "@/components/game/MissionCanvasResolver";
+import { Tooltip } from "@/components/ui/tooltip";
+import { rarityStyle } from "@/lib/item-format";
+import { useGameStore } from "@/lib/game-store";
+import {
+  campaignNodeIconPaths,
+  getAsset,
+  getAssetPublicPath,
+  getEnemy,
+  getEnemySpriteImagePath,
+  getEquipmentBonuses,
+  getItem,
+  getMission,
+  getMissionSceneImagePath,
+  lootTableDefinitions,
+  getItemImagePath,
+} from "@/lib/game-data";
+import { playDrumSound } from "@/lib/sounds";
+import type { MissionDefinition } from "@/lib/types";
+
+function locationLabel(type: MissionDefinition["locationType"]) {
+  switch (type) {
+    case "city":
+      return "Ciudad";
+    case "fortress":
+      return "Baluarte";
+    case "road":
+      return "Camino";
+    case "skirmish":
+      return "Escaramuza";
+    case "battle":
+      return "Batalla";
+    default:
+      return "Orden";
+  }
+}
+
+function StatTile({
+  iconId,
+  label,
+  value,
+  tone = "text-text",
+}: {
+  iconId: React.ComponentProps<typeof UiAssetIcon>["id"];
+  label: string;
+  value: string | number;
+  tone?: string;
+}) {
+  return (
+    <div className="icon-stat-tile flex min-w-0 items-center gap-2 rounded-xs border border-iron bg-stone-950/75 p-2">
+      <UiAssetIcon id={iconId} label={label} className="h-8 w-8" />
+      <div className="min-w-0 leading-tight">
+        <div className="font-mono text-[9px] uppercase tracking-wider text-muted">{label}</div>
+        <div className={`truncate font-cinzel text-base font-bold ${tone}`}>{value}</div>
+      </div>
+    </div>
+  );
+}
+
+function MiniIcon({ iconId, label }: { iconId: React.ComponentProps<typeof UiAssetIcon>["id"]; label: string }) {
+  return <UiAssetIcon id={iconId} label={label} className="h-10 w-10 rounded-xs border border-iron bg-stone-950/75 p-1" />;
+}
 
 export default function MissionDetailPage() {
   const params = useParams();
@@ -22,10 +80,9 @@ export default function MissionDetailPage() {
   }, []);
 
   if (!mounted) {
-    return <div className="text-center font-cinzel py-12 text-gold animate-pulse">Cargando detalles de misión...</div>;
+    return <div className="py-12 text-center font-cinzel text-gold animate-pulse">Cargando misión...</div>;
   }
 
-  // If there is an active event, show the decision screen
   if (activeEvent) {
     const eventAsset = activeEvent.assetId ? getAsset(activeEvent.assetId) : undefined;
     const eventImagePath = eventAsset ? getAssetPublicPath(eventAsset) : undefined;
@@ -34,157 +91,78 @@ export default function MissionDetailPage() {
 
     return (
       <PageTransition>
-        <div className="max-w-2xl mx-auto space-y-6 relative">
+        <div className="relative mx-auto max-w-3xl space-y-5">
           {resolving && (
-            <div className="fixed inset-0 bg-background/90 z-50 flex flex-col items-center justify-center p-4">
-              <div className="max-w-md w-full text-center p-6 md:p-8 space-y-6 bg-panel border-2 border-iron rounded-sm shadow-2xl relative overflow-hidden">
-                <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,_rgba(139,31,31,0.15)_0%,_transparent_70%)] animate-pulse pointer-events-none" />
-                <div className="w-16 h-16 bg-panel-raised border border-gold/30 rounded-full flex items-center justify-center mx-auto shadow-md">
-                  <UiAssetIcon id="missions" label="Resolviendo eleccion" className="h-10 w-10 animate-spin" />
+            <div className="fixed inset-0 z-50 flex items-center justify-center bg-background/90 p-4">
+              <div className="game-panel flex items-center gap-4 border-2 border-iron p-5">
+                <UiAssetIcon id="missions" label="Resolviendo" className="h-12 w-12 animate-spin" />
+                <div>
+                  <h2 className="font-cinzel text-lg font-bold uppercase tracking-widest text-gold">Resolviendo</h2>
+                  <p className="font-mono text-[10px] uppercase tracking-wider text-blood-bright">Cruz de Borgoña · Tercio VIII</p>
                 </div>
-                <div className="space-y-2">
-                  <h2 className="font-cinzel text-xl font-bold text-gold tracking-widest uppercase">
-                    Resolviendo Elección
-                  </h2>
-                  <p className="text-[10px] uppercase font-mono tracking-wider text-blood-bright font-bold">
-                    Cruz de Borgoña · Tercio VIII
-                  </p>
-                </div>
-                <p className="font-serif italic text-xs text-text-muted leading-relaxed">
-                  "El destino de tu tropa se decide en tu liderazgo. Las consecuencias de tus actos retumban en el campamento..."
-                </p>
               </div>
             </div>
           )}
 
-          {/* Header */}
-          <div className="border-b border-iron pb-3">
-            <h1 className="font-cinzel text-2xl font-bold text-gold uppercase tracking-wider">EVENTO DE CAMPAÑA</h1>
-            <p className="text-xs text-text-muted">Una situación imprevista requiere tu liderazgo inmediato</p>
+          <div className="flex items-center gap-3 border-b border-iron pb-3">
+            <UiAssetIcon id="order" label="Evento" className="h-11 w-11" />
+            <div>
+              <h1 className="font-cinzel text-2xl font-bold uppercase tracking-wider text-gold">{activeEvent.title}</h1>
+              <p className="font-mono text-[10px] uppercase tracking-widest text-text-muted">Evento de campaña</p>
+            </div>
           </div>
 
-          <Card title={activeEvent.title}>
-            <div className="p-4 space-y-6 font-serif leading-relaxed text-sm md:text-base text-text-muted">
+          <Card title="Decisión" iconId="order">
+            <div className="space-y-4">
               {eventImagePath && (
-                <div className="relative h-56 overflow-hidden rounded-xs border border-iron bg-stone-950">
+                <div className="relative h-64 overflow-hidden rounded-xs border border-iron bg-stone-950">
                   <img
                     src={eventImagePath}
-                    alt={activeEvent.mature ? "Escena historica velada" : activeEvent.title}
-                    className={`h-full w-full ${eventImageFit} ${shouldBlurEvent ? "blur-md scale-105 opacity-70" : ""}`}
+                    alt={activeEvent.mature ? "Escena velada" : activeEvent.title}
+                    className={`h-full w-full ${eventImageFit} ${shouldBlurEvent ? "scale-105 blur-md opacity-70" : ""}`}
                   />
-                  {shouldBlurEvent && (
-                    <div className="absolute inset-0 flex items-center justify-center bg-background/35 px-4 text-center">
-                      <span className="border border-gold/30 bg-stone-950/80 px-3 py-2 font-mono text-[10px] uppercase tracking-widest text-gold">
-                        Escena velada por contenido historico duro
-                      </span>
-                    </div>
-                  )}
                 </div>
               )}
 
-              {/* Event Text */}
-              <p className="italic text-text font-medium bg-panel-soft/40 p-4 border-l-2 border-gold rounded-xs">
-                "{activeEvent.text}"
-              </p>
-
-              {/* Choices List */}
-              <div className="space-y-4 pt-4 border-t border-iron/40 font-sans">
-                <h4 className="text-[10px] uppercase font-mono tracking-widest text-muted">Toma tu decisión:</h4>
-                <div className="grid gap-3">
-                  {activeEvent.choices.map((choice) => {
-                    // Check requirements
-                    let canSelect = true;
-                    const reqTexts: string[] = [];
-
-                    if (choice.requirements.coins && soldier.coins < choice.requirements.coins) {
-                      canSelect = false;
-                      reqTexts.push(`${choice.requirements.coins} doblones`);
-                    }
-
-                    return (
-                      <div
-                        key={choice.id}
-                        className={`p-3.5 border rounded-xs transition-all flex flex-col md:flex-row justify-between items-start md:items-center gap-3 ${
-                          canSelect
-                            ? "bg-stone-900/60 border-iron hover:border-gold/30 hover:bg-panel-raised"
-                            : "bg-stone-950/80 border-iron/30 opacity-60"
-                        }`}
-                      >
-                        <div className="space-y-1">
-                          <p className="font-bold text-xs text-gold-soft">{choice.label}</p>
-
-                          {!canSelect && (
-                            <span className="inline-block text-[9px] font-mono text-danger uppercase bg-danger/10 border border-danger/30 px-1 py-0.5 rounded-xs">
-                              Requisitos faltantes: {reqTexts.join(", ")}
-                            </span>
-                          )}
-
-                          <div className="flex flex-wrap gap-2 text-[10px] font-mono text-text-muted pt-1">
-                            {choice.effects.coins !== undefined && (
-                              <span className={choice.effects.coins > 0 ? "text-success font-bold" : "text-danger"}>
-                                Doblones: {choice.effects.coins > 0 ? `+${choice.effects.coins}` : choice.effects.coins}
-                              </span>
-                            )}
-                            {choice.effects.honor !== undefined && (
-                              <span className={choice.effects.honor > 0 ? "text-amber font-bold" : "text-danger"}>
-                                Honor: {choice.effects.honor > 0 ? `+${choice.effects.honor}` : choice.effects.honor}
-                              </span>
-                            )}
-                            {choice.effects.fatigue !== undefined && (
-                              <span className={choice.effects.fatigue > 0 ? "text-danger" : "text-success font-bold"}>
-                                Fatiga: {choice.effects.fatigue > 0 ? `+${choice.effects.fatigue}` : choice.effects.fatigue}
-                              </span>
-                            )}
-                            {choice.effects.reputation !== undefined && (
-                              <span className={choice.effects.reputation > 0 ? "text-success font-bold" : "text-danger"}>
-                                Reputación: {choice.effects.reputation > 0 ? `+${choice.effects.reputation}` : choice.effects.reputation}
-                              </span>
-                            )}
-                            {choice.effects.corruption !== undefined && (
-                              <span className={choice.effects.corruption > 0 ? "text-danger font-bold" : "text-success font-bold"}>
-                                Corrupción: {choice.effects.corruption > 0 ? `+${choice.effects.corruption}` : choice.effects.corruption}
-                              </span>
-                            )}
-                            {choice.effects.wound && (
-                              <span className="text-danger font-semibold">Riesgo Herida: {choice.effects.wound}</span>
-                            )}
-                            {choice.effects.breakEquipment && (
-                              <span className="text-danger font-semibold">Peligro: Rotura de equipo</span>
-                            )}
-                            {choice.effects.items && choice.effects.items.map((it) => (
-                              <span key={it.itemId} className="text-success font-bold">
-                                +{it.quantity} {getItem(it.itemId)?.name || it.itemId}
-                              </span>
+              <div className="grid gap-3">
+                {activeEvent.choices.map((choice) => {
+                  const canSelect = !choice.requirements.coins || soldier.coins >= choice.requirements.coins;
+                  return (
+                    <button
+                      key={choice.id}
+                      disabled={!canSelect}
+                      onClick={() => {
+                        setResolving(true);
+                        playDrumSound();
+                        window.setTimeout(() => {
+                          const res = resolveActiveEventChoice(choice.id);
+                          if (res.ok && res.reportId) router.push(`/reports/${res.reportId}`);
+                          else setResolving(false);
+                        }, 700);
+                      }}
+                      className={`flex items-center justify-between gap-3 rounded-xs border p-3 text-left transition ${
+                        canSelect ? "border-iron bg-stone-900/60 hover:border-gold/40" : "border-iron/30 bg-stone-950/80 opacity-60"
+                      }`}
+                    >
+                      <span className="flex min-w-0 items-center gap-3">
+                        <UiAssetIcon id={canSelect ? "confirm" : "risk"} label="" className="h-9 w-9" />
+                        <span className="min-w-0">
+                          <span className="block truncate font-cinzel text-sm font-bold text-gold-soft">{choice.label}</span>
+                          <span className="mt-1 flex flex-wrap gap-2 font-mono text-[10px] uppercase text-text-muted">
+                            {choice.effects.coins !== undefined && <span>Doblones {choice.effects.coins > 0 ? "+" : ""}{choice.effects.coins}</span>}
+                            {choice.effects.honor !== undefined && <span>Honor {choice.effects.honor > 0 ? "+" : ""}{choice.effects.honor}</span>}
+                            {choice.effects.fatigue !== undefined && <span>Fatiga {choice.effects.fatigue > 0 ? "+" : ""}{choice.effects.fatigue}</span>}
+                            {choice.effects.wound && <span>Herida</span>}
+                            {choice.effects.items?.map((it) => (
+                              <span key={it.itemId}>+{it.quantity} {getItem(it.itemId)?.name || it.itemId}</span>
                             ))}
-                          </div>
-                        </div>
-
-                        <button
-                          disabled={!canSelect}
-                          onClick={() => {
-                            setResolving(true);
-                            playDrumSound();
-                            setTimeout(() => {
-                              const res = resolveActiveEventChoice(choice.id);
-                              if (res.ok && res.reportId) {
-                                router.push(`/reports/${res.reportId}`);
-                              } else {
-                                setResolving(false);
-                              }
-                            }, 1000);
-                          }}
-                          className={`w-full md:w-auto px-4 py-1.5 text-[10px] font-mono font-bold uppercase rounded-xs cursor-pointer tracking-wider ${
-                            canSelect
-                              ? "bg-blood hover:bg-blood-bright border border-blood-bright text-text hover:text-white"
-                              : "bg-stone-900 border-iron text-muted cursor-not-allowed"
-                          }`}
-                        >
-                          Elegir
-                        </button>
-                      </div>
-                    );
-                  })}
-                </div>
+                          </span>
+                        </span>
+                      </span>
+                      <UiAssetIcon id="order" label="" className="h-7 w-7" />
+                    </button>
+                  );
+                })}
               </div>
             </div>
           </Card>
@@ -196,24 +174,23 @@ export default function MissionDetailPage() {
   const id = params.id as string;
   const mission = getMission(id);
   if (!mission) {
-    return <div className="text-center py-12 text-xs text-danger font-mono">Misión no encontrada en los registros.</div>;
+    return <div className="py-12 text-center font-mono text-xs text-danger">Misión no encontrada.</div>;
   }
 
-  // Calculate stats comparison and preview win odds
   const equipmentBonuses = getEquipmentBonuses(soldier.equipment);
-  const relevantStat = mission.type.includes("escort") || mission.type.includes("skirmish") 
-    ? "arquebus" 
-    : mission.type.includes("duel") 
-    ? "sword" 
-    : mission.type.includes("watch") 
-    ? "discipline" 
-    : "pike";
+  const relevantStat = mission.type.includes("escort") || mission.type.includes("skirmish")
+    ? "arquebus"
+    : mission.type.includes("duel")
+      ? "sword"
+      : mission.type.includes("watch")
+        ? "discipline"
+        : "pike";
 
   const statLabels: Record<string, string> = {
-    pike: "Pica (Pike)",
-    sword: "Espada (Sword)",
-    arquebus: "Arcabuz (Arquebus)",
-    discipline: "Disciplina (Discipline)",
+    pike: "Pica",
+    sword: "Espada",
+    arquebus: "Arcabuz",
+    discipline: "Disciplina",
   };
 
   const basePower =
@@ -223,44 +200,34 @@ export default function MissionDetailPage() {
     Number(equipmentBonuses[relevantStat] ?? 0) +
     Number(equipmentBonuses.discipline ?? 0) +
     Number(equipmentBonuses.vigor ?? 0);
-  
   const woundPenalty = soldier.wounds.filter((w) => !w.treated).length * 2;
   const fatiguePenalty = Math.floor(soldier.fatigue / 10);
   const totalPower = basePower - woundPenalty - fatiguePenalty;
-  
-  const enemyPower = enemyDefinitions.find((e) => e.id === mission.enemyId)?.power ?? 0;
+  const enemy = getEnemy(mission.enemyId);
+  const enemyPower = enemy?.power ?? 0;
+  const enemySprite = getEnemySpriteImagePath(mission.enemyId);
   const targetPower = mission.difficulty * 4 + enemyPower;
-
-  // Odds estimation: roll is 1 to 5
-  // success if totalPower + roll >= targetPower
-  // so we need roll >= targetPower - totalPower
   const requiredRoll = targetPower - totalPower;
-  let chance = 0;
-  if (requiredRoll <= 1) chance = 100;
-  else if (requiredRoll > 5) chance = 0;
-  else chance = ((6 - requiredRoll) / 5) * 100;
+  const chance = requiredRoll <= 1 ? 100 : requiredRoll > 5 ? 0 : ((6 - requiredRoll) / 5) * 100;
+  const isAgotado = soldier.fatigue >= 100;
+  const lootTable = mission ? lootTableDefinitions.find((tbl) => tbl.id === mission.lootTableId) : undefined;
 
   const handleStart = () => {
     setResolving(true);
   };
 
-  const isAgotado = soldier.fatigue >= 100;
-
   return (
     <PageTransition>
-      <div className="space-y-6 relative">
+      <div className="relative space-y-5">
         {resolving && (
           <MissionCanvasResolver
             mission={mission}
             soldier={soldier}
-            onComplete={(victory) => {
+            onComplete={() => {
               const res = startMission(mission.id);
               if (res.ok) {
-                if (res.eventTriggered) {
-                  setResolving(false);
-                } else if (res.reportId) {
-                  router.push(`/reports/${res.reportId}`);
-                }
+                if (res.eventTriggered) setResolving(false);
+                else if (res.reportId) router.push(`/reports/${res.reportId}`);
               } else {
                 setResolving(false);
               }
@@ -268,182 +235,138 @@ export default function MissionDetailPage() {
           />
         )}
 
-        {/* Header */}
-        <div className="border-b border-iron pb-3 flex justify-between items-center">
-          <div>
-            <h1 className="font-cinzel text-2xl font-bold text-gold uppercase">ORDEN DE OPERACIÓN</h1>
-            <p className="text-xs text-text-muted">Briefing oficial de la misión encomendada</p>
+        <div className="flex items-center justify-between gap-3 border-b border-iron pb-3">
+          <div className="flex min-w-0 items-center gap-3">
+            <img src={campaignNodeIconPaths[mission.locationType]} alt="" className="h-12 w-12 object-contain" />
+            <div className="min-w-0">
+              <h1 className="truncate font-cinzel text-2xl font-bold uppercase tracking-wider text-gold">{mission.title}</h1>
+              <div className="mt-1 flex flex-wrap gap-2">
+                <span className="rounded-xs border border-gold/40 px-2 py-0.5 font-mono text-[10px] uppercase tracking-wider text-gold-soft">
+                  {locationLabel(mission.locationType)}
+                </span>
+                <span className="rounded-xs border border-danger/40 px-2 py-0.5 font-mono text-[10px] uppercase tracking-wider text-danger">
+                  Riesgo {mission.difficulty}
+                </span>
+              </div>
+            </div>
           </div>
+          <UiAssetIcon id="order" label="Orden" className="h-11 w-11" />
         </div>
 
-      <div className="grid gap-6 md:grid-cols-[2fr_1.1fr]">
-        {/* Left: Details */}
-        <div className="space-y-6">
-          <Card title={mission.title}>
-            <div className="space-y-4">
-              <Badge variant="gold">Misión de Tipo: <span className="capitalize">{mission.type}</span></Badge>
-              
-                <div className="prose text-sm text-text-muted leading-relaxed font-serif">
-                <p>
-                  Sargento Mayor Gonzalo de Vargas ha emitido esta orden para patrullar y asegurar las inmediaciones. 
-                  Se reporta presencia de partidas enemigas en los caminos enfangados del valle. Se requiere que marches en orden cerrado, 
-                  evitando rezagarte y prestando atención a posibles emboscadas de infantería enemiga.
-                </p>
-                <p className="mt-2">
-                  La resolución es automática basada en tus atributos y pertrechos actuales. El cansancio extremo y las heridas abiertas mermarán significativamente tu capacidad.
-                </p>
-              </div>
-
-              {/* Requirements & Costs */}
-              <div className="grid gap-4 sm:grid-cols-3 border-t border-iron pt-4 font-mono text-sm text-text-muted">
-                <div className="p-3 bg-stone-900/60 border border-iron rounded-xs space-y-1">
-                  <span className="text-xs uppercase text-muted block">Habilidad Requerida</span>
-                  <span className="font-sans font-bold capitalize text-gold-soft">{statLabels[relevantStat] || relevantStat}</span>
-                </div>
-                <div className="p-3 bg-stone-900/60 border border-iron rounded-xs space-y-1">
-                  <span className="text-xs uppercase text-muted block">Costo de Esfuerzo</span>
-                  <span className="font-sans font-bold text-ember">+{mission.fatigue} Fatiga</span>
-                </div>
-                <div className="p-3 bg-stone-900/60 border border-iron rounded-xs space-y-1">
-                  <span className="text-xs uppercase text-muted block">Peligro de Herida</span>
-                  <span className="font-sans font-bold text-danger">{mission.woundChance}% de probabilidad</span>
-                </div>
+        <div className="grid gap-5 md:grid-cols-[1.55fr_1fr]">
+          <div className="space-y-4">
+            <div className="scene-frame relative h-[360px] overflow-hidden rounded-xs border border-iron bg-stone-950">
+              <img
+                src={getMissionSceneImagePath(mission.id)}
+                alt={mission.title}
+                className="h-full w-full object-cover"
+                onError={(e) => {
+                  e.currentTarget.style.display = "none";
+                }}
+              />
+              <div className="pointer-events-none absolute inset-0 bg-gradient-to-t from-background/90 via-background/10 to-transparent" />
+              <div className="absolute bottom-4 left-4 right-4 grid grid-cols-2 gap-2 lg:grid-cols-4">
+                <StatTile iconId="shield" label="Habilidad" value={statLabels[relevantStat]} tone="text-gold-soft" />
+                <StatTile iconId="fatigue" label="Fatiga" value={`+${mission.fatigue}`} tone="text-ember" />
+                <StatTile iconId="wound" label="Herida" value={`${mission.woundChance}%`} tone="text-danger" />
+                <StatTile iconId="risk" label="Objetivo" value={targetPower} tone="text-danger" />
               </div>
             </div>
-          </Card>
 
-          {/* Odds & Combat Comparison */}
-          <Card title="Estimación del Enfrentamiento">
-            <div className="grid gap-6 sm:grid-cols-2 text-sm font-mono">
-              <div className="space-y-3">
-                <h4 className="text-xs uppercase font-mono tracking-widest text-muted border-b border-iron pb-1">Tu Poder Militar</h4>
-                <div className="space-y-1">
-                  <div className="flex justify-between">
-                    <span>Atributo de Combate:</span>
-                    <span>{soldier.stats[relevantStat] + Number(equipmentBonuses[relevantStat] ?? 0)}</span>
-                  </div>
-                  <div className="flex justify-between">
-                    <span>Disciplina de Grupo:</span>
-                    <span>{soldier.stats.discipline + Number(equipmentBonuses.discipline ?? 0)}</span>
-                  </div>
-                  <div className="flex justify-between">
-                    <span>Vigor Físico:</span>
-                    <span>{soldier.stats.vigor + Number(equipmentBonuses.vigor ?? 0)}</span>
-                  </div>
-                  <div className="flex justify-between text-danger">
-                    <span>Penalización Heridas:</span>
-                    <span>-{woundPenalty}</span>
-                  </div>
-                  <div className="flex justify-between text-danger">
-                    <span>Penalización Fatiga:</span>
-                    <span>-{fatiguePenalty}</span>
-                  </div>
-                  <div className="flex justify-between border-t border-iron/80 pt-1 font-bold text-gold-soft">
-                    <span>Poder Efectivo:</span>
-                    <span>{totalPower}</span>
-                  </div>
-                </div>
-              </div>
-
-              <div className="space-y-3">
-                <h4 className="text-xs uppercase font-mono tracking-widest text-muted border-b border-iron pb-1">Dificultad de la Misión</h4>
-                <div className="space-y-1">
-                  <div className="flex justify-between">
-                    <span>Nivel de Dificultad:</span>
-                    <span>{mission.difficulty}</span>
-                  </div>
-                  <div className="flex justify-between">
-                    <span>Poder de Enemigos:</span>
-                    <span>{enemyPower}</span>
-                  </div>
-                  <div className="flex justify-between border-t border-iron/80 pt-1 font-bold text-danger">
-                    <span>Poder Objetivo:</span>
-                    <span>{targetPower}</span>
-                  </div>
-                </div>
-
-                <div className="mt-4 p-3 bg-stone-900/60 border border-iron rounded-xs text-center space-y-1 font-sans">
-                  <p className="text-[10px] text-text-muted uppercase tracking-wider font-mono">Probabilidad de Éxito Estimada</p>
-                  <p className={`text-2xl font-bold font-cinzel ${
-                    chance >= 80 ? "text-success" : chance >= 50 ? "text-warning" : "text-danger"
-                  }`}>
-                    {chance}%
-                  </p>
-                </div>
-              </div>
-            </div>
-          </Card>
-        </div>
-
-        {/* Right: Actions & Info */}
-        <div className="space-y-4">
-          {/* Mission Scene Illustration */}
-          <div className="scene-frame relative w-full h-64 md:h-80 rounded-md overflow-hidden">
-            <img
-              src={getMissionSceneImagePath(mission.id)}
-              alt={mission.title}
-              className="scene-image-realism w-full h-full object-cover"
-              onError={(e) => {
-                e.currentTarget.style.display = "none";
-              }}
-            />
-            <div className="absolute inset-0 bg-gradient-to-t from-background/80 via-transparent to-background/10 pointer-events-none" />
-            <div className="absolute bottom-2 left-3 font-cinzel text-xs text-gold uppercase tracking-wider">
-              {mission.type}
+            <div className="grid gap-3 sm:grid-cols-4">
+              <StatTile iconId="shield" label="Tu poder" value={totalPower} tone={totalPower >= targetPower ? "text-success" : "text-danger"} />
+              <StatTile iconId="risk" label="Enemigo" value={enemyPower} tone="text-danger" />
+              <StatTile iconId="confirm" label="Éxito" value={`${chance}%`} tone={chance >= 80 ? "text-success" : chance >= 50 ? "text-warning" : "text-danger"} />
+              <StatTile iconId="mud" label="Malus" value={`-${woundPenalty + fatiguePenalty}`} tone="text-danger" />
             </div>
           </div>
 
-          <Card title="Suministros y Recompensas">
-            <div className="space-y-4 text-xs font-mono">
-              {/* Rewards */}
-              <div className="space-y-2">
-                <h4 className="text-[10px] uppercase font-mono tracking-widest text-muted">Recompensas en caso de Éxito:</h4>
-                <div className="p-2.5 bg-background border border-iron rounded-xs space-y-1 text-[11px]">
-                  <div className="flex justify-between text-gold">
-                    <span>Doblones de paga:</span>
-                    <span className="font-bold">+{mission.rewards.coins} dob.</span>
+          <div className="space-y-4">
+            <Card title="Objetivo" iconId="risk">
+              <div className="space-y-4">
+                <div className="grid grid-cols-[1fr_88px] gap-3">
+                  <div className="grid grid-cols-2 gap-2">
+                    <StatTile iconId="coins" label="Paga" value={`+${mission.rewards.coins}`} tone="text-gold" />
+                    <StatTile iconId="xp" label="XP" value={`+${mission.rewards.xp}`} />
+                    <StatTile iconId="honor" label="Honor" value={`+${mission.rewards.honor}`} tone="text-amber" />
+                    <StatTile iconId="missions" label="Tipo" value={locationLabel(mission.locationType)} tone="text-gold-soft" />
                   </div>
-                  <div className="flex justify-between">
-                    <span>Experiencia (XP):</span>
-                    <span className="font-bold text-text">+{mission.rewards.xp} XP</span>
-                  </div>
-                  <div className="flex justify-between text-amber">
-                    <span>Honor militar:</span>
-                    <span className="font-bold">+{mission.rewards.honor} hon.</span>
+
+                  <div className="flex flex-col items-center justify-center gap-2 rounded-xs border border-iron bg-stone-950/75 p-2">
+                    {enemySprite ? (
+                      <img src={enemySprite} alt={enemy?.name ?? "Enemigo"} className="h-20 w-20 object-contain" />
+                    ) : (
+                      <UiAssetIcon id="risk" label="Enemigo" className="h-16 w-16" />
+                    )}
+                    <span className="max-w-20 truncate font-mono text-[9px] uppercase text-danger">{enemy?.name ?? "Enemigo"}</span>
                   </div>
                 </div>
-              </div>
 
-              {/* Action */}
-              <div className="pt-4 border-t border-iron">
+                <div className="grid grid-cols-5 gap-2">
+                  <MiniIcon iconId="order" label="Orden" />
+                  <MiniIcon iconId="mud" label="Barro" />
+                  <MiniIcon iconId="wound" label="Herida" />
+                  <MiniIcon iconId="coins" label="Paga" />
+                  <MiniIcon iconId="honor" label="Honor" />
+                </div>
+
                 <button
                   onClick={handleStart}
                   disabled={isAgotado || resolving}
-                  className={`w-full py-3 text-sm font-mono font-bold uppercase tracking-wider border rounded-xs transition-all cursor-pointer ${
+                  className={`flex w-full cursor-pointer items-center justify-center gap-2 rounded-xs border py-3 font-mono text-sm font-bold uppercase tracking-wider transition-all ${
                     isAgotado || resolving
-                      ? "bg-stone-900 border-iron text-muted cursor-not-allowed"
-                      : "bg-blood border-blood-bright text-text hover:bg-blood-bright hover:text-white"
+                      ? "border-iron bg-stone-900 text-muted cursor-not-allowed"
+                      : "border-blood-bright bg-blood text-text hover:bg-blood-bright hover:text-white"
                   }`}
                 >
-                  {resolving 
-                    ? "Resolviendo escaramuza..." 
-                    : isAgotado 
-                    ? "Demasiado Agotado" 
-                    : "Iniciar Misión"}
+                  <UiAssetIcon id="confirm" label="" className="h-6 w-6" />
+                  {resolving ? "Resolviendo..." : isAgotado ? "Agotado" : "Iniciar misión"}
                 </button>
-                
+
                 {isAgotado && (
-                  <p className="text-xs text-danger mt-2 font-sans text-center flex items-center justify-center gap-1">
-                    <UiAssetIcon id="confirm" label="Aviso" className="h-4 w-4" />
-                    <span>Diego está agotado. Descansa en el hospital antes de marchar.</span>
-                  </p>
+                  <div className="flex items-center justify-center gap-2 font-mono text-[10px] uppercase text-danger">
+                    <UiAssetIcon id="fatigue" label="Fatiga" className="h-5 w-5" />
+                    <span>Descanso requerido</span>
+                  </div>
                 )}
               </div>
-            </div>
-          </Card>
+            </Card>
+
+            {lootTable && (
+              <Card title="Botín Estimado" iconId="inventory">
+                <div className="space-y-3">
+                  <div className="grid grid-cols-4 gap-2">
+                    {lootTable.drops.map((drop) => {
+                      const item = getItem(drop.itemId);
+                      if (!item) return null;
+                      const style = rarityStyle(item.rarity);
+                      return (
+                        <Tooltip key={drop.itemId} type="item" itemId={drop.itemId}>
+                          <div className={`group relative flex flex-col items-center justify-center p-1.5 bg-stone-950/80 border ${style.ring} hover:border-gold/60 rounded-xs transition-all cursor-help h-full min-h-[72px]`}>
+                            {/* Drop Chance Badge */}
+                            <span className="absolute top-0.5 right-0.5 px-1 bg-stone-950/90 text-gold-soft font-mono text-[8px] font-bold rounded-xs border border-iron/30 z-10">
+                              {drop.weight}%
+                            </span>
+                            <span className="h-9 w-9 inline-flex items-center justify-center overflow-hidden mb-1 mt-1">
+                              <img src={getItemImagePath(drop.itemId)} alt={item.name} className="h-8 w-8 object-contain group-hover:scale-110 transition-transform duration-200" />
+                            </span>
+                            <span className={`font-mono text-[8px] truncate max-w-full text-center ${style.color}`} title={item.name}>
+                              {item.name}
+                            </span>
+                          </div>
+                        </Tooltip>
+                      );
+                    })}
+                  </div>
+                  <p className="text-[10px] text-text-muted mt-1 leading-normal italic border-t border-iron/20 pt-2">
+                    {lootTable.description}
+                  </p>
+                </div>
+              </Card>
+            )}
+          </div>
         </div>
       </div>
-    </div>
     </PageTransition>
   );
 }

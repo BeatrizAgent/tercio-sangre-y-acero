@@ -1,0 +1,153 @@
+[
+  {
+    "id": "diego_de_arce",
+    "name": "Diego de Arce",
+    "role": "Piquero",
+    "rank": "bisono",
+    "portraitAssetId": "diego_de_arce_portrait",
+    "tercioAssetId": "tercio_001",
+    "emotionAssetId": "tercio_emocion_001",
+    "spriteSetId": "diego_pike",
+    "formationSlot": "vanguardia",
+    "fatigue": 0,
+    "stats": {
+      "pike": 2,
+      "sword": 1,
+      "arquebus": 1,
+      "discipline": 2,
+      "vigor": 2,
+      "cunning": 1,
+      "command": 0
+    },
+    "equipment": {
+      "head": null,
+      "body": "armadura_003",
+      "mainHand": "common_pike_001",
+      "offHand": null,
+      "firearm": null,
+      "accessory": null,
+      "boots": null,
+      "consumable": null
+    }
+  },
+  {
+    "id": "lope_de_saavedra",
+    "name": "Lope de Saavedra",
+    "role": "Tirador",
+    "rank": "soldado",
+    "portraitAssetId": "sergeant_instructor_portrait",
+    "tercioAssetId": "tercio_007",
+    "emotionAssetId": "tercio_emocion_007",
+    "formationSlot": "fuego",
+    "fatigue": 8,
+    "stats": {
+      "pike": 1,
+      "sword": 2,
+      "arquebus": 6,
+      "discipline": 3,
+      "vigor": 2,
+      "cunning": 4,
+      "command": 1
+    },
+    "equipment": {
+      "head": "armadura_001",
+      "body": "armadura_003",
+      "mainHand": "common_sword_003",
+      "offHand": null,
+      "firearm": "uncommon_arquebus_021",
+      "accessory": "aux_007",
+      "boots": "armadura_005",
+      "consumable": null
+    }
+  },
+  {
+    "id": "martin_de_cuenca",
+    "name": "Martin de Cuenca",
+    "role": "Asistente",
+    "rank": "bisono",
+    "portraitAssetId": "field_surgeon_portrait",
+    "tercioAssetId": "tercio_003",
+    "emotionAssetId": "tercio_emocion_003",
+    "formationSlot": "apoyo",
+    "fatigue": 4,
+    "stats": {
+      "pike": 1,
+      "sword": 1,
+      "arquebus": 2,
+      "discipline": 4,
+      "vigor": 3,
+      "cunning": 3,
+      "command": 0
+    },
+    "equipment": {
+      "head": "armadura_008",
+      "body": "armadura_007",
+      "mainHand": "common_sword_007",
+      "offHand": null,
+      "firearm": null,
+      "accessory": "aux_008",
+      "boots": "armadura_014",
+      "consumable": "objeto_002"
+    }
+  },
+  {
+    "id": "alonso_de_valdes",
+    "name": "Alonso de Valdes",
+    "role": "Jinete",
+    "rank": "soldado",
+    "portraitAssetId": "diego_piquero_tres_cuartos",
+    "tercioAssetId": "tercio_010",
+    "emotionAssetId": "tercio_emocion_010",
+    "formationSlot": "retaguardia",
+    "fatigue": 12,
+    "stats": {
+      "pike": 3,
+      "sword": 5,
+      "arquebus": 1,
+      "discipline": 3,
+      "vigor": 5,
+      "cunning": 2,
+      "command": 2
+    },
+    "equipment": {
+      "head": "armadura_002",
+      "body": "armadura_020",
+      "mainHand": "common_sword_004",
+      "offHand": "legendary_off_hand_009",
+      "firearm": null,
+      "accessory": "aux_003",
+      "boots": "armadura_026",
+      "consumable": null
+    }
+  },
+  {
+    "id": "sancho_de_leiva",
+    "name": "Sancho de Leiva",
+    "role": "Gastador",
+    "rank": "soldado_viejo",
+    "portraitAssetId": "diego_arrodillado_con_pica",
+    "tercioAssetId": "tercio_015",
+    "emotionAssetId": "tercio_emocion_015",
+    "formationSlot": "vanguardia",
+    "fatigue": 18,
+    "stats": {
+      "pike": 5,
+      "sword": 3,
+      "arquebus": 1,
+      "discipline": 5,
+      "vigor": 6,
+      "cunning": 1,
+      "command": 1
+    },
+    "equipment": {
+      "head": "armadura_018",
+      "body": "armadura_021",
+      "mainHand": "common_pike_010",
+      "offHand": null,
+      "firearm": null,
+      "accessory": "aux_005",
+      "boots": "armadura_025",
+      "consumable": "objeto_004"
+    }
+  }
+]

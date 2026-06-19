@@ -1,15 +1,15 @@
 import type { Metadata } from "next";
-import { Alegreya, Alegreya_Sans, IM_Fell_English_SC, UnifrakturCook } from "next/font/google";
+import { Alegreya, UnifrakturCook, Outfit, Inter } from "next/font/google";
 import { GameShell } from "@/components/game/game-shell";
 import "./globals.css";
 
 // Required routes for testing:
-// "/barracks" "/soldier" "/training" "/inventory" "/equipment" "/armory" "/missions" "/hospital"
+// "/city" "/soldier" "/training" "/inventory" "/equipment" "/armory" "/missions" "/hospital" "/arena"
 
-const fontDisplay = IM_Fell_English_SC({
+const fontDisplay = Outfit({
   variable: "--font-cinzel",
   subsets: ["latin"],
-  weight: "400",
+  weight: ["400", "500", "600", "700", "800"],
   display: "swap",
 });
 
@@ -21,11 +21,10 @@ const fontSerif = Alegreya({
   display: "swap",
 });
 
-const fontSans = Alegreya_Sans({
+const fontSans = Inter({
   variable: "--font-inter",
   subsets: ["latin"],
-  weight: ["400", "500", "700", "800"],
-  style: ["normal", "italic"],
+  weight: ["400", "500", "600", "700", "800"],
   display: "swap",
 });
 

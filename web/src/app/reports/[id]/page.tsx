@@ -42,10 +42,10 @@ export default function ReportPage() {
           El informe solicitado no existe o pertenece a otra campaña.
         </p>
         <Link
-          href="/barracks"
+          href="/missions"
           className="mt-4 inline-block text-xs text-gold underline"
         >
-          Volver al cuartel
+          Volver a campana
         </Link>
       </Card>
     );

@@ -1,25 +1,25 @@
 @import "tailwindcss";
 
 :root {
-  --background: #070604;
-  --panel: #11100d;
-  --panel-soft: #181613;
-  --panel-raised: #211d18;
-  --parchment: #d7c29a;
-  --parchment-dark: #a78b5f;
+  --background: #1c1107;
+  --panel: #2a1d12;
+  --panel-soft: #26190e;
+  --panel-raised: #35271c;
+  --parchment: #f4ecd8;
+  --parchment-dark: #d7c29a;
   --gold: #c9a24f;
-  --gold-soft: #e0c47a;
-  --iron: #3b3832;
-  --iron-light: #5a5448;
-  --blood: #8f1f1f;
-  --blood-bright: #b83232;
+  --gold-soft: #ebc16a;
+  --iron: #3d352e;
+  --iron-light: #58413d;
+  --blood: #8a1f11;
+  --blood-bright: #ffb4a7;
   --ember: #d16632;
   --success: #5f8a55;
   --warning: #c58b37;
-  --danger: #b3342d;
-  --muted: #8d8170;
-  --text: #f3ead7;
-  --text-muted: #b8a98d;
+  --danger: #93000a;
+  --muted: #a78a85;
+  --text: #f7decc;
+  --text-muted: #dfbfba;
 }
 
 @theme {
@@ -52,11 +52,11 @@
 body {
   background-color: var(--background);
   background-image:
-    radial-gradient(circle at 18% 0%, rgba(94, 72, 42, 0.12), transparent 34rem),
-    linear-gradient(180deg, rgba(255, 255, 255, 0.018), transparent 8rem),
-    linear-gradient(90deg, rgba(255, 255, 255, 0.012) 1px, transparent 1px),
-    linear-gradient(rgba(255, 255, 255, 0.01) 1px, transparent 1px);
-  background-size: auto, auto, 34px 34px, 34px 34px;
+    linear-gradient(180deg, rgba(7, 6, 4, 0.88), rgba(7, 6, 4, 0.95)),
+    url("/assets/fondo_juego.png");
+  background-size: cover;
+  background-position: center;
+  background-attachment: fixed;
   color: var(--text);
   font-family: var(--font-inter), sans-serif;
   font-size: 17px;
@@ -146,7 +146,7 @@ body {
   border: 1px solid #997e56;
   border-top-color: #aa8e64;
   border-bottom-color: #806842;
-  box-shadow: 
+  box-shadow:
     inset 0 0 20px rgba(139, 115, 85, 0.15), 
     0 8px 16px rgba(0, 0, 0, 0.25);
   color: #261b0c;
@@ -188,7 +188,7 @@ body {
   text-transform: uppercase;
   padding: 10px 20px;
   text-shadow: 0 -1px 1px rgba(0, 0, 0, 0.5);
-  box-shadow: 
+  box-shadow:
     0 2px 4px rgba(0, 0, 0, 0.3), 
     inset 0 1px 0 rgba(255, 255, 255, 0.05);
   transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
@@ -453,6 +453,139 @@ body {
   box-shadow:
     inset 0 -1px 0 rgba(201, 162, 79, 0.16),
     0 10px 24px rgba(0, 0, 0, 0.28);
+}
+
+.gladiatus-masthead {
+  display: grid;
+  grid-template-columns: minmax(230px, 1.2fr) minmax(220px, 0.9fr) minmax(260px, 1fr);
+  gap: 10px;
+  align-items: stretch;
+}
+
+.gladiatus-titleplate,
+.gladiatus-character-card,
+.gladiatus-resource-rail {
+  background:
+    url("/assets/gpt-bank/icons-ui/barra_panel_negra_dorada.png"),
+    linear-gradient(180deg, rgba(255, 242, 190, 0.055), rgba(0, 0, 0, 0.38)),
+    rgba(14, 10, 7, 0.92);
+  background-size: 100% 100%, auto, auto;
+  background-blend-mode: soft-light, normal, normal;
+  border: 1px solid rgba(201, 162, 79, 0.22);
+  border-top-color: rgba(235, 193, 106, 0.34);
+  border-bottom-color: rgba(0, 0, 0, 0.72);
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.06),
+    inset 0 -12px 20px rgba(0, 0, 0, 0.34),
+    0 6px 14px rgba(0, 0, 0, 0.36);
+  border-radius: 2px;
+}
+
+.gladiatus-titleplate {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  min-height: 72px;
+  padding: 10px 14px;
+}
+
+.gladiatus-crest {
+  display: flex;
+  height: 54px;
+  width: 54px;
+  flex-shrink: 0;
+  align-items: center;
+  justify-content: center;
+  background:
+    radial-gradient(circle at 50% 36%, rgba(201, 162, 79, 0.2), transparent 62%),
+    linear-gradient(180deg, #2d241b, #0b0806);
+  border: 1px solid rgba(201, 162, 79, 0.28);
+  box-shadow:
+    inset 0 0 0 2px rgba(0, 0, 0, 0.38),
+    0 0 18px rgba(201, 162, 79, 0.12);
+  border-radius: 2px;
+}
+
+.gladiatus-character-card {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  min-width: 0;
+  padding: 10px 12px;
+}
+
+.gladiatus-resource-rail {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 6px;
+  padding: 8px;
+}
+
+.gladiatus-resource-chip {
+  display: flex;
+  min-width: 0;
+  align-items: center;
+  justify-content: center;
+  gap: 7px;
+  background:
+    linear-gradient(180deg, rgba(49, 36, 24, 0.9), rgba(8, 6, 4, 0.94)),
+    rgba(0, 0, 0, 0.58);
+  border: 1px solid rgba(141, 129, 112, 0.24);
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.045),
+    inset 0 -8px 12px rgba(0, 0, 0, 0.32);
+  padding: 7px 8px;
+  border-radius: 2px;
+}
+
+.gladiatus-resource-chip span {
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", monospace;
+  font-size: 18px;
+  font-weight: 800;
+  line-height: 1;
+  color: var(--gold-soft);
+}
+
+.gladiatus-meter-strip {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 8px;
+  background:
+    url("/assets/gpt-bank/icons-ui/textura_cuero_marron.png"),
+    linear-gradient(180deg, rgba(20, 13, 8, 0.92), rgba(7, 5, 3, 0.96));
+  background-size: 260px 260px, auto;
+  background-blend-mode: soft-light, normal;
+  border: 1px solid rgba(201, 162, 79, 0.16);
+  padding: 8px;
+  border-radius: 2px;
+  box-shadow: inset 0 1px 6px rgba(0, 0, 0, 0.54);
+}
+
+.gladiatus-meter {
+  min-width: 0;
+  background: rgba(0, 0, 0, 0.32);
+  border: 1px solid rgba(141, 129, 112, 0.18);
+  padding: 6px 8px;
+  border-radius: 2px;
+}
+
+.gladiatus-meter span,
+.gladiatus-meter strong {
+  font-family: var(--font-cinzel), serif;
+  font-size: 12px;
+  line-height: 1.2;
+  text-transform: uppercase;
+}
+
+.gladiatus-meter span {
+  color: var(--text-muted);
+}
+
+.gladiatus-meter strong {
+  color: var(--gold-soft);
 }
 
 .top-resource {
@@ -982,4 +1115,302 @@ body {
   background-position: center;
   opacity: 0.15;
   mix-blend-mode: multiply;
+}
+
+/* Topbar text readability overrides */
+.top-command-bar [class~="text-[8px]"],
+.top-command-bar [class~="text-[9px]"],
+.top-command-bar [class~="text-[10px]"],
+.top-command-bar [class~="text-[11px]"] {
+  font-size: 13px !important;
+  line-height: 1.45;
+}
+
+.top-command-bar [class~="text-xs"] {
+  font-size: 14px !important;
+  line-height: 1.45;
+}
+
+.top-command-bar [class~="text-sm"] {
+  font-size: 15px !important;
+  line-height: 1.5;
+}
+
+.top-command-bar [class~="text-base"] {
+  font-size: 16px !important;
+}
+
+.top-command-bar [class~="text-lg"] {
+  font-size: 18px !important;
+}
+
+/* Sidebar extra text scaling */
+.sidebar-shell [class~="text-[11px]"] {
+  font-size: 14px !important;
+}
+
+/* Custom premium wooden panel for topbar columns */
+.topbar-panel {
+  background:
+    url("/assets/gpt-bank/icons-ui/textura_madera_oscura.png"),
+    linear-gradient(180deg, rgba(255, 255, 255, 0.02), rgba(0, 0, 0, 0.35)),
+    rgba(18, 16, 13, 0.85);
+  background-size: 220px 220px, auto, auto;
+  background-blend-mode: soft-light, normal, normal;
+  border: 1px solid rgba(201, 162, 79, 0.16);
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.04),
+    inset 0 0 12px rgba(0, 0, 0, 0.6),
+    0 6px 14px rgba(0, 0, 0, 0.4);
+  position: relative;
+  border-radius: 2px;
+}
+
+.topbar-panel::before {
+  content: "";
+  position: absolute;
+  inset: 2px;
+  border: 1px solid rgba(201, 162, 79, 0.06);
+  pointer-events: none;
+}
+
+.topbar-shortcut-label {
+  overflow: visible !important;
+  text-align: center;
+  text-overflow: clip !important;
+  white-space: normal !important;
+  font-size: 10px !important;
+  line-height: 1.15;
+}
+
+.topbar-panel:first-child .grid a {
+  flex-direction: column;
+  justify-content: center;
+  gap: 2px;
+  min-height: 48px;
+  padding: 5px 3px;
+}
+
+.topbar-panel:first-child .grid a .ui-asset-icon {
+  height: 24px !important;
+  width: 24px !important;
+  margin-bottom: 1px;
+}
+
+.topbar-lucide-icon {
+  height: 24px;
+  width: 24px;
+  flex-shrink: 0;
+  color: var(--gold-soft);
+  filter: drop-shadow(0 2px 3px rgba(0, 0, 0, 0.72));
+  stroke-width: 1.8;
+}
+
+.topbar-panel:first-child .grid a:hover .topbar-lucide-icon {
+  color: var(--text);
+}
+
+.topbar-card-body {
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+  justify-content: center;
+  gap: 10px;
+}
+
+.topbar-stat-row {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 8px;
+}
+
+.topbar-icon-stat,
+.topbar-progress-card,
+.topbar-action-row {
+  display: flex;
+  min-width: 0;
+  align-items: center;
+  gap: 9px;
+}
+
+.topbar-icon-stat,
+.topbar-progress-card {
+  background:
+    linear-gradient(180deg, rgba(42, 29, 18, 0.92), rgba(8, 6, 4, 0.9)),
+    rgba(0, 0, 0, 0.4);
+  border: 1px solid rgba(141, 129, 112, 0.24);
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.04),
+    inset 0 -10px 16px rgba(0, 0, 0, 0.36);
+  padding: 7px;
+  border-radius: 2px;
+}
+
+.topbar-icon-stat span:not(.topbar-icon-medallion) {
+  display: block;
+  font-family: var(--font-cinzel), serif;
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  line-height: 1.1;
+  text-transform: uppercase;
+  color: var(--text-muted);
+}
+
+.topbar-icon-stat strong {
+  display: block;
+  margin-top: 2px;
+  font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", monospace;
+  font-size: 18px;
+  line-height: 1;
+  color: var(--gold-soft);
+}
+
+.topbar-icon-medallion {
+  display: inline-flex;
+  height: 42px;
+  width: 42px;
+  flex-shrink: 0;
+  align-items: center;
+  justify-content: center;
+  background:
+    radial-gradient(circle at 48% 32%, rgba(235, 193, 106, 0.22), transparent 62%),
+    linear-gradient(180deg, #392613, #080604);
+  border: 1px solid rgba(201, 162, 79, 0.28);
+  box-shadow:
+    inset 0 0 0 2px rgba(0, 0, 0, 0.42),
+    0 4px 10px rgba(0, 0, 0, 0.28);
+  border-radius: 2px;
+}
+
+.topbar-icon-medallion--small {
+  height: 32px;
+  width: 32px;
+}
+
+.topbar-icon-medallion--large {
+  height: 50px;
+  width: 50px;
+}
+
+.topbar-icon-medallion .ui-asset-icon {
+  filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.78)) saturate(1.08) contrast(1.16) brightness(1.08);
+}
+
+.topbar-medallion-icon {
+  height: 30px;
+  width: 30px;
+  color: var(--gold-soft);
+  filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.72));
+  stroke-width: 1.8;
+}
+
+.topbar-medallion-icon--small {
+  height: 22px;
+  width: 22px;
+}
+
+.topbar-progress-label {
+  display: flex;
+  justify-content: space-between;
+  gap: 8px;
+  margin-bottom: 4px;
+  font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", monospace;
+  font-size: 12px;
+  font-weight: 800;
+  line-height: 1.1;
+  color: var(--text);
+}
+
+.topbar-progress-label span:last-child {
+  color: var(--gold-soft);
+}
+
+.topbar-action-button,
+.topbar-primary-button {
+  display: inline-flex;
+  width: 100%;
+  min-height: 34px;
+  align-items: center;
+  justify-content: center;
+  gap: 7px;
+  border: 1px solid;
+  border-radius: 2px;
+  font-family: var(--font-cinzel), serif;
+  font-size: 12px;
+  font-weight: 800;
+  letter-spacing: 0.06em;
+  line-height: 1.1;
+  text-align: center;
+  text-transform: uppercase;
+  transition: transform 0.16s ease, border-color 0.16s ease, filter 0.16s ease;
+}
+
+.topbar-action-button:hover,
+.topbar-primary-button:hover {
+  transform: translateY(-1px);
+  filter: brightness(1.08);
+}
+
+.topbar-action-button--rest {
+  background: linear-gradient(180deg, rgba(91, 61, 30, 0.78), rgba(35, 22, 11, 0.92));
+  border-color: rgba(235, 193, 106, 0.32);
+  color: var(--gold-soft);
+}
+
+.topbar-action-button--wound {
+  background: linear-gradient(180deg, rgba(90, 18, 16, 0.8), rgba(31, 8, 7, 0.94));
+  border-color: rgba(255, 180, 167, 0.36);
+  color: var(--blood-bright);
+}
+
+.topbar-primary-button--campaign {
+  background: linear-gradient(180deg, rgba(95, 138, 85, 0.92), rgba(52, 84, 45, 0.96));
+  border-color: rgba(192, 236, 178, 0.44);
+  color: var(--text);
+}
+
+.topbar-primary-button--surgeon {
+  background: linear-gradient(180deg, rgba(166, 82, 8, 0.96), rgba(103, 43, 2, 0.98));
+  border-color: rgba(235, 193, 106, 0.34);
+  color: var(--text);
+}
+
+.topbar-primary-button--danger {
+  background: linear-gradient(180deg, rgba(147, 0, 10, 0.78), rgba(60, 6, 8, 0.96));
+  border-color: rgba(255, 180, 167, 0.34);
+  color: var(--blood-bright);
+}
+
+.topbar-action-button.is-disabled,
+.topbar-primary-button.is-disabled {
+  cursor: not-allowed;
+  opacity: 0.42;
+  filter: grayscale(0.35);
+}
+
+@media (max-width: 900px) {
+  .gladiatus-masthead {
+    grid-template-columns: 1fr;
+  }
+
+  .gladiatus-meter-strip {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (max-width: 640px) {
+  .top-command-bar > .grid .topbar-panel:not(:first-child) {
+    display: none;
+  }
+}
+
+@keyframes mapRouteDash {
+  to {
+    stroke-dashoffset: -20;
+  }
+}
+
+.map-route-line {
+  animation: mapRouteDash 3s linear infinite;
 }

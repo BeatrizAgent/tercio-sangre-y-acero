@@ -13,7 +13,7 @@ export async function applyWound(woundId: string) {
 
 export async function treatWound(woundInstanceId: string) {
   const state = await getState();
-  const bandage = state.soldier.inventory.find((item) => item.itemId === "clean_bandage");
+  const bandage = state.soldier.inventory.find((item) => item.itemId === "objeto_002");
   if (!bandage || bandage.quantity < 1) return { ok: false, message: "No clean bandage available." };
   const wound = state.soldier.wounds.find((entry) => entry.id === woundInstanceId);
   if (!wound) return { ok: false, message: "Unknown wound." };

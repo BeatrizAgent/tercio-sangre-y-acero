@@ -604,11 +604,11 @@ function ActionButtons({ visible, hasWounds }: { visible: boolean; hasWounds: bo
       className="flex flex-col gap-3 sm:flex-row"
     >
       <Link
-        href="/barracks"
+        href="/missions"
         className="iron-button flex flex-1 items-center justify-center gap-2 text-xs"
       >
         <ArrowRight className="h-4 w-4" />
-        Volver al Cuartel
+        Volver a Campana
       </Link>
 
       {hasWounds && (

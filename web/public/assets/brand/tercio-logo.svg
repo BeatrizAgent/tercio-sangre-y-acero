@@ -1,0 +1,43 @@
+<svg width="560" height="150" viewBox="0 0 560 150" fill="none" xmlns="http://www.w3.org/2000/svg" role="img" aria-labelledby="title desc">
+  <title id="title">Tercio: Sangre y Acero</title>
+  <desc id="desc">Logo del juego con morion, picas cruzadas, estandarte y texto dorado.</desc>
+  <defs>
+    <linearGradient id="gold" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#f6df8a"/>
+      <stop offset="0.46" stop-color="#b9862d"/>
+      <stop offset="1" stop-color="#5d3515"/>
+    </linearGradient>
+    <linearGradient id="iron" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#d1cbc0"/>
+      <stop offset="0.45" stop-color="#6d6a65"/>
+      <stop offset="1" stop-color="#191716"/>
+    </linearGradient>
+    <filter id="shadow" x="-20%" y="-30%" width="140%" height="170%" color-interpolation-filters="sRGB">
+      <feDropShadow dx="0" dy="4" stdDeviation="3" flood-color="#000000" flood-opacity="0.7"/>
+    </filter>
+  </defs>
+
+  <g filter="url(#shadow)">
+    <path d="M76 20 98 126H28L50 20h26Z" fill="#3b2419" stroke="#9a7435" stroke-width="3"/>
+    <path d="M33 35 131 120" stroke="#c7b26f" stroke-width="5" stroke-linecap="round"/>
+    <path d="M126 35 28 120" stroke="#c7b26f" stroke-width="5" stroke-linecap="round"/>
+    <path d="M78 22c27 0 49 18 52 42-13-6-31-10-52-10s-39 4-52 10c3-24 25-42 52-42Z" fill="url(#iron)" stroke="#15110d" stroke-width="4"/>
+    <path d="M30 71c18-9 78-9 96 0 6 3 7 11 1 15-20 11-78 11-98 0-6-4-5-12 1-15Z" fill="url(#gold)" stroke="#2b1b0f" stroke-width="4"/>
+    <path d="M79 23v31" stroke="#ece0b0" stroke-width="3" opacity="0.75"/>
+    <path d="M113 41h52v43h-52z" fill="#6f1113" stroke="#c8a34e" stroke-width="3"/>
+    <path d="M138 43v38" stroke="#e9d7a5" stroke-width="7"/>
+    <path d="M116 63h46" stroke="#e9d7a5" stroke-width="7"/>
+    <path d="M113 37v83" stroke="#c7b26f" stroke-width="5" stroke-linecap="round"/>
+  </g>
+
+  <g filter="url(#shadow)">
+    <text x="184" y="82" fill="url(#gold)" stroke="#22140b" stroke-width="2.5" paint-order="stroke fill" font-family="Georgia, 'Times New Roman', serif" font-size="62" font-weight="800" letter-spacing="1">
+      Tercio
+    </text>
+    <text x="188" y="114" fill="#b53225" stroke="#130b08" stroke-width="1.25" paint-order="stroke fill" font-family="Georgia, 'Times New Roman', serif" font-size="23" font-weight="700" letter-spacing="6">
+      SANGRE Y ACERO
+    </text>
+    <path d="M185 92h284" stroke="#a9823a" stroke-width="2" opacity="0.8"/>
+    <path d="M185 122h284" stroke="#4d2b20" stroke-width="2" opacity="0.9"/>
+  </g>
+</svg>

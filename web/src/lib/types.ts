@@ -11,7 +11,37 @@ export type EquipmentSlot =
   | "consumable";
 
 export type Stats = Record<StatId, number>;
-export type Effects = Partial<Record<StatId | "honor" | "fatigue" | "woundTreatment", number>>;
+export type Effects = Partial<Record<StatId | "honor" | "fatigue" | "woundTreatment" | "coins_pct" | "chance" | "duration", number>>;
+
+export interface ItemFootprint {
+  cols: number;
+  rows: number;
+}
+
+export type Rarity = "common" | "uncommon" | "rare" | "epic" | "legendary";
+
+export type PassiveTrigger =
+  | "passive"
+  | "on_hit"
+  | "on_kill"
+  | "on_wound"
+  | "on_mission_start"
+  | "on_mission_end"
+  | "on_loot";
+
+export interface Passive {
+  id: string;
+  name: string;
+  description: string;
+  trigger: PassiveTrigger;
+  effect: Effects & { chance?: number; duration?: number };
+}
+
+export interface ItemRequirements {
+  minRank?: string;
+  minHonor?: number;
+  minStat?: Partial<Stats>;
+}
 
 export type AssetPresentation = "normal" | "blurred" | "obscured";
 
@@ -32,9 +62,14 @@ export interface ItemDefinition {
   name: string;
   category: string;
   slot: EquipmentSlot;
+  footprint: ItemFootprint;
   value: number;
   effects: Effects;
   description: string;
+  rarity?: Rarity;
+  tier?: number;
+  passives?: Passive[];
+  requirements?: ItemRequirements;
   assetId?: string;
 }
 
@@ -48,9 +83,51 @@ export interface ShopItem {
 export interface InventoryItem {
   itemId: string;
   quantity: number;
+  chest?: number;
+  x?: number;
+  y?: number;
 }
 
 export type Equipment = Record<EquipmentSlot, string | null>;
+
+export type FormationSlot = "vanguardia" | "fuego" | "apoyo" | "retaguardia" | "banquillo";
+
+export interface SpriteSheetRef {
+  assetId: string;
+  frameWidth: number;
+  frameHeight: number;
+  frames: number;
+  fps: number;
+}
+
+export interface SpriteSetDefinition {
+  id: string;
+  name: string;
+  frames: {
+    walk?: SpriteSheetRef;
+    pikeAttack?: SpriteSheetRef;
+    swordAttack?: SpriteSheetRef;
+  };
+}
+
+export interface CharacterDefinition {
+  id: string;
+  name: string;
+  role: string;
+  rank: string;
+  portraitAssetId: string;
+  tercioAssetId?: string;
+  emotionAssetId?: string;
+  spriteSetId?: string;
+  formationSlot: FormationSlot;
+  fatigue: number;
+  stats: Stats;
+  equipment: Equipment;
+}
+
+export interface CharacterState extends CharacterDefinition {
+  unlocked: boolean;
+}
 
 export interface ActiveWound {
   id: string;
@@ -106,6 +183,8 @@ export interface GameEvent {
   choices: EventChoice[];
 }
 
+export type RegionId = "italia" | "africa" | "flandes" | "francia" | "inglaterra";
+
 export interface MissionDefinition {
   id: string;
   title: string;
@@ -122,6 +201,7 @@ export interface MissionDefinition {
   x: number;
   y: number;
   locationType: "road" | "city" | "fortress" | "skirmish" | "battle";
+  region?: RegionId;
 }
 
 export interface MissionResult {
@@ -136,9 +216,36 @@ export interface MissionResult {
   createdAt: string;
 }
 
+export interface ArenaOpponent {
+  id: string;
+  name: string;
+  rank: string;
+  portraitAssetId?: string;
+  power: number;
+  fatigue: number;
+  woundChance: number;
+  rewards: { coins: number; xp: number; honor: number };
+  style: string;
+  description: string;
+}
+
+export interface ArenaResult {
+  id: string;
+  opponentId: string;
+  success: boolean;
+  report: string;
+  rewards: { coins: number; xp: number; honor: number };
+  fatigue: number;
+  wounds: string[];
+  createdAt: string;
+}
+
 export interface GameState {
   soldier: Soldier;
+  characters: CharacterState[];
+  activeCharacterId: string;
   reports: MissionResult[];
+  arenaResults: ArenaResult[];
   activeEvent: GameEvent | null;
   pendingMissionId: string | null;
 }

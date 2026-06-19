@@ -1,11 +1,54 @@
 import { create } from "zustand";
 import { persist } from "zustand/middleware";
-import type { GameState, Soldier, MissionResult, StatId, EquipmentSlot, InventoryItem } from "./types";
+import type { ArenaResult, EquipmentSlot, GameState, StatId } from "./types";
 import { resolveMission } from "./resolver";
-import { trainingOptions, getItem, getNextRank, getMission, shopInventory, eventDefinitions } from "./game-data";
+import {
+  createCharacterStates,
+  trainingOptions,
+  getItem,
+  getNextRank,
+  getMission,
+  shopInventory,
+  eventDefinitions,
+  getArenaOpponent,
+  getEquipmentBonuses,
+} from "./game-data";
+import {
+  BACKPACK_COLS,
+  BACKPACK_CHESTS,
+  BACKPACK_ROWS,
+  addInventoryItem,
+  canPlaceItem,
+  inventoryWithAutoLayout,
+  moveInventoryItem as gridMoveItem,
+} from "./inventory-grid";
+import { recruitCandidateIntoState } from "./recruitment";
+
+const PLAYER_CHARACTER_ID = "diego_de_arce";
+
+function rosterWithSoldier(state: GameState): GameState {
+  const baseRoster = state.characters?.length ? state.characters : createCharacterStates();
+  const characters = baseRoster.map((character) =>
+    character.id === PLAYER_CHARACTER_ID
+      ? {
+          ...character,
+          name: state.soldier.name,
+          rank: state.soldier.rank,
+          fatigue: state.soldier.fatigue,
+          stats: { ...state.soldier.stats },
+          equipment: { ...state.soldier.equipment },
+        }
+      : character,
+  );
+  return {
+    ...state,
+    characters,
+    activeCharacterId: state.activeCharacterId ?? PLAYER_CHARACTER_ID,
+  };
+}
 
 export function createInitialState(): GameState {
-  return {
+  const state: GameState = {
     soldier: {
       id: "diego_de_arce",
       name: "Diego de Arce",
@@ -27,16 +70,16 @@ export function createInitialState(): GameState {
         cunning: 1,
         command: 0,
       },
-      inventory: [
-        { itemId: "rusty_pike", quantity: 1 },
-        { itemId: "patched_doublet", quantity: 1 },
-        { itemId: "hard_bread", quantity: 2 },
-        { itemId: "clean_bandage", quantity: 2 },
-      ],
+      inventory: inventoryWithAutoLayout([
+        { itemId: "common_pike_001", quantity: 1 },
+        { itemId: "armadura_003", quantity: 1 },
+        { itemId: "objeto_004", quantity: 2 },
+        { itemId: "objeto_002", quantity: 2 },
+      ]),
       equipment: {
         head: null,
-        body: "patched_doublet",
-        mainHand: "rusty_pike",
+        body: "armadura_003",
+        mainHand: "common_pike_001",
         offHand: null,
         firearm: null,
         accessory: null,
@@ -45,19 +88,29 @@ export function createInitialState(): GameState {
       },
       wounds: [],
     },
+    characters: createCharacterStates(),
+    activeCharacterId: PLAYER_CHARACTER_ID,
     reports: [],
+    arenaResults: [],
     activeEvent: null,
     pendingMissionId: null,
   };
+  return rosterWithSoldier(state);
 }
 
 export interface GameStore extends GameState {
   trainStat: (stat: StatId) => { ok: boolean; message: string };
+  trainCharacterStat: (characterId: string, stat: StatId) => { ok: boolean; message: string };
+  setActiveCharacter: (characterId: string) => void;
+  setFormationSlot: (characterId: string, slot: GameState["characters"][number]["formationSlot"]) => void;
   buyItem: (itemId: string) => { ok: boolean; message: string };
   sellItem: (itemId: string) => { ok: boolean; message: string };
   equipItem: (itemId: string) => { ok: boolean; message: string };
   unequipItem: (slot: EquipmentSlot) => { ok: boolean; message: string };
+  moveInventoryItem: (itemId: string, x: number, y: number, chest?: number) => { ok: boolean; message: string };
   startMission: (missionId: string) => { ok: boolean; message: string; reportId?: string; eventTriggered?: boolean };
+  fightArenaOpponent: (opponentId: string) => { ok: boolean; message: string; resultId?: string };
+  recruitCandidate: (candidateId: string) => { ok: boolean; message: string };
   resolveActiveEventChoice: (choiceId: string) => { ok: boolean; message: string; reportId?: string };
   payTownBribe: () => { ok: boolean; message: string };
   treatWound: (woundInstanceId: string) => { ok: boolean; message: string };
@@ -66,7 +119,7 @@ export interface GameStore extends GameState {
 
 export const useGameStore = create<GameStore>()(
   persist(
-    (set, get) => ({
+    (set) => ({
       ...createInitialState(),
 
       trainStat: (stat: StatId) => {
@@ -87,13 +140,87 @@ export const useGameStore = create<GameStore>()(
           };
           updatedSoldier.fatigue = Math.min(100, updatedSoldier.fatigue + option.fatigue);
           result = { ok: true, message: `Has completado el entrenamiento: ${option.name}.` };
-          return { soldier: updatedSoldier };
+          return {
+            soldier: updatedSoldier,
+            characters: state.characters.map((character) =>
+              character.id === PLAYER_CHARACTER_ID
+                ? {
+                    ...character,
+                    rank: updatedSoldier.rank,
+                    fatigue: updatedSoldier.fatigue,
+                    stats: { ...updatedSoldier.stats },
+                    equipment: { ...updatedSoldier.equipment },
+                  }
+                : character,
+            ),
+          };
         });
         return result;
       },
 
+      trainCharacterStat: (characterId: string, stat: StatId) => {
+        let result = { ok: false, message: "Entrenamiento no encontrado." };
+        set((state) => {
+          const option = trainingOptions.find((entry) => entry.stat === stat);
+          if (!option) return {};
+          if (state.soldier.coins < option.cost.coins || state.soldier.xp < option.cost.xp) {
+            result = { ok: false, message: "Monedas o experiencia insuficientes." };
+            return {};
+          }
+          const character = state.characters.find((entry) => entry.id === characterId);
+          if (!character) {
+            result = { ok: false, message: "Personaje no encontrado." };
+            return {};
+          }
+
+          const updatedCharacter = {
+            ...character,
+            fatigue: Math.min(100, character.fatigue + option.fatigue),
+            stats: {
+              ...character.stats,
+              [stat]: character.stats[stat] + option.gain,
+            },
+          };
+          const characters = state.characters.map((entry) => (entry.id === characterId ? updatedCharacter : entry));
+          const updatedSoldier =
+            characterId === PLAYER_CHARACTER_ID
+              ? {
+                  ...state.soldier,
+                  coins: state.soldier.coins - option.cost.coins,
+                  xp: state.soldier.xp - option.cost.xp,
+                  fatigue: updatedCharacter.fatigue,
+                  stats: { ...updatedCharacter.stats },
+                  equipment: { ...updatedCharacter.equipment },
+                }
+              : {
+                  ...state.soldier,
+                  coins: state.soldier.coins - option.cost.coins,
+                  xp: state.soldier.xp - option.cost.xp,
+                };
+
+          result = { ok: true, message: `${updatedCharacter.name} completa: ${option.name}.` };
+          return { soldier: updatedSoldier, characters };
+        });
+        return result;
+      },
+
+      setActiveCharacter: (characterId: string) => {
+        set((state) => {
+          if (!state.characters.some((character) => character.id === characterId)) return {};
+          return { activeCharacterId: characterId };
+        });
+      },
+
+      setFormationSlot: (characterId, slot) => {
+        set((state) => ({
+          characters: state.characters.map((character) =>
+            character.id === characterId ? { ...character, formationSlot: slot } : character,
+          ),
+        }));
+      },
+
       buyItem: (itemId: string) => {
-        let result = { ok: false, message: "El objeto no está en venta." };
+        let result = { ok: false, message: "El objeto no est? en venta." };
         set((state) => {
           const row = shopInventory.find((item) => item.itemId === itemId);
           if (!row) return {};
@@ -101,24 +228,22 @@ export const useGameStore = create<GameStore>()(
             result = { ok: false, message: "Monedas insuficientes." };
             return {};
           }
-          const updatedSoldier = { ...state.soldier };
-          updatedSoldier.coins -= row.buyPrice;
-          
-          const inventory = [...updatedSoldier.inventory];
-          const ownedIdx = inventory.findIndex((item) => item.itemId === itemId);
-          if (ownedIdx > -1) {
-            inventory[ownedIdx] = {
-              ...inventory[ownedIdx],
-              quantity: inventory[ownedIdx].quantity + 1,
-            };
-          } else {
-            inventory.push({ itemId, quantity: 1 });
+
+          const inserted = addInventoryItem(state.soldier.inventory, itemId, 1, BACKPACK_COLS, BACKPACK_ROWS, BACKPACK_CHESTS);
+          if (!inserted.ok) {
+            result = { ok: false, message: "No hay espacio en ning?n ba?l." };
+            return {};
           }
-          updatedSoldier.inventory = inventory;
 
           const itemDef = getItem(itemId);
           result = { ok: true, message: `Has comprado: ${itemDef?.name ?? itemId}.` };
-          return { soldier: updatedSoldier };
+          return {
+            soldier: {
+              ...state.soldier,
+              coins: state.soldier.coins - row.buyPrice,
+              inventory: inserted.inventory,
+            },
+          };
         });
         return result;
       },
@@ -134,11 +259,14 @@ export const useGameStore = create<GameStore>()(
           const row = shopInventory.find((item) => item.itemId === itemId);
           const value = row?.sellPrice ?? Math.max(1, Math.floor((getItem(itemId)?.value ?? 1) / 2));
 
-          inventory[ownedIdx] = {
-            ...inventory[ownedIdx],
-            quantity: inventory[ownedIdx].quantity - 1,
-          };
-          updatedSoldier.inventory = inventory.filter((item) => item.quantity > 0);
+          const owned = inventory[ownedIdx];
+          if (owned.quantity > 1) {
+            inventory[ownedIdx] = { ...owned, quantity: owned.quantity - 1 };
+            updatedSoldier.inventory = inventory;
+          } else {
+            const kept = inventory.filter((_, idx) => idx !== ownedIdx);
+            updatedSoldier.inventory = kept;
+          }
           updatedSoldier.coins += value;
 
           const itemDef = getItem(itemId);
@@ -180,6 +308,22 @@ export const useGameStore = create<GameStore>()(
           updatedSoldier.equipment = equipment;
           result = { ok: true, message: `Desequipado con éxito.` };
           return { soldier: updatedSoldier };
+        });
+        return result;
+      },
+
+      moveInventoryItem: (itemId: string, x: number, y: number, chest: number = 0) => {
+        let result = { ok: false, message: "No se puede colocar el objeto." };
+        set((state) => {
+          const inventory = inventoryWithAutoLayout(state.soldier.inventory, BACKPACK_COLS, BACKPACK_ROWS, BACKPACK_CHESTS);
+          if (!canPlaceItem(inventory, itemId, x, y, BACKPACK_COLS, BACKPACK_ROWS, itemId, chest)) {
+            result = { ok: false, message: "No hay sitio para el objeto." };
+            return {};
+          }
+          const next = gridMoveItem(inventory, itemId, x, y, BACKPACK_COLS, BACKPACK_ROWS, chest);
+          const itemDef = getItem(itemId);
+          result = { ok: true, message: `Reubicado: ${itemDef?.name ?? itemId}.` };
+          return { soldier: { ...state.soldier, inventory: next } };
         });
         return result;
       },
@@ -228,17 +372,9 @@ export const useGameStore = create<GameStore>()(
           }
           updatedSoldier.wounds = wounds;
 
-          const inventory = [...updatedSoldier.inventory];
+          let inventory = inventoryWithAutoLayout(updatedSoldier.inventory, BACKPACK_COLS, BACKPACK_ROWS, BACKPACK_CHESTS);
           for (const drop of resolveResult.loot) {
-            const ownedIdx = inventory.findIndex((item) => item.itemId === drop.itemId);
-            if (ownedIdx > -1) {
-              inventory[ownedIdx] = {
-                ...inventory[ownedIdx],
-                quantity: inventory[ownedIdx].quantity + drop.quantity,
-              };
-            } else {
-              inventory.push({ itemId: drop.itemId, quantity: drop.quantity });
-            }
+            inventory = addInventoryItem(inventory, drop.itemId, drop.quantity, BACKPACK_COLS, BACKPACK_ROWS, BACKPACK_CHESTS).inventory;
           }
           updatedSoldier.inventory = inventory;
 
@@ -278,6 +414,100 @@ export const useGameStore = create<GameStore>()(
             soldier: updatedSoldier,
             reports: [resolveResult, ...state.reports],
           };
+        });
+        return result;
+      },
+
+      fightArenaOpponent: (opponentId: string) => {
+        let result: { ok: boolean; message: string; resultId?: string } = {
+          ok: false,
+          message: "Rival de arena desconocido.",
+        };
+        set((state) => {
+          const opponent = getArenaOpponent(opponentId);
+          if (!opponent) return {};
+
+          const updatedSoldier = { ...state.soldier };
+          if (updatedSoldier.fatigue >= 100) {
+            result = { ok: false, message: "Diego esta demasiado agotado para batirse en la arena." };
+            return {};
+          }
+
+          const equipmentBonuses = getEquipmentBonuses(updatedSoldier.equipment);
+          const untreatedWounds = updatedSoldier.wounds.filter((wound) => !wound.treated).length;
+          const arenaPower =
+            updatedSoldier.stats.sword +
+            updatedSoldier.stats.pike +
+            updatedSoldier.stats.vigor +
+            updatedSoldier.stats.discipline +
+            updatedSoldier.stats.command +
+            Number(equipmentBonuses.sword ?? 0) +
+            Number(equipmentBonuses.pike ?? 0) +
+            Number(equipmentBonuses.vigor ?? 0) +
+            Number(equipmentBonuses.discipline ?? 0) -
+            untreatedWounds * 2 -
+            Math.floor(updatedSoldier.fatigue / 12);
+          const roll = Math.floor(Math.random() * 6) + 1;
+          const success = arenaPower + roll >= opponent.power;
+          const rewards = {
+            coins: success ? opponent.rewards.coins : Math.max(1, Math.floor(opponent.rewards.coins / 3)),
+            xp: success ? opponent.rewards.xp : Math.max(1, Math.floor(opponent.rewards.xp / 2)),
+            honor: success ? opponent.rewards.honor : 0,
+          };
+          const wounds =
+            !success || opponent.woundChance + updatedSoldier.fatigue >= 45
+              ? ["broken_rib"]
+              : [];
+
+          updatedSoldier.coins += rewards.coins;
+          updatedSoldier.xp += rewards.xp;
+          updatedSoldier.honor += rewards.honor;
+          updatedSoldier.fatigue = Math.min(100, updatedSoldier.fatigue + opponent.fatigue);
+          if (wounds.length > 0) {
+            updatedSoldier.wounds = [
+              ...updatedSoldier.wounds,
+              ...wounds.map((woundId) => ({ id: `${woundId}_${Date.now()}`, woundId, treated: false })),
+            ];
+          }
+
+          const nextRank = getNextRank(updatedSoldier.xp, updatedSoldier.honor);
+          if (nextRank) {
+            updatedSoldier.rank = nextRank.id;
+          }
+
+          const arenaResult: ArenaResult = {
+            id: `arena_${Date.now()}`,
+            opponentId: opponent.id,
+            success,
+            report: success
+              ? `Diego aguanta el primer choque contra ${opponent.name}, encuentra hueco entre polvo y gritos, y gana el duelo.`
+              : `${opponent.name} castiga la guardia de Diego. Hay paga pequena por presentarse, pero ningun honor.`,
+            rewards,
+            fatigue: opponent.fatigue,
+            wounds,
+            createdAt: new Date().toISOString(),
+          };
+
+          result = {
+            ok: true,
+            message: success ? "Victoria en la arena." : "Derrota en la arena.",
+            resultId: arenaResult.id,
+          };
+
+          return {
+            soldier: updatedSoldier,
+            arenaResults: [arenaResult, ...(state.arenaResults ?? [])],
+          };
+        });
+        return result;
+      },
+
+      recruitCandidate: (candidateId: string) => {
+        let result = { ok: false, message: "Recluta no encontrado." };
+        set((state) => {
+          const recruited = recruitCandidateIntoState(state, candidateId);
+          result = { ok: recruited.ok, message: recruited.message };
+          return recruited.state;
         });
         return result;
       },
@@ -339,17 +569,9 @@ export const useGameStore = create<GameStore>()(
 
           // Add items if any
           if (choice.effects.items) {
-            const inventory = [...updatedSoldier.inventory];
+            let inventory = inventoryWithAutoLayout(updatedSoldier.inventory, BACKPACK_COLS, BACKPACK_ROWS, BACKPACK_CHESTS);
             for (const drop of choice.effects.items) {
-              const ownedIdx = inventory.findIndex((item) => item.itemId === drop.itemId);
-              if (ownedIdx > -1) {
-                inventory[ownedIdx] = {
-                  ...inventory[ownedIdx],
-                  quantity: inventory[ownedIdx].quantity + drop.quantity,
-                };
-              } else {
-                inventory.push({ itemId: drop.itemId, quantity: drop.quantity });
-              }
+              inventory = addInventoryItem(inventory, drop.itemId, drop.quantity, BACKPACK_COLS, BACKPACK_ROWS, BACKPACK_CHESTS).inventory;
             }
             updatedSoldier.inventory = inventory;
           }
@@ -376,17 +598,9 @@ export const useGameStore = create<GameStore>()(
           }
           updatedSoldier.wounds = wounds;
 
-          const inventory = [...updatedSoldier.inventory];
+          let inventory = inventoryWithAutoLayout(updatedSoldier.inventory, BACKPACK_COLS, BACKPACK_ROWS, BACKPACK_CHESTS);
           for (const drop of resolveResult.loot) {
-            const ownedIdx = inventory.findIndex((item) => item.itemId === drop.itemId);
-            if (ownedIdx > -1) {
-              inventory[ownedIdx] = {
-                ...inventory[ownedIdx],
-                quantity: inventory[ownedIdx].quantity + drop.quantity,
-              };
-            } else {
-              inventory.push({ itemId: drop.itemId, quantity: drop.quantity });
-            }
+            inventory = addInventoryItem(inventory, drop.itemId, drop.quantity, BACKPACK_COLS, BACKPACK_ROWS, BACKPACK_CHESTS).inventory;
           }
           updatedSoldier.inventory = inventory;
 
@@ -457,7 +671,7 @@ export const useGameStore = create<GameStore>()(
         set((state) => {
           const updatedSoldier = { ...state.soldier };
           const inventory = [...updatedSoldier.inventory];
-          const bandageIdx = inventory.findIndex((item) => item.itemId === "clean_bandage");
+          const bandageIdx = inventory.findIndex((item) => item.itemId === "objeto_002");
           if (bandageIdx === -1 || inventory[bandageIdx].quantity < 1) {
             result = { ok: false, message: "No tienes vendas limpias disponibles." };
             return {};
@@ -493,6 +707,16 @@ export const useGameStore = create<GameStore>()(
     }),
     {
       name: "tercio-game-state",
+      onRehydrateStorage: () => (rehydrated) => {
+        if (!rehydrated) return;
+        const soldier = rehydrated.soldier;
+        if (!soldier) return;
+        const laid = inventoryWithAutoLayout(soldier.inventory ?? [], BACKPACK_COLS, BACKPACK_ROWS, BACKPACK_CHESTS);
+        soldier.inventory = laid;
+        const healed = rosterWithSoldier(rehydrated);
+        rehydrated.characters = healed.characters;
+        rehydrated.activeCharacterId = healed.activeCharacterId;
+      },
     }
   )
 );

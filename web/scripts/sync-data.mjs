@@ -16,6 +16,7 @@ async function main() {
     // List of JSON files to copy
     const files = [
       "assets.json",
+      "characters.json",
       "enemies.json",
       "events.json",
       "items.json",

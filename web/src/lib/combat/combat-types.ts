@@ -16,6 +16,31 @@ export type CombatWound = {
   severity: "leve" | "media" | "grave";
 };
 
+export type CombatScenePhase =
+  | "fade-in"
+  | "title"
+  | "deployment"
+  | "modifiers"
+  | "shot"
+  | "response"
+  | "outcome";
+
+export type CombatEnemy = {
+  id: string;
+  name: string;
+  description: string;
+  power: number;
+  spritePath?: string;
+};
+
+export type CombatEventLogEntry = {
+  id: string;
+  at: number;
+  phase: CombatScenePhase;
+  text: string;
+  tone: "neutral" | "danger" | "success" | "reward";
+};
+
 export type CombatResult = {
   success: boolean;
   roll: number;
@@ -23,6 +48,8 @@ export type CombatResult = {
   modifiers: CombatModifier[];
   rewards: CombatReward;
   wounds: CombatWound[];
+  enemy: CombatEnemy;
+  eventLog: CombatEventLogEntry[];
   log: string[];
 };
 
@@ -45,15 +72,6 @@ export interface CombatPreview {
   enemyPower: number;
 }
 
-export type CombatScenePhase =
-  | "fade-in"
-  | "title"
-  | "deployment"
-  | "modifiers"
-  | "shot"
-  | "response"
-  | "outcome";
-
 export const mockCombatResult: CombatResult = {
   success: true,
   roll: 12,
@@ -70,6 +88,19 @@ export const mockCombatResult: CombatResult = {
     xp: 120,
   },
   wounds: [],
+  enemy: {
+    id: "enemy_skirmishers",
+    name: "escaramuzadores enemigos",
+    description: "Disparos dispersos y retirada rápida.",
+    power: 4,
+    spritePath: "/assets/gpt-bank/enemigos/franceses/enemigo_frances_001.png",
+  },
+  eventLog: [
+    { id: "mock-deploy", at: 900, phase: "deployment", text: "La lluvia arrecia sobre el camino embarrado.", tone: "neutral" },
+    { id: "mock-enemy", at: 1200, phase: "deployment", text: "Escaramuzadores enemigos toman posición junto al carro.", tone: "danger" },
+    { id: "mock-shot", at: 2550, phase: "shot", text: "Diego mide distancia y fuerza la acometida.", tone: "neutral" },
+    { id: "mock-outcome", at: 4700, phase: "outcome", text: "La compañía sostiene el terreno y recoge el botín.", tone: "success" },
+  ],
   log: [
     "La lluvia arrecia sobre el camino embarrado.",
     "Los hombres protegen la pólvora bajo lonas húmedas.",

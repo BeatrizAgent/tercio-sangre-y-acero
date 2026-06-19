@@ -5,9 +5,21 @@ import { reportFragments } from "../../data/seed-report-fragments";
 import { wounds } from "../../data/seed-wounds";
 import { events } from "../../data/seed-events";
 import assetsJson from "../../data/json/assets.json";
-import type { AssetDefinition, ItemDefinition, MissionDefinition, StatId } from "./types";
+import charactersJson from "../../data/json/characters.json";
+import type {
+  ArenaOpponent,
+  AssetDefinition,
+  CharacterDefinition,
+  CharacterState,
+  ItemDefinition,
+  ItemFootprint,
+  MissionDefinition,
+  SpriteSetDefinition,
+  StatId,
+} from "./types";
 
 export const assetDefinitions = assetsJson as AssetDefinition[];
+export const characterDefinitions = charactersJson as CharacterDefinition[];
 export const itemDefinitions = items satisfies readonly ItemDefinition[];
 export const missionDefinitions: MissionDefinition[] = missions.map((mission) => ({
   ...mission,
@@ -16,11 +28,109 @@ export const missionDefinitions: MissionDefinition[] = missions.map((mission) =>
 }));
 export const shopInventory = shopItems;
 export const enemyDefinitions = enemies;
-export const lootTableDefinitions = lootTables;
+export interface LootDrop {
+  itemId: string;
+  quantity: number;
+  weight?: number;
+}
+export interface LootTable {
+  id: string;
+  description?: string;
+  drops: LootDrop[];
+}
+export const lootTableDefinitions: LootTable[] = lootTables as LootTable[];
 export const rankDefinitions = ranks;
 export const reportFragmentDefinitions = reportFragments;
 export const woundDefinitions = wounds;
 export const eventDefinitions = events;
+
+export const spriteSetDefinitions: SpriteSetDefinition[] = [
+  {
+    id: "diego_pike",
+    name: "Diego con pica",
+    frames: {
+      walk: {
+        assetId: "diego_sprite_caminar",
+        frameWidth: 2031 / 3,
+        frameHeight: 714,
+        frames: 3,
+        fps: 6,
+      },
+      pikeAttack: {
+        assetId: "diego_sprite_ataque_pica",
+        frameWidth: 2076 / 3,
+        frameHeight: 570,
+        frames: 3,
+        fps: 5,
+      },
+      swordAttack: {
+        assetId: "diego_sprite_golpe_espada",
+        frameWidth: 2141 / 3,
+        frameHeight: 642,
+        frames: 3,
+        fps: 5,
+      },
+    },
+  },
+];
+
+export function createCharacterStates(): CharacterState[] {
+  return characterDefinitions.map((character) => ({
+    ...character,
+    stats: { ...character.stats },
+    equipment: { ...character.equipment },
+    unlocked: true,
+  }));
+}
+
+export function getCharacterDefinition(characterId: string | undefined) {
+  if (!characterId) return undefined;
+  return characterDefinitions.find((character) => character.id === characterId);
+}
+
+export function getSpriteSetDefinition(spriteSetId: string | undefined) {
+  if (!spriteSetId) return undefined;
+  return spriteSetDefinitions.find((spriteSet) => spriteSet.id === spriteSetId);
+}
+
+export const arenaOpponents: ArenaOpponent[] = [
+  {
+    id: "jaime_el_cojo",
+    name: "Jaime el Cojo",
+    rank: "maton de taberna",
+    portraitAssetId: "portrait_enemy_road_raider",
+    power: 7,
+    fatigue: 8,
+    woundChance: 12,
+    rewards: { coins: 7, xp: 6, honor: 1 },
+    style: "Daga baja, hombro sucio, golpe rapido.",
+    description: "Un veterano torcido por vino barato y deudas viejas.",
+  },
+  {
+    id: "bruno_de_namur",
+    name: "Bruno de Namur",
+    rank: "piquero despedido",
+    portraitAssetId: "portrait_enemy_deserter",
+    power: 11,
+    fatigue: 12,
+    woundChance: 20,
+    rewards: { coins: 12, xp: 10, honor: 2 },
+    style: "Pica corta y empujones contra la empalizada.",
+    description: "Sabe formar, sabe caer, y sabe morder cuando pierde.",
+  },
+  {
+    id: "capitan_rojas",
+    name: "Capitan Rojas",
+    rank: "oficial retirado",
+    portraitAssetId: "portrait_enemy_skirmisher",
+    power: 16,
+    fatigue: 16,
+    woundChance: 28,
+    rewards: { coins: 20, xp: 16, honor: 4 },
+    style: "Ropera precisa, calma de verdugo, mirada seca.",
+    description: "Un noble arruinado que vende duelos como otros venden pan.",
+  },
+];
 
 export function getAssetPublicPath(asset: AssetDefinition): string {
   return `/${asset.path.replace(/^GPT-ASSETS\//, "assets/gpt-bank/")}`;
@@ -36,12 +146,23 @@ export function getAssetPathById(assetId: string | undefined): string | undefine
   return asset ? getAssetPublicPath(asset) : undefined;
 }
 
+export function getEnemy(enemyId: string | undefined) {
+  if (!enemyId) return undefined;
+  return enemyDefinitions.find((enemy) => enemy.id === enemyId);
+}
+
+export function getEnemySpriteImagePath(enemyId: string | undefined): string | undefined {
+  const enemy = getEnemy(enemyId);
+  return getAssetPathById(enemy?.portraitAssetId);
+}
+
 export function getMissionSceneImagePath(missionId: string | undefined): string {
   const mission = missionId ? getMission(missionId) : undefined;
   return getAssetPathById(mission?.sceneAssetId) ?? "/assets/gpt-bank/CG/cg_events/night_watch_rain_bg.png";
 }
 
 export const featuredAssetPaths = {
+  city: assetPath("CG/cg_events/pay_mutiny_bg.png"),
   barracks: assetPath("CG/cg_events/barracks_bg.png"),
   armory: assetPath("CG/cg_events/armory_bg.png"),
   hospital: assetPath("CG/cg_events/hospital_bg.png"),
@@ -49,6 +170,7 @@ export const featuredAssetPaths = {
   missionSelect: assetPath("CG/cg_events/mission_select_bg.png"),
   soldierProfile: assetPath("CG/cg_events/soldier_profile_bg.png"),
   diegoPortrait: assetPath("prota/emociones/diego_retrato_serio.png"),
+  diegoDeArcePortrait: assetPath("CG/portraits/diego_de_arce_portrait.png"),
   diegoFullBody: assetPath("prota/diego_piquero_frontal_descanso.png"),
   diegoReady: assetPath("prota/diego_piquero_tres_cuartos.png"),
   diegoKneeling: assetPath("prota/diego_arrodillado_con_pica.png"),
@@ -65,6 +187,13 @@ export const featuredAssetPaths = {
 } as const;
 
 export const uiIconPaths = {
+  city: assetPath("icons-ui/campaign_node_city.png"),
+  cityBlacksmith: assetPath("icons-ui/morion_peto_martillo.png"),
+  cityShop: assetPath("icons-ui/saquito_monedas_documento.png"),
+  cityTavern: assetPath("icons-ui/botella_vidrio_verde.png"),
+  cityChurch: assetPath("icons-ui/medalla_cruz_roja_bronce.png"),
+  cityHouseOfTrade: assetPath("icons-ui/reloj_arena_bronce.png"),
+  arena: assetPath("icons-ui/espada_martillo_cruzados.png"),
   barracks: assetPath("icons-ui/camastro_manta_lana.png"),
   soldier: assetPath("icons-ui/peto_morion_dorado.png"),
   training: assetPath("icons-ui/espada_martillo_yunque.png"),
@@ -78,10 +207,27 @@ export const uiIconPaths = {
   xp: assetPath("icons-ui/sol_dorado_cara.png"),
   fatigue: assetPath("icons-ui/reloj_arena_bronce.png"),
   inventory: assetPath("icons-ui/saquito_monedas_documento.png"),
+  mailbox: assetPath("icons-ui/sello_lacre_cruz_roja.png"),
+  battleReports: assetPath("icons-ui/pergamino_pluma_sello.png"),
+  news: assetPath("icons-ui/orden_sellada_daga.png"),
+  packages: assetPath("icons-ui/saquito_monedas_documento.png"),
   confirm: assetPath("icons-ui/sello_lacre_cruz_roja.png"),
   settings: assetPath("icons-ui/flecha_circular_laurel.png"),
   info: assetPath("icons-ui/pergamino_pluma_sello.png"),
+  order: assetPath("icons-ui/orden_sellada_daga.png"),
+  wound: assetPath("icons-ui/venda_lino_enrollada.png"),
+  risk: assetPath("icons-ui/medallon_calavera_oscuro.png"),
+  mud: assetPath("icons-ui/salpicadura_barro_transparente.png"),
+  shield: assetPath("icons-ui/escudo_partido_cruz_roja.png"),
 } as const;
+
+export const campaignNodeIconPaths: Record<MissionDefinition["locationType"], string> = {
+  battle: assetPath("icons-ui/campaign_node_battle.png"),
+  city: assetPath("icons-ui/campaign_node_city.png"),
+  fortress: assetPath("icons-ui/campaign_node_fortress.png"),
+  road: assetPath("icons-ui/campaign_node_road.png"),
+  skirmish: assetPath("icons-ui/campaign_node_skirmish.png"),
+};
 
 export const reportAssetPaths = {
   waxSeal: assetPath("icons-ui/sello_lacre_cruz_roja.png"),
@@ -143,6 +289,20 @@ export function getItem(itemId: string) {
   return itemDefinitions.find((item) => item.id === itemId);
 }
 
+export function getItemFootprint(item: ItemDefinition | undefined): ItemFootprint {
+  const footprint = item?.footprint;
+  if (
+    footprint &&
+    Number.isInteger(footprint.cols) &&
+    Number.isInteger(footprint.rows) &&
+    footprint.cols > 0 &&
+    footprint.rows > 0
+  ) {
+    return footprint;
+  }
+  return { cols: 1, rows: 1 };
+}
+
 export function getItemImagePath(itemId: string): string {
   const item = getItem(itemId);
   const asset = assetDefinitions.find((entry) => entry.id === item?.assetId);
@@ -152,7 +312,6 @@ export function getItemImagePath(itemId: string): string {
     cheap_morion: "v03",
     chipped_sword: "v03",
     dented_cuirass: "v03",
-    rusty_pike: "v01",
     worn_arquebus: "v01",
   };
 
@@ -199,4 +358,12 @@ export function listAvailableMissions() {
 
 export function getMission(missionId: string) {
   return missionDefinitions.find((mission) => mission.id === missionId);
+}
+
+export function listArenaOpponents() {
+  return arenaOpponents;
+}
+
+export function getArenaOpponent(opponentId: string) {
+  return arenaOpponents.find((opponent) => opponent.id === opponentId);
 }

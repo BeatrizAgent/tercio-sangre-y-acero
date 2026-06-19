@@ -26,6 +26,7 @@ export function CombatStage({ missionTitle, missionId, result, onSequenceComplet
     const hostElement = hostRef.current;
     let cancelled = false;
     let app: Application | null = null;
+    let appCanvas: HTMLCanvasElement | null = null;
     let resizeObserver: ResizeObserver | null = null;
     let completionTimer: number | null = null;
 
@@ -53,6 +54,7 @@ export function CombatStage({ missionTitle, missionId, result, onSequenceComplet
       app.canvas.style.display = "block";
       app.canvas.style.width = "100%";
       app.canvas.style.height = "100%";
+      appCanvas = app.canvas;
       hostElement.replaceChildren(app.canvas);
 
       const effects = SpriteEffectLayer(pixi);
@@ -159,14 +161,16 @@ export function CombatStage({ missionTitle, missionId, result, onSequenceComplet
         else if (relevantStat === "sword") playerPath = "/assets/combat/units/rodelero_player.png";
         else if (relevantStat === "discipline") playerPath = "/assets/combat/units/pikeman_player.png";
 
-        const enemyPath = enemyWeapon === "arquebus" ? "/assets/combat/units/arquebusier_enemy.png" : "/assets/combat/units/pikeman_enemy.png";
+        const enemyFallbackPath = enemyWeapon === "arquebus" ? "/assets/combat/units/arquebusier_enemy.png" : "/assets/combat/units/pikeman_enemy.png";
         const bgPath = getMissionSceneImagePath(missionId);
 
         [playerTexture, enemyTexture, allyTexture, enemyFarTexture, bgTexture, walkSheetTexture, pikeAttackSheetTexture, swordAttackSheetTexture] = await Promise.all([
           pixi.Assets.load(playerPath).catch(() => null),
-          pixi.Assets.load(enemyPath).catch(() => null),
+          pixi.Assets.load(result.enemy.spritePath ?? enemyFallbackPath).catch(() => pixi.Assets.load(enemyFallbackPath).catch(() => null)),
           pixi.Assets.load("/assets/combat/units/pikeman_player.png").catch(() => null),
-          pixi.Assets.load("/assets/combat/units/pikeman_enemy.png").catch(() => null),
+          pixi.Assets.load(result.enemy.spritePath ?? "/assets/combat/units/pikeman_enemy.png").catch(() =>
+            pixi.Assets.load("/assets/combat/units/pikeman_enemy.png").catch(() => null),
+          ),
           pixi.Assets.load(bgPath).catch(() => pixi.Assets.load("/assets/gpt-bank/CG/cg_events/night_watch_rain_bg.png").catch(() => null)),
           pixi.Assets.load("/assets/gpt-bank/prota/sprites-animation/diego_sprite_caminar.png").catch(() => null),
           pixi.Assets.load("/assets/gpt-bank/prota/sprites-animation/diego_sprite_ataque_pica.png").catch(() => null),
@@ -274,8 +278,9 @@ export function CombatStage({ missionTitle, missionId, result, onSequenceComplet
       if (enemyTexture) {
         enemy = new pixi.Sprite(enemyTexture);
         (enemy as any).anchor.set(0.5, 0.94);
-        enemy.scale.set(-0.25, 0.25);
-        enemy.y = 575;
+        const enemyScale = Math.min(0.34, 240 / Math.max(enemyTexture.height, 1));
+        enemy.scale.set(-enemyScale, enemyScale);
+        enemy.y = 592;
       } else {
         enemy = LayeredSoldierSprite(pixi, { kind: "enemyScout", weapon: enemyWeapon, facing: -1, scale: 1.05 });
         enemy.y = 450;
@@ -300,8 +305,9 @@ export function CombatStage({ missionTitle, missionId, result, onSequenceComplet
       if (enemyFarTexture) {
         enemyFar = new pixi.Sprite(enemyFarTexture);
         (enemyFar as any).anchor.set(0.5, 0.94);
-        enemyFar.scale.set(-0.13, 0.13);
-        enemyFar.y = 540;
+        const enemyFarScale = Math.min(0.2, 150 / Math.max(enemyFarTexture.height, 1));
+        enemyFar.scale.set(-enemyFarScale, enemyFarScale);
+        enemyFar.y = 548;
       } else {
         enemyFar = LayeredSoldierSprite(pixi, { kind: "enemyScout", weapon: "pike", facing: -1, scale: 0.5 });
         enemyFar.y = 510;
@@ -385,7 +391,7 @@ export function CombatStage({ missionTitle, missionId, result, onSequenceComplet
         enemy.x += (combatAnimationPreset.enemyReadyX - enemy.x) * 0.04;
         
         const playerBaseY = (playerTexture || isAnimatedPlayer) ? 575 : 450;
-        const enemyBaseY = enemyTexture ? 575 : 450;
+        const enemyBaseY = enemyTexture ? 592 : 450;
         
         player.y = playerBaseY + Math.sin(elapsed * 0.007) * 5;
         enemy.y = enemyBaseY + Math.cos(elapsed * 0.006) * 3;
@@ -507,8 +513,12 @@ export function CombatStage({ missionTitle, missionId, result, onSequenceComplet
       if (completionTimer !== null) window.clearTimeout(completionTimer);
       resizeObserver?.disconnect();
       if (app) {
-        app.stop();
-        app.destroy({ removeView: true }, { children: true, texture: false, textureSource: false });
+        app.ticker?.stop();
+        try {
+          app.destroy({ removeView: true }, { children: true, texture: false, textureSource: false });
+        } catch {
+          appCanvas?.remove();
+        }
       }
       hostElement?.replaceChildren();
     };

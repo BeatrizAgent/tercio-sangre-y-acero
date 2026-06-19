@@ -14,7 +14,12 @@ function mutableStringArray(values: readonly string[]) {
 
 async function main() {
   for (const item of items) {
-    const data = { ...item, effects: { ...item.effects } };
+    const data = {
+      ...item,
+      effects: { ...item.effects },
+      passives: item.passives ? (item.passives as unknown as object) : undefined,
+      requirements: item.requirements ? (item.requirements as unknown as object) : undefined,
+    };
     await prisma.itemDefinition.upsert({
       where: { id: item.id },
       update: data,
@@ -49,7 +54,7 @@ async function main() {
   }
 
   for (const table of lootTables) {
-    const drops = table.drops.map((drop) => ({ ...drop }));
+    const drops = table.drops.map((drop: Record<string, unknown>) => ({ ...drop }));
     await prisma.lootTable.upsert({
       where: { id: table.id },
       update: { drops },

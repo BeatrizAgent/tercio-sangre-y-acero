@@ -45,7 +45,8 @@
     "sceneAssetId": "muddy_road_patrol_bg",
     "x": 42,
     "y": 48,
-    "locationType": "road"
+    "locationType": "road",
+    "region": "flandes"
   },
   {
     "id": "crossroads_skirmish",
@@ -69,7 +70,8 @@
     "sceneAssetId": "muddy_road_patrol_bg",
     "x": 50,
     "y": 22,
-    "locationType": "skirmish"
+    "locationType": "skirmish",
+    "region": "flandes"
   },
   {
     "id": "powder_escort_front",
@@ -93,7 +95,8 @@
     "sceneAssetId": "powder_escort_front_bg",
     "x": 78,
     "y": 35,
-    "locationType": "fortress"
+    "locationType": "fortress",
+    "region": "flandes"
   },
   {
     "id": "bastion_assault",
@@ -117,6 +120,7 @@
     "sceneAssetId": "powder_escort_front_bg",
     "x": 82,
     "y": 72,
-    "locationType": "battle"
+    "locationType": "battle",
+    "region": "flandes"
   }
 ]

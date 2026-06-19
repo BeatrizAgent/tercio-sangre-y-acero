@@ -2,60 +2,333 @@
   {
     "id": "company_armory",
     "name": "Armería de la Compañía",
+    "description": "Lo que el sargento te deja comprar con paga atrasada.",
     "inventory": [
       {
-        "item_id": "rusty_pike",
+        "item_id": "common_pike_001",
         "buy_price": 18,
         "sell_price": 8,
         "stock": 3
       },
       {
-        "item_id": "chipped_sword",
+        "item_id": "common_pike_002",
+        "buy_price": 18,
+        "sell_price": 8,
+        "stock": 3
+      },
+      {
+        "item_id": "common_sword_003",
         "buy_price": 22,
         "sell_price": 10,
         "stock": 2
       },
       {
-        "item_id": "worn_arquebus",
+        "item_id": "common_sword_004",
+        "buy_price": 22,
+        "sell_price": 10,
+        "stock": 2
+      },
+      {
+        "item_id": "common_arquebus_005",
         "buy_price": 42,
         "sell_price": 20,
         "stock": 1
       },
       {
-        "item_id": "cheap_morion",
-        "buy_price": 20,
-        "sell_price": 8,
+        "item_id": "uncommon_pike_011",
+        "buy_price": 70,
+        "sell_price": 30,
         "stock": 2
       },
       {
-        "item_id": "dented_cuirass",
-        "buy_price": 45,
-        "sell_price": 20,
+        "item_id": "uncommon_sword_016",
+        "buy_price": 80,
+        "sell_price": 35,
+        "stock": 2
+      },
+      {
+        "item_id": "uncommon_arquebus_022",
+        "buy_price": 110,
+        "sell_price": 50,
         "stock": 1
       },
       {
-        "item_id": "old_boots",
-        "buy_price": 12,
-        "sell_price": 5,
+        "item_id": "gambeson_largo_bisono_crudo",
+        "buy_price": 18,
+        "sell_price": 8,
+        "stock": 3
+      },
+      {
+        "item_id": "morion_correia_cuero_simple",
+        "buy_price": 22,
+        "sell_price": 9,
         "stock": 2
       },
       {
-        "item_id": "clean_bandage",
+        "item_id": "peto_abollado_bisono_impacto",
+        "buy_price": 50,
+        "sell_price": 22,
+        "stock": 1
+      },
+      {
+        "item_id": "armadura_050",
+        "buy_price": 14,
+        "sell_price": 6,
+        "stock": 2
+      },
+      {
+        "item_id": "objeto_011",
         "buy_price": 9,
         "sell_price": 4,
         "stock": 6
       },
       {
-        "item_id": "wine_skin",
+        "item_id": "objeto_012",
         "buy_price": 7,
         "sell_price": 3,
         "stock": 5
       },
       {
-        "item_id": "hard_bread",
+        "item_id": "objeto_013",
         "buy_price": 3,
         "sell_price": 1,
         "stock": 10
+      },
+      {
+        "item_id": "objeto_007",
+        "buy_price": 14,
+        "sell_price": 6,
+        "stock": 5
+      },
+      {
+        "item_id": "objeto_002",
+        "buy_price": 10,
+        "sell_price": 4,
+        "stock": 6
+      },
+      {
+        "item_id": "objeto_004",
+        "buy_price": 4,
+        "sell_price": 1,
+        "stock": 10
+      }
+    ]
+  },
+  {
+    "id": "flanders_merchant",
+    "name": "Mercader de Flandes",
+    "description": "Ropa de oficial, munición, reliquias. Cobra en plata sonante.",
+    "inventory": [
+      {
+        "item_id": "uncommon_pike_014",
+        "buy_price": 90,
+        "sell_price": 38,
+        "stock": 1
+      },
+      {
+        "item_id": "uncommon_sword_018",
+        "buy_price": 100,
+        "sell_price": 42,
+        "stock": 1
+      },
+      {
+        "item_id": "uncommon_arquebus_023",
+        "buy_price": 140,
+        "sell_price": 60,
+        "stock": 1
+      },
+      {
+        "item_id": "rare_pike_031",
+        "buy_price": 240,
+        "sell_price": 100,
+        "stock": 1
+      },
+      {
+        "item_id": "rare_sword_036",
+        "buy_price": 260,
+        "sell_price": 110,
+        "stock": 1
+      },
+      {
+        "item_id": "rare_arquebus_041",
+        "buy_price": 320,
+        "sell_price": 140,
+        "stock": 1
+      },
+      {
+        "item_id": "epic_pike_051",
+        "buy_price": 580,
+        "sell_price": 260,
+        "stock": 1
+      },
+      {
+        "item_id": "epic_sword_054",
+        "buy_price": 620,
+        "sell_price": 280,
+        "stock": 1
+      },
+      {
+        "item_id": "epic_arquebus_057",
+        "buy_price": 720,
+        "sell_price": 320,
+        "stock": 1
+      },
+      {
+        "item_id": "morion_oscuro_flor_bronce",
+        "buy_price": 180,
+        "sell_price": 80,
+        "stock": 1
+      },
+      {
+        "item_id": "celada_bordecillos_bronce_carrilleras",
+        "buy_price": 240,
+        "sell_price": 100,
+        "stock": 1
+      },
+      {
+        "item_id": "peto_brigantina_oscuro_remaches",
+        "buy_price": 240,
+        "sell_price": 100,
+        "stock": 1
+      },
+      {
+        "item_id": "peto_acero_faldones_laminados",
+        "buy_price": 320,
+        "sell_price": 140,
+        "stock": 1
+      },
+      {
+        "item_id": "aux_001",
+        "buy_price": 60,
+        "sell_price": 25,
+        "stock": 3
+      },
+      {
+        "item_id": "aux_002",
+        "buy_price": 95,
+        "sell_price": 40,
+        "stock": 2
+      },
+      {
+        "item_id": "aux_007",
+        "buy_price": 55,
+        "sell_price": 22,
+        "stock": 5
+      },
+      {
+        "item_id": "aux_010",
+        "buy_price": 45,
+        "sell_price": 18,
+        "stock": 4
+      },
+      {
+        "item_id": "objeto_015",
+        "buy_price": 60,
+        "sell_price": 25,
+        "stock": 3
+      },
+      {
+        "item_id": "objeto_019",
+        "buy_price": 95,
+        "sell_price": 40,
+        "stock": 2
+      }
+    ]
+  },
+  {
+    "id": "old_smithy",
+    "name": "Herrería Vieja",
+    "description": "El armero sin nombre. Forja a medida y arregla lo inarreglable. Si tienes el dinero.",
+    "inventory": [
+      {
+        "item_id": "epic_pike_052",
+        "buy_price": 720,
+        "sell_price": 320,
+        "stock": 1
+      },
+      {
+        "item_id": "epic_pike_053",
+        "buy_price": 780,
+        "sell_price": 350,
+        "stock": 1
+      },
+      {
+        "item_id": "epic_sword_055",
+        "buy_price": 820,
+        "sell_price": 380,
+        "stock": 1
+      },
+      {
+        "item_id": "epic_sword_056",
+        "buy_price": 760,
+        "sell_price": 340,
+        "stock": 1
+      },
+      {
+        "item_id": "epic_arquebus_058",
+        "buy_price": 880,
+        "sell_price": 400,
+        "stock": 1
+      },
+      {
+        "item_id": "epic_arquebus_059",
+        "buy_price": 920,
+        "sell_price": 420,
+        "stock": 1
+      },
+      {
+        "item_id": "epic_pike_062",
+        "buy_price": 880,
+        "sell_price": 400,
+        "stock": 1
+      },
+      {
+        "item_id": "armet_celada_cerrada_visor",
+        "buy_price": 580,
+        "sell_price": 260,
+        "stock": 1
+      },
+      {
+        "item_id": "yelmo_cerrado_visor_bisagras",
+        "buy_price": 620,
+        "sell_price": 280,
+        "stock": 1
+      },
+      {
+        "item_id": "celada_oficial_grabada_dorada",
+        "buy_price": 720,
+        "sell_price": 320,
+        "stock": 1
+      },
+      {
+        "item_id": "coraza_gastada_batalla_faldillas",
+        "buy_price": 660,
+        "sell_price": 290,
+        "stock": 1
+      },
+      {
+        "item_id": "coraza_oficial_grabada_grecas_doradas",
+        "buy_price": 760,
+        "sell_price": 340,
+        "stock": 1
+      },
+      {
+        "item_id": "peto_capitan_grecas_doradas_cordon",
+        "buy_price": 820,
+        "sell_price": 380,
+        "stock": 1
+      },
+      {
+        "item_id": "aux_008",
+        "buy_price": 130,
+        "sell_price": 55,
+        "stock": 4
+      },
+      {
+        "item_id": "objeto_016",
+        "buy_price": 90,
+        "sell_price": 38,
+        "stock": 2
       }
     ]
   }

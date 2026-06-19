@@ -1,13 +1,14 @@
-import type { CombatResult } from "@/lib/combat/combat-types";
+import type { CombatEventLogEntry, CombatResult } from "@/lib/combat/combat-types";
 
 interface CombatHudProps {
   result: CombatResult;
   missionTitle: string;
   ready: boolean;
+  activeLogEntry?: CombatEventLogEntry;
   onContinue: () => void;
 }
 
-export function CombatHud({ result, missionTitle, ready, onContinue }: CombatHudProps) {
+export function CombatHud({ result, missionTitle, ready, activeLogEntry, onContinue }: CombatHudProps) {
   return (
     <div className="pointer-events-none absolute inset-0 flex flex-col justify-between">
       {ready && (
@@ -40,7 +41,7 @@ export function CombatHud({ result, missionTitle, ready, onContinue }: CombatHud
       <div className="flex items-end justify-between gap-4 p-3 sm:p-4">
         <div className="max-w-[58%] border border-iron bg-[rgba(20,15,11,0.82)] px-3 py-2 shadow-lg backdrop-blur-sm">
           <p className="font-serif text-xs italic leading-relaxed text-text">
-            &quot;{result.log.at(-1) ?? "El humo decide lo que los hombres no alcanzan a ver."}&quot;
+            &quot;{activeLogEntry?.text ?? "El humo decide lo que los hombres no alcanzan a ver."}&quot;
           </p>
         </div>
 

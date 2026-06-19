@@ -27,6 +27,7 @@ export function CombatCanvas({ missionTitle, result, onSequenceComplete }: Comba
     const hostElement = hostRef.current;
     let cancelled = false;
     let app: Application | null = null;
+    let appCanvas: HTMLCanvasElement | null = null;
     let resizeObserver: ResizeObserver | null = null;
     let completionTimer: number | null = null;
 
@@ -56,6 +57,7 @@ export function CombatCanvas({ missionTitle, result, onSequenceComplete }: Comba
       app.canvas.style.display = "block";
       app.canvas.style.width = "100%";
       app.canvas.style.height = "100%";
+      appCanvas = app.canvas;
       host.replaceChildren(app.canvas);
 
       const world = new pixi.Container();
@@ -517,8 +519,12 @@ export function CombatCanvas({ missionTitle, result, onSequenceComplete }: Comba
       if (completionTimer !== null) window.clearTimeout(completionTimer);
       resizeObserver?.disconnect();
       if (app) {
-        app.stop();
-        app.destroy({ removeView: true }, { children: true, texture: true, textureSource: true });
+        app.ticker?.stop();
+        try {
+          app.destroy({ removeView: true }, { children: true, texture: true, textureSource: true });
+        } catch {
+          appCanvas?.remove();
+        }
       }
       hostElement?.replaceChildren();
     };

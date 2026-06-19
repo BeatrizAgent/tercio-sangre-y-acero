@@ -14,7 +14,7 @@
           "fatigue": -5,
           "items": [
             {
-              "itemId": "hard_bread",
+              "itemId": "objeto_004",
               "quantity": 3
             }
           ]
@@ -31,7 +31,7 @@
           "coins": -10,
           "items": [
             {
-              "itemId": "hard_bread",
+              "itemId": "objeto_004",
               "quantity": 2
             }
           ]
@@ -260,7 +260,7 @@
           "reputation": -3,
           "items": [
             {
-              "itemId": "hard_bread",
+              "itemId": "objeto_004",
               "quantity": 2
             }
           ]

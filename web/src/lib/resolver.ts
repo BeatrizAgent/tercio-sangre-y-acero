@@ -55,7 +55,23 @@ function deterministicRoll(seed: number) {
 
 function pickLoot(lootTableId: string) {
   const table = lootTableDefinitions.find((entry) => entry.id === lootTableId);
-  return table?.drops.map((drop) => ({ itemId: drop.itemId, quantity: drop.quantity })) ?? [];
+  if (!table) return [];
+  const drops = table.drops;
+  const hasWeights = drops.some((d) => typeof d.weight === "number");
+  if (!hasWeights) {
+    return drops.map((drop) => ({ itemId: drop.itemId, quantity: drop.quantity }));
+  }
+  const total = drops.reduce((s, d) => s + (d.weight ?? 0), 0) || 1;
+  const roll = Math.random() * total;
+  let acc = 0;
+  for (const drop of drops) {
+    acc += drop.weight ?? 0;
+    if (roll <= acc) {
+      return [{ itemId: drop.itemId, quantity: drop.quantity }];
+    }
+  }
+  const last = drops[drops.length - 1];
+  return [{ itemId: last.itemId, quantity: last.quantity }];
 }
 
 function bestPowerName(soldier: Soldier, equipmentBonuses: Record<string, number | undefined>) {

@@ -13,43 +13,43 @@ import type { StatId } from "./types";
 export async function trainStatAction(formData: FormData) {
   await trainStat(String(formData.get("stat")) as StatId);
   revalidatePath("/training");
-  revalidatePath("/barracks");
+  revalidatePath("/soldier");
 }
 
 export async function buyItemAction(formData: FormData) {
   await buyItem(String(formData.get("itemId")));
   revalidatePath("/armory");
-  revalidatePath("/barracks");
+  revalidatePath("/soldier");
 }
 
 export async function sellItemAction(formData: FormData) {
   await sellItem(String(formData.get("itemId")));
   revalidatePath("/armory");
   revalidatePath("/inventory");
-  revalidatePath("/barracks");
+  revalidatePath("/soldier");
 }
 
 export async function equipItemAction(formData: FormData) {
   await equipItem(String(formData.get("itemId")));
   revalidatePath("/equipment");
-  revalidatePath("/barracks");
+  revalidatePath("/soldier");
 }
 
 export async function resolveMissionAction(formData: FormData) {
   const result = await applyMissionRewards(String(formData.get("missionId")));
   revalidatePath("/missions");
-  revalidatePath("/barracks");
+  revalidatePath("/soldier");
   if (result.reportId) redirect(`/reports/${result.reportId}`);
 }
 
 export async function treatWoundAction(formData: FormData) {
   await treatWound(String(formData.get("woundId")));
   revalidatePath("/hospital");
-  revalidatePath("/barracks");
+  revalidatePath("/soldier");
 }
 
 export async function resetDemoAction() {
   await resetState();
   revalidatePath("/");
-  redirect("/barracks");
+  redirect("/city");
 }

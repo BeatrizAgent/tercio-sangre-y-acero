@@ -4786,6 +4786,86 @@
     "presentation": "normal"
   },
   {
+    "id": "campaign_node_battle",
+    "category": "ui",
+    "path": "GPT-ASSETS/icons-ui/campaign_node_battle.png",
+    "source": "chatgpt_manual",
+    "dimensions": [
+      1254,
+      1254
+    ],
+    "transparent": true,
+    "usage": [
+      "ui"
+    ],
+    "mature": false,
+    "presentation": "normal"
+  },
+  {
+    "id": "campaign_node_city",
+    "category": "ui",
+    "path": "GPT-ASSETS/icons-ui/campaign_node_city.png",
+    "source": "chatgpt_manual",
+    "dimensions": [
+      1254,
+      1254
+    ],
+    "transparent": true,
+    "usage": [
+      "ui"
+    ],
+    "mature": false,
+    "presentation": "normal"
+  },
+  {
+    "id": "campaign_node_fortress",
+    "category": "ui",
+    "path": "GPT-ASSETS/icons-ui/campaign_node_fortress.png",
+    "source": "chatgpt_manual",
+    "dimensions": [
+      1254,
+      1254
+    ],
+    "transparent": true,
+    "usage": [
+      "ui"
+    ],
+    "mature": false,
+    "presentation": "normal"
+  },
+  {
+    "id": "campaign_node_road",
+    "category": "ui",
+    "path": "GPT-ASSETS/icons-ui/campaign_node_road.png",
+    "source": "chatgpt_manual",
+    "dimensions": [
+      1254,
+      1254
+    ],
+    "transparent": true,
+    "usage": [
+      "ui"
+    ],
+    "mature": false,
+    "presentation": "normal"
+  },
+  {
+    "id": "campaign_node_skirmish",
+    "category": "ui",
+    "path": "GPT-ASSETS/icons-ui/campaign_node_skirmish.png",
+    "source": "chatgpt_manual",
+    "dimensions": [
+      1254,
+      1254
+    ],
+    "transparent": true,
+    "usage": [
+      "ui"
+    ],
+    "mature": false,
+    "presentation": "normal"
+  },
+  {
     "id": "candado_bronce",
     "category": "ui",
     "path": "GPT-ASSETS/icons-ui/candado_bronce.png",

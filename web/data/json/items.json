@@ -1,65 +1,3905 @@
 [
   {
-    "id": "rusty_pike",
-    "name": "Pica oxidada",
+    "id": "common_pike_001",
+    "name": "Pica de bisono 1",
     "type": "pike",
     "slot": "main_hand",
-    "weight": 4.5,
+    "weight": 4.7,
+    "value": 12,
+    "stackable": false,
+    "effects": {
+      "pike": 1,
+      "discipline": 1
+    },
+    "description": "Pica corta, madera de enebro y punta mal templada. Sirve para alinear.",
+    "assetId": "arma_001",
+    "rarity": "common",
+    "tier": 1,
+    "footprint": {
+      "cols": 2,
+      "rows": 1
+    }
+  },
+  {
+    "id": "common_pike_002",
+    "name": "Pica de bisono 2",
+    "type": "pike",
+    "slot": "main_hand",
+    "weight": 4.7,
     "value": 14,
+    "stackable": false,
+    "effects": {
+      "pike": 1,
+      "discipline": 1
+    },
+    "description": "Pica corta, madera de enebro y punta mal templada. Sirve para alinear.",
+    "assetId": "arma_002",
+    "rarity": "common",
+    "tier": 1,
+    "footprint": {
+      "cols": 2,
+      "rows": 1
+    }
+  },
+  {
+    "id": "common_sword_003",
+    "name": "Espada de cinto 1",
+    "type": "sword",
+    "slot": "main_hand",
+    "weight": 1.3,
+    "value": 16,
+    "stackable": false,
+    "effects": {
+      "sword": 1
+    },
+    "description": "Hoja de cinto, filo irregular, mejor en el envés que en el tajo.",
+    "assetId": "arma_003",
+    "rarity": "common",
+    "tier": 1,
+    "footprint": {
+      "cols": 1,
+      "rows": 1
+    }
+  },
+  {
+    "id": "common_sword_004",
+    "name": "Espada de cinto 2",
+    "type": "sword",
+    "slot": "main_hand",
+    "weight": 1.3,
+    "value": 18,
+    "stackable": false,
+    "effects": {
+      "sword": 1
+    },
+    "description": "Hoja de cinto, filo irregular, mejor en el envés que en el tajo.",
+    "assetId": "arma_004",
+    "rarity": "common",
+    "tier": 1,
+    "footprint": {
+      "cols": 1,
+      "rows": 1
+    }
+  },
+  {
+    "id": "common_arquebus_005",
+    "name": "Arcabuz bisono",
+    "type": "arquebus",
+    "slot": "firearm",
+    "weight": 5.4,
+    "value": 20,
+    "stackable": false,
+    "effects": {
+      "arquebus": 2
+    },
+    "description": "Mechero y llave lentos, dispara más por inercia que por puntería.",
+    "assetId": "arma_005",
+    "rarity": "common",
+    "tier": 1,
+    "footprint": {
+      "cols": 2,
+      "rows": 1
+    }
+  },
+  {
+    "id": "common_pike_006",
+    "name": "Pica vieja 1",
+    "type": "pike",
+    "slot": "main_hand",
+    "weight": 4.7,
+    "value": 22,
+    "stackable": false,
+    "effects": {
+      "pike": 1,
+      "discipline": 0
+    },
+    "description": "Pica corta, madera de enebro y punta mal templada. Sirve para alinear.",
+    "assetId": "arma_006",
+    "rarity": "common",
+    "tier": 1,
+    "footprint": {
+      "cols": 2,
+      "rows": 1
+    }
+  },
+  {
+    "id": "common_sword_007",
+    "name": "Daga de cinto",
+    "type": "sword",
+    "slot": "main_hand",
+    "weight": 1.3,
+    "value": 24,
+    "stackable": false,
+    "effects": {
+      "sword": 1
+    },
+    "description": "Hoja de cinto, filo irregular, mejor en el envés que en el tajo.",
+    "assetId": "arma_007",
+    "rarity": "common",
+    "tier": 1,
+    "footprint": {
+      "cols": 1,
+      "rows": 1
+    }
+  },
+  {
+    "id": "common_sword_008",
+    "name": "Daga larga",
+    "type": "sword",
+    "slot": "main_hand",
+    "weight": 1.3,
+    "value": 26,
+    "stackable": false,
+    "effects": {
+      "sword": 1
+    },
+    "description": "Hoja de cinto, filo irregular, mejor en el envés que en el tajo.",
+    "assetId": "arma_008",
+    "rarity": "common",
+    "tier": 1,
+    "footprint": {
+      "cols": 1,
+      "rows": 1
+    }
+  },
+  {
+    "id": "common_arquebus_009",
+    "name": "Mosquete bisono",
+    "type": "arquebus",
+    "slot": "firearm",
+    "weight": 5.4,
+    "value": 28,
+    "stackable": false,
+    "effects": {
+      "arquebus": 2
+    },
+    "description": "Mechero y llave lentos, dispara más por inercia que por puntería.",
+    "assetId": "arma_009",
+    "rarity": "common",
+    "tier": 1,
+    "footprint": {
+      "cols": 2,
+      "rows": 1
+    }
+  },
+  {
+    "id": "common_pike_010",
+    "name": "Alabarda bisono",
+    "type": "pike",
+    "slot": "main_hand",
+    "weight": 4.7,
+    "value": 30,
+    "stackable": false,
+    "effects": {
+      "pike": 1,
+      "discipline": 0
+    },
+    "description": "Pica corta, madera de enebro y punta mal templada. Sirve para alinear.",
+    "assetId": "arma_010",
+    "rarity": "common",
+    "tier": 1,
+    "footprint": {
+      "cols": 2,
+      "rows": 1
+    }
+  },
+  {
+    "id": "uncommon_pike_011",
+    "name": "Pica larga de fresno 1",
+    "type": "pike",
+    "slot": "main_hand",
+    "weight": 4.7,
+    "value": 62,
     "stackable": false,
     "effects": {
       "pike": 2,
       "discipline": 1
     },
-    "description": "Una pica larga con punta desgastada. Aún sirve para disuadir a la caballería.",
-    "assetId": "arma_001"
+    "description": "Asta recta, contrapesada, mejor empuñadura y regatón de hierro.",
+    "assetId": "arma_011",
+    "rarity": "uncommon",
+    "tier": 2,
+    "footprint": {
+      "cols": 2,
+      "rows": 1
+    }
   },
   {
-    "id": "chipped_sword",
-    "name": "Espada mellada",
+    "id": "uncommon_pike_012",
+    "name": "Pica larga de fresno 2",
+    "type": "pike",
+    "slot": "main_hand",
+    "weight": 4.7,
+    "value": 64,
+    "stackable": false,
+    "effects": {
+      "pike": 2,
+      "discipline": 1
+    },
+    "description": "Asta recta, contrapesada, mejor empuñadura y regatón de hierro.",
+    "assetId": "arma_012",
+    "rarity": "uncommon",
+    "tier": 2,
+    "footprint": {
+      "cols": 2,
+      "rows": 1
+    }
+  },
+  {
+    "id": "uncommon_pike_013",
+    "name": "Pica con regatón de austria 1",
+    "type": "pike",
+    "slot": "main_hand",
+    "weight": 4.7,
+    "value": 66,
+    "stackable": false,
+    "effects": {
+      "pike": 2,
+      "discipline": 1
+    },
+    "description": "Asta recta, contrapesada, mejor empuñadura y regatón de hierro.",
+    "assetId": "arma_013",
+    "rarity": "uncommon",
+    "tier": 2,
+    "footprint": {
+      "cols": 2,
+      "rows": 1
+    }
+  },
+  {
+    "id": "uncommon_pike_014",
+    "name": "Pica con regatón de austria 2",
+    "type": "pike",
+    "slot": "main_hand",
+    "weight": 4.7,
+    "value": 68,
+    "stackable": false,
+    "effects": {
+      "pike": 2,
+      "discipline": 1
+    },
+    "description": "Asta recta, contrapesada, mejor empuñadura y regatón de hierro.",
+    "assetId": "arma_014",
+    "rarity": "uncommon",
+    "tier": 2,
+    "footprint": {
+      "cols": 2,
+      "rows": 1
+    }
+  },
+  {
+    "id": "uncommon_pike_015",
+    "name": "Pica de veteranos",
+    "type": "pike",
+    "slot": "main_hand",
+    "weight": 4.7,
+    "value": 70,
+    "stackable": false,
+    "effects": {
+      "pike": 2,
+      "discipline": 1
+    },
+    "description": "Asta recta, contrapesada, mejor empuñadura y regatón de hierro.",
+    "assetId": "arma_015",
+    "rarity": "uncommon",
+    "tier": 2,
+    "footprint": {
+      "cols": 2,
+      "rows": 1
+    }
+  },
+  {
+    "id": "uncommon_sword_016",
+    "name": "Espada de cazoleta 1",
     "type": "sword",
     "slot": "main_hand",
-    "weight": 1.2,
-    "value": 18,
+    "weight": 1.3,
+    "value": 72,
     "stackable": false,
     "effects": {
-      "sword": 2
-    },
-    "description": "Un arma de cinto con viejas muescas en el filo.",
-    "assetId": "arma_011"
-  },
-  {
-    "id": "worn_arquebus",
-    "name": "Arcabuz desgastado",
-    "type": "arquebus",
-    "slot": "firearm",
-    "weight": 5.0,
-    "value": 34,
-    "stackable": false,
-    "effects": {
-      "arquebus": 3
-    },
-    "description": "Llave de mecha pesada, tardía de querer y más tardía de cargar.",
-    "assetId": "arma_021"
-  },
-  {
-    "id": "wet_powder_flask",
-    "name": "Frasco de pólvora húmeda",
-    "type": "ammunition",
-    "slot": "accessory",
-    "weight": 0.6,
-    "value": 6,
-    "stackable": true,
-    "effects": {
-      "arquebus": -1,
+      "sword": 2,
       "cunning": 1
     },
-    "description": "Pólvora que ha conocido demasiada lluvia.",
-    "assetId": "objeto_001"
+    "description": "Hoja larga, cazoleta o gavilanes, el peso va adelante.",
+    "assetId": "arma_016",
+    "rarity": "uncommon",
+    "tier": 2,
+    "footprint": {
+      "cols": 1,
+      "rows": 1
+    }
   },
   {
-    "id": "cheap_morion",
-    "name": "Morrión barato",
+    "id": "uncommon_sword_017",
+    "name": "Espada de cazoleta 2",
+    "type": "sword",
+    "slot": "main_hand",
+    "weight": 1.3,
+    "value": 74,
+    "stackable": false,
+    "effects": {
+      "sword": 2,
+      "cunning": 1
+    },
+    "description": "Hoja larga, cazoleta o gavilanes, el peso va adelante.",
+    "assetId": "arma_017",
+    "rarity": "uncommon",
+    "tier": 2,
+    "footprint": {
+      "cols": 1,
+      "rows": 1
+    }
+  },
+  {
+    "id": "uncommon_sword_018",
+    "name": "Espada ropera de Toledo 1",
+    "type": "sword",
+    "slot": "main_hand",
+    "weight": 1.3,
+    "value": 76,
+    "stackable": false,
+    "effects": {
+      "sword": 2,
+      "cunning": 1
+    },
+    "description": "Hoja larga, cazoleta o gavilanes, el peso va adelante.",
+    "assetId": "arma_018",
+    "rarity": "uncommon",
+    "tier": 2,
+    "footprint": {
+      "cols": 1,
+      "rows": 1
+    }
+  },
+  {
+    "id": "uncommon_sword_019",
+    "name": "Espada ropera de Toledo 2",
+    "type": "sword",
+    "slot": "main_hand",
+    "weight": 1.3,
+    "value": 78,
+    "stackable": false,
+    "effects": {
+      "sword": 2,
+      "cunning": 1
+    },
+    "description": "Hoja larga, cazoleta o gavilanes, el peso va adelante.",
+    "assetId": "arma_019",
+    "rarity": "uncommon",
+    "tier": 2,
+    "footprint": {
+      "cols": 1,
+      "rows": 1
+    }
+  },
+  {
+    "id": "uncommon_sword_020",
+    "name": "Espada de mano y media",
+    "type": "sword",
+    "slot": "main_hand",
+    "weight": 1.3,
+    "value": 80,
+    "stackable": false,
+    "effects": {
+      "sword": 2,
+      "cunning": 1
+    },
+    "description": "Hoja larga, cazoleta o gavilanes, el peso va adelante.",
+    "assetId": "arma_020",
+    "rarity": "uncommon",
+    "tier": 2,
+    "footprint": {
+      "cols": 1,
+      "rows": 1
+    }
+  },
+  {
+    "id": "uncommon_arquebus_021",
+    "name": "Arcabuz de llave de mecha 1",
+    "type": "arquebus",
+    "slot": "firearm",
+    "weight": 5.4,
+    "value": 82,
+    "stackable": false,
+    "effects": {
+      "arquebus": 3,
+      "cunning": 1
+    },
+    "description": "Mechero fiable, llave engrasada. Recarga sin jurar demasiado.",
+    "assetId": "arma_021",
+    "rarity": "uncommon",
+    "tier": 2,
+    "footprint": {
+      "cols": 2,
+      "rows": 1
+    }
+  },
+  {
+    "id": "uncommon_arquebus_022",
+    "name": "Arcabuz de llave de mecha 2",
+    "type": "arquebus",
+    "slot": "firearm",
+    "weight": 5.4,
+    "value": 84,
+    "stackable": false,
+    "effects": {
+      "arquebus": 3,
+      "cunning": 1
+    },
+    "description": "Mechero fiable, llave engrasada. Recarga sin jurar demasiado.",
+    "assetId": "arma_022",
+    "rarity": "uncommon",
+    "tier": 2,
+    "footprint": {
+      "cols": 2,
+      "rows": 1
+    }
+  },
+  {
+    "id": "uncommon_arquebus_023",
+    "name": "Arcabuz con cureña corta 1",
+    "type": "arquebus",
+    "slot": "firearm",
+    "weight": 5.4,
+    "value": 86,
+    "stackable": false,
+    "effects": {
+      "arquebus": 3,
+      "cunning": 1
+    },
+    "description": "Mechero fiable, llave engrasada. Recarga sin jurar demasiado.",
+    "assetId": "arma_023",
+    "rarity": "uncommon",
+    "tier": 2,
+    "footprint": {
+      "cols": 2,
+      "rows": 1
+    }
+  },
+  {
+    "id": "uncommon_arquebus_024",
+    "name": "Arcabuz con cureña corta 2",
+    "type": "arquebus",
+    "slot": "firearm",
+    "weight": 5.4,
+    "value": 88,
+    "stackable": false,
+    "effects": {
+      "arquebus": 3,
+      "cunning": 1
+    },
+    "description": "Mechero fiable, llave engrasada. Recarga sin jurar demasiado.",
+    "assetId": "arma_024",
+    "rarity": "uncommon",
+    "tier": 2,
+    "footprint": {
+      "cols": 2,
+      "rows": 1
+    }
+  },
+  {
+    "id": "uncommon_pike_025",
+    "name": "Pica reforzada con aro 1",
+    "type": "pike",
+    "slot": "main_hand",
+    "weight": 4.7,
+    "value": 90,
+    "stackable": false,
+    "effects": {
+      "pike": 2,
+      "discipline": 1
+    },
+    "description": "Asta recta, contrapesada, mejor empuñadura y regatón de hierro.",
+    "assetId": "arma_025",
+    "rarity": "uncommon",
+    "tier": 2,
+    "footprint": {
+      "cols": 2,
+      "rows": 1
+    }
+  },
+  {
+    "id": "uncommon_pike_026",
+    "name": "Pica reforzada con aro 2",
+    "type": "pike",
+    "slot": "main_hand",
+    "weight": 4.7,
+    "value": 92,
+    "stackable": false,
+    "effects": {
+      "pike": 2,
+      "discipline": 1
+    },
+    "description": "Asta recta, contrapesada, mejor empuñadura y regatón de hierro.",
+    "assetId": "arma_026",
+    "rarity": "uncommon",
+    "tier": 2,
+    "footprint": {
+      "cols": 2,
+      "rows": 1
+    }
+  },
+  {
+    "id": "uncommon_pike_027",
+    "name": "Pica de asta de haya",
+    "type": "pike",
+    "slot": "main_hand",
+    "weight": 4.7,
+    "value": 94,
+    "stackable": false,
+    "effects": {
+      "pike": 2,
+      "discipline": 1
+    },
+    "description": "Asta recta, contrapesada, mejor empuñadura y regatón de hierro.",
+    "assetId": "arma_027",
+    "rarity": "uncommon",
+    "tier": 2,
+    "footprint": {
+      "cols": 2,
+      "rows": 1
+    }
+  },
+  {
+    "id": "uncommon_sword_028",
+    "name": "Espada ancha de Flandes 1",
+    "type": "sword",
+    "slot": "main_hand",
+    "weight": 1.3,
+    "value": 96,
+    "stackable": false,
+    "effects": {
+      "sword": 2,
+      "cunning": 1
+    },
+    "description": "Hoja larga, cazoleta o gavilanes, el peso va adelante.",
+    "assetId": "arma_028",
+    "rarity": "uncommon",
+    "tier": 2,
+    "footprint": {
+      "cols": 1,
+      "rows": 1
+    }
+  },
+  {
+    "id": "uncommon_sword_029",
+    "name": "Espada ancha de Flandes 2",
+    "type": "sword",
+    "slot": "main_hand",
+    "weight": 1.3,
+    "value": 98,
+    "stackable": false,
+    "effects": {
+      "sword": 2,
+      "cunning": 1
+    },
+    "description": "Hoja larga, cazoleta o gavilanes, el peso va adelante.",
+    "assetId": "arma_029",
+    "rarity": "uncommon",
+    "tier": 2,
+    "footprint": {
+      "cols": 1,
+      "rows": 1
+    }
+  },
+  {
+    "id": "uncommon_sword_030",
+    "name": "Espada con vaina de cuero",
+    "type": "sword",
+    "slot": "main_hand",
+    "weight": 1.3,
+    "value": 100,
+    "stackable": false,
+    "effects": {
+      "sword": 2,
+      "cunning": 1
+    },
+    "description": "Hoja larga, cazoleta o gavilanes, el peso va adelante.",
+    "assetId": "arma_030",
+    "rarity": "uncommon",
+    "tier": 2,
+    "footprint": {
+      "cols": 1,
+      "rows": 1
+    }
+  },
+  {
+    "id": "rare_pike_031",
+    "name": "Pica de sargento 1",
+    "type": "pike",
+    "slot": "main_hand",
+    "weight": 4.7,
+    "value": 203,
+    "stackable": false,
+    "effects": {
+      "pike": 3,
+      "discipline": 1
+    },
+    "description": "Pica de oficial, balance mejor, hierro de mejor temple.",
+    "assetId": "arma_031",
+    "rarity": "rare",
+    "tier": 3,
+    "passives": [
+      {
+        "id": "linea_de_picas",
+        "name": "Línea de Picas",
+        "description": "+1 pica con disciplina ≥4",
+        "trigger": "passive",
+        "effect": {
+          "pike": 1
+        }
+      }
+    ],
+    "footprint": {
+      "cols": 2,
+      "rows": 1
+    }
+  },
+  {
+    "id": "rare_pike_032",
+    "name": "Pica de sargento 2",
+    "type": "pike",
+    "slot": "main_hand",
+    "weight": 4.7,
+    "value": 206,
+    "stackable": false,
+    "effects": {
+      "pike": 3,
+      "discipline": 1
+    },
+    "description": "Pica de oficial, balance mejor, hierro de mejor temple.",
+    "assetId": "arma_032",
+    "rarity": "rare",
+    "tier": 3,
+    "passives": [
+      {
+        "id": "linea_de_picas",
+        "name": "Línea de Picas",
+        "description": "+1 pica con disciplina ≥4",
+        "trigger": "passive",
+        "effect": {
+          "pike": 1
+        }
+      }
+    ],
+    "footprint": {
+      "cols": 2,
+      "rows": 1
+    }
+  },
+  {
+    "id": "rare_pike_033",
+    "name": "Pica con banderín 1",
+    "type": "pike",
+    "slot": "main_hand",
+    "weight": 4.7,
+    "value": 209,
+    "stackable": false,
+    "effects": {
+      "pike": 3,
+      "discipline": 1
+    },
+    "description": "Pica de oficial, balance mejor, hierro de mejor temple.",
+    "assetId": "arma_033",
+    "rarity": "rare",
+    "tier": 3,
+    "passives": [
+      {
+        "id": "linea_de_picas",
+        "name": "Línea de Picas",
+        "description": "+1 pica con disciplina ≥4",
+        "trigger": "passive",
+        "effect": {
+          "pike": 1
+        }
+      }
+    ],
+    "footprint": {
+      "cols": 2,
+      "rows": 1
+    }
+  },
+  {
+    "id": "rare_pike_034",
+    "name": "Pica con banderín 2",
+    "type": "pike",
+    "slot": "main_hand",
+    "weight": 4.7,
+    "value": 212,
+    "stackable": false,
+    "effects": {
+      "pike": 3,
+      "discipline": 1
+    },
+    "description": "Pica de oficial, balance mejor, hierro de mejor temple.",
+    "assetId": "arma_034",
+    "rarity": "rare",
+    "tier": 3,
+    "passives": [
+      {
+        "id": "linea_de_picas",
+        "name": "Línea de Picas",
+        "description": "+1 pica con disciplina ≥4",
+        "trigger": "passive",
+        "effect": {
+          "pike": 1
+        }
+      }
+    ],
+    "footprint": {
+      "cols": 2,
+      "rows": 1
+    }
+  },
+  {
+    "id": "rare_pike_035",
+    "name": "Pica de escolta",
+    "type": "pike",
+    "slot": "main_hand",
+    "weight": 4.7,
+    "value": 215,
+    "stackable": false,
+    "effects": {
+      "pike": 3,
+      "discipline": 1
+    },
+    "description": "Pica de oficial, balance mejor, hierro de mejor temple.",
+    "assetId": "arma_035",
+    "rarity": "rare",
+    "tier": 3,
+    "passives": [
+      {
+        "id": "linea_de_picas",
+        "name": "Línea de Picas",
+        "description": "+1 pica con disciplina ≥4",
+        "trigger": "passive",
+        "effect": {
+          "pike": 1
+        }
+      }
+    ],
+    "footprint": {
+      "cols": 2,
+      "rows": 1
+    }
+  },
+  {
+    "id": "rare_sword_036",
+    "name": "Espada de oficial 1",
+    "type": "sword",
+    "slot": "main_hand",
+    "weight": 1.3,
+    "value": 218,
+    "stackable": false,
+    "effects": {
+      "sword": 3,
+      "discipline": 1
+    },
+    "description": "Acero de Toledo, gavilanes curvados. Ya tiene nombre.",
+    "assetId": "arma_036",
+    "rarity": "rare",
+    "tier": 3,
+    "passives": [
+      {
+        "id": "silencio_de_verdugo",
+        "name": "Silencio de Verdugo",
+        "description": "+1 espada en el primer golpe",
+        "trigger": "on_hit",
+        "effect": {
+          "sword": 1
+        }
+      }
+    ],
+    "footprint": {
+      "cols": 1,
+      "rows": 1
+    }
+  },
+  {
+    "id": "rare_sword_037",
+    "name": "Espada de oficial 2",
+    "type": "sword",
+    "slot": "main_hand",
+    "weight": 1.3,
+    "value": 221,
+    "stackable": false,
+    "effects": {
+      "sword": 3,
+      "discipline": 1
+    },
+    "description": "Acero de Toledo, gavilanes curvados. Ya tiene nombre.",
+    "assetId": "arma_037",
+    "rarity": "rare",
+    "tier": 3,
+    "passives": [
+      {
+        "id": "silencio_de_verdugo",
+        "name": "Silencio de Verdugo",
+        "description": "+1 espada en el primer golpe",
+        "trigger": "on_hit",
+        "effect": {
+          "sword": 1
+        }
+      }
+    ],
+    "footprint": {
+      "cols": 1,
+      "rows": 1
+    }
+  },
+  {
+    "id": "rare_sword_038",
+    "name": "Espada de la vieja escuela 1",
+    "type": "sword",
+    "slot": "main_hand",
+    "weight": 1.3,
+    "value": 224,
+    "stackable": false,
+    "effects": {
+      "sword": 3,
+      "discipline": 1
+    },
+    "description": "Acero de Toledo, gavilanes curvados. Ya tiene nombre.",
+    "assetId": "arma_038",
+    "rarity": "rare",
+    "tier": 3,
+    "passives": [
+      {
+        "id": "silencio_de_verdugo",
+        "name": "Silencio de Verdugo",
+        "description": "+1 espada en el primer golpe",
+        "trigger": "on_hit",
+        "effect": {
+          "sword": 1
+        }
+      }
+    ],
+    "footprint": {
+      "cols": 1,
+      "rows": 1
+    }
+  },
+  {
+    "id": "rare_sword_039",
+    "name": "Espada de la vieja escuela 2",
+    "type": "sword",
+    "slot": "main_hand",
+    "weight": 1.3,
+    "value": 227,
+    "stackable": false,
+    "effects": {
+      "sword": 3,
+      "discipline": 1
+    },
+    "description": "Acero de Toledo, gavilanes curvados. Ya tiene nombre.",
+    "assetId": "arma_039",
+    "rarity": "rare",
+    "tier": 3,
+    "passives": [
+      {
+        "id": "silencio_de_verdugo",
+        "name": "Silencio de Verdugo",
+        "description": "+1 espada en el primer golpe",
+        "trigger": "on_hit",
+        "effect": {
+          "sword": 1
+        }
+      }
+    ],
+    "footprint": {
+      "cols": 1,
+      "rows": 1
+    }
+  },
+  {
+    "id": "rare_sword_040",
+    "name": "Espada con grabados",
+    "type": "sword",
+    "slot": "main_hand",
+    "weight": 1.3,
+    "value": 230,
+    "stackable": false,
+    "effects": {
+      "sword": 3,
+      "discipline": 1
+    },
+    "description": "Acero de Toledo, gavilanes curvados. Ya tiene nombre.",
+    "assetId": "arma_040",
+    "rarity": "rare",
+    "tier": 3,
+    "passives": [
+      {
+        "id": "silencio_de_verdugo",
+        "name": "Silencio de Verdugo",
+        "description": "+1 espada en el primer golpe",
+        "trigger": "on_hit",
+        "effect": {
+          "sword": 1
+        }
+      }
+    ],
+    "footprint": {
+      "cols": 1,
+      "rows": 1
+    }
+  },
+  {
+    "id": "rare_arquebus_041",
+    "name": "Arcabuz de la guardia 1",
+    "type": "arquebus",
+    "slot": "firearm",
+    "weight": 5.4,
+    "value": 233,
+    "stackable": false,
+    "effects": {
+      "arquebus": 4,
+      "cunning": 1
+    },
+    "description": "Mechero de pistón, recarga fiable en lluvia fina.",
+    "assetId": "arma_041",
+    "rarity": "rare",
+    "tier": 3,
+    "passives": [
+      {
+        "id": "tiro_certero",
+        "name": "Tiro Certero",
+        "description": "+1 arcabuz, mejor en niebla",
+        "trigger": "passive",
+        "effect": {
+          "arquebus": 1
+        }
+      }
+    ],
+    "footprint": {
+      "cols": 2,
+      "rows": 1
+    }
+  },
+  {
+    "id": "rare_arquebus_042",
+    "name": "Arcabuz de la guardia 2",
+    "type": "arquebus",
+    "slot": "firearm",
+    "weight": 5.4,
+    "value": 236,
+    "stackable": false,
+    "effects": {
+      "arquebus": 4,
+      "cunning": 1
+    },
+    "description": "Mechero de pistón, recarga fiable en lluvia fina.",
+    "assetId": "arma_042",
+    "rarity": "rare",
+    "tier": 3,
+    "passives": [
+      {
+        "id": "tiro_certero",
+        "name": "Tiro Certero",
+        "description": "+1 arcabuz, mejor en niebla",
+        "trigger": "passive",
+        "effect": {
+          "arquebus": 1
+        }
+      }
+    ],
+    "footprint": {
+      "cols": 2,
+      "rows": 1
+    }
+  },
+  {
+    "id": "rare_arquebus_043",
+    "name": "Mosquete de rueda 1",
+    "type": "arquebus",
+    "slot": "firearm",
+    "weight": 5.4,
+    "value": 239,
+    "stackable": false,
+    "effects": {
+      "arquebus": 4,
+      "cunning": 1
+    },
+    "description": "Mechero de pistón, recarga fiable en lluvia fina.",
+    "assetId": "arma_043",
+    "rarity": "rare",
+    "tier": 3,
+    "passives": [
+      {
+        "id": "tiro_certero",
+        "name": "Tiro Certero",
+        "description": "+1 arcabuz, mejor en niebla",
+        "trigger": "passive",
+        "effect": {
+          "arquebus": 1
+        }
+      }
+    ],
+    "footprint": {
+      "cols": 2,
+      "rows": 1
+    }
+  },
+  {
+    "id": "rare_arquebus_044",
+    "name": "Mosquete de rueda 2",
+    "type": "arquebus",
+    "slot": "firearm",
+    "weight": 5.4,
+    "value": 242,
+    "stackable": false,
+    "effects": {
+      "arquebus": 4,
+      "cunning": 1
+    },
+    "description": "Mechero de pistón, recarga fiable en lluvia fina.",
+    "assetId": "arma_044",
+    "rarity": "rare",
+    "tier": 3,
+    "passives": [
+      {
+        "id": "tiro_certero",
+        "name": "Tiro Certero",
+        "description": "+1 arcabuz, mejor en niebla",
+        "trigger": "passive",
+        "effect": {
+          "arquebus": 1
+        }
+      }
+    ],
+    "footprint": {
+      "cols": 2,
+      "rows": 1
+    }
+  },
+  {
+    "id": "rare_sword_045",
+    "name": "Daga de misericordia 1",
+    "type": "sword",
+    "slot": "main_hand",
+    "weight": 1.3,
+    "value": 245,
+    "stackable": false,
+    "effects": {
+      "sword": 3,
+      "discipline": 1
+    },
+    "description": "Hoja corta, contrapesada. Cosa de oficiales y deudos.",
+    "assetId": "arma_045",
+    "rarity": "rare",
+    "tier": 3,
+    "passives": [
+      {
+        "id": "silencio_de_verdugo",
+        "name": "Silencio de Verdugo",
+        "description": "+1 espada en el primer golpe",
+        "trigger": "on_hit",
+        "effect": {
+          "sword": 1
+        }
+      }
+    ],
+    "footprint": {
+      "cols": 1,
+      "rows": 1
+    }
+  },
+  {
+    "id": "rare_sword_046",
+    "name": "Daga de misericordia 2",
+    "type": "sword",
+    "slot": "main_hand",
+    "weight": 1.3,
+    "value": 248,
+    "stackable": false,
+    "effects": {
+      "sword": 3,
+      "discipline": 1
+    },
+    "description": "Hoja corta, contrapesada. Cosa de oficiales y deudos.",
+    "assetId": "arma_046",
+    "rarity": "rare",
+    "tier": 3,
+    "passives": [
+      {
+        "id": "silencio_de_verdugo",
+        "name": "Silencio de Verdugo",
+        "description": "+1 espada en el primer golpe",
+        "trigger": "on_hit",
+        "effect": {
+          "sword": 1
+        }
+      }
+    ],
+    "footprint": {
+      "cols": 1,
+      "rows": 1
+    }
+  },
+  {
+    "id": "rare_sword_047",
+    "name": "Hacha de mano 1",
+    "type": "sword",
+    "slot": "main_hand",
+    "weight": 1.3,
+    "value": 251,
+    "stackable": false,
+    "effects": {
+      "sword": 3,
+      "discipline": 1
+    },
+    "description": "Hoja corta, contrapesada. Cosa de oficiales y deudos.",
+    "assetId": "arma_047",
+    "rarity": "rare",
+    "tier": 3,
+    "passives": [
+      {
+        "id": "silencio_de_verdugo",
+        "name": "Silencio de Verdugo",
+        "description": "+1 espada en el primer golpe",
+        "trigger": "on_hit",
+        "effect": {
+          "sword": 1
+        }
+      }
+    ],
+    "footprint": {
+      "cols": 1,
+      "rows": 1
+    }
+  },
+  {
+    "id": "rare_sword_048",
+    "name": "Hacha de mano 2",
+    "type": "sword",
+    "slot": "main_hand",
+    "weight": 1.3,
+    "value": 254,
+    "stackable": false,
+    "effects": {
+      "sword": 3,
+      "discipline": 1
+    },
+    "description": "Hoja corta, contrapesada. Cosa de oficiales y deudos.",
+    "assetId": "arma_048",
+    "rarity": "rare",
+    "tier": 3,
+    "passives": [
+      {
+        "id": "silencio_de_verdugo",
+        "name": "Silencio de Verdugo",
+        "description": "+1 espada en el primer golpe",
+        "trigger": "on_hit",
+        "effect": {
+          "sword": 1
+        }
+      }
+    ],
+    "footprint": {
+      "cols": 1,
+      "rows": 1
+    }
+  },
+  {
+    "id": "rare_pike_049",
+    "name": "Pica roblonada 1",
+    "type": "pike",
+    "slot": "main_hand",
+    "weight": 4.7,
+    "value": 257,
+    "stackable": false,
+    "effects": {
+      "pike": 3,
+      "discipline": 1
+    },
+    "description": "Pica de oficial, balance mejor, hierro de mejor temple.",
+    "assetId": "arma_049",
+    "rarity": "rare",
+    "tier": 3,
+    "passives": [
+      {
+        "id": "linea_de_picas",
+        "name": "Línea de Picas",
+        "description": "+1 pica con disciplina ≥4",
+        "trigger": "passive",
+        "effect": {
+          "pike": 1
+        }
+      }
+    ],
+    "footprint": {
+      "cols": 2,
+      "rows": 1
+    }
+  },
+  {
+    "id": "rare_pike_050",
+    "name": "Pica roblonada 2",
+    "type": "pike",
+    "slot": "main_hand",
+    "weight": 4.7,
+    "value": 260,
+    "stackable": false,
+    "effects": {
+      "pike": 3,
+      "discipline": 1
+    },
+    "description": "Pica de oficial, balance mejor, hierro de mejor temple.",
+    "assetId": "arma_050",
+    "rarity": "rare",
+    "tier": 3,
+    "passives": [
+      {
+        "id": "linea_de_picas",
+        "name": "Línea de Picas",
+        "description": "+1 pica con disciplina ≥4",
+        "trigger": "passive",
+        "effect": {
+          "pike": 1
+        }
+      }
+    ],
+    "footprint": {
+      "cols": 2,
+      "rows": 1
+    }
+  },
+  {
+    "id": "epic_pike_051",
+    "name": "Pica de Flandes",
+    "type": "pike",
+    "slot": "main_hand",
+    "weight": 4.7,
+    "value": 484,
+    "stackable": false,
+    "effects": {
+      "pike": 4,
+      "discipline": 2
+    },
+    "description": "Asta noble, contrapesada y firmada por el armero del tercio.",
+    "assetId": "arma_051",
+    "rarity": "epic",
+    "tier": 4,
+    "passives": [
+      {
+        "id": "linea_de_picas",
+        "name": "Línea de Picas",
+        "description": "+2 pica con disciplina ≥4",
+        "trigger": "passive",
+        "effect": {
+          "pike": 2
+        }
+      },
+      {
+        "id": "bendicion_del_capellan",
+        "name": "Bendición del Capellán",
+        "description": "+1 honor al cerrar misión",
+        "trigger": "on_mission_end",
+        "effect": {
+          "honor": 1
+        }
+      }
+    ],
+    "requirements": {
+      "minRank": "cabo_de_escuadra",
+      "minHonor": 18
+    },
+    "footprint": {
+      "cols": 2,
+      "rows": 1
+    }
+  },
+  {
+    "id": "epic_pike_052",
+    "name": "Pica del Luto",
+    "type": "pike",
+    "slot": "main_hand",
+    "weight": 4.7,
+    "value": 488,
+    "stackable": false,
+    "effects": {
+      "pike": 4,
+      "discipline": 1
+    },
+    "description": "Asta noble, contrapesada y firmada por el armero del tercio.",
+    "assetId": "arma_052",
+    "rarity": "epic",
+    "tier": 4,
+    "passives": [
+      {
+        "id": "furia_del_tercio",
+        "name": "Furia del Tercio",
+        "description": "+2 pica/+2 espada con vigor ≥3",
+        "trigger": "on_hit",
+        "effect": {
+          "pike": 2,
+          "sword": 2
+        }
+      }
+    ],
+    "requirements": {
+      "minRank": "cabo_de_escuadra",
+      "minHonor": 18
+    },
+    "footprint": {
+      "cols": 2,
+      "rows": 1
+    }
+  },
+  {
+    "id": "epic_pike_053",
+    "name": "Pica de Hierrosanti",
+    "type": "pike",
+    "slot": "main_hand",
+    "weight": 4.7,
+    "value": 492,
+    "stackable": false,
+    "effects": {
+      "pike": 4,
+      "discipline": 1
+    },
+    "description": "Asta noble, contrapesada y firmada por el armero del tercio.",
+    "assetId": "arma_053",
+    "rarity": "epic",
+    "tier": 4,
+    "passives": [
+      {
+        "id": "linea_de_picas",
+        "name": "Línea de Picas",
+        "description": "+1 pica con disciplina ≥4",
+        "trigger": "passive",
+        "effect": {
+          "pike": 1
+        }
+      },
+      {
+        "id": "hierro_de_flandes",
+        "name": "Hierro de Flandes",
+        "description": "15% ignora herida grave",
+        "trigger": "on_wound",
+        "effect": {
+          "chance": 0.15
+        }
+      }
+    ],
+    "requirements": {
+      "minRank": "cabo_de_escuadra",
+      "minHonor": 18
+    },
+    "footprint": {
+      "cols": 2,
+      "rows": 1
+    }
+  },
+  {
+    "id": "epic_sword_054",
+    "name": "Espada del Maestre",
+    "type": "sword",
+    "slot": "main_hand",
+    "weight": 1.3,
+    "value": 496,
+    "stackable": false,
+    "effects": {
+      "sword": 4,
+      "honor": 0
+    },
+    "description": "Hoja con nombre, vaina de cuero repujado. Pide respeto.",
+    "assetId": "arma_054",
+    "rarity": "epic",
+    "tier": 4,
+    "passives": [
+      {
+        "id": "mirada_del_capitan",
+        "name": "Mirada del Capitán",
+        "description": "+1 mando, los reclutas te miran",
+        "trigger": "passive",
+        "effect": {
+          "command": 1
+        }
+      },
+      {
+        "id": "silencio_de_verdugo",
+        "name": "Silencio de Verdugo",
+        "description": "+2 espada en el primer golpe",
+        "trigger": "on_hit",
+        "effect": {
+          "sword": 2
+        }
+      }
+    ],
+    "requirements": {
+      "minRank": "cabo_de_escuadra",
+      "minHonor": 18
+    },
+    "footprint": {
+      "cols": 1,
+      "rows": 1
+    }
+  },
+  {
+    "id": "epic_sword_055",
+    "name": "Tizona de la Compañía",
+    "type": "sword",
+    "slot": "main_hand",
+    "weight": 1.3,
+    "value": 500,
+    "stackable": false,
+    "effects": {
+      "sword": 4,
+      "honor": 1
+    },
+    "description": "Hoja con nombre, vaina de cuero repujado. Pide respeto.",
+    "assetId": "arma_055",
+    "rarity": "epic",
+    "tier": 4,
+    "passives": [
+      {
+        "id": "sangre_y_barro",
+        "name": "Sangre y Barro",
+        "description": "+1 vigor al matar (2 turnos)",
+        "trigger": "on_kill",
+        "effect": {
+          "vigor": 1,
+          "duration": 2
+        }
+      },
+      {
+        "id": "relicario_de_sangre",
+        "name": "Relicario de Sangre",
+        "description": "+1 honor pasivo",
+        "trigger": "passive",
+        "effect": {
+          "honor": 1
+        }
+      }
+    ],
+    "requirements": {
+      "minRank": "cabo_de_escuadra",
+      "minHonor": 18
+    },
+    "footprint": {
+      "cols": 1,
+      "rows": 1
+    }
+  },
+  {
+    "id": "epic_sword_056",
+    "name": "Espada de los Tercios Viejos",
+    "type": "sword",
+    "slot": "main_hand",
+    "weight": 1.3,
+    "value": 504,
+    "stackable": false,
+    "effects": {
+      "sword": 4,
+      "honor": 0
+    },
+    "description": "Hoja con nombre, vaina de cuero repujado. Pide respeto.",
+    "assetId": "arma_056",
+    "rarity": "epic",
+    "tier": 4,
+    "passives": [
+      {
+        "id": "silencio_de_verdugo",
+        "name": "Silencio de Verdugo",
+        "description": "+1 espada en el primer golpe",
+        "trigger": "on_hit",
+        "effect": {
+          "sword": 1
+        }
+      },
+      {
+        "id": "escudo_de_hierro",
+        "name": "Escudo de Hierro",
+        "description": "+1 vigor, -5% wound chance",
+        "trigger": "passive",
+        "effect": {
+          "vigor": 1
+        }
+      }
+    ],
+    "requirements": {
+      "minRank": "cabo_de_escuadra",
+      "minHonor": 18
+    },
+    "footprint": {
+      "cols": 1,
+      "rows": 1
+    }
+  },
+  {
+    "id": "epic_arquebus_057",
+    "name": "Arcabuz de la Guardia",
+    "type": "arquebus",
+    "slot": "firearm",
+    "weight": 5.4,
+    "value": 508,
+    "stackable": false,
+    "effects": {
+      "arquebus": 5,
+      "cunning": 1
+    },
+    "description": "Llave de pistón, mira de hierro, madera de nogal.",
+    "assetId": "arma_057",
+    "rarity": "epic",
+    "tier": 4,
+    "passives": [
+      {
+        "id": "tiro_certero",
+        "name": "Tiro Certero",
+        "description": "+2 arcabuz, mejor en niebla",
+        "trigger": "passive",
+        "effect": {
+          "arquebus": 2
+        }
+      },
+      {
+        "id": "ojo_de_halcon",
+        "name": "Ojo de Halcón",
+        "description": "+1 astucia, detecta emboscadas",
+        "trigger": "passive",
+        "effect": {
+          "cunning": 1
+        }
+      }
+    ],
+    "requirements": {
+      "minRank": "cabo_de_escuadra",
+      "minHonor": 18
+    },
+    "footprint": {
+      "cols": 2,
+      "rows": 1
+    }
+  },
+  {
+    "id": "epic_arquebus_058",
+    "name": "Mosquete de Asedio",
+    "type": "arquebus",
+    "slot": "firearm",
+    "weight": 5.4,
+    "value": 512,
+    "stackable": false,
+    "effects": {
+      "arquebus": 6,
+      "vigor": -1
+    },
+    "description": "Llave de pistón, mira de hierro, madera de nogal.",
+    "assetId": "arma_058",
+    "rarity": "epic",
+    "tier": 4,
+    "passives": [
+      {
+        "id": "tiro_certero",
+        "name": "Tiro Certero",
+        "description": "+2 arcabuz, mejor en niebla",
+        "trigger": "passive",
+        "effect": {
+          "arquebus": 2
+        }
+      }
+    ],
+    "requirements": {
+      "minRank": "cabo_de_escuadra",
+      "minHonor": 18
+    },
+    "footprint": {
+      "cols": 2,
+      "rows": 1
+    }
+  },
+  {
+    "id": "epic_arquebus_059",
+    "name": "Arcabuz del Francés",
+    "type": "arquebus",
+    "slot": "firearm",
+    "weight": 5.4,
+    "value": 516,
+    "stackable": false,
+    "effects": {
+      "arquebus": 5,
+      "cunning": 1
+    },
+    "description": "Llave de pistón, mira de hierro, madera de nogal.",
+    "assetId": "arma_059",
+    "rarity": "epic",
+    "tier": 4,
+    "passives": [
+      {
+        "id": "tiro_certero",
+        "name": "Tiro Certero",
+        "description": "+1 arcabuz, mejor en niebla",
+        "trigger": "passive",
+        "effect": {
+          "arquebus": 1
+        }
+      },
+      {
+        "id": "hierro_de_flandes",
+        "name": "Hierro de Flandes",
+        "description": "15% ignora herida grave",
+        "trigger": "on_wound",
+        "effect": {
+          "chance": 0.15
+        }
+      }
+    ],
+    "requirements": {
+      "minRank": "cabo_de_escuadra",
+      "minHonor": 18
+    },
+    "footprint": {
+      "cols": 2,
+      "rows": 1
+    }
+  },
+  {
+    "id": "epic_sword_060",
+    "name": "Daga de Verdugo",
+    "type": "sword",
+    "slot": "main_hand",
+    "weight": 1.3,
+    "value": 520,
+    "stackable": false,
+    "effects": {
+      "sword": 4,
+      "honor": 0
+    },
+    "description": "Hoja corta, contrapesada. Cosa de oficiales y deudos.",
+    "assetId": "arma_060",
+    "rarity": "epic",
+    "tier": 4,
+    "passives": [
+      {
+        "id": "silencio_de_verdugo",
+        "name": "Silencio de Verdugo",
+        "description": "+1 espada en el primer golpe",
+        "trigger": "on_hit",
+        "effect": {
+          "sword": 1
+        }
+      },
+      {
+        "id": "escudo_de_hierro",
+        "name": "Escudo de Hierro",
+        "description": "+1 vigor, -5% wound chance",
+        "trigger": "passive",
+        "effect": {
+          "vigor": 1
+        }
+      }
+    ],
+    "requirements": {
+      "minRank": "cabo_de_escuadra",
+      "minHonor": 18
+    },
+    "footprint": {
+      "cols": 1,
+      "rows": 1
+    }
+  },
+  {
+    "id": "epic_pike_061",
+    "name": "Hacha de la Guardia",
+    "type": "pike",
+    "slot": "main_hand",
+    "weight": 4.7,
+    "value": 524,
+    "stackable": false,
+    "effects": {
+      "pike": 4,
+      "discipline": 1
+    },
+    "description": "Asta noble, contrapesada y firmada por el armero del tercio.",
+    "assetId": "arma_061",
+    "rarity": "epic",
+    "tier": 4,
+    "passives": [
+      {
+        "id": "linea_de_picas",
+        "name": "Línea de Picas",
+        "description": "+1 pica con disciplina ≥4",
+        "trigger": "passive",
+        "effect": {
+          "pike": 1
+        }
+      },
+      {
+        "id": "hierro_de_flandes",
+        "name": "Hierro de Flandes",
+        "description": "15% ignora herida grave",
+        "trigger": "on_wound",
+        "effect": {
+          "chance": 0.15
+        }
+      }
+    ],
+    "requirements": {
+      "minRank": "cabo_de_escuadra",
+      "minHonor": 18
+    },
+    "footprint": {
+      "cols": 2,
+      "rows": 1
+    }
+  },
+  {
+    "id": "epic_pike_062",
+    "name": "Lanza del Capitán",
+    "type": "pike",
+    "slot": "main_hand",
+    "weight": 4.7,
+    "value": 528,
+    "stackable": false,
+    "effects": {
+      "pike": 4,
+      "discipline": 1
+    },
+    "description": "Asta noble, contrapesada y firmada por el armero del tercio.",
+    "assetId": "arma_062",
+    "rarity": "epic",
+    "tier": 4,
+    "passives": [
+      {
+        "id": "linea_de_picas",
+        "name": "Línea de Picas",
+        "description": "+1 pica con disciplina ≥4",
+        "trigger": "passive",
+        "effect": {
+          "pike": 1
+        }
+      },
+      {
+        "id": "hierro_de_flandes",
+        "name": "Hierro de Flandes",
+        "description": "15% ignora herida grave",
+        "trigger": "on_wound",
+        "effect": {
+          "chance": 0.15
+        }
+      }
+    ],
+    "requirements": {
+      "minRank": "cabo_de_escuadra",
+      "minHonor": 18
+    },
+    "footprint": {
+      "cols": 2,
+      "rows": 1
+    }
+  },
+  {
+    "id": "epic_sword_063",
+    "name": "Espada del Sargento",
+    "type": "sword",
+    "slot": "main_hand",
+    "weight": 1.3,
+    "value": 532,
+    "stackable": false,
+    "effects": {
+      "sword": 4,
+      "honor": 0
+    },
+    "description": "Hoja con nombre, vaina de cuero repujado. Pide respeto.",
+    "assetId": "arma_063",
+    "rarity": "epic",
+    "tier": 4,
+    "passives": [
+      {
+        "id": "silencio_de_verdugo",
+        "name": "Silencio de Verdugo",
+        "description": "+1 espada en el primer golpe",
+        "trigger": "on_hit",
+        "effect": {
+          "sword": 1
+        }
+      },
+      {
+        "id": "escudo_de_hierro",
+        "name": "Escudo de Hierro",
+        "description": "+1 vigor, -5% wound chance",
+        "trigger": "passive",
+        "effect": {
+          "vigor": 1
+        }
+      }
+    ],
+    "requirements": {
+      "minRank": "cabo_de_escuadra",
+      "minHonor": 18
+    },
+    "footprint": {
+      "cols": 1,
+      "rows": 1
+    }
+  },
+  {
+    "id": "epic_arquebus_064",
+    "name": "Mosquete del Cazador",
+    "type": "arquebus",
+    "slot": "firearm",
+    "weight": 5.4,
+    "value": 536,
+    "stackable": false,
+    "effects": {
+      "arquebus": 5,
+      "cunning": 1
+    },
+    "description": "Llave de pistón, mira de hierro, madera de nogal.",
+    "assetId": "arma_064",
+    "rarity": "epic",
+    "tier": 4,
+    "passives": [
+      {
+        "id": "tiro_certero",
+        "name": "Tiro Certero",
+        "description": "+1 arcabuz, mejor en niebla",
+        "trigger": "passive",
+        "effect": {
+          "arquebus": 1
+        }
+      },
+      {
+        "id": "hierro_de_flandes",
+        "name": "Hierro de Flandes",
+        "description": "15% ignora herida grave",
+        "trigger": "on_wound",
+        "effect": {
+          "chance": 0.15
+        }
+      }
+    ],
+    "requirements": {
+      "minRank": "cabo_de_escuadra",
+      "minHonor": 18
+    },
+    "footprint": {
+      "cols": 2,
+      "rows": 1
+    }
+  },
+  {
+    "id": "epic_pike_065",
+    "name": "Pica con Banderín",
+    "type": "pike",
+    "slot": "main_hand",
+    "weight": 4.7,
+    "value": 540,
+    "stackable": false,
+    "effects": {
+      "pike": 4,
+      "discipline": 1
+    },
+    "description": "Asta noble, contrapesada y firmada por el armero del tercio.",
+    "assetId": "arma_065",
+    "rarity": "epic",
+    "tier": 4,
+    "passives": [
+      {
+        "id": "linea_de_picas",
+        "name": "Línea de Picas",
+        "description": "+1 pica con disciplina ≥4",
+        "trigger": "passive",
+        "effect": {
+          "pike": 1
+        }
+      },
+      {
+        "id": "hierro_de_flandes",
+        "name": "Hierro de Flandes",
+        "description": "15% ignora herida grave",
+        "trigger": "on_wound",
+        "effect": {
+          "chance": 0.15
+        }
+      }
+    ],
+    "requirements": {
+      "minRank": "cabo_de_escuadra",
+      "minHonor": 18
+    },
+    "footprint": {
+      "cols": 2,
+      "rows": 1
+    }
+  },
+  {
+    "id": "legendary_pike_066",
+    "name": "Pica del Santo Oficio",
+    "type": "pike",
+    "slot": "main_hand",
+    "weight": 4.7,
+    "value": 1428,
+    "stackable": false,
+    "effects": {
+      "pike": 6,
+      "discipline": 2,
+      "honor": 2
+    },
+    "description": "Asta bendecida en la capilla del tercio. Quien la porta, no se rinde.",
+    "assetId": "arma_066",
+    "rarity": "legendary",
+    "tier": 5,
+    "passives": [
+      {
+        "id": "linea_de_picas",
+        "name": "Línea de Picas",
+        "description": "+3 pica con disciplina ≥4",
+        "trigger": "passive",
+        "effect": {
+          "pike": 3
+        }
+      },
+      {
+        "id": "bendicion_del_capellan",
+        "name": "Bendición del Capellán",
+        "description": "+2 honor al cerrar misión",
+        "trigger": "on_mission_end",
+        "effect": {
+          "honor": 2
+        }
+      },
+      {
+        "id": "relicario_de_sangre",
+        "name": "Relicario de Sangre",
+        "description": "+1 honor pasivo",
+        "trigger": "passive",
+        "effect": {
+          "honor": 1
+        }
+      }
+    ],
+    "requirements": {
+      "minRank": "alferez",
+      "minHonor": 50
+    },
+    "footprint": {
+      "cols": 2,
+      "rows": 1
+    }
+  },
+  {
+    "id": "legendary_sword_067",
+    "name": "Tizona del Tercio",
+    "type": "sword",
+    "slot": "main_hand",
+    "weight": 1.3,
+    "value": 1436,
+    "stackable": false,
+    "effects": {
+      "sword": 6,
+      "vigor": 2,
+      "honor": 1
+    },
+    "description": "Hoja forjada por un armero que ya no tiene nombre. Tres campañas ha visto.",
+    "assetId": "arma_067",
+    "rarity": "legendary",
+    "tier": 5,
+    "passives": [
+      {
+        "id": "silencio_de_verdugo",
+        "name": "Silencio de Verdugo",
+        "description": "+3 espada en el primer golpe",
+        "trigger": "on_hit",
+        "effect": {
+          "sword": 3
+        }
+      },
+      {
+        "id": "sangre_y_barro",
+        "name": "Sangre y Barro",
+        "description": "+1 vigor al matar (2 turnos)",
+        "trigger": "on_kill",
+        "effect": {
+          "vigor": 1,
+          "duration": 2
+        }
+      },
+      {
+        "id": "bendicion_del_capellan",
+        "name": "Bendición del Capellán",
+        "description": "+1 honor al cerrar misión",
+        "trigger": "on_mission_end",
+        "effect": {
+          "honor": 1
+        }
+      }
+    ],
+    "requirements": {
+      "minRank": "alferez",
+      "minHonor": 50
+    },
+    "footprint": {
+      "cols": 1,
+      "rows": 1
+    }
+  },
+  {
+    "id": "legendary_arquebus_068",
+    "name": "Mosquete del Maestre de Campo",
+    "type": "arquebus",
+    "slot": "firearm",
+    "weight": 5.4,
+    "value": 1444,
+    "stackable": false,
+    "effects": {
+      "arquebus": 7,
+      "cunning": 2,
+      "command": 1
+    },
+    "description": "Pieza única, heredada de un maestre caído. Sólo se rompe con su dueño.",
+    "assetId": "arma_068",
+    "rarity": "legendary",
+    "tier": 5,
+    "passives": [
+      {
+        "id": "tiro_certero",
+        "name": "Tiro Certero",
+        "description": "+3 arcabuz, mejor en niebla",
+        "trigger": "passive",
+        "effect": {
+          "arquebus": 3
+        }
+      },
+      {
+        "id": "mirada_del_capitan",
+        "name": "Mirada del Capitán",
+        "description": "+1 mando, los reclutas te miran",
+        "trigger": "passive",
+        "effect": {
+          "command": 1
+        }
+      },
+      {
+        "id": "hierro_de_flandes",
+        "name": "Hierro de Flandes",
+        "description": "15% ignora herida grave",
+        "trigger": "on_wound",
+        "effect": {
+          "chance": 0.15
+        }
+      }
+    ],
+    "requirements": {
+      "minRank": "alferez",
+      "minHonor": 50
+    },
+    "footprint": {
+      "cols": 2,
+      "rows": 1
+    }
+  },
+  {
+    "id": "legendary_pike_069",
+    "name": "Lanza del Capitán General",
+    "type": "pike",
+    "slot": "main_hand",
+    "weight": 4.7,
+    "value": 1452,
+    "stackable": false,
+    "effects": {
+      "pike": 5,
+      "sword": 2,
+      "command": 3,
+      "honor": 1
+    },
+    "description": "Asta bendecida en la capilla del tercio. Quien la porta, no se rinde.",
+    "assetId": "arma_069",
+    "rarity": "legendary",
+    "tier": 5,
+    "passives": [
+      {
+        "id": "linea_de_picas",
+        "name": "Línea de Picas",
+        "description": "+2 pica con disciplina ≥4",
+        "trigger": "passive",
+        "effect": {
+          "pike": 2
+        }
+      },
+      {
+        "id": "mirada_del_capitan",
+        "name": "Mirada del Capitán",
+        "description": "+1 mando, los reclutas te miran",
+        "trigger": "passive",
+        "effect": {
+          "command": 1
+        }
+      },
+      {
+        "id": "botin_de_muro",
+        "name": "Botín de Muro",
+        "description": "+20% monedas en botín",
+        "trigger": "on_loot",
+        "effect": {
+          "coins_pct": 0.2
+        }
+      }
+    ],
+    "requirements": {
+      "minRank": "alferez",
+      "minHonor": 50
+    },
+    "footprint": {
+      "cols": 2,
+      "rows": 1
+    }
+  },
+  {
+    "id": "legendary_sword_070",
+    "name": "Acero de los Tercios Viejos",
+    "type": "sword",
+    "slot": "main_hand",
+    "weight": 1.3,
+    "value": 1460,
+    "stackable": false,
+    "effects": {
+      "sword": 5,
+      "pike": 2,
+      "vigor": 2
+    },
+    "description": "Hoja forjada por un armero que ya no tiene nombre. Tres campañas ha visto.",
+    "assetId": "arma_070",
+    "rarity": "legendary",
+    "tier": 5,
+    "passives": [
+      {
+        "id": "silencio_de_verdugo",
+        "name": "Silencio de Verdugo",
+        "description": "+2 espada en el primer golpe",
+        "trigger": "on_hit",
+        "effect": {
+          "sword": 2
+        }
+      },
+      {
+        "id": "escudo_de_hierro",
+        "name": "Escudo de Hierro",
+        "description": "+2 vigor, -5% wound chance",
+        "trigger": "passive",
+        "effect": {
+          "vigor": 2
+        }
+      },
+      {
+        "id": "sangre_y_barro",
+        "name": "Sangre y Barro",
+        "description": "+1 vigor al matar (2 turnos)",
+        "trigger": "on_kill",
+        "effect": {
+          "vigor": 1,
+          "duration": 2
+        }
+      }
+    ],
+    "requirements": {
+      "minRank": "alferez",
+      "minHonor": 50
+    },
+    "footprint": {
+      "cols": 1,
+      "rows": 1
+    }
+  },
+  {
+    "id": "armadura_001",
+    "name": "Capacete de tropa genérico 1",
+    "type": "helmet",
+    "slot": "head",
+    "weight": 2,
+    "value": 12,
+    "stackable": false,
+    "effects": {
+      "vigor": 1,
+      "discipline": 0
+    },
+    "description": "Hierro de serie, ajuste de taller, ni mejor ni peor que los del lado.",
+    "assetId": "armadura_001",
+    "rarity": "common",
+    "tier": 1,
+    "footprint": {
+      "cols": 1,
+      "rows": 1
+    }
+  },
+  {
+    "id": "armadura_002",
+    "name": "Yelmo de milán genérico 2",
+    "type": "helmet",
+    "slot": "head",
+    "weight": 2,
+    "value": 16,
+    "stackable": false,
+    "effects": {
+      "vigor": 1,
+      "discipline": 0
+    },
+    "description": "Hierro de serie, ajuste de taller, ni mejor ni peor que los del lado.",
+    "assetId": "armadura_002",
+    "rarity": "common",
+    "tier": 1,
+    "footprint": {
+      "cols": 1,
+      "rows": 1
+    }
+  },
+  {
+    "id": "armadura_003",
+    "name": "Caperuza de acero genérico 3",
+    "type": "cuirass",
+    "slot": "body",
+    "weight": 7,
+    "value": 20,
+    "stackable": false,
+    "effects": {
+      "vigor": 2,
+      "discipline": 0
+    },
+    "description": "Acero de milán, sin grabados, talla común. Sirve.",
+    "assetId": "armadura_003",
+    "rarity": "common",
+    "tier": 1,
+    "footprint": {
+      "cols": 1,
+      "rows": 2
+    }
+  },
+  {
+    "id": "armadura_004",
+    "name": "Capacete con ala genérico 4",
+    "type": "cuirass",
+    "slot": "body",
+    "weight": 7,
+    "value": 24,
+    "stackable": false,
+    "effects": {
+      "vigor": 2,
+      "discipline": 0
+    },
+    "description": "Acero de milán, sin grabados, talla común. Sirve.",
+    "assetId": "armadura_004",
+    "rarity": "common",
+    "tier": 1,
+    "footprint": {
+      "cols": 1,
+      "rows": 2
+    }
+  },
+  {
+    "id": "armadura_005",
+    "name": "Peto genérico 5",
+    "type": "boots",
+    "slot": "boots",
+    "weight": 1.4,
+    "value": 28,
+    "stackable": false,
+    "effects": {
+      "vigor": 1,
+      "cunning": 0
+    },
+    "description": "Cuero encerado, suela claveteada. Marcha y barro.",
+    "assetId": "armadura_005",
+    "rarity": "common",
+    "tier": 1,
+    "footprint": {
+      "cols": 1,
+      "rows": 1
+    }
+  },
+  {
+    "id": "armadura_006",
+    "name": "Coraza genérico 6",
+    "type": "boots",
+    "slot": "boots",
+    "weight": 1.4,
+    "value": 32,
+    "stackable": false,
+    "effects": {
+      "vigor": 1,
+      "cunning": 0
+    },
+    "description": "Cuero encerado, suela claveteada. Marcha y barro.",
+    "assetId": "armadura_006",
+    "rarity": "common",
+    "tier": 1,
+    "footprint": {
+      "cols": 1,
+      "rows": 1
+    }
+  },
+  {
+    "id": "armadura_007",
+    "name": "Brigantina genérico 7",
+    "type": "cuirass",
+    "slot": "body",
+    "weight": 7,
+    "value": 36,
+    "stackable": false,
+    "effects": {
+      "vigor": 2,
+      "discipline": 0
+    },
+    "description": "Acero de milán, sin grabados, talla común. Sirve.",
+    "assetId": "armadura_007",
+    "rarity": "common",
+    "tier": 1,
+    "footprint": {
+      "cols": 1,
+      "rows": 2
+    }
+  },
+  {
+    "id": "armadura_008",
+    "name": "Cota de malla genérico 8",
+    "type": "helmet",
+    "slot": "head",
+    "weight": 2,
+    "value": 40,
+    "stackable": false,
+    "effects": {
+      "vigor": 1,
+      "discipline": 0
+    },
+    "description": "Hierro de serie, ajuste de taller, ni mejor ni peor que los del lado.",
+    "assetId": "armadura_008",
+    "rarity": "common",
+    "tier": 1,
+    "footprint": {
+      "cols": 1,
+      "rows": 1
+    }
+  },
+  {
+    "id": "armadura_009",
+    "name": "Peto articulado genérico 9",
+    "type": "boots",
+    "slot": "boots",
+    "weight": 1.4,
+    "value": 44,
+    "stackable": false,
+    "effects": {
+      "vigor": 1,
+      "cunning": 0
+    },
+    "description": "Cuero encerado, suela claveteada. Marcha y barro.",
+    "assetId": "armadura_009",
+    "rarity": "common",
+    "tier": 1,
+    "footprint": {
+      "cols": 1,
+      "rows": 1
+    }
+  },
+  {
+    "id": "armadura_010",
+    "name": "Botas de campaña genérico 10",
+    "type": "cuirass",
+    "slot": "body",
+    "weight": 7,
+    "value": 48,
+    "stackable": false,
+    "effects": {
+      "vigor": 2,
+      "discipline": 0
+    },
+    "description": "Acero de milán, sin grabados, talla común. Sirve.",
+    "assetId": "armadura_010",
+    "rarity": "common",
+    "tier": 1,
+    "footprint": {
+      "cols": 1,
+      "rows": 2
+    }
+  },
+  {
+    "id": "armadura_011",
+    "name": "Botas de jineta genérico 11",
+    "type": "helmet",
+    "slot": "head",
+    "weight": 2,
+    "value": 52,
+    "stackable": false,
+    "effects": {
+      "vigor": 2,
+      "discipline": 0
+    },
+    "description": "Hierro de serie, ajuste de taller, ni mejor ni peor que los del lado.",
+    "assetId": "armadura_011",
+    "rarity": "uncommon",
+    "tier": 2,
+    "footprint": {
+      "cols": 1,
+      "rows": 1
+    }
+  },
+  {
+    "id": "armadura_012",
+    "name": "Botas de tropa genérico 12",
+    "type": "helmet",
+    "slot": "head",
+    "weight": 2,
+    "value": 56,
+    "stackable": false,
+    "effects": {
+      "vigor": 2,
+      "discipline": 0
+    },
+    "description": "Hierro de serie, ajuste de taller, ni mejor ni peor que los del lado.",
+    "assetId": "armadura_012",
+    "rarity": "uncommon",
+    "tier": 2,
+    "footprint": {
+      "cols": 1,
+      "rows": 1
+    }
+  },
+  {
+    "id": "armadura_013",
+    "name": "Polainas de cuero genérico 13",
+    "type": "cuirass",
+    "slot": "body",
+    "weight": 7,
+    "value": 60,
+    "stackable": false,
+    "effects": {
+      "vigor": 3,
+      "discipline": 1
+    },
+    "description": "Acero de milán, sin grabados, talla común. Sirve.",
+    "assetId": "armadura_013",
+    "rarity": "uncommon",
+    "tier": 2,
+    "footprint": {
+      "cols": 1,
+      "rows": 2
+    }
+  },
+  {
+    "id": "armadura_014",
+    "name": "Botas embarradas genérico 14",
+    "type": "cuirass",
+    "slot": "body",
+    "weight": 7,
+    "value": 64,
+    "stackable": false,
+    "effects": {
+      "vigor": 3,
+      "discipline": 1
+    },
+    "description": "Acero de milán, sin grabados, talla común. Sirve.",
+    "assetId": "armadura_014",
+    "rarity": "uncommon",
+    "tier": 2,
+    "footprint": {
+      "cols": 1,
+      "rows": 2
+    }
+  },
+  {
+    "id": "armadura_015",
+    "name": "Capacete genérico 15",
+    "type": "boots",
+    "slot": "boots",
+    "weight": 1.4,
+    "value": 68,
+    "stackable": false,
+    "effects": {
+      "vigor": 2,
+      "cunning": 0
+    },
+    "description": "Cuero encerado, suela claveteada. Marcha y barro.",
+    "assetId": "armadura_015",
+    "rarity": "uncommon",
+    "tier": 2,
+    "footprint": {
+      "cols": 1,
+      "rows": 1
+    }
+  },
+  {
+    "id": "armadura_016",
+    "name": "Capacete de tropa genérico 16",
+    "type": "boots",
+    "slot": "boots",
+    "weight": 1.4,
+    "value": 72,
+    "stackable": false,
+    "effects": {
+      "vigor": 2,
+      "cunning": 0
+    },
+    "description": "Cuero encerado, suela claveteada. Marcha y barro.",
+    "assetId": "armadura_016",
+    "rarity": "uncommon",
+    "tier": 2,
+    "footprint": {
+      "cols": 1,
+      "rows": 1
+    }
+  },
+  {
+    "id": "armadura_017",
+    "name": "Yelmo de milán genérico 17",
+    "type": "cuirass",
+    "slot": "body",
+    "weight": 7,
+    "value": 76,
+    "stackable": false,
+    "effects": {
+      "vigor": 3,
+      "discipline": 1
+    },
+    "description": "Acero de milán, sin grabados, talla común. Sirve.",
+    "assetId": "armadura_017",
+    "rarity": "uncommon",
+    "tier": 2,
+    "footprint": {
+      "cols": 1,
+      "rows": 2
+    }
+  },
+  {
+    "id": "armadura_018",
+    "name": "Caperuza de acero genérico 18",
+    "type": "helmet",
+    "slot": "head",
+    "weight": 2,
+    "value": 80,
+    "stackable": false,
+    "effects": {
+      "vigor": 2,
+      "discipline": 0
+    },
+    "description": "Hierro de serie, ajuste de taller, ni mejor ni peor que los del lado.",
+    "assetId": "armadura_018",
+    "rarity": "uncommon",
+    "tier": 2,
+    "footprint": {
+      "cols": 1,
+      "rows": 1
+    }
+  },
+  {
+    "id": "armadura_019",
+    "name": "Capacete con ala genérico 19",
+    "type": "boots",
+    "slot": "boots",
+    "weight": 1.4,
+    "value": 84,
+    "stackable": false,
+    "effects": {
+      "vigor": 2,
+      "cunning": 0
+    },
+    "description": "Cuero encerado, suela claveteada. Marcha y barro.",
+    "assetId": "armadura_019",
+    "rarity": "uncommon",
+    "tier": 2,
+    "footprint": {
+      "cols": 1,
+      "rows": 1
+    }
+  },
+  {
+    "id": "armadura_020",
+    "name": "Peto genérico 20",
+    "type": "cuirass",
+    "slot": "body",
+    "weight": 7,
+    "value": 88,
+    "stackable": false,
+    "effects": {
+      "vigor": 3,
+      "discipline": 1
+    },
+    "description": "Acero de milán, sin grabados, talla común. Sirve.",
+    "assetId": "armadura_020",
+    "rarity": "uncommon",
+    "tier": 2,
+    "footprint": {
+      "cols": 1,
+      "rows": 2
+    }
+  },
+  {
+    "id": "armadura_021",
+    "name": "Coraza genérico 21",
+    "type": "helmet",
+    "slot": "head",
+    "weight": 2,
+    "value": 92,
+    "stackable": false,
+    "effects": {
+      "vigor": 2,
+      "discipline": 0
+    },
+    "description": "Hierro de serie, ajuste de taller, ni mejor ni peor que los del lado.",
+    "assetId": "armadura_021",
+    "rarity": "uncommon",
+    "tier": 2,
+    "footprint": {
+      "cols": 1,
+      "rows": 1
+    }
+  },
+  {
+    "id": "armadura_022",
+    "name": "Brigantina genérico 22",
+    "type": "helmet",
+    "slot": "head",
+    "weight": 2,
+    "value": 96,
+    "stackable": false,
+    "effects": {
+      "vigor": 2,
+      "discipline": 0
+    },
+    "description": "Hierro de serie, ajuste de taller, ni mejor ni peor que los del lado.",
+    "assetId": "armadura_022",
+    "rarity": "uncommon",
+    "tier": 2,
+    "footprint": {
+      "cols": 1,
+      "rows": 1
+    }
+  },
+  {
+    "id": "armadura_023",
+    "name": "Cota de malla genérico 23",
+    "type": "cuirass",
+    "slot": "body",
+    "weight": 7,
+    "value": 100,
+    "stackable": false,
+    "effects": {
+      "vigor": 3,
+      "discipline": 1
+    },
+    "description": "Acero de milán, sin grabados, talla común. Sirve.",
+    "assetId": "armadura_023",
+    "rarity": "uncommon",
+    "tier": 2,
+    "footprint": {
+      "cols": 1,
+      "rows": 2
+    }
+  },
+  {
+    "id": "armadura_024",
+    "name": "Peto articulado genérico 24",
+    "type": "cuirass",
+    "slot": "body",
+    "weight": 7,
+    "value": 104,
+    "stackable": false,
+    "effects": {
+      "vigor": 3,
+      "discipline": 1
+    },
+    "description": "Acero de milán, sin grabados, talla común. Sirve.",
+    "assetId": "armadura_024",
+    "rarity": "uncommon",
+    "tier": 2,
+    "footprint": {
+      "cols": 1,
+      "rows": 2
+    }
+  },
+  {
+    "id": "armadura_025",
+    "name": "Botas de campaña genérico 25",
+    "type": "boots",
+    "slot": "boots",
+    "weight": 1.4,
+    "value": 108,
+    "stackable": false,
+    "effects": {
+      "vigor": 2,
+      "cunning": 0
+    },
+    "description": "Cuero encerado, suela claveteada. Marcha y barro.",
+    "assetId": "armadura_025",
+    "rarity": "uncommon",
+    "tier": 2,
+    "footprint": {
+      "cols": 1,
+      "rows": 1
+    }
+  },
+  {
+    "id": "armadura_026",
+    "name": "Botas de jineta genérico 26",
+    "type": "boots",
+    "slot": "boots",
+    "weight": 1.4,
+    "value": 112,
+    "stackable": false,
+    "effects": {
+      "vigor": 3,
+      "cunning": 1
+    },
+    "description": "Cuero encerado, suela claveteada. Marcha y barro.",
+    "assetId": "armadura_026",
+    "rarity": "rare",
+    "tier": 3,
+    "footprint": {
+      "cols": 1,
+      "rows": 1
+    }
+  },
+  {
+    "id": "armadura_027",
+    "name": "Botas de tropa genérico 27",
+    "type": "cuirass",
+    "slot": "body",
+    "weight": 7,
+    "value": 116,
+    "stackable": false,
+    "effects": {
+      "vigor": 4,
+      "discipline": 1
+    },
+    "description": "Acero de milán, sin grabados, talla común. Sirve.",
+    "assetId": "armadura_027",
+    "rarity": "rare",
+    "tier": 3,
+    "footprint": {
+      "cols": 1,
+      "rows": 2
+    }
+  },
+  {
+    "id": "armadura_028",
+    "name": "Polainas de cuero genérico 28",
+    "type": "helmet",
+    "slot": "head",
+    "weight": 2,
+    "value": 120,
+    "stackable": false,
+    "effects": {
+      "vigor": 3,
+      "discipline": 1
+    },
+    "description": "Hierro de serie, ajuste de taller, ni mejor ni peor que los del lado.",
+    "assetId": "armadura_028",
+    "rarity": "rare",
+    "tier": 3,
+    "footprint": {
+      "cols": 1,
+      "rows": 1
+    }
+  },
+  {
+    "id": "armadura_029",
+    "name": "Botas embarradas genérico 29",
+    "type": "boots",
+    "slot": "boots",
+    "weight": 1.4,
+    "value": 124,
+    "stackable": false,
+    "effects": {
+      "vigor": 3,
+      "cunning": 1
+    },
+    "description": "Cuero encerado, suela claveteada. Marcha y barro.",
+    "assetId": "armadura_029",
+    "rarity": "rare",
+    "tier": 3,
+    "footprint": {
+      "cols": 1,
+      "rows": 1
+    }
+  },
+  {
+    "id": "armadura_030",
+    "name": "Capacete genérico 30",
+    "type": "cuirass",
+    "slot": "body",
+    "weight": 7,
+    "value": 128,
+    "stackable": false,
+    "effects": {
+      "vigor": 4,
+      "discipline": 1
+    },
+    "description": "Acero de milán, sin grabados, talla común. Sirve.",
+    "assetId": "armadura_030",
+    "rarity": "rare",
+    "tier": 3,
+    "footprint": {
+      "cols": 1,
+      "rows": 2
+    }
+  },
+  {
+    "id": "armadura_031",
+    "name": "Capacete de tropa genérico 31",
+    "type": "helmet",
+    "slot": "head",
+    "weight": 2,
+    "value": 132,
+    "stackable": false,
+    "effects": {
+      "vigor": 3,
+      "discipline": 1
+    },
+    "description": "Hierro de serie, ajuste de taller, ni mejor ni peor que los del lado.",
+    "assetId": "armadura_031",
+    "rarity": "rare",
+    "tier": 3,
+    "footprint": {
+      "cols": 1,
+      "rows": 1
+    }
+  },
+  {
+    "id": "armadura_032",
+    "name": "Yelmo de milán genérico 32",
+    "type": "helmet",
+    "slot": "head",
+    "weight": 2,
+    "value": 136,
+    "stackable": false,
+    "effects": {
+      "vigor": 3,
+      "discipline": 1
+    },
+    "description": "Hierro de serie, ajuste de taller, ni mejor ni peor que los del lado.",
+    "assetId": "armadura_032",
+    "rarity": "rare",
+    "tier": 3,
+    "footprint": {
+      "cols": 1,
+      "rows": 1
+    }
+  },
+  {
+    "id": "armadura_033",
+    "name": "Caperuza de acero genérico 33",
+    "type": "cuirass",
+    "slot": "body",
+    "weight": 7,
+    "value": 140,
+    "stackable": false,
+    "effects": {
+      "vigor": 4,
+      "discipline": 1
+    },
+    "description": "Acero de milán, sin grabados, talla común. Sirve.",
+    "assetId": "armadura_033",
+    "rarity": "rare",
+    "tier": 3,
+    "footprint": {
+      "cols": 1,
+      "rows": 2
+    }
+  },
+  {
+    "id": "armadura_034",
+    "name": "Capacete con ala genérico 34",
+    "type": "cuirass",
+    "slot": "body",
+    "weight": 7,
+    "value": 144,
+    "stackable": false,
+    "effects": {
+      "vigor": 4,
+      "discipline": 1
+    },
+    "description": "Acero de milán, sin grabados, talla común. Sirve.",
+    "assetId": "armadura_034",
+    "rarity": "rare",
+    "tier": 3,
+    "footprint": {
+      "cols": 1,
+      "rows": 2
+    }
+  },
+  {
+    "id": "armadura_035",
+    "name": "Peto genérico 35",
+    "type": "boots",
+    "slot": "boots",
+    "weight": 1.4,
+    "value": 148,
+    "stackable": false,
+    "effects": {
+      "vigor": 3,
+      "cunning": 1
+    },
+    "description": "Cuero encerado, suela claveteada. Marcha y barro.",
+    "assetId": "armadura_035",
+    "rarity": "rare",
+    "tier": 3,
+    "footprint": {
+      "cols": 1,
+      "rows": 1
+    }
+  },
+  {
+    "id": "armadura_036",
+    "name": "Coraza genérico 36",
+    "type": "boots",
+    "slot": "boots",
+    "weight": 1.4,
+    "value": 152,
+    "stackable": false,
+    "effects": {
+      "vigor": 3,
+      "cunning": 1
+    },
+    "description": "Cuero encerado, suela claveteada. Marcha y barro.",
+    "assetId": "armadura_036",
+    "rarity": "rare",
+    "tier": 3,
+    "footprint": {
+      "cols": 1,
+      "rows": 1
+    }
+  },
+  {
+    "id": "armadura_037",
+    "name": "Brigantina genérico 37",
+    "type": "cuirass",
+    "slot": "body",
+    "weight": 7,
+    "value": 156,
+    "stackable": false,
+    "effects": {
+      "vigor": 4,
+      "discipline": 1
+    },
+    "description": "Acero de milán, sin grabados, talla común. Sirve.",
+    "assetId": "armadura_037",
+    "rarity": "rare",
+    "tier": 3,
+    "footprint": {
+      "cols": 1,
+      "rows": 2
+    }
+  },
+  {
+    "id": "armadura_038",
+    "name": "Cota de malla genérico 38",
+    "type": "helmet",
+    "slot": "head",
+    "weight": 2,
+    "value": 160,
+    "stackable": false,
+    "effects": {
+      "vigor": 3,
+      "discipline": 1
+    },
+    "description": "Hierro de serie, ajuste de taller, ni mejor ni peor que los del lado.",
+    "assetId": "armadura_038",
+    "rarity": "rare",
+    "tier": 3,
+    "footprint": {
+      "cols": 1,
+      "rows": 1
+    }
+  },
+  {
+    "id": "armadura_039",
+    "name": "Peto articulado genérico 39",
+    "type": "boots",
+    "slot": "boots",
+    "weight": 1.4,
+    "value": 164,
+    "stackable": false,
+    "effects": {
+      "vigor": 3,
+      "cunning": 1
+    },
+    "description": "Cuero encerado, suela claveteada. Marcha y barro.",
+    "assetId": "armadura_039",
+    "rarity": "rare",
+    "tier": 3,
+    "footprint": {
+      "cols": 1,
+      "rows": 1
+    }
+  },
+  {
+    "id": "armadura_040",
+    "name": "Botas de campaña genérico 40",
+    "type": "cuirass",
+    "slot": "body",
+    "weight": 7,
+    "value": 168,
+    "stackable": false,
+    "effects": {
+      "vigor": 4,
+      "discipline": 1
+    },
+    "description": "Acero de milán, sin grabados, talla común. Sirve.",
+    "assetId": "armadura_040",
+    "rarity": "rare",
+    "tier": 3,
+    "footprint": {
+      "cols": 1,
+      "rows": 2
+    }
+  },
+  {
+    "id": "armadura_041",
+    "name": "Botas de jineta genérico 41",
+    "type": "helmet",
+    "slot": "head",
+    "weight": 2,
+    "value": 172,
+    "stackable": false,
+    "effects": {
+      "vigor": 4,
+      "discipline": 1
+    },
+    "description": "Hierro de serie, ajuste de taller, ni mejor ni peor que los del lado.",
+    "assetId": "armadura_041",
+    "rarity": "epic",
+    "tier": 4,
+    "passives": [
+      {
+        "id": "escudo_de_hierro",
+        "name": "Escudo de Hierro",
+        "description": "+1 vigor, -5% wound chance",
+        "trigger": "passive",
+        "effect": {
+          "vigor": 1
+        }
+      }
+    ],
+    "requirements": {
+      "minRank": "cabo_de_escuadra"
+    },
+    "footprint": {
+      "cols": 1,
+      "rows": 1
+    }
+  },
+  {
+    "id": "armadura_042",
+    "name": "Botas de tropa genérico 42",
+    "type": "helmet",
+    "slot": "head",
+    "weight": 2,
+    "value": 176,
+    "stackable": false,
+    "effects": {
+      "vigor": 4,
+      "discipline": 1
+    },
+    "description": "Hierro de serie, ajuste de taller, ni mejor ni peor que los del lado.",
+    "assetId": "armadura_042",
+    "rarity": "epic",
+    "tier": 4,
+    "passives": [
+      {
+        "id": "escudo_de_hierro",
+        "name": "Escudo de Hierro",
+        "description": "+1 vigor, -5% wound chance",
+        "trigger": "passive",
+        "effect": {
+          "vigor": 1
+        }
+      }
+    ],
+    "requirements": {
+      "minRank": "cabo_de_escuadra"
+    },
+    "footprint": {
+      "cols": 1,
+      "rows": 1
+    }
+  },
+  {
+    "id": "armadura_043",
+    "name": "Polainas de cuero genérico 43",
+    "type": "cuirass",
+    "slot": "body",
+    "weight": 7,
+    "value": 180,
+    "stackable": false,
+    "effects": {
+      "vigor": 5,
+      "discipline": 1
+    },
+    "description": "Acero de milán, sin grabados, talla común. Sirve.",
+    "assetId": "armadura_043",
+    "rarity": "epic",
+    "tier": 4,
+    "passives": [
+      {
+        "id": "escudo_de_hierro",
+        "name": "Escudo de Hierro",
+        "description": "+1 vigor, -5% wound chance",
+        "trigger": "passive",
+        "effect": {
+          "vigor": 1
+        }
+      }
+    ],
+    "requirements": {
+      "minRank": "cabo_de_escuadra"
+    },
+    "footprint": {
+      "cols": 1,
+      "rows": 2
+    }
+  },
+  {
+    "id": "armadura_044",
+    "name": "Botas embarradas genérico 44",
+    "type": "cuirass",
+    "slot": "body",
+    "weight": 7,
+    "value": 184,
+    "stackable": false,
+    "effects": {
+      "vigor": 5,
+      "discipline": 1
+    },
+    "description": "Acero de milán, sin grabados, talla común. Sirve.",
+    "assetId": "armadura_044",
+    "rarity": "epic",
+    "tier": 4,
+    "passives": [
+      {
+        "id": "escudo_de_hierro",
+        "name": "Escudo de Hierro",
+        "description": "+1 vigor, -5% wound chance",
+        "trigger": "passive",
+        "effect": {
+          "vigor": 1
+        }
+      }
+    ],
+    "requirements": {
+      "minRank": "cabo_de_escuadra"
+    },
+    "footprint": {
+      "cols": 1,
+      "rows": 2
+    }
+  },
+  {
+    "id": "armadura_045",
+    "name": "Capacete genérico 45",
+    "type": "boots",
+    "slot": "boots",
+    "weight": 1.4,
+    "value": 188,
+    "stackable": false,
+    "effects": {
+      "vigor": 4,
+      "cunning": 1
+    },
+    "description": "Cuero encerado, suela claveteada. Marcha y barro.",
+    "assetId": "armadura_045",
+    "rarity": "epic",
+    "tier": 4,
+    "passives": [
+      {
+        "id": "escudo_de_hierro",
+        "name": "Escudo de Hierro",
+        "description": "+1 vigor, -5% wound chance",
+        "trigger": "passive",
+        "effect": {
+          "vigor": 1
+        }
+      }
+    ],
+    "requirements": {
+      "minRank": "cabo_de_escuadra"
+    },
+    "footprint": {
+      "cols": 1,
+      "rows": 1
+    }
+  },
+  {
+    "id": "armadura_046",
+    "name": "Capacete de tropa genérico 46",
+    "type": "boots",
+    "slot": "boots",
+    "weight": 1.4,
+    "value": 192,
+    "stackable": false,
+    "effects": {
+      "vigor": 4,
+      "cunning": 1
+    },
+    "description": "Cuero encerado, suela claveteada. Marcha y barro.",
+    "assetId": "armadura_046",
+    "rarity": "epic",
+    "tier": 4,
+    "passives": [
+      {
+        "id": "escudo_de_hierro",
+        "name": "Escudo de Hierro",
+        "description": "+1 vigor, -5% wound chance",
+        "trigger": "passive",
+        "effect": {
+          "vigor": 1
+        }
+      }
+    ],
+    "requirements": {
+      "minRank": "cabo_de_escuadra"
+    },
+    "footprint": {
+      "cols": 1,
+      "rows": 1
+    }
+  },
+  {
+    "id": "armadura_047",
+    "name": "Yelmo de milán genérico 47",
+    "type": "cuirass",
+    "slot": "body",
+    "weight": 7,
+    "value": 196,
+    "stackable": false,
+    "effects": {
+      "vigor": 5,
+      "discipline": 1
+    },
+    "description": "Acero de milán, sin grabados, talla común. Sirve.",
+    "assetId": "armadura_047",
+    "rarity": "epic",
+    "tier": 4,
+    "passives": [
+      {
+        "id": "escudo_de_hierro",
+        "name": "Escudo de Hierro",
+        "description": "+1 vigor, -5% wound chance",
+        "trigger": "passive",
+        "effect": {
+          "vigor": 1
+        }
+      }
+    ],
+    "requirements": {
+      "minRank": "cabo_de_escuadra"
+    },
+    "footprint": {
+      "cols": 1,
+      "rows": 2
+    }
+  },
+  {
+    "id": "armadura_048",
+    "name": "Caperuza de acero genérico 48",
+    "type": "helmet",
+    "slot": "head",
+    "weight": 2,
+    "value": 200,
+    "stackable": false,
+    "effects": {
+      "vigor": 4,
+      "discipline": 1
+    },
+    "description": "Hierro de serie, ajuste de taller, ni mejor ni peor que los del lado.",
+    "assetId": "armadura_048",
+    "rarity": "epic",
+    "tier": 4,
+    "passives": [
+      {
+        "id": "escudo_de_hierro",
+        "name": "Escudo de Hierro",
+        "description": "+1 vigor, -5% wound chance",
+        "trigger": "passive",
+        "effect": {
+          "vigor": 1
+        }
+      }
+    ],
+    "requirements": {
+      "minRank": "cabo_de_escuadra"
+    },
+    "footprint": {
+      "cols": 1,
+      "rows": 1
+    }
+  },
+  {
+    "id": "armadura_049",
+    "name": "Capacete con ala genérico 49",
+    "type": "boots",
+    "slot": "boots",
+    "weight": 1.4,
+    "value": 204,
+    "stackable": false,
+    "effects": {
+      "vigor": 4,
+      "cunning": 1
+    },
+    "description": "Cuero encerado, suela claveteada. Marcha y barro.",
+    "assetId": "armadura_049",
+    "rarity": "epic",
+    "tier": 4,
+    "passives": [
+      {
+        "id": "escudo_de_hierro",
+        "name": "Escudo de Hierro",
+        "description": "+1 vigor, -5% wound chance",
+        "trigger": "passive",
+        "effect": {
+          "vigor": 1
+        }
+      }
+    ],
+    "requirements": {
+      "minRank": "cabo_de_escuadra"
+    },
+    "footprint": {
+      "cols": 1,
+      "rows": 1
+    }
+  },
+  {
+    "id": "armadura_050",
+    "name": "Peto genérico 50",
+    "type": "cuirass",
+    "slot": "body",
+    "weight": 7,
+    "value": 208,
+    "stackable": false,
+    "effects": {
+      "vigor": 5,
+      "discipline": 1
+    },
+    "description": "Acero de milán, sin grabados, talla común. Sirve.",
+    "assetId": "armadura_050",
+    "rarity": "epic",
+    "tier": 4,
+    "passives": [
+      {
+        "id": "escudo_de_hierro",
+        "name": "Escudo de Hierro",
+        "description": "+1 vigor, -5% wound chance",
+        "trigger": "passive",
+        "effect": {
+          "vigor": 1
+        }
+      }
+    ],
+    "requirements": {
+      "minRank": "cabo_de_escuadra"
+    },
+    "footprint": {
+      "cols": 1,
+      "rows": 2
+    }
+  },
+  {
+    "id": "armadura_051",
+    "name": "Coraza genérico 51",
+    "type": "helmet",
+    "slot": "head",
+    "weight": 2,
+    "value": 212,
+    "stackable": false,
+    "effects": {
+      "vigor": 4,
+      "discipline": 1
+    },
+    "description": "Hierro de serie, ajuste de taller, ni mejor ni peor que los del lado.",
+    "assetId": "armadura_051",
+    "rarity": "epic",
+    "tier": 4,
+    "passives": [
+      {
+        "id": "escudo_de_hierro",
+        "name": "Escudo de Hierro",
+        "description": "+1 vigor, -5% wound chance",
+        "trigger": "passive",
+        "effect": {
+          "vigor": 1
+        }
+      }
+    ],
+    "requirements": {
+      "minRank": "cabo_de_escuadra"
+    },
+    "footprint": {
+      "cols": 1,
+      "rows": 1
+    }
+  },
+  {
+    "id": "armadura_052",
+    "name": "Brigantina genérico 52",
+    "type": "helmet",
+    "slot": "head",
+    "weight": 2,
+    "value": 216,
+    "stackable": false,
+    "effects": {
+      "vigor": 4,
+      "discipline": 1
+    },
+    "description": "Hierro de serie, ajuste de taller, ni mejor ni peor que los del lado.",
+    "assetId": "armadura_052",
+    "rarity": "epic",
+    "tier": 4,
+    "passives": [
+      {
+        "id": "escudo_de_hierro",
+        "name": "Escudo de Hierro",
+        "description": "+1 vigor, -5% wound chance",
+        "trigger": "passive",
+        "effect": {
+          "vigor": 1
+        }
+      }
+    ],
+    "requirements": {
+      "minRank": "cabo_de_escuadra"
+    },
+    "footprint": {
+      "cols": 1,
+      "rows": 1
+    }
+  },
+  {
+    "id": "armadura_053",
+    "name": "Cota de malla genérico 53",
+    "type": "cuirass",
+    "slot": "body",
+    "weight": 7,
+    "value": 220,
+    "stackable": false,
+    "effects": {
+      "vigor": 5,
+      "discipline": 1
+    },
+    "description": "Acero de milán, sin grabados, talla común. Sirve.",
+    "assetId": "armadura_053",
+    "rarity": "epic",
+    "tier": 4,
+    "passives": [
+      {
+        "id": "escudo_de_hierro",
+        "name": "Escudo de Hierro",
+        "description": "+1 vigor, -5% wound chance",
+        "trigger": "passive",
+        "effect": {
+          "vigor": 1
+        }
+      }
+    ],
+    "requirements": {
+      "minRank": "cabo_de_escuadra"
+    },
+    "footprint": {
+      "cols": 1,
+      "rows": 2
+    }
+  },
+  {
+    "id": "gambeson_largo_bisono_crudo",
+    "name": "Gambesón largo de bisono",
+    "type": "cuirass",
+    "slot": "body",
+    "weight": 1.2,
+    "value": 12,
+    "stackable": false,
+    "effects": {
+      "vigor": 1
+    },
+    "description": "Lino crudo acolchado. Protege del roce, no del acero.",
+    "assetId": "gambeson_largo_bisono_crudo",
+    "rarity": "common",
+    "tier": 1,
+    "footprint": {
+      "cols": 1,
+      "rows": 2
+    }
+  },
+  {
+    "id": "jubon_acolchado_gipon_crema",
+    "name": "Jubón acolchado gipón crema",
+    "type": "cuirass",
+    "slot": "body",
+    "weight": 1,
+    "value": 7,
+    "stackable": false,
+    "effects": {
+      "vigor": 1
+    },
+    "description": "Paño gastado bajo sudor antiguo y barro nuevo.",
+    "assetId": "jubon_acolchado_gipon_crema",
+    "rarity": "common",
+    "tier": 1,
+    "footprint": {
+      "cols": 1,
+      "rows": 2
+    }
+  },
+  {
+    "id": "coleto_acolchado_sin_mangas_crudo",
+    "name": "Coleto acolchado sin mangas",
+    "type": "cuirass",
+    "slot": "body",
+    "weight": 0.9,
+    "value": 8,
+    "stackable": false,
+    "effects": {
+      "vigor": 1,
+      "discipline": -1
+    },
+    "description": "Sin mangas, con prisa. Mejor que la camisa remendada.",
+    "assetId": "coleto_acolchado_sin_mangas_crudo",
+    "rarity": "common",
+    "tier": 1,
+    "footprint": {
+      "cols": 1,
+      "rows": 2
+    }
+  },
+  {
+    "id": "gipon_azul_faldillas_botones",
+    "name": "Gipón azul con faldillas",
+    "type": "cuirass",
+    "slot": "body",
+    "weight": 1.4,
+    "value": 28,
+    "stackable": false,
+    "effects": {
+      "vigor": 2
+    },
+    "description": "Botones de hueso, faldillas hasta la rodilla. Tela buena.",
+    "assetId": "gipon_azul_faldillas_botones",
+    "rarity": "uncommon",
+    "tier": 2,
+    "footprint": {
+      "cols": 1,
+      "rows": 2
+    }
+  },
+  {
+    "id": "gambeson_marron_cinturon",
+    "name": "Gambesón marrón con cinturón",
+    "type": "cuirass",
+    "slot": "body",
+    "weight": 1.6,
+    "value": 32,
+    "stackable": false,
+    "effects": {
+      "vigor": 2,
+      "discipline": 1
+    },
+    "description": "Lino encerado, ceñido con correa gruesa.",
+    "assetId": "gambeson_marron_cinturon",
+    "rarity": "uncommon",
+    "tier": 2,
+    "footprint": {
+      "cols": 1,
+      "rows": 2
+    }
+  },
+  {
+    "id": "gambeson_rojo_botones_bronce",
+    "name": "Gambesón rojo botones de bronce",
+    "type": "cuirass",
+    "slot": "body",
+    "weight": 1.5,
+    "value": 38,
+    "stackable": false,
+    "effects": {
+      "vigor": 2,
+      "honor": 1
+    },
+    "description": "Rojo tercio, botones de bronce. Pinta más de lo que protege.",
+    "assetId": "gambeson_rojo_botones_bronce",
+    "rarity": "uncommon",
+    "tier": 2,
+    "footprint": {
+      "cols": 1,
+      "rows": 2
+    }
+  },
+  {
+    "id": "peto_abollado_bisono_impacto",
+    "name": "Peto abollado de bisono",
+    "type": "cuirass",
+    "slot": "body",
+    "weight": 7,
+    "value": 38,
+    "stackable": false,
+    "effects": {
+      "vigor": 2,
+      "discipline": -1
+    },
+    "description": "Un peto que ya ha discutido con el acero.",
+    "assetId": "peto_abollado_bisono_impacto",
+    "rarity": "common",
+    "tier": 1,
+    "footprint": {
+      "cols": 1,
+      "rows": 2
+    }
+  },
+  {
+    "id": "peto_limpio_correas_hombro",
+    "name": "Peto limpio con correas",
+    "type": "cuirass",
+    "slot": "body",
+    "weight": 6.5,
+    "value": 70,
+    "stackable": false,
+    "effects": {
+      "vigor": 3
+    },
+    "description": "Peto de acero, correas nuevas. Buen ajuste en hombros.",
+    "assetId": "peto_limpio_correas_hombro",
+    "rarity": "uncommon",
+    "tier": 2,
+    "footprint": {
+      "cols": 1,
+      "rows": 2
+    }
+  },
+  {
+    "id": "peto_soldado_correajes_hombro",
+    "name": "Peto de soldado con correajes",
+    "type": "cuirass",
+    "slot": "body",
+    "weight": 6.8,
+    "value": 78,
+    "stackable": false,
+    "effects": {
+      "vigor": 3,
+      "discipline": 1
+    },
+    "description": "Acero de milán, correajes dobles. De serie del tercio.",
+    "assetId": "peto_soldado_correajes_hombro",
+    "rarity": "uncommon",
+    "tier": 2,
+    "footprint": {
+      "cols": 1,
+      "rows": 2
+    }
+  },
+  {
+    "id": "peto_brigantina_oscuro_remaches",
+    "name": "Brigantina oscura con remaches",
+    "type": "cuirass",
+    "slot": "body",
+    "weight": 7,
+    "value": 130,
+    "stackable": false,
+    "effects": {
+      "vigor": 3,
+      "cunning": 1
+    },
+    "description": "Peto bajo la cota, remachado a mano. Caro, silencioso.",
+    "assetId": "peto_brigantina_oscuro_remaches",
+    "rarity": "rare",
+    "tier": 3,
+    "footprint": {
+      "cols": 1,
+      "rows": 2
+    }
+  },
+  {
+    "id": "peto_acero_faldones_laminados",
+    "name": "Peto de acero con faldones",
+    "type": "cuirass",
+    "slot": "body",
+    "weight": 8.2,
+    "value": 160,
+    "stackable": false,
+    "effects": {
+      "vigor": 4,
+      "discipline": 1
+    },
+    "description": "Acero pulido, faldones articulados. Pieza de tropa veterana.",
+    "assetId": "peto_acero_faldones_laminados",
+    "rarity": "rare",
+    "tier": 3,
+    "footprint": {
+      "cols": 1,
+      "rows": 2
+    }
+  },
+  {
+    "id": "coraza_lisa_pechero_alto_faldones",
+    "name": "Coraza lisa con pechero alto",
+    "type": "cuirass",
+    "slot": "body",
+    "weight": 8.5,
+    "value": 175,
+    "stackable": false,
+    "effects": {
+      "vigor": 4
+    },
+    "description": "Coraza lisa, pecho alto, sin adornos. La viste un hombre serio.",
+    "assetId": "coraza_lisa_pechero_alto_faldones",
+    "rarity": "rare",
+    "tier": 3,
+    "footprint": {
+      "cols": 1,
+      "rows": 2
+    }
+  },
+  {
+    "id": "coraza_pulida_cinturon_faldillas",
+    "name": "Coraza pulida con cinturón",
+    "type": "cuirass",
+    "slot": "body",
+    "weight": 8.6,
+    "value": 190,
+    "stackable": false,
+    "effects": {
+      "vigor": 4,
+      "command": 1
+    },
+    "description": "Pulida a espejo, faldillas articuladas. Capitán de compañía.",
+    "assetId": "coraza_pulida_cinturon_faldillas",
+    "rarity": "rare",
+    "tier": 3,
+    "footprint": {
+      "cols": 1,
+      "rows": 2
+    }
+  },
+  {
+    "id": "coraza_gastada_batalla_faldillas",
+    "name": "Coraza gastada de batalla",
+    "type": "cuirass",
+    "slot": "body",
+    "weight": 8.8,
+    "value": 320,
+    "stackable": false,
+    "effects": {
+      "vigor": 5,
+      "discipline": 1
+    },
+    "description": "Marcas de bala, cortes de espada. No se oxida, no se rinde.",
+    "assetId": "coraza_gastada_batalla_faldillas",
+    "rarity": "epic",
+    "tier": 4,
+    "passives": [
+      {
+        "id": "sangre_y_barro",
+        "name": "Sangre y Barro",
+        "description": "+1 vigor al matar (2 turnos)",
+        "trigger": "on_kill",
+        "effect": {
+          "vigor": 1,
+          "duration": 2
+        }
+      },
+      {
+        "id": "escudo_de_hierro",
+        "name": "Escudo de Hierro",
+        "description": "+1 vigor, -5% wound chance",
+        "trigger": "passive",
+        "effect": {
+          "vigor": 1
+        }
+      }
+    ],
+    "requirements": {
+      "minRank": "cabo_de_escuadra"
+    },
+    "footprint": {
+      "cols": 1,
+      "rows": 2
+    }
+  },
+  {
+    "id": "coraza_oficial_grabada_grecas_doradas",
+    "name": "Coraza de oficial con grecas doradas",
+    "type": "cuirass",
+    "slot": "body",
+    "weight": 9,
+    "value": 380,
+    "stackable": false,
+    "effects": {
+      "vigor": 5,
+      "command": 2,
+      "honor": 1
+    },
+    "description": "Grecas doradas repujadas, cordón de seda. Capitán antiguo.",
+    "assetId": "coraza_oficial_grabada_grecas_doradas",
+    "rarity": "epic",
+    "tier": 4,
+    "passives": [
+      {
+        "id": "mirada_del_capitan",
+        "name": "Mirada del Capitán",
+        "description": "+1 mando, los reclutas te miran",
+        "trigger": "passive",
+        "effect": {
+          "command": 1
+        }
+      },
+      {
+        "id": "relicario_de_sangre",
+        "name": "Relicario de Sangre",
+        "description": "+1 honor pasivo",
+        "trigger": "passive",
+        "effect": {
+          "honor": 1
+        }
+      }
+    ],
+    "requirements": {
+      "minRank": "cabo_de_escuadra"
+    },
+    "footprint": {
+      "cols": 1,
+      "rows": 2
+    }
+  },
+  {
+    "id": "peto_capitan_grecas_doradas_cordon",
+    "name": "Peto de capitán con grecas doradas",
+    "type": "cuirass",
+    "slot": "body",
+    "weight": 9.1,
+    "value": 420,
+    "stackable": false,
+    "effects": {
+      "vigor": 6,
+      "command": 2
+    },
+    "description": "Cordón de seda en el hombro, grecas de oro.",
+    "assetId": "peto_capitan_grecas_doradas_cordon",
+    "rarity": "epic",
+    "tier": 4,
+    "passives": [
+      {
+        "id": "mirada_del_capitan",
+        "name": "Mirada del Capitán",
+        "description": "+1 mando, los reclutas te miran",
+        "trigger": "passive",
+        "effect": {
+          "command": 1
+        }
+      },
+      {
+        "id": "escudo_de_hierro",
+        "name": "Escudo de Hierro",
+        "description": "+2 vigor, -5% wound chance",
+        "trigger": "passive",
+        "effect": {
+          "vigor": 2
+        }
+      }
+    ],
+    "requirements": {
+      "minRank": "cabo_de_escuadra"
+    },
+    "footprint": {
+      "cols": 1,
+      "rows": 2
+    }
+  },
+  {
+    "id": "morion_correia_cuero_simple",
+    "name": "Morrión con correa simple",
     "type": "helmet",
     "slot": "head",
     "weight": 1.8,
@@ -69,54 +3909,567 @@
       "vigor": 1
     },
     "description": "Hierro fino con forma orgullosa y poca piedad.",
-    "assetId": "morion_correia_cuero_simple"
+    "assetId": "morion_correia_cuero_simple",
+    "rarity": "common",
+    "tier": 1,
+    "footprint": {
+      "cols": 1,
+      "rows": 1
+    }
   },
   {
-    "id": "dented_cuirass",
-    "name": "Coraza abollada",
-    "type": "cuirass",
-    "slot": "body",
-    "weight": 7.0,
-    "value": 38,
+    "id": "morion_correia_cuero",
+    "name": "Morrión con correa de cuero",
+    "type": "helmet",
+    "slot": "head",
+    "weight": 1.9,
+    "value": 22,
+    "stackable": false,
+    "effects": {
+      "vigor": 1,
+      "discipline": 1
+    },
+    "description": "Barbuquejo de cuero remachado. Se aguanta en carrera.",
+    "assetId": "morion_correia_cuero",
+    "rarity": "common",
+    "tier": 1,
+    "footprint": {
+      "cols": 1,
+      "rows": 1
+    }
+  },
+  {
+    "id": "morion_conico_aludido_remaches",
+    "name": "Morrión cónico con remaches",
+    "type": "helmet",
+    "slot": "head",
+    "weight": 2,
+    "value": 36,
+    "stackable": false,
+    "effects": {
+      "vigor": 2
+    },
+    "description": "Aludido, remaches de cobre. Reparte el golpe.",
+    "assetId": "morion_conico_aludido_remaches",
+    "rarity": "uncommon",
+    "tier": 2,
+    "footprint": {
+      "cols": 1,
+      "rows": 1
+    }
+  },
+  {
+    "id": "morion_liso_aludido_plano",
+    "name": "Morrión liso aludido",
+    "type": "helmet",
+    "slot": "head",
+    "weight": 2,
+    "value": 42,
     "stackable": false,
     "effects": {
       "vigor": 2,
-      "discipline": -1
+      "discipline": 1
     },
-    "description": "Un peto que ya ha discutido con el acero.",
-    "assetId": "peto_abollado_bisono_impacto"
+    "description": "Sin adornos, buena forma. Sirve para alinear la fila.",
+    "assetId": "morion_liso_aludido_plano",
+    "rarity": "uncommon",
+    "tier": 2,
+    "footprint": {
+      "cols": 1,
+      "rows": 1
+    }
   },
   {
-    "id": "patched_doublet",
-    "name": "Jubón remendado",
-    "type": "coat",
-    "slot": "body",
-    "weight": 1.0,
-    "value": 7,
+    "id": "morion_soldado_flor_bronce",
+    "name": "Morrión de soldado con flor de bronce",
+    "type": "helmet",
+    "slot": "head",
+    "weight": 2.1,
+    "value": 50,
     "stackable": false,
     "effects": {
-      "vigor": 1
+      "vigor": 2,
+      "honor": 1
     },
-    "description": "Paño gastado bajo sudor antiguo y barro nuevo.",
-    "assetId": "jubon_acolchado_gipon_crema"
+    "description": "Flor de bronce en la cazoleta, barbuquejo bueno.",
+    "assetId": "morion_soldado_flor_bronce",
+    "rarity": "uncommon",
+    "tier": 2,
+    "footprint": {
+      "cols": 1,
+      "rows": 1
+    }
   },
   {
-    "id": "old_boots",
-    "name": "Botas viejas",
-    "type": "boots",
-    "slot": "boots",
-    "weight": 1.4,
-    "value": 9,
+    "id": "morion_oscuro_flor_bronce",
+    "name": "Morrión oscuro con flor de bronce",
+    "type": "helmet",
+    "slot": "head",
+    "weight": 2.2,
+    "value": 95,
     "stackable": false,
     "effects": {
-      "vigor": 1
+      "vigor": 3,
+      "cunning": 1
     },
-    "description": "Cuero agrietado, mejor que marchar descalzo.",
-    "assetId": "armadura_024"
+    "description": "Acero oscurecido, flor de bronce repujada.",
+    "assetId": "morion_oscuro_flor_bronce",
+    "rarity": "rare",
+    "tier": 3,
+    "passives": [
+      {
+        "id": "ojo_de_halcon",
+        "name": "Ojo de Halcón",
+        "description": "+1 astucia, detecta emboscadas",
+        "trigger": "passive",
+        "effect": {
+          "cunning": 1
+        }
+      }
+    ],
+    "footprint": {
+      "cols": 1,
+      "rows": 1
+    }
   },
   {
-    "id": "clean_bandage",
-    "name": "Venda limpia",
+    "id": "celada_bordecillos_bronce_carrilleras",
+    "name": "Celada con bordecillos y carrilleras",
+    "type": "helmet",
+    "slot": "head",
+    "weight": 2.5,
+    "value": 130,
+    "stackable": false,
+    "effects": {
+      "vigor": 3,
+      "discipline": 1
+    },
+    "description": "Carrilleras de bronce, mejor apertura. Cara protegida.",
+    "assetId": "celada_bordecillos_bronce_carrilleras",
+    "rarity": "rare",
+    "tier": 3,
+    "footprint": {
+      "cols": 1,
+      "rows": 1
+    }
+  },
+  {
+    "id": "armet_celada_cerrada_visor",
+    "name": "Armet cerrado con visor",
+    "type": "helmet",
+    "slot": "head",
+    "weight": 2.8,
+    "value": 280,
+    "stackable": false,
+    "effects": {
+      "vigor": 4,
+      "cunning": -1
+    },
+    "description": "Visor cerrado, respiración contenida. Mira de acero.",
+    "assetId": "armet_celada_cerrada_visor",
+    "rarity": "epic",
+    "tier": 4,
+    "passives": [
+      {
+        "id": "hierro_de_flandes",
+        "name": "Hierro de Flandes",
+        "description": "15% ignora herida grave",
+        "trigger": "on_wound",
+        "effect": {
+          "chance": 0.15
+        }
+      },
+      {
+        "id": "escudo_de_hierro",
+        "name": "Escudo de Hierro",
+        "description": "+1 vigor, -5% wound chance",
+        "trigger": "passive",
+        "effect": {
+          "vigor": 1
+        }
+      }
+    ],
+    "requirements": {
+      "minRank": "cabo_de_escuadra"
+    },
+    "footprint": {
+      "cols": 1,
+      "rows": 1
+    }
+  },
+  {
+    "id": "yelmo_cerrado_visor_bisagras",
+    "name": "Yelmo cerrado con visor de bisagras",
+    "type": "helmet",
+    "slot": "head",
+    "weight": 2.9,
+    "value": 320,
+    "stackable": false,
+    "effects": {
+      "vigor": 4,
+      "discipline": 1
+    },
+    "description": "Visor de bisagras, ajuste firme. Tropa veterana.",
+    "assetId": "yelmo_cerrado_visor_bisagras",
+    "rarity": "epic",
+    "tier": 4,
+    "passives": [
+      {
+        "id": "escudo_de_hierro",
+        "name": "Escudo de Hierro",
+        "description": "+1 vigor, -5% wound chance",
+        "trigger": "passive",
+        "effect": {
+          "vigor": 1
+        }
+      },
+      {
+        "id": "mirada_del_capitan",
+        "name": "Mirada del Capitán",
+        "description": "+1 mando, los reclutas te miran",
+        "trigger": "passive",
+        "effect": {
+          "command": 1
+        }
+      }
+    ],
+    "requirements": {
+      "minRank": "cabo_de_escuadra"
+    },
+    "footprint": {
+      "cols": 1,
+      "rows": 1
+    }
+  },
+  {
+    "id": "celada_oficial_grabada_dorada",
+    "name": "Celada de oficial grabada en oro",
+    "type": "helmet",
+    "slot": "head",
+    "weight": 2.8,
+    "value": 360,
+    "stackable": false,
+    "effects": {
+      "vigor": 4,
+      "command": 2,
+      "honor": 1
+    },
+    "description": "Grabados de oro, plumaje al costado. Capitán, fácil.",
+    "assetId": "celada_oficial_grabada_dorada",
+    "rarity": "epic",
+    "tier": 4,
+    "passives": [
+      {
+        "id": "mirada_del_capitan",
+        "name": "Mirada del Capitán",
+        "description": "+1 mando, los reclutas te miran",
+        "trigger": "passive",
+        "effect": {
+          "command": 1
+        }
+      },
+      {
+        "id": "relicario_de_sangre",
+        "name": "Relicario de Sangre",
+        "description": "+1 honor pasivo",
+        "trigger": "passive",
+        "effect": {
+          "honor": 1
+        }
+      }
+    ],
+    "requirements": {
+      "minRank": "cabo_de_escuadra"
+    },
+    "footprint": {
+      "cols": 1,
+      "rows": 1
+    }
+  },
+  {
+    "id": "aux_001",
+    "name": "Reliquia del Santo",
+    "type": "relic",
+    "slot": "accessory",
+    "weight": 0.1,
+    "value": 30,
+    "stackable": false,
+    "effects": {
+      "honor": 1
+    },
+    "description": "Hueso bendecido en la capilla. Da paz en noches largas.",
+    "assetId": "auxiliar_001",
+    "rarity": "uncommon",
+    "tier": 2,
+    "passives": [
+      {
+        "id": "bendicion_del_capellan",
+        "name": "Bendición del Capellán",
+        "description": "+1 honor al cerrar misión",
+        "trigger": "on_mission_end",
+        "effect": {
+          "honor": 1
+        }
+      }
+    ],
+    "footprint": {
+      "cols": 1,
+      "rows": 1
+    }
+  },
+  {
+    "id": "aux_002",
+    "name": "Dije de la Compañía",
+    "type": "relic",
+    "slot": "accessory",
+    "weight": 0.1,
+    "value": 45,
+    "stackable": false,
+    "effects": {
+      "command": 1,
+      "honor": 1
+    },
+    "description": "Plata labrada, cordón de seda. Lo entrega el sargento.",
+    "assetId": "auxiliar_002",
+    "rarity": "uncommon",
+    "tier": 2,
+    "passives": [
+      {
+        "id": "mirada_del_capitan",
+        "name": "Mirada del Capitán",
+        "description": "+1 mando, los reclutas te miran",
+        "trigger": "passive",
+        "effect": {
+          "command": 1
+        }
+      }
+    ],
+    "footprint": {
+      "cols": 1,
+      "rows": 1
+    }
+  },
+  {
+    "id": "aux_003",
+    "name": "Banderín de Bolsillo",
+    "type": "relic",
+    "slot": "accessory",
+    "weight": 0.1,
+    "value": 35,
+    "stackable": false,
+    "effects": {
+      "honor": 1,
+      "discipline": 1
+    },
+    "description": "Tela del estandarte del tercio, doblado al pecho.",
+    "assetId": "auxiliar_003",
+    "rarity": "uncommon",
+    "tier": 2,
+    "passives": [
+      {
+        "id": "bendicion_del_capellan",
+        "name": "Bendición del Capellán",
+        "description": "+1 honor al cerrar misión",
+        "trigger": "on_mission_end",
+        "effect": {
+          "honor": 1
+        }
+      }
+    ],
+    "footprint": {
+      "cols": 1,
+      "rows": 1
+    }
+  },
+  {
+    "id": "aux_004",
+    "name": "Amuleto de Cobre",
+    "type": "relic",
+    "slot": "accessory",
+    "weight": 0.1,
+    "value": 18,
+    "stackable": false,
+    "effects": {
+      "cunning": 1
+    },
+    "description": "Cobre soldado a martillo, ojo pintado.",
+    "assetId": "auxiliar_004",
+    "rarity": "common",
+    "tier": 1,
+    "passives": [
+      {
+        "id": "ojo_de_halcon",
+        "name": "Ojo de Halcón",
+        "description": "+1 astucia, detecta emboscadas",
+        "trigger": "passive",
+        "effect": {
+          "cunning": 1
+        }
+      }
+    ],
+    "footprint": {
+      "cols": 1,
+      "rows": 1
+    }
+  },
+  {
+    "id": "aux_005",
+    "name": "Cuerda de la Suerte",
+    "type": "relic",
+    "slot": "accessory",
+    "weight": 0.1,
+    "value": 14,
+    "stackable": false,
+    "effects": {
+      "cunning": 1,
+      "discipline": 1
+    },
+    "description": "Trozo de cuerda de ahorcado. Funciona. No preguntes.",
+    "assetId": "auxiliar_005",
+    "rarity": "common",
+    "tier": 1,
+    "passives": [
+      {
+        "id": "pies_ligeros",
+        "name": "Pies Ligeros",
+        "description": "+1 vigor, -10% fatiga de marcha",
+        "trigger": "passive",
+        "effect": {
+          "vigor": 1
+        }
+      }
+    ],
+    "footprint": {
+      "cols": 1,
+      "rows": 1
+    }
+  },
+  {
+    "id": "aux_006",
+    "name": "Frasco de Agua Bendita",
+    "type": "medicine",
+    "slot": "consumable",
+    "weight": 0.2,
+    "value": 12,
+    "stackable": true,
+    "effects": {
+      "honor": 1
+    },
+    "description": "Vidrio sellado. Usar en capillas, no en batalla.",
+    "assetId": "auxiliar_006",
+    "rarity": "common",
+    "tier": 1,
+    "footprint": {
+      "cols": 1,
+      "rows": 1
+    }
+  },
+  {
+    "id": "aux_007",
+    "name": "Bolsa de Pólvora Seca",
+    "type": "medicine",
+    "slot": "consumable",
+    "weight": 0.4,
+    "value": 26,
+    "stackable": true,
+    "effects": {
+      "arquebus": 2
+    },
+    "description": "Pólvora sellada en cuero encerado. Una carga fiable.",
+    "assetId": "auxiliar_007",
+    "rarity": "uncommon",
+    "tier": 2,
+    "footprint": {
+      "cols": 1,
+      "rows": 1
+    }
+  },
+  {
+    "id": "aux_008",
+    "name": "Botiquín de Cirujano",
+    "type": "medicine",
+    "slot": "consumable",
+    "weight": 0.6,
+    "value": 60,
+    "stackable": true,
+    "effects": {
+      "wound_treatment": 3
+    },
+    "description": "Vendas, alcohol y aguja. Cura dos heridas seguidas.",
+    "assetId": "auxiliar_008",
+    "rarity": "rare",
+    "tier": 3,
+    "footprint": {
+      "cols": 1,
+      "rows": 1
+    }
+  },
+  {
+    "id": "aux_009",
+    "name": "Pan del Capellán",
+    "type": "medicine",
+    "slot": "consumable",
+    "weight": 0.3,
+    "value": 8,
+    "stackable": true,
+    "effects": {
+      "fatigue": -5,
+      "honor": 1
+    },
+    "description": "Pan bendecido, sabe a manta vieja y esperanza.",
+    "assetId": "auxiliar_009",
+    "rarity": "common",
+    "tier": 1,
+    "footprint": {
+      "cols": 1,
+      "rows": 1
+    }
+  },
+  {
+    "id": "aux_010",
+    "name": "Tabaco de Flandes",
+    "type": "medicine",
+    "slot": "consumable",
+    "weight": 0.2,
+    "value": 22,
+    "stackable": true,
+    "effects": {
+      "fatigue": -3,
+      "discipline": 1
+    },
+    "description": "Tabaco fuerte, pipa de arcilla. Calma el miedo.",
+    "assetId": "auxiliar_010",
+    "rarity": "uncommon",
+    "tier": 2,
+    "footprint": {
+      "cols": 1,
+      "rows": 1
+    }
+  },
+  {
+    "id": "objeto_001",
+    "name": "Pólvora húmeda",
+    "type": "trade_good",
+    "slot": "accessory",
+    "weight": 0.6,
+    "value": 6,
+    "stackable": true,
+    "effects": {
+      "arquebus": -1,
+      "cunning": 1
+    },
+    "description": "Pólvora que ha conocido demasiada lluvia.",
+    "assetId": "objeto_001",
+    "rarity": "common",
+    "tier": 1,
+    "footprint": {
+      "cols": 1,
+      "rows": 1
+    }
+  },
+  {
+    "id": "objeto_002",
+    "name": "Vendas de lino",
     "type": "medicine",
     "slot": "consumable",
     "weight": 0.1,
@@ -126,14 +4479,20 @@
       "wound_treatment": 1
     },
     "description": "Lino lavado, tan raro que nadie lo desperdicia.",
-    "assetId": "objeto_011"
+    "assetId": "objeto_002",
+    "rarity": "common",
+    "tier": 1,
+    "footprint": {
+      "cols": 1,
+      "rows": 1
+    }
   },
   {
-    "id": "wine_skin",
+    "id": "objeto_003",
     "name": "Bota de vino",
     "type": "food",
     "slot": "consumable",
-    "weight": 1.0,
+    "weight": 1,
     "value": 6,
     "stackable": true,
     "effects": {
@@ -141,10 +4500,16 @@
       "discipline": -1
     },
     "description": "Vino agrio. Consuelo primero, arrepentimiento después.",
-    "assetId": "objeto_012"
+    "assetId": "objeto_003",
+    "rarity": "common",
+    "tier": 1,
+    "footprint": {
+      "cols": 1,
+      "rows": 1
+    }
   },
   {
-    "id": "hard_bread",
+    "id": "objeto_004",
     "name": "Pan de munición",
     "type": "food",
     "slot": "consumable",
@@ -155,10 +4520,16 @@
       "fatigue": -2
     },
     "description": "Pan tan seco que suena a mosquetazo al partirse.",
-    "assetId": "objeto_013"
+    "assetId": "objeto_004",
+    "rarity": "common",
+    "tier": 1,
+    "footprint": {
+      "cols": 1,
+      "rows": 1
+    }
   },
   {
-    "id": "doubtful_relic",
+    "id": "objeto_005",
     "name": "Reliquia dudosa",
     "type": "relic",
     "slot": "accessory",
@@ -169,12 +4540,18 @@
       "honor": 1
     },
     "description": "Una astilla de santo, o el negocio del miedo de alguien.",
-    "assetId": "objeto_014"
+    "assetId": "objeto_005",
+    "rarity": "common",
+    "tier": 1,
+    "footprint": {
+      "cols": 1,
+      "rows": 1
+    }
   },
   {
-    "id": "captured_banner_fragment",
-    "name": "Fragmento de bandera capturada",
-    "type": "trade_good",
+    "id": "objeto_006",
+    "name": "Fragmento de bandera",
+    "type": "relic",
     "slot": "accessory",
     "weight": 0.2,
     "value": 20,
@@ -183,6 +4560,1356 @@
       "honor": 2
     },
     "description": "Tela rota de la vergüenza de otra compañía.",
-    "assetId": "objeto_015"
+    "assetId": "objeto_006",
+    "rarity": "common",
+    "tier": 1,
+    "footprint": {
+      "cols": 1,
+      "rows": 1
+    }
+  },
+  {
+    "id": "objeto_007",
+    "name": "Botella de aguardiente",
+    "type": "food",
+    "slot": "consumable",
+    "weight": 0.9,
+    "value": 14,
+    "stackable": true,
+    "effects": {
+      "fatigue": -10,
+      "discipline": -2
+    },
+    "description": "Aguardiente del bueno. Para antes o después, no durante.",
+    "assetId": "objeto_007",
+    "rarity": "common",
+    "tier": 1,
+    "footprint": {
+      "cols": 1,
+      "rows": 1
+    }
+  },
+  {
+    "id": "objeto_008",
+    "name": "Salazón de carne",
+    "type": "food",
+    "slot": "consumable",
+    "weight": 0.4,
+    "value": 9,
+    "stackable": true,
+    "effects": {
+      "fatigue": -3,
+      "vigor": 1
+    },
+    "description": "Carne salada, dura como cuero. Pero llena.",
+    "assetId": "objeto_008",
+    "rarity": "common",
+    "tier": 1,
+    "footprint": {
+      "cols": 1,
+      "rows": 1
+    }
+  },
+  {
+    "id": "objeto_009",
+    "name": "Mechas de repuesto",
+    "type": "food",
+    "slot": "consumable",
+    "weight": 0.2,
+    "value": 5,
+    "stackable": true,
+    "effects": {
+      "arquebus": 1
+    },
+    "description": "Cuerda embreada, lista para el mechero.",
+    "assetId": "objeto_009",
+    "rarity": "common",
+    "tier": 1,
+    "footprint": {
+      "cols": 1,
+      "rows": 1
+    }
+  },
+  {
+    "id": "objeto_010",
+    "name": "Botas viejas",
+    "type": "boots",
+    "slot": "boots",
+    "weight": 1.4,
+    "value": 9,
+    "stackable": false,
+    "effects": {
+      "vigor": 1
+    },
+    "description": "Cuero agrietado, mejor que marchar descalzo.",
+    "assetId": "objeto_010",
+    "rarity": "common",
+    "tier": 1,
+    "footprint": {
+      "cols": 1,
+      "rows": 1
+    }
+  },
+  {
+    "id": "objeto_011",
+    "name": "Moneda de plata",
+    "type": "relic",
+    "slot": "accessory",
+    "weight": 0.05,
+    "value": 25,
+    "stackable": true,
+    "effects": {
+      "honor": 1
+    },
+    "description": "Moneda antigua, mira gastada. Suerte, dicen.",
+    "assetId": "objeto_011",
+    "rarity": "common",
+    "tier": 1,
+    "footprint": {
+      "cols": 1,
+      "rows": 1
+    }
+  },
+  {
+    "id": "objeto_012",
+    "name": "Carta del hogar",
+    "type": "trade_good",
+    "slot": "accessory",
+    "weight": 0.1,
+    "value": 8,
+    "stackable": true,
+    "effects": {
+      "discipline": 1
+    },
+    "description": "Carta olida cien veces. La firma es de alguien.",
+    "assetId": "objeto_012",
+    "rarity": "common",
+    "tier": 1,
+    "footprint": {
+      "cols": 1,
+      "rows": 1
+    }
+  },
+  {
+    "id": "objeto_013",
+    "name": "Aceite de armas",
+    "type": "food",
+    "slot": "consumable",
+    "weight": 0.3,
+    "value": 7,
+    "stackable": true,
+    "effects": {
+      "discipline": 1
+    },
+    "description": "Aceite para acero. Mantenimiento, no magia.",
+    "assetId": "objeto_013",
+    "rarity": "common",
+    "tier": 1,
+    "footprint": {
+      "cols": 1,
+      "rows": 1
+    }
+  },
+  {
+    "id": "objeto_014",
+    "name": "Piedra de mechero",
+    "type": "food",
+    "slot": "consumable",
+    "weight": 0.2,
+    "value": 6,
+    "stackable": true,
+    "effects": {
+      "arquebus": 1
+    },
+    "description": "Pedernal y eslabón. Enciende en lluvia si tienes paciencia.",
+    "assetId": "objeto_014",
+    "rarity": "common",
+    "tier": 1,
+    "footprint": {
+      "cols": 1,
+      "rows": 1
+    }
+  },
+  {
+    "id": "objeto_015",
+    "name": "Especias de Italia",
+    "type": "food",
+    "slot": "consumable",
+    "weight": 0.2,
+    "value": 28,
+    "stackable": true,
+    "effects": {
+      "fatigue": -4,
+      "cunning": 1
+    },
+    "description": "Bolsita de clavo y canela. Sólo para oficiales.",
+    "assetId": "objeto_015",
+    "rarity": "uncommon",
+    "tier": 2,
+    "footprint": {
+      "cols": 1,
+      "rows": 1
+    }
+  },
+  {
+    "id": "objeto_016",
+    "name": "Mapa de Flandes",
+    "type": "trade_good",
+    "slot": "accessory",
+    "weight": 0.1,
+    "value": 40,
+    "stackable": false,
+    "effects": {
+      "cunning": 2
+    },
+    "description": "Mapa copiado a mano. Marca los vados.",
+    "assetId": "objeto_016",
+    "rarity": "uncommon",
+    "tier": 2,
+    "passives": [
+      {
+        "id": "ojo_de_halcon",
+        "name": "Ojo de Halcón",
+        "description": "+1 astucia, detecta emboscadas",
+        "trigger": "passive",
+        "effect": {
+          "cunning": 1
+        }
+      }
+    ],
+    "footprint": {
+      "cols": 1,
+      "rows": 1
+    }
+  },
+  {
+    "id": "objeto_017",
+    "name": "Capa de la Compañía",
+    "type": "coat",
+    "slot": "body",
+    "weight": 1.5,
+    "value": 12,
+    "stackable": false,
+    "effects": {
+      "vigor": 1,
+      "honor": 1
+    },
+    "description": "Capa de paño basta, capucha grande. Sirve para dormir.",
+    "assetId": "objeto_017",
+    "rarity": "common",
+    "tier": 1,
+    "footprint": {
+      "cols": 1,
+      "rows": 2
+    }
+  },
+  {
+    "id": "objeto_018",
+    "name": "Bolsa de suministros",
+    "type": "trade_good",
+    "slot": "accessory",
+    "weight": 0.8,
+    "value": 10,
+    "stackable": true,
+    "effects": {
+      "fatigue": -2
+    },
+    "description": "Bolsa con pan, queso y un mendrugo. Lo justo.",
+    "assetId": "objeto_018",
+    "rarity": "common",
+    "tier": 1,
+    "footprint": {
+      "cols": 1,
+      "rows": 1
+    }
+  },
+  {
+    "id": "objeto_019",
+    "name": "Reliquia de Santiago",
+    "type": "relic",
+    "slot": "accessory",
+    "weight": 0.1,
+    "value": 50,
+    "stackable": true,
+    "effects": {
+      "honor": 2,
+      "discipline": 1
+    },
+    "description": "Concha del camino. La entregan en la misa del domingo.",
+    "assetId": "objeto_019",
+    "rarity": "uncommon",
+    "tier": 2,
+    "passives": [
+      {
+        "id": "bendicion_del_capellan",
+        "name": "Bendición del Capellán",
+        "description": "+1 honor al cerrar misión",
+        "trigger": "on_mission_end",
+        "effect": {
+          "honor": 1
+        }
+      }
+    ],
+    "footprint": {
+      "cols": 1,
+      "rows": 1
+    }
+  },
+  {
+    "id": "objeto_020",
+    "name": "Cuentas de un rosario",
+    "type": "relic",
+    "slot": "accessory",
+    "weight": 0.1,
+    "value": 14,
+    "stackable": true,
+    "effects": {
+      "discipline": 1,
+      "honor": 1
+    },
+    "description": "Madera y hueso. Rezo breve, mente en blanco.",
+    "assetId": "objeto_020",
+    "rarity": "common",
+    "tier": 1,
+    "footprint": {
+      "cols": 1,
+      "rows": 1
+    }
+  },
+  {
+    "id": "legendary_body_001",
+    "name": "Coraza de los Tercios Viejos",
+    "type": "cuirass",
+    "slot": "body",
+    "weight": 1,
+    "value": 1230,
+    "stackable": false,
+    "effects": {
+      "vigor": 6,
+      "discipline": 2,
+      "honor": 1
+    },
+    "description": "Pieza única, no se vende, no se roba. Quien la lleva, responde ante el tercio.",
+    "assetId": "epica_001",
+    "rarity": "legendary",
+    "tier": 5,
+    "passives": [
+      {
+        "id": "escudo_de_hierro",
+        "name": "Escudo de Hierro",
+        "description": "+2 vigor, -5% wound chance",
+        "trigger": "passive",
+        "effect": {
+          "vigor": 2
+        }
+      },
+      {
+        "id": "sangre_y_barro",
+        "name": "Sangre y Barro",
+        "description": "+1 vigor al matar (2 turnos)",
+        "trigger": "on_kill",
+        "effect": {
+          "vigor": 1,
+          "duration": 2
+        }
+      },
+      {
+        "id": "relicario_de_sangre",
+        "name": "Relicario de Sangre",
+        "description": "+1 honor pasivo",
+        "trigger": "passive",
+        "effect": {
+          "honor": 1
+        }
+      }
+    ],
+    "requirements": {
+      "minRank": "alferez",
+      "minHonor": 50
+    },
+    "footprint": {
+      "cols": 1,
+      "rows": 2
+    }
+  },
+  {
+    "id": "legendary_head_002",
+    "name": "Celada del Maestre de Campo",
+    "type": "helmet",
+    "slot": "head",
+    "weight": 3,
+    "value": 1260,
+    "stackable": false,
+    "effects": {
+      "vigor": 5,
+      "command": 2,
+      "cunning": 1
+    },
+    "description": "Celada forjada para un maestre que ya no tiene nombre. La usan los herederos.",
+    "assetId": "epica_002",
+    "rarity": "legendary",
+    "tier": 5,
+    "passives": [
+      {
+        "id": "mirada_del_capitan",
+        "name": "Mirada del Capitán",
+        "description": "+1 mando, los reclutas te miran",
+        "trigger": "passive",
+        "effect": {
+          "command": 1
+        }
+      },
+      {
+        "id": "hierro_de_flandes",
+        "name": "Hierro de Flandes",
+        "description": "15% ignora herida grave",
+        "trigger": "on_wound",
+        "effect": {
+          "chance": 0.15
+        }
+      },
+      {
+        "id": "ojo_de_halcon",
+        "name": "Ojo de Halcón",
+        "description": "+1 astucia, detecta emboscadas",
+        "trigger": "passive",
+        "effect": {
+          "cunning": 1
+        }
+      }
+    ],
+    "requirements": {
+      "minRank": "alferez",
+      "minHonor": 50
+    },
+    "footprint": {
+      "cols": 1,
+      "rows": 1
+    }
+  },
+  {
+    "id": "legendary_main_hand_003",
+    "name": "Pica del Tercio de Flandes",
+    "type": "pike",
+    "slot": "main_hand",
+    "weight": 5,
+    "value": 1290,
+    "stackable": false,
+    "effects": {
+      "pike": 6,
+      "discipline": 3,
+      "vigor": 1
+    },
+    "description": "Asta bendecida en la capilla. Tres batallas ha visto, tres veces ha vuelto.",
+    "assetId": "epica_003",
+    "rarity": "legendary",
+    "tier": 5,
+    "passives": [
+      {
+        "id": "linea_de_picas",
+        "name": "Línea de Picas",
+        "description": "+3 pica con disciplina ≥4",
+        "trigger": "passive",
+        "effect": {
+          "pike": 3
+        }
+      },
+      {
+        "id": "bendicion_del_capellan",
+        "name": "Bendición del Capellán",
+        "description": "+2 honor al cerrar misión",
+        "trigger": "on_mission_end",
+        "effect": {
+          "honor": 2
+        }
+      },
+      {
+        "id": "furia_del_tercio",
+        "name": "Furia del Tercio",
+        "description": "+1 pica/+1 espada con vigor ≥3",
+        "trigger": "on_hit",
+        "effect": {
+          "pike": 1,
+          "sword": 1
+        }
+      }
+    ],
+    "requirements": {
+      "minRank": "alferez",
+      "minHonor": 50
+    },
+    "footprint": {
+      "cols": 2,
+      "rows": 1
+    }
+  },
+  {
+    "id": "legendary_main_hand_004",
+    "name": "Espada del Capitán de los Mortales",
+    "type": "pike",
+    "slot": "main_hand",
+    "weight": 5,
+    "value": 1320,
+    "stackable": false,
+    "effects": {
+      "sword": 6,
+      "command": 2,
+      "honor": 1
+    },
+    "description": "Asta bendecida en la capilla. Tres batallas ha visto, tres veces ha vuelto.",
+    "assetId": "epica_004",
+    "rarity": "legendary",
+    "tier": 5,
+    "passives": [
+      {
+        "id": "silencio_de_verdugo",
+        "name": "Silencio de Verdugo",
+        "description": "+3 espada en el primer golpe",
+        "trigger": "on_hit",
+        "effect": {
+          "sword": 3
+        }
+      },
+      {
+        "id": "mirada_del_capitan",
+        "name": "Mirada del Capitán",
+        "description": "+1 mando, los reclutas te miran",
+        "trigger": "passive",
+        "effect": {
+          "command": 1
+        }
+      },
+      {
+        "id": "bendicion_del_capellan",
+        "name": "Bendición del Capellán",
+        "description": "+1 honor al cerrar misión",
+        "trigger": "on_mission_end",
+        "effect": {
+          "honor": 1
+        }
+      }
+    ],
+    "requirements": {
+      "minRank": "alferez",
+      "minHonor": 50
+    },
+    "footprint": {
+      "cols": 2,
+      "rows": 1
+    }
+  },
+  {
+    "id": "legendary_firearm_005",
+    "name": "Arcabuz del Francés Caído",
+    "type": "arquebus",
+    "slot": "firearm",
+    "weight": 5.5,
+    "value": 1350,
+    "stackable": false,
+    "effects": {
+      "arquebus": 7,
+      "cunning": 2,
+      "vigor": -1
+    },
+    "description": "Mosquete único, llave de pistón de un armero ya difunto. Dispara sólo con su dueño.",
+    "assetId": "epica_005",
+    "rarity": "legendary",
+    "tier": 5,
+    "passives": [
+      {
+        "id": "tiro_certero",
+        "name": "Tiro Certero",
+        "description": "+3 arcabuz, mejor en niebla",
+        "trigger": "passive",
+        "effect": {
+          "arquebus": 3
+        }
+      },
+      {
+        "id": "ojo_de_halcon",
+        "name": "Ojo de Halcón",
+        "description": "+1 astucia, detecta emboscadas",
+        "trigger": "passive",
+        "effect": {
+          "cunning": 1
+        }
+      },
+      {
+        "id": "hierro_de_flandes",
+        "name": "Hierro de Flandes",
+        "description": "15% ignora herida grave",
+        "trigger": "on_wound",
+        "effect": {
+          "chance": 0.15
+        }
+      }
+    ],
+    "requirements": {
+      "minRank": "alferez",
+      "minHonor": 50
+    },
+    "footprint": {
+      "cols": 2,
+      "rows": 1
+    }
+  },
+  {
+    "id": "legendary_accessory_006",
+    "name": "Banderín del Tercio",
+    "type": "relic",
+    "slot": "accessory",
+    "weight": 1,
+    "value": 1380,
+    "stackable": false,
+    "effects": {
+      "honor": 3,
+      "discipline": 2
+    },
+    "description": "Insignia de mando, entregada en misa. Sólo cambia de manos por muerte.",
+    "assetId": "epica_006",
+    "rarity": "legendary",
+    "tier": 5,
+    "passives": [
+      {
+        "id": "bendicion_del_capellan",
+        "name": "Bendición del Capellán",
+        "description": "+2 honor al cerrar misión",
+        "trigger": "on_mission_end",
+        "effect": {
+          "honor": 2
+        }
+      },
+      {
+        "id": "relicario_de_sangre",
+        "name": "Relicario de Sangre",
+        "description": "+2 honor pasivo",
+        "trigger": "passive",
+        "effect": {
+          "honor": 2
+        }
+      },
+      {
+        "id": "mirada_del_capitan",
+        "name": "Mirada del Capitán",
+        "description": "+1 mando, los reclutas te miran",
+        "trigger": "passive",
+        "effect": {
+          "command": 1
+        }
+      }
+    ],
+    "requirements": {
+      "minRank": "alferez",
+      "minHonor": 50
+    },
+    "footprint": {
+      "cols": 1,
+      "rows": 1
+    }
+  },
+  {
+    "id": "legendary_accessory_007",
+    "name": "Relicario del Apóstol",
+    "type": "relic",
+    "slot": "accessory",
+    "weight": 1,
+    "value": 1410,
+    "stackable": false,
+    "effects": {
+      "honor": 4,
+      "discipline": 1
+    },
+    "description": "Insignia de mando, entregada en misa. Sólo cambia de manos por muerte.",
+    "assetId": "epica_007",
+    "rarity": "legendary",
+    "tier": 5,
+    "passives": [
+      {
+        "id": "bendicion_del_capellan",
+        "name": "Bendición del Capellán",
+        "description": "+3 honor al cerrar misión",
+        "trigger": "on_mission_end",
+        "effect": {
+          "honor": 3
+        }
+      },
+      {
+        "id": "relicario_de_sangre",
+        "name": "Relicario de Sangre",
+        "description": "+1 honor pasivo",
+        "trigger": "passive",
+        "effect": {
+          "honor": 1
+        }
+      },
+      {
+        "id": "hierro_de_flandes",
+        "name": "Hierro de Flandes",
+        "description": "15% ignora herida grave",
+        "trigger": "on_wound",
+        "effect": {
+          "chance": 0.15
+        }
+      }
+    ],
+    "requirements": {
+      "minRank": "alferez",
+      "minHonor": 50
+    },
+    "footprint": {
+      "cols": 1,
+      "rows": 1
+    }
+  },
+  {
+    "id": "legendary_body_008",
+    "name": "Coraza de Lienzo de Flandes",
+    "type": "cuirass",
+    "slot": "body",
+    "weight": 1,
+    "value": 1440,
+    "stackable": false,
+    "effects": {
+      "vigor": 5,
+      "discipline": 1,
+      "cunning": 1
+    },
+    "description": "Pieza única, no se vende, no se roba. Quien la lleva, responde ante el tercio.",
+    "assetId": "epica_008",
+    "rarity": "legendary",
+    "tier": 5,
+    "passives": [
+      {
+        "id": "escudo_de_hierro",
+        "name": "Escudo de Hierro",
+        "description": "+2 vigor, -5% wound chance",
+        "trigger": "passive",
+        "effect": {
+          "vigor": 2
+        }
+      },
+      {
+        "id": "botin_de_muro",
+        "name": "Botín de Muro",
+        "description": "+20% monedas en botín",
+        "trigger": "on_loot",
+        "effect": {
+          "coins_pct": 0.2
+        }
+      }
+    ],
+    "requirements": {
+      "minRank": "alferez",
+      "minHonor": 50
+    },
+    "footprint": {
+      "cols": 1,
+      "rows": 2
+    }
+  },
+  {
+    "id": "legendary_off_hand_009",
+    "name": "Daga del Verdugo",
+    "type": "sword",
+    "slot": "off_hand",
+    "weight": 1,
+    "value": 1470,
+    "stackable": false,
+    "effects": {
+      "sword": 4,
+      "cunning": 3
+    },
+    "description": "Pieza única, no se vende, no se roba. Quien la lleva, responde ante el tercio.",
+    "assetId": "epica_009",
+    "rarity": "legendary",
+    "tier": 5,
+    "passives": [
+      {
+        "id": "silencio_de_verdugo",
+        "name": "Silencio de Verdugo",
+        "description": "+2 espada en el primer golpe",
+        "trigger": "on_hit",
+        "effect": {
+          "sword": 2
+        }
+      },
+      {
+        "id": "gafe",
+        "name": "Gafe",
+        "description": "-1 disciplina permanente",
+        "trigger": "passive",
+        "effect": {
+          "discipline": -1
+        }
+      },
+      {
+        "id": "sangre_y_barro",
+        "name": "Sangre y Barro",
+        "description": "+1 vigor al matar (2 turnos)",
+        "trigger": "on_kill",
+        "effect": {
+          "vigor": 1,
+          "duration": 2
+        }
+      }
+    ],
+    "requirements": {
+      "minRank": "alferez",
+      "minHonor": 50
+    },
+    "footprint": {
+      "cols": 1,
+      "rows": 1
+    }
+  },
+  {
+    "id": "legendary_main_hand_010",
+    "name": "Lanza del Alférez",
+    "type": "pike",
+    "slot": "main_hand",
+    "weight": 5,
+    "value": 1500,
+    "stackable": false,
+    "effects": {
+      "pike": 5,
+      "command": 3,
+      "honor": 1
+    },
+    "description": "Asta bendecida en la capilla. Tres batallas ha visto, tres veces ha vuelto.",
+    "assetId": "epica_010",
+    "rarity": "legendary",
+    "tier": 5,
+    "passives": [
+      {
+        "id": "linea_de_picas",
+        "name": "Línea de Picas",
+        "description": "+2 pica con disciplina ≥4",
+        "trigger": "passive",
+        "effect": {
+          "pike": 2
+        }
+      },
+      {
+        "id": "mirada_del_capitan",
+        "name": "Mirada del Capitán",
+        "description": "+1 mando, los reclutas te miran",
+        "trigger": "passive",
+        "effect": {
+          "command": 1
+        }
+      },
+      {
+        "id": "bendicion_del_capellan",
+        "name": "Bendición del Capellán",
+        "description": "+1 honor al cerrar misión",
+        "trigger": "on_mission_end",
+        "effect": {
+          "honor": 1
+        }
+      }
+    ],
+    "requirements": {
+      "minRank": "alferez",
+      "minHonor": 50
+    },
+    "footprint": {
+      "cols": 2,
+      "rows": 1
+    }
+  },
+  {
+    "id": "legendary_head_011",
+    "name": "Yelmo de los tres cuervos",
+    "type": "helmet",
+    "slot": "head",
+    "weight": 3,
+    "value": 1530,
+    "stackable": false,
+    "effects": {
+      "vigor": 5,
+      "discipline": 2
+    },
+    "description": "Celada forjada para un maestre que ya no tiene nombre. La usan los herederos.",
+    "assetId": "epica_011",
+    "rarity": "legendary",
+    "tier": 5,
+    "passives": [
+      {
+        "id": "escudo_de_hierro",
+        "name": "Escudo de Hierro",
+        "description": "+2 vigor, -5% wound chance",
+        "trigger": "passive",
+        "effect": {
+          "vigor": 2
+        }
+      },
+      {
+        "id": "hierro_de_flandes",
+        "name": "Hierro de Flandes",
+        "description": "15% ignora herida grave",
+        "trigger": "on_wound",
+        "effect": {
+          "chance": 0.15
+        }
+      }
+    ],
+    "requirements": {
+      "minRank": "alferez",
+      "minHonor": 50
+    },
+    "footprint": {
+      "cols": 1,
+      "rows": 1
+    }
+  },
+  {
+    "id": "legendary_boots_012",
+    "name": "Botas del Tercio de Italia",
+    "type": "boots",
+    "slot": "boots",
+    "weight": 1.5,
+    "value": 1560,
+    "stackable": false,
+    "effects": {
+      "vigor": 3,
+      "cunning": 1,
+      "discipline": 1
+    },
+    "description": "Pieza única, no se vende, no se roba. Quien la lleva, responde ante el tercio.",
+    "assetId": "epica_012",
+    "rarity": "legendary",
+    "tier": 5,
+    "passives": [
+      {
+        "id": "pies_ligeros",
+        "name": "Pies Ligeros",
+        "description": "+1 vigor, -10% fatiga de marcha",
+        "trigger": "passive",
+        "effect": {
+          "vigor": 1
+        }
+      },
+      {
+        "id": "escudo_de_hierro",
+        "name": "Escudo de Hierro",
+        "description": "+1 vigor, -5% wound chance",
+        "trigger": "passive",
+        "effect": {
+          "vigor": 1
+        }
+      }
+    ],
+    "requirements": {
+      "minRank": "alferez",
+      "minHonor": 50
+    },
+    "footprint": {
+      "cols": 1,
+      "rows": 1
+    }
+  },
+  {
+    "id": "legendary_body_013",
+    "name": "Capa del Maestre",
+    "type": "cuirass",
+    "slot": "body",
+    "weight": 1,
+    "value": 1590,
+    "stackable": false,
+    "effects": {
+      "vigor": 3,
+      "honor": 2,
+      "discipline": 1
+    },
+    "description": "Pieza única, no se vende, no se roba. Quien la lleva, responde ante el tercio.",
+    "assetId": "epica_013",
+    "rarity": "legendary",
+    "tier": 5,
+    "passives": [
+      {
+        "id": "bendicion_del_capellan",
+        "name": "Bendición del Capellán",
+        "description": "+1 honor al cerrar misión",
+        "trigger": "on_mission_end",
+        "effect": {
+          "honor": 1
+        }
+      },
+      {
+        "id": "relicario_de_sangre",
+        "name": "Relicario de Sangre",
+        "description": "+1 honor pasivo",
+        "trigger": "passive",
+        "effect": {
+          "honor": 1
+        }
+      }
+    ],
+    "requirements": {
+      "minRank": "alferez",
+      "minHonor": 50
+    },
+    "footprint": {
+      "cols": 1,
+      "rows": 2
+    }
+  },
+  {
+    "id": "legendary_main_hand_014",
+    "name": "Espada Ropera del Embajador",
+    "type": "pike",
+    "slot": "main_hand",
+    "weight": 5,
+    "value": 1620,
+    "stackable": false,
+    "effects": {
+      "sword": 4,
+      "cunning": 2,
+      "command": 1
+    },
+    "description": "Asta bendecida en la capilla. Tres batallas ha visto, tres veces ha vuelto.",
+    "assetId": "epica_014",
+    "rarity": "legendary",
+    "tier": 5,
+    "passives": [
+      {
+        "id": "silencio_de_verdugo",
+        "name": "Silencio de Verdugo",
+        "description": "+2 espada en el primer golpe",
+        "trigger": "on_hit",
+        "effect": {
+          "sword": 2
+        }
+      },
+      {
+        "id": "mirada_del_capitan",
+        "name": "Mirada del Capitán",
+        "description": "+1 mando, los reclutas te miran",
+        "trigger": "passive",
+        "effect": {
+          "command": 1
+        }
+      }
+    ],
+    "requirements": {
+      "minRank": "alferez",
+      "minHonor": 50
+    },
+    "footprint": {
+      "cols": 2,
+      "rows": 1
+    }
+  },
+  {
+    "id": "legendary_firearm_015",
+    "name": "Mosquete de Asedio del Maestre",
+    "type": "arquebus",
+    "slot": "firearm",
+    "weight": 5.5,
+    "value": 1650,
+    "stackable": false,
+    "effects": {
+      "arquebus": 6,
+      "vigor": 1,
+      "discipline": 1
+    },
+    "description": "Mosquete único, llave de pistón de un armero ya difunto. Dispara sólo con su dueño.",
+    "assetId": "epica_015",
+    "rarity": "legendary",
+    "tier": 5,
+    "passives": [
+      {
+        "id": "tiro_certero",
+        "name": "Tiro Certero",
+        "description": "+2 arcabuz, mejor en niebla",
+        "trigger": "passive",
+        "effect": {
+          "arquebus": 2
+        }
+      },
+      {
+        "id": "furia_del_tercio",
+        "name": "Furia del Tercio",
+        "description": "+1 pica/+1 espada con vigor ≥3",
+        "trigger": "on_hit",
+        "effect": {
+          "pike": 1,
+          "sword": 1
+        }
+      }
+    ],
+    "requirements": {
+      "minRank": "alferez",
+      "minHonor": 50
+    },
+    "footprint": {
+      "cols": 2,
+      "rows": 1
+    }
+  },
+  {
+    "id": "legendary_body_016",
+    "name": "Coraza del Santo Oficio",
+    "type": "cuirass",
+    "slot": "body",
+    "weight": 1,
+    "value": 1680,
+    "stackable": false,
+    "effects": {
+      "vigor": 6,
+      "discipline": 2,
+      "honor": 2
+    },
+    "description": "Pieza única, no se vende, no se roba. Quien la lleva, responde ante el tercio.",
+    "assetId": "epica_016",
+    "rarity": "legendary",
+    "tier": 5,
+    "passives": [
+      {
+        "id": "escudo_de_hierro",
+        "name": "Escudo de Hierro",
+        "description": "+2 vigor, -5% wound chance",
+        "trigger": "passive",
+        "effect": {
+          "vigor": 2
+        }
+      },
+      {
+        "id": "bendicion_del_capellan",
+        "name": "Bendición del Capellán",
+        "description": "+2 honor al cerrar misión",
+        "trigger": "on_mission_end",
+        "effect": {
+          "honor": 2
+        }
+      },
+      {
+        "id": "relicario_de_sangre",
+        "name": "Relicario de Sangre",
+        "description": "+1 honor pasivo",
+        "trigger": "passive",
+        "effect": {
+          "honor": 1
+        }
+      }
+    ],
+    "requirements": {
+      "minRank": "alferez",
+      "minHonor": 50
+    },
+    "footprint": {
+      "cols": 1,
+      "rows": 2
+    }
+  },
+  {
+    "id": "legendary_head_017",
+    "name": "Celada del Santo",
+    "type": "helmet",
+    "slot": "head",
+    "weight": 3,
+    "value": 1710,
+    "stackable": false,
+    "effects": {
+      "vigor": 4,
+      "discipline": 2,
+      "honor": 2
+    },
+    "description": "Celada forjada para un maestre que ya no tiene nombre. La usan los herederos.",
+    "assetId": "epica_017",
+    "rarity": "legendary",
+    "tier": 5,
+    "passives": [
+      {
+        "id": "escudo_de_hierro",
+        "name": "Escudo de Hierro",
+        "description": "+1 vigor, -5% wound chance",
+        "trigger": "passive",
+        "effect": {
+          "vigor": 1
+        }
+      },
+      {
+        "id": "bendicion_del_capellan",
+        "name": "Bendición del Capellán",
+        "description": "+2 honor al cerrar misión",
+        "trigger": "on_mission_end",
+        "effect": {
+          "honor": 2
+        }
+      }
+    ],
+    "requirements": {
+      "minRank": "alferez",
+      "minHonor": 50
+    },
+    "footprint": {
+      "cols": 1,
+      "rows": 1
+    }
+  },
+  {
+    "id": "legendary_off_hand_018",
+    "name": "Daga de la Capa Negra",
+    "type": "sword",
+    "slot": "off_hand",
+    "weight": 1,
+    "value": 1740,
+    "stackable": false,
+    "effects": {
+      "sword": 3,
+      "cunning": 4
+    },
+    "description": "Pieza única, no se vende, no se roba. Quien la lleva, responde ante el tercio.",
+    "assetId": "epica_018",
+    "rarity": "legendary",
+    "tier": 5,
+    "passives": [
+      {
+        "id": "silencio_de_verdugo",
+        "name": "Silencio de Verdugo",
+        "description": "+1 espada en el primer golpe",
+        "trigger": "on_hit",
+        "effect": {
+          "sword": 1
+        }
+      },
+      {
+        "id": "gafe",
+        "name": "Gafe",
+        "description": "-1 disciplina permanente",
+        "trigger": "passive",
+        "effect": {
+          "discipline": -1
+        }
+      },
+      {
+        "id": "ojo_de_halcon",
+        "name": "Ojo de Halcón",
+        "description": "+1 astucia, detecta emboscadas",
+        "trigger": "passive",
+        "effect": {
+          "cunning": 1
+        }
+      }
+    ],
+    "requirements": {
+      "minRank": "alferez",
+      "minHonor": 50
+    },
+    "footprint": {
+      "cols": 1,
+      "rows": 1
+    }
+  },
+  {
+    "id": "legendary_accessory_019",
+    "name": "Estandarte del Tercio Viejo",
+    "type": "relic",
+    "slot": "accessory",
+    "weight": 1,
+    "value": 1770,
+    "stackable": false,
+    "effects": {
+      "honor": 3,
+      "command": 2,
+      "discipline": 1
+    },
+    "description": "Insignia de mando, entregada en misa. Sólo cambia de manos por muerte.",
+    "assetId": "epica_019",
+    "rarity": "legendary",
+    "tier": 5,
+    "passives": [
+      {
+        "id": "bendicion_del_capellan",
+        "name": "Bendición del Capellán",
+        "description": "+2 honor al cerrar misión",
+        "trigger": "on_mission_end",
+        "effect": {
+          "honor": 2
+        }
+      },
+      {
+        "id": "mirada_del_capitan",
+        "name": "Mirada del Capitán",
+        "description": "+1 mando, los reclutas te miran",
+        "trigger": "passive",
+        "effect": {
+          "command": 1
+        }
+      },
+      {
+        "id": "relicario_de_sangre",
+        "name": "Relicario de Sangre",
+        "description": "+1 honor pasivo",
+        "trigger": "passive",
+        "effect": {
+          "honor": 1
+        }
+      }
+    ],
+    "requirements": {
+      "minRank": "alferez",
+      "minHonor": 50
+    },
+    "footprint": {
+      "cols": 1,
+      "rows": 1
+    }
+  },
+  {
+    "id": "legendary_main_hand_020",
+    "name": "Pica del Justo",
+    "type": "pike",
+    "slot": "main_hand",
+    "weight": 5,
+    "value": 1800,
+    "stackable": false,
+    "effects": {
+      "pike": 5,
+      "discipline": 3,
+      "honor": 2
+    },
+    "description": "Asta bendecida en la capilla. Tres batallas ha visto, tres veces ha vuelto.",
+    "assetId": "epica_020",
+    "rarity": "legendary",
+    "tier": 5,
+    "passives": [
+      {
+        "id": "linea_de_picas",
+        "name": "Línea de Picas",
+        "description": "+2 pica con disciplina ≥4",
+        "trigger": "passive",
+        "effect": {
+          "pike": 2
+        }
+      },
+      {
+        "id": "bendicion_del_capellan",
+        "name": "Bendición del Capellán",
+        "description": "+2 honor al cerrar misión",
+        "trigger": "on_mission_end",
+        "effect": {
+          "honor": 2
+        }
+      },
+      {
+        "id": "botin_de_muro",
+        "name": "Botín de Muro",
+        "description": "+20% monedas en botín",
+        "trigger": "on_loot",
+        "effect": {
+          "coins_pct": 0.2
+        }
+      }
+    ],
+    "requirements": {
+      "minRank": "alferez",
+      "minHonor": 50
+    },
+    "footprint": {
+      "cols": 2,
+      "rows": 1
+    }
   }
 ]

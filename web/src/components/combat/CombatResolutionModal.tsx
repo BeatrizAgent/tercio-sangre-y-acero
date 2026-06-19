@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useMemo, useState } from "react";
 import { Swords, X } from "lucide-react";
 import type { CombatResolutionModalProps } from "@/lib/combat/combat-types";
 import { outcomeDelayMs } from "@/lib/combat/combat-animation-script";
@@ -17,12 +17,35 @@ export function CombatResolutionModal({
   onContinue,
 }: CombatResolutionModalProps) {
   const [ready, setReady] = useState(false);
+  const [elapsedMs, setElapsedMs] = useState(0);
+
+  const activeLogEntry = useMemo(() => {
+    return result.eventLog.reduce((active, entry) => (entry.at <= elapsedMs ? entry : active), result.eventLog[0]);
+  }, [elapsedMs, result.eventLog]);
+
+  const handleSequenceComplete = useCallback(() => setReady(true), []);
 
   useEffect(() => {
     if (!open) return;
+    setReady(false);
+    setElapsedMs(0);
     const timer = window.setTimeout(() => setReady(true), outcomeDelayMs);
     return () => window.clearTimeout(timer);
   }, [open, result.success, result.roll, result.target]);
+
+  useEffect(() => {
+    if (!open) return;
+    let frame = 0;
+    const startedAt = performance.now();
+
+    const tick = () => {
+      setElapsedMs(performance.now() - startedAt);
+      frame = window.requestAnimationFrame(tick);
+    };
+
+    frame = window.requestAnimationFrame(tick);
+    return () => window.cancelAnimationFrame(frame);
+  }, [open, result]);
 
   if (!open) return null;
 
@@ -48,11 +71,11 @@ export function CombatResolutionModal({
         </header>
 
         <section className="relative bg-stone-950">
-          <CombatStage missionTitle={missionTitle} missionId={missionId} result={result} onSequenceComplete={() => setReady(true)} />
-          <CombatHud result={result} missionTitle={missionTitle} ready={ready} onContinue={onContinue} />
+          <CombatStage missionTitle={missionTitle} missionId={missionId} result={result} onSequenceComplete={handleSequenceComplete} />
+          <CombatHud result={result} missionTitle={missionTitle} ready={ready} activeLogEntry={activeLogEntry} onContinue={onContinue} />
         </section>
 
-        <CombatLog result={result} />
+        <CombatLog result={result} elapsedMs={elapsedMs} activeLogEntry={activeLogEntry} />
       </div>
     </div>
   );

@@ -1,12 +1,12 @@
 {
-  "count": 436,
+  "count": 448,
   "assets": [
     {
       "source": "armadura/armadura_001.png",
       "asset": "armadura/armadura_001.png",
       "original_size": [
         1045,
-        1246
+        1245
       ],
       "clean_size": [
         1045,
@@ -15,9 +15,9 @@
       "cropped": true,
       "crop_box": [
         0,
-        1,
+        0,
         1045,
-        1246
+        1245
       ],
       "background_rgb": [
         248,
@@ -3798,7 +3798,7 @@
       "asset": "auxiliares/auxiliar_010.png",
       "original_size": [
         627,
-        1361
+        1360
       ],
       "clean_size": [
         627,
@@ -3857,6 +3857,36 @@
       "clean_size": [
         1672,
         941
+      ],
+      "cropped": false,
+      "background_removed": false,
+      "background_reason": "no_magenta_border"
+    },
+    {
+      "source": "CG/cg_events/campaign_map_flanders.png",
+      "asset": "CG/cg_events/campaign_map_flanders.png",
+      "original_size": [
+        1024,
+        1024
+      ],
+      "clean_size": [
+        1024,
+        1024
+      ],
+      "cropped": false,
+      "background_removed": false,
+      "background_reason": "no_magenta_border"
+    },
+    {
+      "source": "CG/cg_events/city_hub_bg.png",
+      "asset": "CG/cg_events/city_hub_bg.png",
+      "original_size": [
+        1920,
+        1080
+      ],
+      "clean_size": [
+        1920,
+        1080
       ],
       "cropped": false,
       "background_removed": false,
@@ -4283,35 +4313,11 @@
       "background_reason": "no_magenta_border"
     },
     {
-      "source": "CG/sprites_events/ChatGPT Image 15 jun 2026, 17_54_05 (1).png",
-      "asset": "CG/sprites_events/tercio_lluvia_con_estandarte.png",
-      "original_size": [
-        1254,
-        1254
-      ],
-      "clean_size": [
-        1196,
-        1205
-      ],
-      "cropped": true,
-      "crop_box": [
-        34,
-        14,
-        1230,
-        1219
-      ],
-      "background_rgb": [
-        248,
-        0,
-        224
-      ]
-    },
-    {
-      "source": "CG/sprites_events/ChatGPT Image 15 jun 2026, 17_54_05 (2).png",
+      "source": "CG/sprites_events/cirujano_atendiendo_herido.png",
       "asset": "CG/sprites_events/cirujano_atendiendo_herido.png",
       "original_size": [
         1254,
-        1254
+        1176
       ],
       "clean_size": [
         1254,
@@ -4320,22 +4326,94 @@
       "cropped": true,
       "crop_box": [
         0,
-        31,
+        0,
         1254,
-        1207
+        1176
       ],
       "background_rgb": [
-        240,
+        248,
         0,
         248
       ]
     },
     {
-      "source": "CG/sprites_events/ChatGPT Image 15 jun 2026, 17_54_06 (3).png",
-      "asset": "CG/sprites_events/soldado_arrodillado_ante_ensenia.png",
+      "source": "CG/sprites_events/discusion_oficiales_pertrechos.png",
+      "asset": "CG/sprites_events/discusion_oficiales_pertrechos.png",
+      "original_size": [
+        1170,
+        1184
+      ],
+      "clean_size": [
+        1170,
+        1184
+      ],
+      "cropped": true,
+      "crop_box": [
+        0,
+        0,
+        1170,
+        1184
+      ],
+      "background_rgb": [
+        248,
+        0,
+        248
+      ]
+    },
+    {
+      "source": "CG/sprites_events/entierro_campamento_humo.png",
+      "asset": "CG/sprites_events/entierro_campamento_humo.png",
+      "original_size": [
+        1179,
+        1114
+      ],
+      "clean_size": [
+        1179,
+        1114
+      ],
+      "cropped": true,
+      "crop_box": [
+        0,
+        0,
+        1179,
+        1114
+      ],
+      "background_rgb": [
+        248,
+        0,
+        248
+      ]
+    },
+    {
+      "source": "CG/sprites_events/rifa_cadaveres_campamento.png",
+      "asset": "CG/sprites_events/rifa_cadaveres_campamento.png",
       "original_size": [
         1254,
-        1254
+        1071
+      ],
+      "clean_size": [
+        1254,
+        1071
+      ],
+      "cropped": true,
+      "crop_box": [
+        0,
+        0,
+        1254,
+        1071
+      ],
+      "background_rgb": [
+        248,
+        0,
+        248
+      ]
+    },
+    {
+      "source": "CG/sprites_events/soldado_arrodillado_ante_ensenia.png",
+      "asset": "CG/sprites_events/soldado_arrodillado_ante_ensenia.png",
+      "original_size": [
+        1227,
+        1211
       ],
       "clean_size": [
         1227,
@@ -4343,19 +4421,19 @@
       ],
       "cropped": true,
       "crop_box": [
-        17,
-        31,
-        1244,
-        1242
+        0,
+        0,
+        1227,
+        1211
       ],
       "background_rgb": [
-        240,
+        248,
         0,
         248
       ]
     },
     {
-      "source": "CG/sprites_events/ChatGPT Image 15 jun 2026, 17_54_06 (4).png",
+      "source": "CG/sprites_events/soldados_jugando_dados_mesa.png",
       "asset": "CG/sprites_events/soldados_jugando_dados_mesa.png",
       "original_size": [
         1254,
@@ -4379,83 +4457,11 @@
       ]
     },
     {
-      "source": "CG/sprites_events/ChatGPT Image 15 jun 2026, 17_54_06 (5).png",
-      "asset": "CG/sprites_events/rifa_cadaveres_campamento.png",
-      "original_size": [
-        1254,
-        1254
-      ],
-      "clean_size": [
-        1254,
-        1071
-      ],
-      "cropped": true,
-      "crop_box": [
-        0,
-        99,
-        1254,
-        1170
-      ],
-      "background_rgb": [
-        240,
-        0,
-        248
-      ]
-    },
-    {
-      "source": "CG/sprites_events/ChatGPT Image 15 jun 2026, 17_54_06 (6).png",
-      "asset": "CG/sprites_events/entierro_campamento_humo.png",
-      "original_size": [
-        1254,
-        1254
-      ],
-      "clean_size": [
-        1179,
-        1114
-      ],
-      "cropped": true,
-      "crop_box": [
-        37,
-        74,
-        1216,
-        1188
-      ],
-      "background_rgb": [
-        240,
-        0,
-        248
-      ]
-    },
-    {
-      "source": "CG/sprites_events/ChatGPT Image 15 jun 2026, 17_54_07 (7).png",
-      "asset": "CG/sprites_events/discusion_oficiales_pertrechos.png",
-      "original_size": [
-        1254,
-        1254
-      ],
-      "clean_size": [
-        1170,
-        1184
-      ],
-      "cropped": true,
-      "crop_box": [
-        50,
-        62,
-        1220,
-        1246
-      ],
-      "background_rgb": [
-        248,
-        0,
-        248
-      ]
-    },
-    {
-      "source": "CG/sprites_events/ChatGPT Image 15 jun 2026, 17_54_07 (8).png",
+      "source": "CG/sprites_events/taberna_soldados_mesa.png",
       "asset": "CG/sprites_events/taberna_soldados_mesa.png",
       "original_size": [
         1254,
-        1254
+        1040
       ],
       "clean_size": [
         1254,
@@ -4464,14 +4470,38 @@
       "cropped": true,
       "crop_box": [
         0,
-        122,
+        0,
         1254,
-        1162
+        1040
       ],
       "background_rgb": [
         248,
         0,
         248
+      ]
+    },
+    {
+      "source": "CG/sprites_events/tercio_lluvia_con_estandarte.png",
+      "asset": "CG/sprites_events/tercio_lluvia_con_estandarte.png",
+      "original_size": [
+        1196,
+        1205
+      ],
+      "clean_size": [
+        1196,
+        1205
+      ],
+      "cropped": true,
+      "crop_box": [
+        0,
+        0,
+        1196,
+        1205
+      ],
+      "background_rgb": [
+        248,
+        0,
+        216
       ]
     },
     {
@@ -4526,7 +4556,7 @@
       "source": "enemigos/chusma/enemigo_chusma_003.png",
       "asset": "enemigos/chusma/enemigo_chusma_003.png",
       "original_size": [
-        792,
+        791,
         1384
       ],
       "clean_size": [
@@ -4935,7 +4965,7 @@
       "asset": "enemigos/franceses/enemigo_frances_010.png",
       "original_size": [
         795,
-        1368
+        1367
       ],
       "clean_size": [
         795,
@@ -4944,9 +4974,9 @@
       "cropped": true,
       "crop_box": [
         0,
-        1,
+        0,
         795,
-        1368
+        1367
       ],
       "background_rgb": [
         240,
@@ -5270,7 +5300,7 @@
       "source": "enemigos/moros/enemigo_moro_004.png",
       "asset": "enemigos/moros/enemigo_moro_004.png",
       "original_size": [
-        672,
+        671,
         1352
       ],
       "clean_size": [
@@ -5279,9 +5309,9 @@
       ],
       "cropped": true,
       "crop_box": [
-        1,
         0,
-        672,
+        0,
+        671,
         1352
       ],
       "background_rgb": [
@@ -5750,7 +5780,7 @@
       "source": "enemigos/turcos/enemigo_turco_004.png",
       "asset": "enemigos/turcos/enemigo_turco_004.png",
       "original_size": [
-        557,
+        556,
         1362
       ],
       "clean_size": [
@@ -5774,7 +5804,7 @@
       "source": "enemigos/turcos/enemigo_turco_005.png",
       "asset": "enemigos/turcos/enemigo_turco_005.png",
       "original_size": [
-        539,
+        538,
         1419
       ],
       "clean_size": [
@@ -6395,731 +6425,11 @@
       ]
     },
     {
-      "source": "icons-ui/ChatGPT Image 15 jun 2026, 16_50_40 (1).png",
-      "asset": "icons-ui/espada_martillo_cruzados.png",
-      "original_size": [
-        1254,
-        1254
-      ],
-      "clean_size": [
-        922,
-        866
-      ],
-      "cropped": true,
-      "crop_box": [
-        166,
-        184,
-        1088,
-        1050
-      ],
-      "background_rgb": [
-        240,
-        0,
-        240
-      ]
-    },
-    {
-      "source": "icons-ui/ChatGPT Image 15 jun 2026, 16_50_40 (2).png",
-      "asset": "icons-ui/medalla_cruz_roja_bronce.png",
-      "original_size": [
-        1254,
-        1254
-      ],
-      "clean_size": [
-        738,
-        1157
-      ],
-      "cropped": true,
-      "crop_box": [
-        257,
-        26,
-        995,
-        1183
-      ],
-      "background_rgb": [
-        240,
-        0,
-        240
-      ]
-    },
-    {
-      "source": "icons-ui/ChatGPT Image 15 jun 2026, 16_50_40 (3).png",
-      "asset": "icons-ui/sol_dorado_cara.png",
-      "original_size": [
-        1254,
-        1254
-      ],
-      "clean_size": [
-        983,
-        956
-      ],
-      "cropped": true,
-      "crop_box": [
-        130,
-        127,
-        1113,
-        1083
-      ],
-      "background_rgb": [
-        248,
-        0,
-        248
-      ]
-    },
-    {
-      "source": "icons-ui/ChatGPT Image 15 jun 2026, 16_50_41 (4).png",
-      "asset": "icons-ui/calavera_medallon.png",
-      "original_size": [
-        1254,
-        1254
-      ],
-      "clean_size": [
-        878,
-        887
-      ],
-      "cropped": true,
-      "crop_box": [
-        186,
-        167,
-        1064,
-        1054
-      ],
-      "background_rgb": [
-        248,
-        0,
-        248
-      ]
-    },
-    {
-      "source": "icons-ui/ChatGPT Image 15 jun 2026, 16_50_41 (5).png",
-      "asset": "icons-ui/bolsa_monedas_pequena.png",
-      "original_size": [
-        1254,
-        1254
-      ],
-      "clean_size": [
-        730,
-        776
-      ],
-      "cropped": true,
-      "crop_box": [
-        254,
-        239,
-        984,
-        1015
-      ],
-      "background_rgb": [
-        240,
-        0,
-        248
-      ]
-    },
-    {
-      "source": "icons-ui/ChatGPT Image 15 jun 2026, 16_50_41 (6).png",
-      "asset": "icons-ui/venda_lino_enrollada.png",
-      "original_size": [
-        1254,
-        1254
-      ],
-      "clean_size": [
-        664,
-        982
-      ],
-      "cropped": true,
-      "crop_box": [
-        331,
-        145,
-        995,
-        1127
-      ],
-      "background_rgb": [
-        248,
-        0,
-        248
-      ]
-    },
-    {
-      "source": "icons-ui/ChatGPT Image 15 jun 2026, 16_50_41 (7).png",
-      "asset": "icons-ui/botella_vidrio_verde.png",
-      "original_size": [
-        1254,
-        1254
-      ],
-      "clean_size": [
-        680,
-        994
-      ],
-      "cropped": true,
-      "crop_box": [
-        289,
-        109,
-        969,
-        1103
-      ],
-      "background_rgb": [
-        248,
-        0,
-        248
-      ]
-    },
-    {
-      "source": "icons-ui/ChatGPT Image 15 jun 2026, 16_50_42 (10).png",
-      "asset": "icons-ui/medallon_calavera_oscuro.png",
-      "original_size": [
-        1254,
-        1254
-      ],
-      "clean_size": [
-        900,
-        1013
-      ],
-      "cropped": true,
-      "crop_box": [
-        177,
-        120,
-        1077,
-        1133
-      ],
-      "background_rgb": [
-        248,
-        0,
-        248
-      ]
-    },
-    {
-      "source": "icons-ui/ChatGPT Image 15 jun 2026, 16_50_42 (8).png",
-      "asset": "icons-ui/condecoracion_estrella_laurel.png",
-      "original_size": [
-        1254,
-        1254
-      ],
-      "clean_size": [
-        785,
-        962
-      ],
-      "cropped": true,
-      "crop_box": [
-        236,
-        137,
-        1021,
-        1099
-      ],
-      "background_rgb": [
-        240,
-        0,
-        248
-      ]
-    },
-    {
-      "source": "icons-ui/ChatGPT Image 15 jun 2026, 16_50_42 (9).png",
-      "asset": "icons-ui/escudo_partido_cruz_roja.png",
-      "original_size": [
-        1254,
-        1254
-      ],
-      "clean_size": [
-        938,
-        956
-      ],
-      "cropped": true,
-      "crop_box": [
-        159,
-        136,
-        1097,
-        1092
-      ],
-      "background_rgb": [
-        248,
-        0,
-        248
-      ]
-    },
-    {
-      "source": "icons-ui/ChatGPT Image 15 jun 2026, 16_58_24 (1).png",
-      "asset": "icons-ui/bolsa_monedas_cruz.png",
-      "original_size": [
-        1254,
-        1254
-      ],
-      "clean_size": [
-        1113,
-        1148
-      ],
-      "cropped": true,
-      "crop_box": [
-        62,
-        51,
-        1175,
-        1199
-      ],
-      "background_rgb": [
-        240,
-        0,
-        248
-      ]
-    },
-    {
-      "source": "icons-ui/ChatGPT Image 15 jun 2026, 16_58_25 (2).png",
-      "asset": "icons-ui/saquito_monedas_documento.png",
-      "original_size": [
-        1254,
-        1254
-      ],
-      "clean_size": [
-        1125,
-        1115
-      ],
-      "cropped": true,
-      "crop_box": [
-        94,
-        71,
-        1219,
-        1186
-      ],
-      "background_rgb": [
-        248,
-        0,
-        248
-      ]
-    },
-    {
-      "source": "icons-ui/ChatGPT Image 15 jun 2026, 16_58_25 (3).png",
-      "asset": "icons-ui/peto_morion_dorado.png",
-      "original_size": [
-        1254,
-        1254
-      ],
-      "clean_size": [
-        1120,
-        1243
-      ],
-      "cropped": true,
-      "crop_box": [
-        68,
-        11,
-        1188,
-        1254
-      ],
-      "background_rgb": [
-        240,
-        0,
-        200
-      ]
-    },
-    {
-      "source": "icons-ui/ChatGPT Image 15 jun 2026, 16_58_26 (4).png",
-      "asset": "icons-ui/morion_peto_correas.png",
-      "original_size": [
-        1254,
-        1254
-      ],
-      "clean_size": [
-        1198,
-        934
-      ],
-      "cropped": true,
-      "crop_box": [
-        50,
-        164,
-        1248,
-        1098
-      ],
-      "background_rgb": [
-        248,
-        0,
-        248
-      ]
-    },
-    {
-      "source": "icons-ui/ChatGPT Image 15 jun 2026, 16_58_26 (5).png",
-      "asset": "icons-ui/orden_sellada_daga.png",
-      "original_size": [
-        1254,
-        1254
-      ],
-      "clean_size": [
-        999,
-        1145
-      ],
-      "cropped": true,
-      "crop_box": [
-        135,
-        47,
-        1134,
-        1192
-      ],
-      "background_rgb": [
-        240,
-        0,
-        240
-      ]
-    },
-    {
-      "source": "icons-ui/ChatGPT Image 15 jun 2026, 16_58_27 (6).png",
-      "asset": "icons-ui/camastro_manta_lana.png",
-      "original_size": [
-        1254,
-        1254
-      ],
-      "clean_size": [
-        1241,
-        1220
-      ],
-      "cropped": true,
-      "crop_box": [
-        8,
-        25,
-        1249,
-        1245
-      ],
-      "background_rgb": [
-        248,
-        0,
-        248
-      ]
-    },
-    {
-      "source": "icons-ui/ChatGPT Image 15 jun 2026, 16_58_27 (7).png",
-      "asset": "icons-ui/vendas_tarros_medicina.png",
-      "original_size": [
-        1254,
-        1254
-      ],
-      "clean_size": [
-        1097,
-        989
-      ],
-      "cropped": true,
-      "crop_box": [
-        77,
-        166,
-        1174,
-        1155
-      ],
-      "background_rgb": [
-        240,
-        0,
-        248
-      ]
-    },
-    {
-      "source": "icons-ui/ChatGPT Image 15 jun 2026, 16_58_28 (8).png",
-      "asset": "icons-ui/pergamino_pluma_sello.png",
-      "original_size": [
-        1254,
-        1254
-      ],
-      "clean_size": [
-        1210,
-        1134
-      ],
-      "cropped": true,
-      "crop_box": [
-        26,
-        75,
-        1236,
-        1209
-      ],
-      "background_rgb": [
-        240,
-        0,
-        248
-      ]
-    },
-    {
-      "source": "icons-ui/ChatGPT Image 15 jun 2026, 16_58_29 (9).png",
-      "asset": "icons-ui/bolsa_monedas_medalla.png",
-      "original_size": [
-        1254,
-        1254
-      ],
-      "clean_size": [
-        1186,
-        1137
-      ],
-      "cropped": true,
-      "crop_box": [
-        30,
-        42,
-        1216,
-        1179
-      ],
-      "background_rgb": [
-        240,
-        0,
-        248
-      ]
-    },
-    {
-      "source": "icons-ui/ChatGPT Image 15 jun 2026, 16_58_31 (10).png",
-      "asset": "icons-ui/casco_cuero_monedas.png",
-      "original_size": [
-        1254,
-        1254
-      ],
-      "clean_size": [
-        1226,
-        993
-      ],
-      "cropped": true,
-      "crop_box": [
-        28,
-        125,
-        1254,
-        1118
-      ],
-      "background_rgb": [
-        240,
-        0,
-        248
-      ]
-    },
-    {
-      "source": "icons-ui/ChatGPT Image 15 jun 2026, 17_03_42 (1).png",
-      "asset": "icons-ui/espada_martillo_yunque.png",
-      "original_size": [
-        1254,
-        1254
-      ],
-      "clean_size": [
-        1125,
-        1188
-      ],
-      "cropped": true,
-      "crop_box": [
-        61,
-        36,
-        1186,
-        1224
-      ],
-      "background_rgb": [
-        240,
-        0,
-        200
-      ]
-    },
-    {
-      "source": "icons-ui/ChatGPT Image 15 jun 2026, 17_03_42 (2).png",
-      "asset": "icons-ui/morion_flecha_engranaje.png",
-      "original_size": [
-        1254,
-        1254
-      ],
-      "clean_size": [
-        1020,
-        1108
-      ],
-      "cropped": true,
-      "crop_box": [
-        124,
-        45,
-        1144,
-        1153
-      ],
-      "background_rgb": [
-        248,
-        0,
-        248
-      ]
-    },
-    {
-      "source": "icons-ui/ChatGPT Image 15 jun 2026, 17_03_43 (3).png",
-      "asset": "icons-ui/morion_peto_martillo.png",
-      "original_size": [
-        1254,
-        1254
-      ],
-      "clean_size": [
-        1083,
-        1091
-      ],
-      "cropped": true,
-      "crop_box": [
-        80,
-        60,
-        1163,
-        1151
-      ],
-      "background_rgb": [
-        248,
-        0,
-        224
-      ]
-    },
-    {
-      "source": "icons-ui/ChatGPT Image 15 jun 2026, 17_03_43 (4).png",
-      "asset": "icons-ui/candado_bronce.png",
-      "original_size": [
-        1254,
-        1254
-      ],
-      "clean_size": [
-        850,
-        1171
-      ],
-      "cropped": true,
-      "crop_box": [
-        206,
-        40,
-        1056,
-        1211
-      ],
-      "background_rgb": [
-        248,
-        0,
-        248
-      ]
-    },
-    {
-      "source": "icons-ui/ChatGPT Image 15 jun 2026, 17_03_43 (5).png",
-      "asset": "icons-ui/reloj_arena_bronce.png",
-      "original_size": [
-        1254,
-        1254
-      ],
-      "clean_size": [
-        723,
-        1223
-      ],
-      "cropped": true,
-      "crop_box": [
-        264,
-        14,
-        987,
-        1237
-      ],
-      "background_rgb": [
-        248,
-        0,
-        248
-      ]
-    },
-    {
-      "source": "icons-ui/ChatGPT Image 15 jun 2026, 17_03_43 (6).png",
-      "asset": "icons-ui/flecha_circular_laurel.png",
-      "original_size": [
-        1254,
-        1254
-      ],
-      "clean_size": [
-        1053,
-        1055
-      ],
-      "cropped": true,
-      "crop_box": [
-        101,
-        91,
-        1154,
-        1146
-      ],
-      "background_rgb": [
-        240,
-        0,
-        248
-      ]
-    },
-    {
-      "source": "icons-ui/ChatGPT Image 15 jun 2026, 17_10_04 (1).png",
-      "asset": "icons-ui/marco_panel_negro_ancho.png",
-      "original_size": [
-        1448,
-        1086
-      ],
-      "clean_size": [
-        1404,
-        949
-      ],
-      "cropped": true,
-      "crop_box": [
-        22,
-        69,
-        1426,
-        1018
-      ],
-      "background_rgb": [
-        248,
-        0,
-        248
-      ]
-    },
-    {
-      "source": "icons-ui/ChatGPT Image 15 jun 2026, 17_10_04 (2).png",
-      "asset": "icons-ui/marco_panel_negro_claveteado.png",
-      "original_size": [
-        1448,
-        1086
-      ],
-      "clean_size": [
-        1404,
-        964
-      ],
-      "cropped": true,
-      "crop_box": [
-        22,
-        61,
-        1426,
-        1025
-      ],
-      "background_rgb": [
-        240,
-        0,
-        248
-      ]
-    },
-    {
-      "source": "icons-ui/ChatGPT Image 15 jun 2026, 17_10_04 (3).png",
-      "asset": "icons-ui/barra_panel_negra_estrecha.png",
-      "original_size": [
-        2172,
-        724
-      ],
-      "clean_size": [
-        1961,
-        446
-      ],
-      "cropped": true,
-      "crop_box": [
-        106,
-        140,
-        2067,
-        586
-      ],
-      "background_rgb": [
-        240,
-        0,
-        248
-      ]
-    },
-    {
-      "source": "icons-ui/ChatGPT Image 15 jun 2026, 17_10_05 (4).png",
-      "asset": "icons-ui/barra_panel_roja_larga.png",
-      "original_size": [
-        2172,
-        724
-      ],
-      "clean_size": [
-        2048,
-        531
-      ],
-      "cropped": true,
-      "crop_box": [
-        64,
-        93,
-        2112,
-        624
-      ],
-      "background_rgb": [
-        240,
-        8,
-        240
-      ]
-    },
-    {
-      "source": "icons-ui/ChatGPT Image 15 jun 2026, 17_10_07 (5).png",
+      "source": "icons-ui/barra_panel_marron_larga.png",
       "asset": "icons-ui/barra_panel_marron_larga.png",
       "original_size": [
-        2172,
-        724
+        1886,
+        451
       ],
       "clean_size": [
         1886,
@@ -7127,82 +6437,10 @@
       ],
       "cropped": true,
       "crop_box": [
-        143,
-        136,
-        2029,
-        587
-      ],
-      "background_rgb": [
-        232,
-        8,
-        240
-      ]
-    },
-    {
-      "source": "icons-ui/ChatGPT Image 15 jun 2026, 17_10_07 (6).png",
-      "asset": "icons-ui/barra_panel_roja_remaches.png",
-      "original_size": [
-        2172,
-        724
-      ],
-      "clean_size": [
-        1959,
-        421
-      ],
-      "cropped": true,
-      "crop_box": [
-        107,
-        154,
-        2066,
-        575
-      ],
-      "background_rgb": [
-        240,
-        8,
-        248
-      ]
-    },
-    {
-      "source": "icons-ui/ChatGPT Image 15 jun 2026, 17_10_07 (7).png",
-      "asset": "icons-ui/marco_panel_cuadrado_negro.png",
-      "original_size": [
-        1254,
-        1254
-      ],
-      "clean_size": [
-        1018,
-        1018
-      ],
-      "cropped": true,
-      "crop_box": [
-        119,
-        119,
-        1137,
-        1137
-      ],
-      "background_rgb": [
-        240,
         0,
-        240
-      ]
-    },
-    {
-      "source": "icons-ui/ChatGPT Image 15 jun 2026, 17_10_07 (8).png",
-      "asset": "icons-ui/marco_panel_vertical_negro.png",
-      "original_size": [
-        1086,
-        1448
-      ],
-      "clean_size": [
-        921,
-        1340
-      ],
-      "cropped": true,
-      "crop_box": [
-        82,
-        56,
-        1003,
-        1396
+        0,
+        1886,
+        451
       ],
       "background_rgb": [
         240,
@@ -7211,11 +6449,11 @@
       ]
     },
     {
-      "source": "icons-ui/ChatGPT Image 15 jun 2026, 17_10_08 (10).png",
+      "source": "icons-ui/barra_panel_negra_dorada.png",
       "asset": "icons-ui/barra_panel_negra_dorada.png",
       "original_size": [
-        2172,
-        724
+        2140,
+        420
       ],
       "clean_size": [
         2140,
@@ -7223,23 +6461,47 @@
       ],
       "cropped": true,
       "crop_box": [
-        16,
-        154,
-        2156,
-        574
+        0,
+        0,
+        2140,
+        420
       ],
       "background_rgb": [
         240,
-        8,
-        240
+        0,
+        248
       ]
     },
     {
-      "source": "icons-ui/ChatGPT Image 15 jun 2026, 17_10_08 (9).png",
+      "source": "icons-ui/barra_panel_negra_estrecha.png",
+      "asset": "icons-ui/barra_panel_negra_estrecha.png",
+      "original_size": [
+        1961,
+        446
+      ],
+      "clean_size": [
+        1961,
+        446
+      ],
+      "cropped": true,
+      "crop_box": [
+        0,
+        0,
+        1961,
+        446
+      ],
+      "background_rgb": [
+        240,
+        0,
+        248
+      ]
+    },
+    {
+      "source": "icons-ui/barra_panel_negra_ornamento.png",
       "asset": "icons-ui/barra_panel_negra_ornamento.png",
       "original_size": [
-        1774,
-        887
+        1419,
+        345
       ],
       "clean_size": [
         1419,
@@ -7247,10 +6509,10 @@
       ],
       "cropped": true,
       "crop_box": [
-        177,
-        271,
-        1596,
-        616
+        0,
+        0,
+        1419,
+        345
       ],
       "background_rgb": [
         248,
@@ -7259,22 +6521,22 @@
       ]
     },
     {
-      "source": "icons-ui/ChatGPT Image 15 jun 2026, 17_16_27 (1).png",
-      "asset": "icons-ui/esquina_marco_dorada_superior_izquierda.png",
+      "source": "icons-ui/barra_panel_roja_larga.png",
+      "asset": "icons-ui/barra_panel_roja_larga.png",
       "original_size": [
-        1254,
-        1254
+        2048,
+        531
       ],
       "clean_size": [
-        1203,
-        1196
+        2048,
+        531
       ],
       "cropped": true,
       "crop_box": [
-        26,
-        32,
-        1229,
-        1228
+        0,
+        0,
+        2048,
+        531
       ],
       "background_rgb": [
         240,
@@ -7283,22 +6545,46 @@
       ]
     },
     {
-      "source": "icons-ui/ChatGPT Image 15 jun 2026, 17_16_28 (2).png",
-      "asset": "icons-ui/esquina_marco_dorada_superior_derecha.png",
+      "source": "icons-ui/barra_panel_roja_remaches.png",
+      "asset": "icons-ui/barra_panel_roja_remaches.png",
       "original_size": [
-        1254,
-        1254
+        1959,
+        421
       ],
       "clean_size": [
-        1228,
-        1222
+        1959,
+        421
       ],
       "cropped": true,
       "crop_box": [
+        0,
+        0,
+        1959,
+        421
+      ],
+      "background_rgb": [
+        240,
         8,
-        15,
-        1236,
-        1237
+        248
+      ]
+    },
+    {
+      "source": "icons-ui/bolsa_monedas_cruz.png",
+      "asset": "icons-ui/bolsa_monedas_cruz.png",
+      "original_size": [
+        1113,
+        1148
+      ],
+      "clean_size": [
+        1113,
+        1148
+      ],
+      "cropped": true,
+      "crop_box": [
+        0,
+        0,
+        1113,
+        1148
       ],
       "background_rgb": [
         248,
@@ -7307,22 +6593,22 @@
       ]
     },
     {
-      "source": "icons-ui/ChatGPT Image 15 jun 2026, 17_16_28 (3).png",
-      "asset": "icons-ui/esquina_marco_dorada_inferior_izquierda.png",
+      "source": "icons-ui/bolsa_monedas_medalla.png",
+      "asset": "icons-ui/bolsa_monedas_medalla.png",
       "original_size": [
-        1254,
-        1254
+        1186,
+        1137
       ],
       "clean_size": [
-        1169,
-        1210
+        1186,
+        1137
       ],
       "cropped": true,
       "crop_box": [
-        50,
-        14,
-        1219,
-        1224
+        0,
+        0,
+        1186,
+        1137
       ],
       "background_rgb": [
         240,
@@ -7331,22 +6617,22 @@
       ]
     },
     {
-      "source": "icons-ui/ChatGPT Image 15 jun 2026, 17_16_28 (4).png",
-      "asset": "icons-ui/esquina_marco_dorada_inferior_derecha.png",
+      "source": "icons-ui/bolsa_monedas_pequena.png",
+      "asset": "icons-ui/bolsa_monedas_pequena.png",
       "original_size": [
-        1254,
-        1254
+        730,
+        776
       ],
       "clean_size": [
-        1154,
-        1211
+        730,
+        776
       ],
       "cropped": true,
       "crop_box": [
-        41,
-        9,
-        1195,
-        1220
+        0,
+        0,
+        730,
+        776
       ],
       "background_rgb": [
         248,
@@ -7355,46 +6641,22 @@
       ]
     },
     {
-      "source": "icons-ui/ChatGPT Image 15 jun 2026, 17_16_28 (5).png",
-      "asset": "icons-ui/divisor_dorado_horizontal.png",
+      "source": "icons-ui/botella_vidrio_verde.png",
+      "asset": "icons-ui/botella_vidrio_verde.png",
       "original_size": [
-        2508,
-        627
+        680,
+        994
       ],
       "clean_size": [
-        2268,
-        464
+        680,
+        994
       ],
       "cropped": true,
       "crop_box": [
-        120,
-        80,
-        2388,
-        544
-      ],
-      "background_rgb": [
-        240,
         0,
-        240
-      ]
-    },
-    {
-      "source": "icons-ui/ChatGPT Image 15 jun 2026, 17_16_29 (6).png",
-      "asset": "icons-ui/ornamento_dorado_horizontal.png",
-      "original_size": [
-        3546,
-        443
-      ],
-      "clean_size": [
-        3493,
-        401
-      ],
-      "cropped": true,
-      "crop_box": [
-        20,
-        18,
-        3513,
-        419
+        0,
+        680,
+        994
       ],
       "background_rgb": [
         248,
@@ -7403,11 +6665,11 @@
       ]
     },
     {
-      "source": "icons-ui/ChatGPT Image 15 jun 2026, 17_16_29 (7).png",
+      "source": "icons-ui/broquel_acero_redondo.png",
       "asset": "icons-ui/broquel_acero_redondo.png",
       "original_size": [
-        1254,
-        1254
+        898,
+        911
       ],
       "clean_size": [
         898,
@@ -7415,23 +6677,23 @@
       ],
       "cropped": true,
       "crop_box": [
-        178,
-        162,
-        1076,
-        1073
+        0,
+        0,
+        898,
+        911
       ],
       "background_rgb": [
-        240,
+        248,
         0,
         248
       ]
     },
     {
-      "source": "icons-ui/ChatGPT Image 15 jun 2026, 17_16_29 (8).png",
+      "source": "icons-ui/broquel_dorado_redondo.png",
       "asset": "icons-ui/broquel_dorado_redondo.png",
       "original_size": [
-        1254,
-        1254
+        769,
+        784
       ],
       "clean_size": [
         769,
@@ -7439,10 +6701,10 @@
       ],
       "cropped": true,
       "crop_box": [
-        241,
-        208,
-        1010,
-        992
+        0,
+        0,
+        769,
+        784
       ],
       "background_rgb": [
         248,
@@ -7451,11 +6713,473 @@
       ]
     },
     {
-      "source": "icons-ui/ChatGPT Image 15 jun 2026, 17_16_29 (9).png",
+      "source": "icons-ui/calavera_medallon.png",
+      "asset": "icons-ui/calavera_medallon.png",
+      "original_size": [
+        878,
+        887
+      ],
+      "clean_size": [
+        878,
+        887
+      ],
+      "cropped": true,
+      "crop_box": [
+        0,
+        0,
+        878,
+        887
+      ],
+      "background_rgb": [
+        248,
+        0,
+        248
+      ]
+    },
+    {
+      "source": "icons-ui/camastro_manta_lana.png",
+      "asset": "icons-ui/camastro_manta_lana.png",
+      "original_size": [
+        1241,
+        1220
+      ],
+      "clean_size": [
+        1241,
+        1220
+      ],
+      "cropped": true,
+      "crop_box": [
+        0,
+        0,
+        1241,
+        1220
+      ],
+      "background_rgb": [
+        248,
+        0,
+        248
+      ]
+    },
+    {
+      "source": "icons-ui/campaign_node_battle.png",
+      "asset": "icons-ui/campaign_node_battle.png",
+      "original_size": [
+        1254,
+        1254
+      ],
+      "clean_size": [
+        1254,
+        1254
+      ],
+      "cropped": false,
+      "background_removed": false,
+      "background_reason": "no_magenta_border"
+    },
+    {
+      "source": "icons-ui/campaign_node_city.png",
+      "asset": "icons-ui/campaign_node_city.png",
+      "original_size": [
+        1254,
+        1254
+      ],
+      "clean_size": [
+        1254,
+        1254
+      ],
+      "cropped": false,
+      "background_removed": false,
+      "background_reason": "no_magenta_border"
+    },
+    {
+      "source": "icons-ui/campaign_node_fortress.png",
+      "asset": "icons-ui/campaign_node_fortress.png",
+      "original_size": [
+        1254,
+        1254
+      ],
+      "clean_size": [
+        1254,
+        1254
+      ],
+      "cropped": false,
+      "background_removed": false,
+      "background_reason": "no_magenta_border"
+    },
+    {
+      "source": "icons-ui/campaign_node_road.png",
+      "asset": "icons-ui/campaign_node_road.png",
+      "original_size": [
+        1254,
+        1254
+      ],
+      "clean_size": [
+        1254,
+        1254
+      ],
+      "cropped": false,
+      "background_removed": false,
+      "background_reason": "no_magenta_border"
+    },
+    {
+      "source": "icons-ui/campaign_node_skirmish.png",
+      "asset": "icons-ui/campaign_node_skirmish.png",
+      "original_size": [
+        1254,
+        1254
+      ],
+      "clean_size": [
+        1254,
+        1254
+      ],
+      "cropped": false,
+      "background_removed": false,
+      "background_reason": "no_magenta_border"
+    },
+    {
+      "source": "icons-ui/candado_bronce.png",
+      "asset": "icons-ui/candado_bronce.png",
+      "original_size": [
+        850,
+        1171
+      ],
+      "clean_size": [
+        850,
+        1171
+      ],
+      "cropped": true,
+      "crop_box": [
+        0,
+        0,
+        850,
+        1171
+      ],
+      "background_rgb": [
+        248,
+        0,
+        248
+      ]
+    },
+    {
+      "source": "icons-ui/casco_cuero_monedas.png",
+      "asset": "icons-ui/casco_cuero_monedas.png",
+      "original_size": [
+        1226,
+        993
+      ],
+      "clean_size": [
+        1226,
+        993
+      ],
+      "cropped": true,
+      "crop_box": [
+        0,
+        0,
+        1226,
+        993
+      ],
+      "background_rgb": [
+        248,
+        0,
+        248
+      ]
+    },
+    {
+      "source": "icons-ui/city_blacksmith_icon.png",
+      "asset": "icons-ui/city_blacksmith_icon.png",
+      "original_size": [
+        512,
+        512
+      ],
+      "clean_size": [
+        512,
+        512
+      ],
+      "cropped": false,
+      "background_removed": false,
+      "background_reason": "no_magenta_border"
+    },
+    {
+      "source": "icons-ui/city_church_icon.png",
+      "asset": "icons-ui/city_church_icon.png",
+      "original_size": [
+        512,
+        512
+      ],
+      "clean_size": [
+        512,
+        512
+      ],
+      "cropped": false,
+      "background_removed": false,
+      "background_reason": "no_magenta_border"
+    },
+    {
+      "source": "icons-ui/city_house_of_trade_icon.png",
+      "asset": "icons-ui/city_house_of_trade_icon.png",
+      "original_size": [
+        512,
+        512
+      ],
+      "clean_size": [
+        512,
+        512
+      ],
+      "cropped": false,
+      "background_removed": false,
+      "background_reason": "no_magenta_border"
+    },
+    {
+      "source": "icons-ui/city_shop_icon.png",
+      "asset": "icons-ui/city_shop_icon.png",
+      "original_size": [
+        512,
+        512
+      ],
+      "clean_size": [
+        512,
+        512
+      ],
+      "cropped": false,
+      "background_removed": false,
+      "background_reason": "no_magenta_border"
+    },
+    {
+      "source": "icons-ui/city_tavern_icon.png",
+      "asset": "icons-ui/city_tavern_icon.png",
+      "original_size": [
+        512,
+        512
+      ],
+      "clean_size": [
+        512,
+        512
+      ],
+      "cropped": false,
+      "background_removed": false,
+      "background_reason": "no_magenta_border"
+    },
+    {
+      "source": "icons-ui/condecoracion_estrella_laurel.png",
+      "asset": "icons-ui/condecoracion_estrella_laurel.png",
+      "original_size": [
+        785,
+        962
+      ],
+      "clean_size": [
+        785,
+        962
+      ],
+      "cropped": true,
+      "crop_box": [
+        0,
+        0,
+        785,
+        962
+      ],
+      "background_rgb": [
+        248,
+        0,
+        248
+      ]
+    },
+    {
+      "source": "icons-ui/divisor_dorado_horizontal.png",
+      "asset": "icons-ui/divisor_dorado_horizontal.png",
+      "original_size": [
+        2268,
+        464
+      ],
+      "clean_size": [
+        2268,
+        464
+      ],
+      "cropped": true,
+      "crop_box": [
+        0,
+        0,
+        2268,
+        464
+      ],
+      "background_rgb": [
+        240,
+        0,
+        240
+      ]
+    },
+    {
+      "source": "icons-ui/escudo_partido_cruz_roja.png",
+      "asset": "icons-ui/escudo_partido_cruz_roja.png",
+      "original_size": [
+        938,
+        956
+      ],
+      "clean_size": [
+        938,
+        956
+      ],
+      "cropped": true,
+      "crop_box": [
+        0,
+        0,
+        938,
+        956
+      ],
+      "background_rgb": [
+        248,
+        0,
+        248
+      ]
+    },
+    {
+      "source": "icons-ui/espada_martillo_cruzados.png",
+      "asset": "icons-ui/espada_martillo_cruzados.png",
+      "original_size": [
+        922,
+        866
+      ],
+      "clean_size": [
+        922,
+        866
+      ],
+      "cropped": true,
+      "crop_box": [
+        0,
+        0,
+        922,
+        866
+      ],
+      "background_rgb": [
+        248,
+        0,
+        240
+      ]
+    },
+    {
+      "source": "icons-ui/espada_martillo_yunque.png",
+      "asset": "icons-ui/espada_martillo_yunque.png",
+      "original_size": [
+        1125,
+        1188
+      ],
+      "clean_size": [
+        1125,
+        1188
+      ],
+      "cropped": true,
+      "crop_box": [
+        0,
+        0,
+        1125,
+        1188
+      ],
+      "background_rgb": [
+        240,
+        0,
+        200
+      ]
+    },
+    {
+      "source": "icons-ui/esquina_marco_dorada_inferior_derecha.png",
+      "asset": "icons-ui/esquina_marco_dorada_inferior_derecha.png",
+      "original_size": [
+        1154,
+        1211
+      ],
+      "clean_size": [
+        1154,
+        1211
+      ],
+      "cropped": true,
+      "crop_box": [
+        0,
+        0,
+        1154,
+        1211
+      ],
+      "background_rgb": [
+        248,
+        0,
+        248
+      ]
+    },
+    {
+      "source": "icons-ui/esquina_marco_dorada_inferior_izquierda.png",
+      "asset": "icons-ui/esquina_marco_dorada_inferior_izquierda.png",
+      "original_size": [
+        1169,
+        1210
+      ],
+      "clean_size": [
+        1169,
+        1210
+      ],
+      "cropped": true,
+      "crop_box": [
+        0,
+        0,
+        1169,
+        1210
+      ],
+      "background_rgb": [
+        248,
+        0,
+        248
+      ]
+    },
+    {
+      "source": "icons-ui/esquina_marco_dorada_superior_derecha.png",
+      "asset": "icons-ui/esquina_marco_dorada_superior_derecha.png",
+      "original_size": [
+        1228,
+        1222
+      ],
+      "clean_size": [
+        1228,
+        1222
+      ],
+      "cropped": true,
+      "crop_box": [
+        0,
+        0,
+        1228,
+        1222
+      ],
+      "background_rgb": [
+        248,
+        0,
+        248
+      ]
+    },
+    {
+      "source": "icons-ui/esquina_marco_dorada_superior_izquierda.png",
+      "asset": "icons-ui/esquina_marco_dorada_superior_izquierda.png",
+      "original_size": [
+        1203,
+        1196
+      ],
+      "clean_size": [
+        1203,
+        1196
+      ],
+      "cropped": true,
+      "crop_box": [
+        0,
+        0,
+        1203,
+        1196
+      ],
+      "background_rgb": [
+        248,
+        0,
+        248
+      ]
+    },
+    {
+      "source": "icons-ui/estandarte_cruz_roja_colgante.png",
       "asset": "icons-ui/estandarte_cruz_roja_colgante.png",
       "original_size": [
-        1086,
-        1448
+        761,
+        1158
       ],
       "clean_size": [
         761,
@@ -7463,10 +7187,10 @@
       ],
       "cropped": true,
       "crop_box": [
-        169,
-        159,
-        930,
-        1317
+        0,
+        0,
+        761,
+        1158
       ],
       "background_rgb": [
         248,
@@ -7475,70 +7199,22 @@
       ]
     },
     {
-      "source": "icons-ui/ChatGPT Image 15 jun 2026, 17_16_30 (10).png",
-      "asset": "icons-ui/sello_lacre_cruz_roja.png",
+      "source": "icons-ui/flecha_circular_laurel.png",
+      "asset": "icons-ui/flecha_circular_laurel.png",
       "original_size": [
-        1254,
-        1254
+        1053,
+        1055
       ],
       "clean_size": [
-        1148,
-        1201
+        1053,
+        1055
       ],
       "cropped": true,
       "crop_box": [
-        51,
-        19,
-        1199,
-        1220
-      ],
-      "background_rgb": [
-        240,
         0,
-        248
-      ]
-    },
-    {
-      "source": "icons-ui/ChatGPT Image 15 jun 2026, 17_28_10 (1).png",
-      "asset": "icons-ui/textura_madera_oscura.png",
-      "original_size": [
-        1254,
-        1254
-      ],
-      "clean_size": [
-        1218,
-        1218
-      ],
-      "cropped": true,
-      "crop_box": [
-        18,
-        18,
-        1236,
-        1236
-      ],
-      "background_rgb": [
-        240,
         0,
-        216
-      ]
-    },
-    {
-      "source": "icons-ui/ChatGPT Image 15 jun 2026, 17_28_11 (2).png",
-      "asset": "icons-ui/textura_metal_oscuro_remaches.png",
-      "original_size": [
-        1254,
-        1254
-      ],
-      "clean_size": [
-        1176,
-        1176
-      ],
-      "cropped": true,
-      "crop_box": [
-        39,
-        39,
-        1215,
-        1215
+        1053,
+        1055
       ],
       "background_rgb": [
         248,
@@ -7547,59 +7223,11 @@
       ]
     },
     {
-      "source": "icons-ui/ChatGPT Image 15 jun 2026, 17_28_11 (3).png",
-      "asset": "icons-ui/textura_cuero_marron.png",
-      "original_size": [
-        1254,
-        1254
-      ],
-      "clean_size": [
-        1177,
-        1176
-      ],
-      "cropped": true,
-      "crop_box": [
-        38,
-        39,
-        1215,
-        1215
-      ],
-      "background_rgb": [
-        248,
-        0,
-        248
-      ]
-    },
-    {
-      "source": "icons-ui/ChatGPT Image 15 jun 2026, 17_28_12 (4).png",
-      "asset": "icons-ui/textura_pergamino_envejecido.png",
-      "original_size": [
-        1254,
-        1254
-      ],
-      "clean_size": [
-        1215,
-        1214
-      ],
-      "cropped": true,
-      "crop_box": [
-        20,
-        20,
-        1235,
-        1234
-      ],
-      "background_rgb": [
-        248,
-        0,
-        248
-      ]
-    },
-    {
-      "source": "icons-ui/ChatGPT Image 15 jun 2026, 17_28_12 (5).png",
+      "source": "icons-ui/humo_negro_transparente.png",
       "asset": "icons-ui/humo_negro_transparente.png",
       "original_size": [
-        1254,
-        1254
+        954,
+        756
       ],
       "clean_size": [
         954,
@@ -7607,39 +7235,15 @@
       ],
       "cropped": true,
       "crop_box": [
-        144,
-        310,
-        1098,
-        1066
+        0,
+        0,
+        954,
+        756
       ],
       "background_rgb": [
         248,
         0,
         248
-      ]
-    },
-    {
-      "source": "icons-ui/ChatGPT Image 15 jun 2026, 17_28_12 (6).png",
-      "asset": "icons-ui/salpicadura_barro_transparente.png",
-      "original_size": [
-        1254,
-        1254
-      ],
-      "clean_size": [
-        1254,
-        1254
-      ],
-      "cropped": true,
-      "crop_box": [
-        0,
-        0,
-        1254,
-        1254
-      ],
-      "background_rgb": [
-        232,
-        0,
-        240
       ]
     },
     {
@@ -8339,6 +7943,582 @@
       ]
     },
     {
+      "source": "icons-ui/marco_panel_cuadrado_negro.png",
+      "asset": "icons-ui/marco_panel_cuadrado_negro.png",
+      "original_size": [
+        1018,
+        1018
+      ],
+      "clean_size": [
+        1018,
+        1018
+      ],
+      "cropped": true,
+      "crop_box": [
+        0,
+        0,
+        1018,
+        1018
+      ],
+      "background_rgb": [
+        240,
+        0,
+        240
+      ]
+    },
+    {
+      "source": "icons-ui/marco_panel_negro_ancho.png",
+      "asset": "icons-ui/marco_panel_negro_ancho.png",
+      "original_size": [
+        1404,
+        949
+      ],
+      "clean_size": [
+        1404,
+        949
+      ],
+      "cropped": true,
+      "crop_box": [
+        0,
+        0,
+        1404,
+        949
+      ],
+      "background_rgb": [
+        248,
+        0,
+        248
+      ]
+    },
+    {
+      "source": "icons-ui/marco_panel_negro_claveteado.png",
+      "asset": "icons-ui/marco_panel_negro_claveteado.png",
+      "original_size": [
+        1404,
+        964
+      ],
+      "clean_size": [
+        1404,
+        964
+      ],
+      "cropped": true,
+      "crop_box": [
+        0,
+        0,
+        1404,
+        964
+      ],
+      "background_rgb": [
+        240,
+        0,
+        248
+      ]
+    },
+    {
+      "source": "icons-ui/marco_panel_vertical_negro.png",
+      "asset": "icons-ui/marco_panel_vertical_negro.png",
+      "original_size": [
+        921,
+        1340
+      ],
+      "clean_size": [
+        921,
+        1340
+      ],
+      "cropped": true,
+      "crop_box": [
+        0,
+        0,
+        921,
+        1340
+      ],
+      "background_rgb": [
+        240,
+        0,
+        248
+      ]
+    },
+    {
+      "source": "icons-ui/medalla_cruz_roja_bronce.png",
+      "asset": "icons-ui/medalla_cruz_roja_bronce.png",
+      "original_size": [
+        738,
+        1157
+      ],
+      "clean_size": [
+        738,
+        1157
+      ],
+      "cropped": true,
+      "crop_box": [
+        0,
+        0,
+        738,
+        1157
+      ],
+      "background_rgb": [
+        248,
+        0,
+        240
+      ]
+    },
+    {
+      "source": "icons-ui/medallon_calavera_oscuro.png",
+      "asset": "icons-ui/medallon_calavera_oscuro.png",
+      "original_size": [
+        900,
+        1013
+      ],
+      "clean_size": [
+        900,
+        1013
+      ],
+      "cropped": true,
+      "crop_box": [
+        0,
+        0,
+        900,
+        1013
+      ],
+      "background_rgb": [
+        248,
+        0,
+        248
+      ]
+    },
+    {
+      "source": "icons-ui/morion_flecha_engranaje.png",
+      "asset": "icons-ui/morion_flecha_engranaje.png",
+      "original_size": [
+        1020,
+        1108
+      ],
+      "clean_size": [
+        1020,
+        1108
+      ],
+      "cropped": true,
+      "crop_box": [
+        0,
+        0,
+        1020,
+        1108
+      ],
+      "background_rgb": [
+        248,
+        0,
+        248
+      ]
+    },
+    {
+      "source": "icons-ui/morion_peto_correas.png",
+      "asset": "icons-ui/morion_peto_correas.png",
+      "original_size": [
+        1198,
+        934
+      ],
+      "clean_size": [
+        1198,
+        934
+      ],
+      "cropped": true,
+      "crop_box": [
+        0,
+        0,
+        1198,
+        934
+      ],
+      "background_rgb": [
+        248,
+        0,
+        248
+      ]
+    },
+    {
+      "source": "icons-ui/morion_peto_martillo.png",
+      "asset": "icons-ui/morion_peto_martillo.png",
+      "original_size": [
+        1083,
+        1091
+      ],
+      "clean_size": [
+        1083,
+        1091
+      ],
+      "cropped": true,
+      "crop_box": [
+        0,
+        0,
+        1083,
+        1091
+      ],
+      "background_rgb": [
+        248,
+        0,
+        216
+      ]
+    },
+    {
+      "source": "icons-ui/orden_sellada_daga.png",
+      "asset": "icons-ui/orden_sellada_daga.png",
+      "original_size": [
+        999,
+        1145
+      ],
+      "clean_size": [
+        999,
+        1145
+      ],
+      "cropped": true,
+      "crop_box": [
+        0,
+        0,
+        999,
+        1145
+      ],
+      "background_rgb": [
+        240,
+        0,
+        248
+      ]
+    },
+    {
+      "source": "icons-ui/ornamento_dorado_horizontal.png",
+      "asset": "icons-ui/ornamento_dorado_horizontal.png",
+      "original_size": [
+        3493,
+        401
+      ],
+      "clean_size": [
+        3493,
+        401
+      ],
+      "cropped": true,
+      "crop_box": [
+        0,
+        0,
+        3493,
+        401
+      ],
+      "background_rgb": [
+        248,
+        0,
+        240
+      ]
+    },
+    {
+      "source": "icons-ui/pergamino_pluma_sello.png",
+      "asset": "icons-ui/pergamino_pluma_sello.png",
+      "original_size": [
+        1210,
+        1134
+      ],
+      "clean_size": [
+        1210,
+        1134
+      ],
+      "cropped": true,
+      "crop_box": [
+        0,
+        0,
+        1210,
+        1134
+      ],
+      "background_rgb": [
+        248,
+        0,
+        248
+      ]
+    },
+    {
+      "source": "icons-ui/peto_morion_dorado.png",
+      "asset": "icons-ui/peto_morion_dorado.png",
+      "original_size": [
+        1120,
+        1243
+      ],
+      "clean_size": [
+        1120,
+        1243
+      ],
+      "cropped": true,
+      "crop_box": [
+        0,
+        0,
+        1120,
+        1243
+      ],
+      "background_rgb": [
+        248,
+        0,
+        200
+      ]
+    },
+    {
+      "source": "icons-ui/reloj_arena_bronce.png",
+      "asset": "icons-ui/reloj_arena_bronce.png",
+      "original_size": [
+        723,
+        1223
+      ],
+      "clean_size": [
+        723,
+        1223
+      ],
+      "cropped": true,
+      "crop_box": [
+        0,
+        0,
+        723,
+        1223
+      ],
+      "background_rgb": [
+        248,
+        0,
+        248
+      ]
+    },
+    {
+      "source": "icons-ui/salpicadura_barro_transparente.png",
+      "asset": "icons-ui/salpicadura_barro_transparente.png",
+      "original_size": [
+        1254,
+        1254
+      ],
+      "clean_size": [
+        1254,
+        1254
+      ],
+      "cropped": true,
+      "crop_box": [
+        0,
+        0,
+        1254,
+        1254
+      ],
+      "background_rgb": [
+        232,
+        0,
+        240
+      ]
+    },
+    {
+      "source": "icons-ui/saquito_monedas_documento.png",
+      "asset": "icons-ui/saquito_monedas_documento.png",
+      "original_size": [
+        1125,
+        1115
+      ],
+      "clean_size": [
+        1125,
+        1115
+      ],
+      "cropped": true,
+      "crop_box": [
+        0,
+        0,
+        1125,
+        1115
+      ],
+      "background_rgb": [
+        248,
+        0,
+        248
+      ]
+    },
+    {
+      "source": "icons-ui/sello_lacre_cruz_roja.png",
+      "asset": "icons-ui/sello_lacre_cruz_roja.png",
+      "original_size": [
+        1148,
+        1201
+      ],
+      "clean_size": [
+        1148,
+        1201
+      ],
+      "cropped": true,
+      "crop_box": [
+        0,
+        0,
+        1148,
+        1201
+      ],
+      "background_rgb": [
+        248,
+        0,
+        248
+      ]
+    },
+    {
+      "source": "icons-ui/sol_dorado_cara.png",
+      "asset": "icons-ui/sol_dorado_cara.png",
+      "original_size": [
+        983,
+        956
+      ],
+      "clean_size": [
+        983,
+        956
+      ],
+      "cropped": true,
+      "crop_box": [
+        0,
+        0,
+        983,
+        956
+      ],
+      "background_rgb": [
+        248,
+        0,
+        248
+      ]
+    },
+    {
+      "source": "icons-ui/textura_cuero_marron.png",
+      "asset": "icons-ui/textura_cuero_marron.png",
+      "original_size": [
+        1177,
+        1176
+      ],
+      "clean_size": [
+        1177,
+        1176
+      ],
+      "cropped": true,
+      "crop_box": [
+        0,
+        0,
+        1177,
+        1176
+      ],
+      "background_rgb": [
+        248,
+        0,
+        248
+      ]
+    },
+    {
+      "source": "icons-ui/textura_madera_oscura.png",
+      "asset": "icons-ui/textura_madera_oscura.png",
+      "original_size": [
+        1218,
+        1218
+      ],
+      "clean_size": [
+        1218,
+        1218
+      ],
+      "cropped": true,
+      "crop_box": [
+        0,
+        0,
+        1218,
+        1218
+      ],
+      "background_rgb": [
+        240,
+        0,
+        216
+      ]
+    },
+    {
+      "source": "icons-ui/textura_metal_oscuro_remaches.png",
+      "asset": "icons-ui/textura_metal_oscuro_remaches.png",
+      "original_size": [
+        1176,
+        1176
+      ],
+      "clean_size": [
+        1176,
+        1176
+      ],
+      "cropped": true,
+      "crop_box": [
+        0,
+        0,
+        1176,
+        1176
+      ],
+      "background_rgb": [
+        248,
+        0,
+        248
+      ]
+    },
+    {
+      "source": "icons-ui/textura_pergamino_envejecido.png",
+      "asset": "icons-ui/textura_pergamino_envejecido.png",
+      "original_size": [
+        1215,
+        1214
+      ],
+      "clean_size": [
+        1215,
+        1214
+      ],
+      "cropped": true,
+      "crop_box": [
+        0,
+        0,
+        1215,
+        1214
+      ],
+      "background_rgb": [
+        248,
+        0,
+        248
+      ]
+    },
+    {
+      "source": "icons-ui/venda_lino_enrollada.png",
+      "asset": "icons-ui/venda_lino_enrollada.png",
+      "original_size": [
+        664,
+        982
+      ],
+      "clean_size": [
+        664,
+        982
+      ],
+      "cropped": true,
+      "crop_box": [
+        0,
+        0,
+        664,
+        982
+      ],
+      "background_rgb": [
+        248,
+        0,
+        248
+      ]
+    },
+    {
+      "source": "icons-ui/vendas_tarros_medicina.png",
+      "asset": "icons-ui/vendas_tarros_medicina.png",
+      "original_size": [
+        1097,
+        989
+      ],
+      "clean_size": [
+        1097,
+        989
+      ],
+      "cropped": true,
+      "crop_box": [
+        0,
+        0,
+        1097,
+        989
+      ],
+      "background_rgb": [
+        248,
+        0,
+        248
+      ]
+    },
+    {
       "source": "otros/objeto_001.png",
       "asset": "otros/objeto_001.png",
       "original_size": [
@@ -8819,83 +8999,11 @@
       ]
     },
     {
-      "source": "prota/ChatGPT Image 15 jun 2026, 17_35_28 (1).png",
-      "asset": "prota/diego_piquero_frontal_descanso.png",
-      "original_size": [
-        1024,
-        1536
-      ],
-      "clean_size": [
-        554,
-        1507
-      ],
-      "cropped": true,
-      "crop_box": [
-        229,
-        0,
-        783,
-        1507
-      ],
-      "background_rgb": [
-        248,
-        0,
-        248
-      ]
-    },
-    {
-      "source": "prota/ChatGPT Image 15 jun 2026, 17_35_28 (2).png",
-      "asset": "prota/diego_piquero_frontal_firme.png",
-      "original_size": [
-        1024,
-        1536
-      ],
-      "clean_size": [
-        555,
-        1480
-      ],
-      "cropped": true,
-      "crop_box": [
-        241,
-        0,
-        796,
-        1480
-      ],
-      "background_rgb": [
-        240,
-        0,
-        248
-      ]
-    },
-    {
-      "source": "prota/ChatGPT Image 15 jun 2026, 17_35_29 (3).png",
-      "asset": "prota/diego_piquero_tres_cuartos.png",
-      "original_size": [
-        1024,
-        1536
-      ],
-      "clean_size": [
-        606,
-        1490
-      ],
-      "cropped": true,
-      "crop_box": [
-        221,
-        8,
-        827,
-        1498
-      ],
-      "background_rgb": [
-        240,
-        0,
-        248
-      ]
-    },
-    {
-      "source": "prota/ChatGPT Image 15 jun 2026, 17_35_29 (4).png",
+      "source": "prota/diego_arrodillado_con_pica.png",
       "asset": "prota/diego_arrodillado_con_pica.png",
       "original_size": [
-        1024,
-        1536
+        833,
+        1335
       ],
       "clean_size": [
         833,
@@ -8903,10 +9011,10 @@
       ],
       "cropped": true,
       "crop_box": [
-        25,
-        170,
-        858,
-        1505
+        0,
+        0,
+        833,
+        1335
       ],
       "background_rgb": [
         240,
@@ -8915,166 +9023,22 @@
       ]
     },
     {
-      "source": "prota/emociones/ChatGPT Image 15 jun 2026, 17_47_03 (1).png",
-      "asset": "prota/emociones/diego_retrato_serio.png",
+      "source": "prota/diego_piquero_frontal_descanso.png",
+      "asset": "prota/diego_piquero_frontal_descanso.png",
       "original_size": [
-        1086,
-        1448
+        554,
+        1507
       ],
       "clean_size": [
-        1046,
-        1410
-      ],
-      "cropped": true,
-      "crop_box": [
-        18,
-        38,
-        1064,
-        1448
-      ],
-      "background_rgb": [
-        240,
-        0,
-        248
-      ]
-    },
-    {
-      "source": "prota/emociones/ChatGPT Image 15 jun 2026, 17_47_03 (2).png",
-      "asset": "prota/emociones/diego_retrato_brazos_cruzados.png",
-      "original_size": [
-        1086,
-        1448
-      ],
-      "clean_size": [
-        940,
-        1438
-      ],
-      "cropped": true,
-      "crop_box": [
-        71,
-        10,
-        1011,
-        1448
-      ],
-      "background_rgb": [
-        240,
-        0,
-        248
-      ]
-    },
-    {
-      "source": "prota/emociones/ChatGPT Image 15 jun 2026, 17_47_03 (3).png",
-      "asset": "prota/emociones/diego_retrato_neutral.png",
-      "original_size": [
-        1086,
-        1448
-      ],
-      "clean_size": [
-        1086,
-        1422
+        554,
+        1507
       ],
       "cropped": true,
       "crop_box": [
         0,
-        26,
-        1086,
-        1448
-      ],
-      "background_rgb": [
-        240,
         0,
-        248
-      ]
-    },
-    {
-      "source": "prota/emociones/ChatGPT Image 15 jun 2026, 17_47_03 (4).png",
-      "asset": "prota/emociones/diego_retrato_cansado.png",
-      "original_size": [
-        1086,
-        1448
-      ],
-      "clean_size": [
-        1055,
-        1436
-      ],
-      "cropped": true,
-      "crop_box": [
-        15,
-        12,
-        1070,
-        1448
-      ],
-      "background_rgb": [
-        240,
-        0,
-        248
-      ]
-    },
-    {
-      "source": "prota/emociones/ChatGPT Image 15 jun 2026, 17_47_05 (5).png",
-      "asset": "prota/emociones/campesino_miserable_retrato.png",
-      "original_size": [
-        1086,
-        1448
-      ],
-      "clean_size": [
-        1079,
-        1436
-      ],
-      "cropped": true,
-      "crop_box": [
-        0,
-        12,
-        1079,
-        1448
-      ],
-      "background_rgb": [
-        240,
-        0,
-        248
-      ]
-    },
-    {
-      "source": "prota/emociones/ChatGPT Image 15 jun 2026, 17_47_06 (6).png",
-      "asset": "prota/emociones/mozo_con_jarrilla_retrato.png",
-      "original_size": [
-        1086,
-        1448
-      ],
-      "clean_size": [
-        1086,
-        1391
-      ],
-      "cropped": true,
-      "crop_box": [
-        0,
-        57,
-        1086,
-        1448
-      ],
-      "background_rgb": [
-        240,
-        0,
-        248
-      ]
-    },
-    {
-      "source": "prota/emociones/ChatGPT Image 15 jun 2026, 17_47_06 (7).png",
-      "asset": "prota/emociones/diego_senalando_acusador.png",
-      "original_size": [
-        1086,
-        1448
-      ],
-      "clean_size": [
-        1005,
-        1418
-      ],
-      "cropped": true,
-      "crop_box": [
-        67,
-        30,
-        1072,
-        1448
+        554,
+        1507
       ],
       "background_rgb": [
         248,
@@ -9083,11 +9047,83 @@
       ]
     },
     {
-      "source": "prota/emociones/ChatGPT Image 15 jun 2026, 17_47_07 (8).png",
+      "source": "prota/diego_piquero_frontal_firme.png",
+      "asset": "prota/diego_piquero_frontal_firme.png",
+      "original_size": [
+        555,
+        1480
+      ],
+      "clean_size": [
+        555,
+        1480
+      ],
+      "cropped": true,
+      "crop_box": [
+        0,
+        0,
+        555,
+        1480
+      ],
+      "background_rgb": [
+        248,
+        0,
+        248
+      ]
+    },
+    {
+      "source": "prota/diego_piquero_tres_cuartos.png",
+      "asset": "prota/diego_piquero_tres_cuartos.png",
+      "original_size": [
+        606,
+        1490
+      ],
+      "clean_size": [
+        606,
+        1490
+      ],
+      "cropped": true,
+      "crop_box": [
+        0,
+        0,
+        606,
+        1490
+      ],
+      "background_rgb": [
+        248,
+        0,
+        248
+      ]
+    },
+    {
+      "source": "prota/emociones/campesino_miserable_retrato.png",
+      "asset": "prota/emociones/campesino_miserable_retrato.png",
+      "original_size": [
+        1079,
+        1436
+      ],
+      "clean_size": [
+        1079,
+        1436
+      ],
+      "cropped": true,
+      "crop_box": [
+        0,
+        0,
+        1079,
+        1436
+      ],
+      "background_rgb": [
+        248,
+        0,
+        248
+      ]
+    },
+    {
+      "source": "prota/emociones/capellan_libro_retrato.png",
       "asset": "prota/emociones/capellan_libro_retrato.png",
       "original_size": [
         1086,
-        1448
+        1423
       ],
       "clean_size": [
         1086,
@@ -9096,33 +9132,9 @@
       "cropped": true,
       "crop_box": [
         0,
-        25,
-        1086,
-        1448
-      ],
-      "background_rgb": [
-        240,
         0,
-        248
-      ]
-    },
-    {
-      "source": "prota/emociones/ChatGPT Image 15 jun 2026, 17_47_08 (10).png",
-      "asset": "prota/emociones/diego_cuerpo_entero_firme.png",
-      "original_size": [
         1086,
-        1448
-      ],
-      "clean_size": [
-        542,
-        1345
-      ],
-      "cropped": true,
-      "crop_box": [
-        263,
-        20,
-        805,
-        1365
+        1423
       ],
       "background_rgb": [
         248,
@@ -9131,11 +9143,35 @@
       ]
     },
     {
-      "source": "prota/emociones/ChatGPT Image 15 jun 2026, 17_47_08 (9).png",
+      "source": "prota/emociones/diego_cuerpo_entero_firme.png",
+      "asset": "prota/emociones/diego_cuerpo_entero_firme.png",
+      "original_size": [
+        542,
+        1345
+      ],
+      "clean_size": [
+        542,
+        1345
+      ],
+      "cropped": true,
+      "crop_box": [
+        0,
+        0,
+        542,
+        1345
+      ],
+      "background_rgb": [
+        248,
+        0,
+        248
+      ]
+    },
+    {
+      "source": "prota/emociones/diego_cuerpo_entero_pica.png",
       "asset": "prota/emociones/diego_cuerpo_entero_pica.png",
       "original_size": [
-        1086,
-        1448
+        517,
+        1322
       ],
       "clean_size": [
         517,
@@ -9143,34 +9179,58 @@
       ],
       "cropped": true,
       "crop_box": [
-        267,
-        58,
-        784,
-        1380
+        0,
+        0,
+        517,
+        1322
       ],
       "background_rgb": [
-        240,
+        248,
         0,
         248
       ]
     },
     {
-      "source": "prota/sprites-animation/ChatGPT Image 15 jun 2026, 17_43_02 (1).png",
-      "asset": "prota/sprites-animation/diego_sprite_caminar.png",
+      "source": "prota/emociones/diego_retrato_brazos_cruzados.png",
+      "asset": "prota/emociones/diego_retrato_brazos_cruzados.png",
       "original_size": [
-        2172,
-        724
+        940,
+        1438
       ],
       "clean_size": [
-        2031,
-        714
+        940,
+        1438
       ],
       "cropped": true,
       "crop_box": [
-        61,
         0,
-        2092,
-        714
+        0,
+        940,
+        1438
+      ],
+      "background_rgb": [
+        248,
+        0,
+        248
+      ]
+    },
+    {
+      "source": "prota/emociones/diego_retrato_cansado.png",
+      "asset": "prota/emociones/diego_retrato_cansado.png",
+      "original_size": [
+        1055,
+        1436
+      ],
+      "clean_size": [
+        1055,
+        1436
+      ],
+      "cropped": true,
+      "crop_box": [
+        0,
+        0,
+        1055,
+        1436
       ],
       "background_rgb": [
         240,
@@ -9179,11 +9239,107 @@
       ]
     },
     {
-      "source": "prota/sprites-animation/ChatGPT Image 15 jun 2026, 17_43_02 (2).png",
+      "source": "prota/emociones/diego_retrato_neutral.png",
+      "asset": "prota/emociones/diego_retrato_neutral.png",
+      "original_size": [
+        1086,
+        1422
+      ],
+      "clean_size": [
+        1086,
+        1422
+      ],
+      "cropped": true,
+      "crop_box": [
+        0,
+        0,
+        1086,
+        1422
+      ],
+      "background_rgb": [
+        248,
+        0,
+        248
+      ]
+    },
+    {
+      "source": "prota/emociones/diego_retrato_serio.png",
+      "asset": "prota/emociones/diego_retrato_serio.png",
+      "original_size": [
+        1046,
+        1410
+      ],
+      "clean_size": [
+        1046,
+        1410
+      ],
+      "cropped": true,
+      "crop_box": [
+        0,
+        0,
+        1046,
+        1410
+      ],
+      "background_rgb": [
+        240,
+        0,
+        248
+      ]
+    },
+    {
+      "source": "prota/emociones/diego_senalando_acusador.png",
+      "asset": "prota/emociones/diego_senalando_acusador.png",
+      "original_size": [
+        1005,
+        1418
+      ],
+      "clean_size": [
+        1005,
+        1418
+      ],
+      "cropped": true,
+      "crop_box": [
+        0,
+        0,
+        1005,
+        1418
+      ],
+      "background_rgb": [
+        248,
+        0,
+        248
+      ]
+    },
+    {
+      "source": "prota/emociones/mozo_con_jarrilla_retrato.png",
+      "asset": "prota/emociones/mozo_con_jarrilla_retrato.png",
+      "original_size": [
+        1086,
+        1391
+      ],
+      "clean_size": [
+        1086,
+        1391
+      ],
+      "cropped": true,
+      "crop_box": [
+        0,
+        0,
+        1086,
+        1391
+      ],
+      "background_rgb": [
+        248,
+        0,
+        248
+      ]
+    },
+    {
+      "source": "prota/sprites-animation/diego_sprite_ataque_pica.png",
       "asset": "prota/sprites-animation/diego_sprite_ataque_pica.png",
       "original_size": [
-        2172,
-        724
+        2076,
+        570
       ],
       "clean_size": [
         2076,
@@ -9191,23 +9347,47 @@
       ],
       "cropped": true,
       "crop_box": [
-        29,
-        110,
-        2105,
-        680
+        0,
+        0,
+        2076,
+        570
       ],
       "background_rgb": [
         240,
-        8,
-        240
+        0,
+        248
       ]
     },
     {
-      "source": "prota/sprites-animation/ChatGPT Image 15 jun 2026, 17_43_02 (3).png",
+      "source": "prota/sprites-animation/diego_sprite_caminar.png",
+      "asset": "prota/sprites-animation/diego_sprite_caminar.png",
+      "original_size": [
+        2031,
+        714
+      ],
+      "clean_size": [
+        2031,
+        714
+      ],
+      "cropped": true,
+      "crop_box": [
+        0,
+        0,
+        2031,
+        714
+      ],
+      "background_rgb": [
+        240,
+        0,
+        248
+      ]
+    },
+    {
+      "source": "prota/sprites-animation/diego_sprite_golpe_espada.png",
       "asset": "prota/sprites-animation/diego_sprite_golpe_espada.png",
       "original_size": [
-        2172,
-        724
+        2141,
+        642
       ],
       "clean_size": [
         2141,
@@ -9215,10 +9395,10 @@
       ],
       "cropped": true,
       "crop_box": [
-        28,
-        48,
-        2169,
-        690
+        0,
+        0,
+        2141,
+        642
       ],
       "background_rgb": [
         240,
@@ -9926,7 +10106,7 @@
       "source": "tercios/tercio_010.png",
       "asset": "tercios/tercio_010.png",
       "original_size": [
-        651,
+        650,
         1381
       ],
       "clean_size": [
@@ -9935,9 +10115,9 @@
       ],
       "cropped": true,
       "crop_box": [
-        1,
         0,
-        651,
+        0,
+        650,
         1381
       ],
       "background_rgb": [

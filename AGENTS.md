@@ -2,7 +2,7 @@
 
 ## Project
 
-This repository is for **Tercio: Sangre y Acero**, a web-first browser management RPG inspired by Gladiatus, but set around Spanish tercios and early modern military hardship.
+This repository is for **Tercio: Sangre y Acero**, a web-first browser management RPG inspired by Gladiatus de Gameforce, but set around Spanish tercios and early modern military hardship.
 
 The player starts as a poor **bisono** and progresses through training, equipment, missions, wounds, fatigue, honor, delayed pay, and rank.
 

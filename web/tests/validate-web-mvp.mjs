@@ -11,6 +11,9 @@ const required = [
   "src/app/missions/page.tsx",
   "src/app/missions/[id]/page.tsx",
   "src/app/reports/[id]/page.tsx",
+  "src/app/arena/page.tsx",
+  "src/app/company/page.tsx",
+  "src/app/recruitment/page.tsx",
   "src/lib/resolver.ts",
   "src/lib/reports.ts",
   "src/lib/actions.ts",
@@ -43,9 +46,71 @@ for (const model of [
   if (!schema.includes(`model ${model}`)) failures.push(`schema missing ${model}`);
 }
 
-const routes = fs.readFileSync(path.join(root, "src/app/layout.tsx"), "utf8");
-for (const route of ["/barracks", "/soldier", "/training", "/inventory", "/equipment", "/armory", "/missions", "/hospital"]) {
+const routes = [
+  fs.readFileSync(path.join(root, "src/components/game/sidebar-nav.tsx"), "utf8"),
+  fs.readFileSync(path.join(root, "src/components/game/game-shell.tsx"), "utf8"),
+].join("\n");
+for (const route of ["/city", "/soldier", "/training", "/armory", "/missions", "/hospital", "/arena", "/company", "/recruitment"]) {
   if (!routes.includes(route)) failures.push(`nav missing ${route}`);
+}
+
+const types = fs.readFileSync(path.join(root, "src/lib/types.ts"), "utf8");
+for (const typeName of ["ArenaOpponent", "ArenaResult"]) {
+  if (!types.includes(`interface ${typeName}`)) failures.push(`types missing ${typeName}`);
+}
+for (const token of ["interface CharacterDefinition", "interface CharacterState", "interface SpriteSetDefinition", "type FormationSlot"]) {
+  if (!types.includes(token)) failures.push(`types missing ${token}`);
+}
+
+const data = fs.readFileSync(path.join(root, "src/lib/game-data.ts"), "utf8");
+for (const token of ["arenaOpponents", "listArenaOpponents", "getArenaOpponent"]) {
+  if (!data.includes(token)) failures.push(`game-data missing ${token}`);
+}
+for (const token of ["characterDefinitions", "spriteSetDefinitions", "getCharacterDefinition", "getSpriteSetDefinition"]) {
+  if (!data.includes(token)) failures.push(`character roster data missing ${token}`);
+}
+
+const syncedCharactersPath = path.join(root, "data/json/characters.json");
+if (!fs.existsSync(syncedCharactersPath)) failures.push("synced characters.json missing");
+else {
+  const characters = JSON.parse(fs.readFileSync(syncedCharactersPath, "utf8"));
+  for (const id of ["diego_de_arce", "lope_de_saavedra", "martin_de_cuenca", "alonso_de_valdes", "sancho_de_leiva"]) {
+    if (!characters.some((entry) => entry.id === id)) failures.push(`characters.json missing ${id}`);
+  }
+}
+
+const store = fs.readFileSync(path.join(root, "src/lib/game-store.ts"), "utf8");
+for (const token of ["arenaResults", "fightArenaOpponent"]) {
+  if (!store.includes(token)) failures.push(`store missing ${token}`);
+}
+for (const token of ["characters", "activeCharacterId", "trainCharacterStat", "setActiveCharacter", "setFormationSlot", "recruitCandidate"]) {
+  if (!store.includes(token)) failures.push(`store missing character roster ${token}`);
+}
+
+const cityPage = fs.readFileSync(path.join(root, "src/app/city/page.tsx"), "utf8");
+for (const token of ["citySpots", "featuredAssetPaths.city", "cost:", "result:", "state:"]) {
+  if (!cityPage.includes(token)) failures.push(`city UX missing ${token}`);
+}
+
+const arenaPage = fs.readFileSync(path.join(root, "src/app/arena/page.tsx"), "utf8");
+for (const token of ["arena-opponent-row", "Rival", "Poder", "Botin"]) {
+  if (!arenaPage.includes(token)) failures.push(`arena UX missing ${token}`);
+}
+
+const armoryPage = fs.readFileSync(path.join(root, "src/app/armory/page.tsx"), "utf8");
+for (const token of ["armory-slot-grid", "ARMORY_CELL_SIZE", "getItemFootprint", "armory-dropzone", "draggable", "Arrastra"]) {
+  if (!armoryPage.includes(token)) failures.push(`armory UX missing ${token}`);
+}
+if (armoryPage.includes("Inspeccion")) failures.push("armory UX still has inspection panel");
+
+const formation = fs.readFileSync(path.join(root, "src/lib/formation.ts"), "utf8");
+for (const token of ["TercioFormationPresetId", "TERCIO_FORMATION_PRESETS", "cuadro_de_picas", "reserva_cerrada"]) {
+  if (!formation.includes(token)) failures.push(`formation presets missing ${token}`);
+}
+
+const recruitment = fs.readFileSync(path.join(root, "src/lib/recruitment.ts"), "utf8");
+for (const token of ["recruitmentCandidates", "canRecruitCandidate", "recruitCandidateIntoState", "tomas_de_orduna"]) {
+  if (!recruitment.includes(token)) failures.push(`recruitment missing ${token}`);
 }
 
 if (failures.length) {

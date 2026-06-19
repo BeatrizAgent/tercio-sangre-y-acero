@@ -1,15 +1,38 @@
 # Recursos faltantes para clonar el DESIGN
 
-Fecha: 2026-06-14
+Fecha: 2026-06-17 (refresco)
 
 Estado actual:
 
 - Pantallas de referencia en `DESIGN`: 7 PNG (`menu_principal`, `inventario`, `armeria`, `entrenamiento`, `misiones`, `hospital`, `reportes`).
-- Banco visual indexado: 328 assets en `data/assets.json`.
+- Banco visual indexado: 442 assets en `data/assets.json`.
 - Referencias rotas en datos de juego: 0.
-- Iconos UI existentes: 29 PNG en `GPT-ASSETS/icons-ui`.
+- Vinculos faltantes en datos: 13 (ver [recursos-faltantes.next.md](recursos-faltantes.next.md)).
+- Iconos UI existentes: 29 PNG en `GPT-ASSETS/icons-ui` + 71 pre-seeded renames para el proximo lote.
+- Pipeline: ver [docs/asset_pipeline_runbook.md](../docs/asset_pipeline_runbook.md).
 
 La falta principal no es cantidad de assets. La falta es material especifico para reproducir el mockup con precision: sprites de personaje, iconos UI dedicados, fondos de panel, ornamentos, estados y componentes visuales exportables.
+
+## Prompts asociados
+
+Cada prioridad tiene una hoja de prompts lista para ChatGPT en
+[`ai/prompts/`](../ai/prompts/). Sigue la receta de
+[docs/asset_pipeline_runbook.md](../docs/asset_pipeline_runbook.md)
+para registrar el lote.
+
+| # | Hoja de prompts |
+|---|---|
+| 1 | [sidebar-icons.md](../ai/prompts/sidebar-icons.md) |
+| 2 | [diego-sprites.md](../ai/prompts/diego-sprites.md) |
+| 3 | [enemy-sprites.md](../ai/prompts/enemy-sprites.md) |
+| 4 | [screen-bg.md](../ai/prompts/screen-bg.md) |
+| 5 | [ui-9-slice.md](../ai/prompts/ui-9-slice.md) |
+| 6 | [ornaments.md](../ai/prompts/ornaments.md) |
+| 7 | [resource-status-icons.md](../ai/prompts/resource-status-icons.md) |
+| 8 | [action-icons.md](../ai/prompts/action-icons.md) |
+| 9 | [portrait-variants.md](../ai/prompts/portrait-variants.md) |
+| 10 | [event-scenes.md](../ai/prompts/event-scenes.md) |
+| 11 | [textures.md](../ai/prompts/textures.md) |
 
 ## Prioridad alta
 
@@ -241,6 +264,7 @@ Despues de meter nuevos PNG en `GPT-ASSETS`, ejecutar:
 python scripts/process_gpt_assets.py --commit
 python scripts/build_asset_bank.py
 python tests/validate_asset_bank.py
+python scripts/audit_asset_links.py
 ```
 
 Luego enlazar en datos o codigo con:
@@ -248,14 +272,29 @@ Luego enlazar en datos o codigo con:
 - `assetId`
 - `portraitAssetId`
 - `sceneAssetId`
+- `iconAssetId` (rangos, wounds, training)
 
 ## Checklist minimo para la siguiente ronda
 
-- [ ] 8 iconos exactos de sidebar.
-- [ ] 5 iconos exactos de recursos/estado.
-- [ ] 1 sprite base de Diego idle 3/4.
-- [ ] 1 sheet simple de Diego ataque.
-- [ ] 3 sprites enemigos cuerpo completo.
-- [ ] 4 marcos 9-slice: panel, nav idle, nav active, resource badge.
-- [ ] 2 fondos faltantes: equipo y reportes.
-- [ ] 1 textura tileable oscura para paneles.
+- [x] Hoja de prompts de sidebar.
+- [x] Hoja de prompts de recursos/estado.
+- [x] Hoja de prompts de sprites de Diego.
+- [x] Hoja de prompts de sprites de enemigos.
+- [x] Hoja de prompts de marcos 9-slice.
+- [x] Hoja de prompts de ornamentos.
+- [x] Hoja de prompts de texturas.
+- [x] Hoja de prompts de iconos de accion.
+- [x] Hoja de prompts de variantes de retrato.
+- [x] Hoja de prompts de escenas de evento.
+- [x] Hoja de prompts de fondos de pantalla.
+- [x] Script de auditoria `scripts/audit_asset_links.py`.
+- [x] Tablas de enlace automatico en `scripts/build_asset_bank.py`.
+- [x] `DESCRIPTIVE_RENAMES` pre-sembrado para 71 archivos esperados.
+- [ ] 8 iconos exactos de sidebar (ChatGPT).
+- [ ] 5 iconos exactos de recursos/estado (ChatGPT).
+- [ ] 1 sprite base de Diego idle 3/4 (ChatGPT).
+- [ ] 1 sheet simple de Diego ataque (ChatGPT).
+- [ ] 3 sprites enemigos cuerpo completo (ChatGPT).
+- [ ] 4 marcos 9-slice: panel, nav idle, nav active, resource badge (ChatGPT).
+- [ ] 2 fondos faltantes: equipo y reportes (ChatGPT).
+- [ ] 1 textura tileable oscura para paneles (ChatGPT).

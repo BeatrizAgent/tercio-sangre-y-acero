@@ -4,32 +4,32 @@
     "description": "Botín de guardia nocturna. Pólvora, mendrugos, reliquias dudosas.",
     "drops": [
       {
-        "id": "objeto_013",
+        "id": "prop_aceite_de_armas_013",
         "quantity": 1,
         "weight": 40
       },
       {
-        "id": "objeto_011",
+        "id": "prop_moneda_de_plata_011",
         "quantity": 1,
         "weight": 25
       },
       {
-        "id": "objeto_001",
+        "id": "prop_polvora_humeda_001",
         "quantity": 1,
         "weight": 15
       },
       {
-        "id": "objeto_009",
+        "id": "prop_mechas_de_repuesto_009",
         "quantity": 1,
         "weight": 10
       },
       {
-        "id": "objeto_020",
+        "id": "prop_cuentas_de_un_rosario_020",
         "quantity": 1,
         "weight": 5
       },
       {
-        "id": "objeto_017",
+        "id": "prop_capa_de_la_compania_017",
         "quantity": 1,
         "weight": 5
       }
@@ -40,32 +40,32 @@
     "description": "Patrulla de camino. Comida, monedas, fragmentos de estandarte.",
     "drops": [
       {
-        "id": "objeto_013",
+        "id": "prop_aceite_de_armas_013",
         "quantity": 2,
         "weight": 30
       },
       {
-        "id": "objeto_008",
+        "id": "prop_salazon_de_carne_008",
         "quantity": 1,
         "weight": 20
       },
       {
-        "id": "objeto_006",
+        "id": "prop_fragmento_de_bandera_006",
         "quantity": 1,
         "weight": 15
       },
       {
-        "id": "objeto_011",
+        "id": "prop_moneda_de_plata_011",
         "quantity": 1,
         "weight": 15
       },
       {
-        "id": "objeto_015",
+        "id": "prop_especias_de_italia_015",
         "quantity": 1,
         "weight": 10
       },
       {
-        "id": "objeto_018",
+        "id": "prop_bolsa_de_suministros_018",
         "quantity": 1,
         "weight": 5
       },
@@ -75,7 +75,7 @@
         "weight": 4
       },
       {
-        "id": "objeto_019",
+        "id": "prop_reliquia_de_santiago_019",
         "quantity": 1,
         "weight": 1
       }
@@ -91,12 +91,12 @@
         "weight": 25
       },
       {
-        "id": "objeto_009",
+        "id": "prop_mechas_de_repuesto_009",
         "quantity": 2,
         "weight": 20
       },
       {
-        "id": "objeto_014",
+        "id": "prop_piedra_de_mechero_014",
         "quantity": 1,
         "weight": 15
       },
@@ -111,7 +111,7 @@
         "weight": 10
       },
       {
-        "id": "objeto_007",
+        "id": "prop_botella_de_aguardiente_007",
         "quantity": 1,
         "weight": 10
       },
@@ -126,7 +126,7 @@
         "weight": 4
       },
       {
-        "id": "objeto_016",
+        "id": "prop_mapa_de_flandes_016",
         "quantity": 1,
         "weight": 1
       }
@@ -172,7 +172,7 @@
         "weight": 8
       },
       {
-        "id": "objeto_019",
+        "id": "prop_reliquia_de_santiago_019",
         "quantity": 1,
         "weight": 6
       },

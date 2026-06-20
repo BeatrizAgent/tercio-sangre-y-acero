@@ -16,6 +16,7 @@ const worldLinks = [
 
 const navItems = [
   { href: "/city", label: "Ciudad", assetIcon: "city", category: "ciudad" },
+  { href: "/church", label: "Iglesia", assetIcon: "cityChurch", category: "ciudad" },
   { href: "/training", label: "Entrenar", assetIcon: "training", category: "ciudad" },
   { href: "/armory", label: "Armeria", assetIcon: "armory", category: "ciudad" },
   { href: "/arena", label: "Arena", assetIcon: "arena", category: "ciudad" },

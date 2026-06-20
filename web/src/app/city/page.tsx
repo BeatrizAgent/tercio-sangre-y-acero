@@ -1,6 +1,7 @@
 "use client";
 
 import Link from "next/link";
+import Image from "next/image";
 import { PageTransition } from "@/components/game/page-transition";
 import { UiAssetIcon } from "@/components/game/ui-asset-icon";
 import { featuredAssetPaths } from "@/lib/game-data";
@@ -51,11 +52,22 @@ const citySpots = [
     state: "Apuestas abiertas",
   },
   {
+    href: "/church",
+    label: "Iglesia",
+    icon: "cityChurch",
+    x: "88%",
+    y: "43%",
+    note: "Encargos, amuletos, reliquias y bendiciones.",
+    cost: "Ofrendas y doblones",
+    result: "Honor, calma y proteccion.",
+    state: "Cirios encendidos",
+  },
+  {
     href: "/hospital",
     label: "Hospital",
     icon: "hospital",
     x: "88%",
-    y: "43%",
+    y: "58%",
     note: "Vendas, cirujano, fiebre y recuperacion.",
     cost: "Vendas o doblones",
     result: "Menos penalizacion.",
@@ -115,13 +127,13 @@ export default function CityPage() {
 
         <section className="game-panel overflow-hidden p-3">
           <div className="scene-frame relative min-h-[560px] overflow-hidden rounded-xs bg-stone-950 md:min-h-[620px] xl:min-h-[680px]">
-            <img
+            <Image
               src={featuredAssetPaths.city}
               alt="Plaza de campamento con soldados, oficiales, tiendas y barro"
+              fill
+              sizes="(min-width: 1280px) 960px, 100vw"
+              priority
               className="scene-image-realism absolute inset-0 h-full w-full object-cover opacity-90"
-              onError={(event) => {
-                event.currentTarget.style.display = "none";
-              }}
             />
             <div className="absolute inset-0 bg-[radial-gradient(circle_at_52%_42%,transparent_0%,rgba(7,6,4,0.18)_45%,rgba(7,6,4,0.76)_100%)]" />
             <div className="absolute inset-x-0 top-0 bg-linear-to-b from-background/85 via-background/30 to-transparent p-4 md:p-5">

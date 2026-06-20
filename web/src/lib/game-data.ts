@@ -1,4 +1,4 @@
-import { items, shopItems } from "../../data/seed-items";
+import { churchShopItems, items, shopItems } from "../../data/seed-items";
 import { enemies, lootTables, missions } from "../../data/seed-missions";
 import { ranks } from "../../data/seed-ranks";
 import { reportFragments } from "../../data/seed-report-fragments";
@@ -13,7 +13,9 @@ import type {
   CharacterState,
   ItemDefinition,
   ItemFootprint,
+  MissionCombatSpriteSet,
   MissionDefinition,
+  FormationSlot,
   SpriteSetDefinition,
   StatId,
 } from "./types";
@@ -27,6 +29,7 @@ export const missionDefinitions: MissionDefinition[] = missions.map((mission) =>
   reportTags: [...mission.reportTags],
 }));
 export const shopInventory = shopItems;
+export const churchInventory = churchShopItems;
 export const enemyDefinitions = enemies;
 export interface LootDrop {
   itemId: string;
@@ -73,6 +76,75 @@ export const spriteSetDefinitions: SpriteSetDefinition[] = [
     },
   },
 ];
+
+const getAssetDimensionsById = (assetId: string): [number, number] => {
+  return assetDefinitions.find((asset) => asset.id === assetId)?.dimensions ?? [1024, 1536];
+};
+
+const missionSpriteFrame = (assetId: string, row: number, rowCount: number, fps: number) => {
+  const [width, height] = getAssetDimensionsById(assetId);
+  return {
+    assetId,
+    frameWidth: width / 3,
+    frameHeight: height / rowCount,
+    frames: 3,
+    fps,
+    row,
+  };
+};
+
+function missionSpriteSet(id: string, name: string, role: MissionCombatSpriteSet["role"]): MissionCombatSpriteSet {
+  const rowCount = role === "boss" ? 2 : 4;
+  return {
+    id,
+    name,
+    role,
+    frames: {
+      idle: missionSpriteFrame(id, 0, rowCount, 4),
+      walk: missionSpriteFrame(id, role === "boss" ? 1 : 1, rowCount, 7),
+      attack: missionSpriteFrame(id, role === "boss" ? 1 : 2, rowCount, 6),
+      hurt: missionSpriteFrame(id, role === "boss" ? 1 : 3, rowCount, 5),
+    },
+  };
+}
+
+export const missionCombatSpriteSets: MissionCombatSpriteSet[] = [
+  missionSpriteSet("team_pikeman", "Piquero", "team"),
+  missionSpriteSet("team_arquebusier", "Tirador", "team"),
+  missionSpriteSet("team_assistant", "Asistente", "team"),
+  missionSpriteSet("team_rodelero", "Rodelero", "team"),
+  missionSpriteSet("team_gastador", "Gastador", "team"),
+  missionSpriteSet("minion_pike", "Esbirro con pica", "minion"),
+  missionSpriteSet("minion_sword", "Esbirro con espada", "minion"),
+  missionSpriteSet("minion_arquebus", "Esbirro arcabucero", "minion"),
+  missionSpriteSet("enemy_boss_backline", "Jefe de retaguardia", "boss"),
+];
+
+export const missionTeamSpriteByRole: Record<string, string> = {
+  piquero: "team_pikeman",
+  tirador: "team_arquebusier",
+  asistente: "team_assistant",
+  jinete: "team_rodelero",
+  gastador: "team_gastador",
+};
+
+export const missionTeamSpriteByStat: Partial<Record<StatId, string>> = {
+  pike: "team_pikeman",
+  sword: "team_rodelero",
+  arquebus: "team_arquebusier",
+  discipline: "team_gastador",
+  vigor: "team_gastador",
+};
+
+export function getMissionCombatSpriteSet(spriteSetId: string | undefined) {
+  if (!spriteSetId) return undefined;
+  return missionCombatSpriteSets.find((spriteSet) => spriteSet.id === spriteSetId);
+}
+
+export function getMissionCombatSpritePath(spriteSetId: string | undefined) {
+  const spriteSet = getMissionCombatSpriteSet(spriteSetId);
+  return getAssetPathById(spriteSet?.frames.idle.assetId);
+}
 
 export function createCharacterStates(): CharacterState[] {
   return characterDefinitions.map((character) => ({
@@ -158,117 +230,175 @@ export function getEnemySpriteImagePath(enemyId: string | undefined): string | u
 
 export function getMissionSceneImagePath(missionId: string | undefined): string {
   const mission = missionId ? getMission(missionId) : undefined;
-  return getAssetPathById(mission?.sceneAssetId) ?? "/assets/gpt-bank/CG/cg_events/night_watch_rain_bg.png";
+  return getAssetPathById(mission?.sceneAssetId) ?? "/assets/gpt-bank/scenes/events/night_watch_rain_bg.png";
 }
 
 export const featuredAssetPaths = {
-  city: assetPath("CG/cg_events/pay_mutiny_bg.png"),
-  barracks: assetPath("CG/cg_events/barracks_bg.png"),
-  armory: assetPath("CG/cg_events/armory_bg.png"),
-  hospital: assetPath("CG/cg_events/hospital_bg.png"),
-  training: assetPath("CG/cg_events/training_yard_bg.png"),
-  missionSelect: assetPath("CG/cg_events/mission_select_bg.png"),
-  soldierProfile: assetPath("CG/cg_events/soldier_profile_bg.png"),
-  diegoPortrait: assetPath("prota/emociones/diego_retrato_serio.png"),
-  diegoDeArcePortrait: assetPath("CG/portraits/diego_de_arce_portrait.png"),
-  diegoFullBody: assetPath("prota/diego_piquero_frontal_descanso.png"),
-  diegoReady: assetPath("prota/diego_piquero_tres_cuartos.png"),
-  diegoKneeling: assetPath("prota/diego_arrodillado_con_pica.png"),
-  diegoSpriteWalk: assetPath("prota/sprites-animation/diego_sprite_caminar.png"),
-  armorerPortrait: assetPath("CG/portraits/armorer_portrait.png"),
-  fieldSurgeonPortrait: assetPath("CG/portraits/field_surgeon_portrait.png"),
-  sergeantPortrait: assetPath("CG/portraits/sergeant_instructor_portrait.png"),
-  campaignColumn: assetPath("CG/cg_events/muddy_road_patrol_bg.png"),
-  campaignMap: assetPath("CG/cg_events/campaign_map_flanders.png"),
-  woundCare: assetPath("CG/cg_events/wound_aftercare_blurred.png"),
-  officerSupplies: assetPath("CG/cg_events/powder_escort_front_bg.png"),
-  tavernTable: assetPath("CG/cg_events/tavern_duel_bg.png"),
-  barracksDice: assetPath("CG/cg_events/pay_mutiny_bg.png"),
+  city: assetPath("scenes/events/pay_mutiny_bg.png"),
+  barracks: assetPath("scenes/events/barracks_bg.png"),
+  armory: assetPath("scenes/events/armory_bg.png"),
+  hospital: assetPath("scenes/events/hospital_bg.png"),
+  hospitalFieldWard: assetPath("scenes/events/hospital_field_ward_bg.png"),
+  hospitalTreatment: assetPath("scenes/events/hospital_bandage_treatment.png"),
+  hospitalRecoveryCot: assetPath("scenes/events/hospital_recovery_cot.png"),
+  training: assetPath("scenes/events/training_yard_bg.png"),
+  missionSelect: assetPath("scenes/events/mission_select_bg.png"),
+  church: assetPath("scenes/events/church_interior_bg.png"),
+  soldierProfile: assetPath("scenes/events/soldier_profile_bg.png"),
+  diegoPortrait: assetPath("characters/diego/portraits/diego_retrato_serio.png"),
+  diegoDeArcePortrait: assetPath("portraits/npcs/diego_de_arce_portrait.png"),
+  diegoFullBody: assetPath("characters/diego/diego_piquero_frontal_descanso.png"),
+  diegoReady: assetPath("characters/diego/diego_piquero_tres_cuartos.png"),
+  diegoKneeling: assetPath("characters/diego/diego_arrodillado_con_pica.png"),
+  diegoSpriteWalk: assetPath("characters/diego/sprites/diego_sprite_caminar.png"),
+  armorerPortrait: assetPath("portraits/npcs/armorer_portrait.png"),
+  fieldSurgeonPortrait: assetPath("portraits/npcs/field_surgeon_portrait.png"),
+  sergeantPortrait: assetPath("portraits/npcs/sergeant_instructor_portrait.png"),
+  campaignColumn: assetPath("scenes/events/muddy_road_patrol_bg.png"),
+  campaignMap: assetPath("scenes/events/campaign_map_flanders.png"),
+  woundCare: assetPath("scenes/events/wound_aftercare_blurred.png"),
+  officerSupplies: assetPath("scenes/events/powder_escort_front_bg.png"),
+  tavernTable: assetPath("scenes/events/tavern_duel_bg.png"),
+  barracksDice: assetPath("scenes/events/pay_mutiny_bg.png"),
 } as const;
 
 export const uiIconPaths = {
-  city: assetPath("icons-ui/campaign_node_city.png"),
-  cityBlacksmith: assetPath("icons-ui/morion_peto_martillo.png"),
-  cityShop: assetPath("icons-ui/saquito_monedas_documento.png"),
-  cityTavern: assetPath("icons-ui/botella_vidrio_verde.png"),
-  cityChurch: assetPath("icons-ui/medalla_cruz_roja_bronce.png"),
-  cityHouseOfTrade: assetPath("icons-ui/reloj_arena_bronce.png"),
-  arena: assetPath("icons-ui/espada_martillo_cruzados.png"),
-  barracks: assetPath("icons-ui/camastro_manta_lana.png"),
-  soldier: assetPath("icons-ui/peto_morion_dorado.png"),
-  training: assetPath("icons-ui/espada_martillo_yunque.png"),
-  equipment: assetPath("icons-ui/morion_peto_correas.png"),
-  armory: assetPath("icons-ui/morion_peto_martillo.png"),
-  missions: assetPath("icons-ui/estandarte_cruz_roja_colgante.png"),
-  hospital: assetPath("icons-ui/vendas_tarros_medicina.png"),
-  rank: assetPath("icons-ui/medalla_cruz_roja_bronce.png"),
-  coins: assetPath("icons-ui/bolsa_monedas_cruz.png"),
-  honor: assetPath("icons-ui/condecoracion_estrella_laurel.png"),
-  xp: assetPath("icons-ui/sol_dorado_cara.png"),
-  fatigue: assetPath("icons-ui/reloj_arena_bronce.png"),
-  inventory: assetPath("icons-ui/saquito_monedas_documento.png"),
-  mailbox: assetPath("icons-ui/sello_lacre_cruz_roja.png"),
-  battleReports: assetPath("icons-ui/pergamino_pluma_sello.png"),
-  news: assetPath("icons-ui/orden_sellada_daga.png"),
-  packages: assetPath("icons-ui/saquito_monedas_documento.png"),
-  confirm: assetPath("icons-ui/sello_lacre_cruz_roja.png"),
-  settings: assetPath("icons-ui/flecha_circular_laurel.png"),
-  info: assetPath("icons-ui/pergamino_pluma_sello.png"),
-  order: assetPath("icons-ui/orden_sellada_daga.png"),
-  wound: assetPath("icons-ui/venda_lino_enrollada.png"),
-  risk: assetPath("icons-ui/medallon_calavera_oscuro.png"),
-  mud: assetPath("icons-ui/salpicadura_barro_transparente.png"),
-  shield: assetPath("icons-ui/escudo_partido_cruz_roja.png"),
+  city: assetPath("ui/icons/campaign_node_city.png"),
+  cityBlacksmith: assetPath("ui/icons/morion_peto_martillo.png"),
+  cityShop: assetPath("ui/icons/saquito_monedas_documento.png"),
+  cityTavern: assetPath("ui/icons/botella_vidrio_verde.png"),
+  cityChurch: assetPath("ui/icons/medalla_cruz_roja_bronce.png"),
+  churchBlessing: assetPath("ui/icons/icono_santos_devocion.png"),
+  churchAmulet: assetPath("ui/icons/medalla_cruz_roja_bronce.png"),
+  churchErrand: assetPath("ui/icons/sello_lacre_cruz_roja.png"),
+  cityHouseOfTrade: assetPath("ui/icons/reloj_arena_bronce.png"),
+  arena: assetPath("ui/icons/espada_martillo_cruzados.png"),
+  barracks: assetPath("ui/icons/camastro_manta_lana.png"),
+  soldier: assetPath("ui/icons/peto_morion_dorado.png"),
+  training: assetPath("ui/icons/espada_martillo_yunque.png"),
+  equipment: assetPath("ui/icons/morion_peto_correas.png"),
+  armory: assetPath("ui/icons/morion_peto_martillo.png"),
+  missions: assetPath("ui/icons/estandarte_cruz_roja_colgante.png"),
+  longMissions: assetPath("ui/icons/icono_misiones_largas.png"),
+  objectives: assetPath("ui/icons/icono_objetivos.png"),
+  saintsDevotion: assetPath("ui/icons/icono_santos_devocion.png"),
+  chestChamber: assetPath("ui/icons/icono_camara_cofres.png"),
+  hospital: assetPath("ui/icons/vendas_tarros_medicina.png"),
+  hospitalBandages: assetPath("ui/icons/hospital_linen_bandages.png"),
+  hospitalWineSkin: assetPath("ui/icons/hospital_wine_skin.png"),
+  rank: assetPath("ui/icons/medalla_cruz_roja_bronce.png"),
+  coins: assetPath("ui/icons/bolsa_monedas_cruz.png"),
+  honor: assetPath("ui/icons/condecoracion_estrella_laurel.png"),
+  xp: assetPath("ui/icons/sol_dorado_cara.png"),
+  fatigue: assetPath("ui/icons/reloj_arena_bronce.png"),
+  inventory: assetPath("ui/icons/saquito_monedas_documento.png"),
+  mailbox: assetPath("ui/icons/sello_lacre_cruz_roja.png"),
+  battleReports: assetPath("ui/icons/pergamino_pluma_sello.png"),
+  news: assetPath("ui/icons/orden_sellada_daga.png"),
+  packages: assetPath("ui/icons/saquito_monedas_documento.png"),
+  confirm: assetPath("ui/icons/sello_lacre_cruz_roja.png"),
+  settings: assetPath("ui/icons/flecha_circular_laurel.png"),
+  info: assetPath("ui/icons/pergamino_pluma_sello.png"),
+  order: assetPath("ui/icons/orden_sellada_daga.png"),
+  wound: assetPath("ui/icons/venda_lino_enrollada.png"),
+  risk: assetPath("ui/icons/medallon_calavera_oscuro.png"),
+  mud: assetPath("ui/icons/salpicadura_barro_transparente.png"),
+  shield: assetPath("ui/icons/escudo_partido_cruz_roja.png"),
 } as const;
 
 export const campaignNodeIconPaths: Record<MissionDefinition["locationType"], string> = {
-  battle: assetPath("icons-ui/campaign_node_battle.png"),
-  city: assetPath("icons-ui/campaign_node_city.png"),
-  fortress: assetPath("icons-ui/campaign_node_fortress.png"),
-  road: assetPath("icons-ui/campaign_node_road.png"),
-  skirmish: assetPath("icons-ui/campaign_node_skirmish.png"),
+  battle: assetPath("ui/icons/campaign_node_battle.png"),
+  city: assetPath("ui/icons/campaign_node_city.png"),
+  fortress: assetPath("ui/icons/campaign_node_fortress.png"),
+  road: assetPath("ui/icons/campaign_node_road.png"),
+  skirmish: assetPath("ui/icons/campaign_node_skirmish.png"),
 };
 
 export const reportAssetPaths = {
-  waxSeal: assetPath("icons-ui/sello_lacre_cruz_roja.png"),
-  waxSealBroken: assetPath("icons-ui/medallon_calavera_oscuro.png"),
-  scrollQuill: assetPath("icons-ui/pergamino_pluma_sello.png"),
-  scrollDivider: assetPath("icons-ui/divisor_dorado_horizontal.png"),
-  cornerTopLeft: assetPath("icons-ui/esquina_marco_dorada_superior_izquierda.png"),
-  cornerTopRight: assetPath("icons-ui/esquina_marco_dorada_superior_derecha.png"),
-  cornerBottomLeft: assetPath("icons-ui/esquina_marco_dorada_inferior_izquierda.png"),
-  cornerBottomRight: assetPath("icons-ui/esquina_marco_dorada_inferior_derecha.png"),
-  framePanelRivets: assetPath("icons-ui/marco_panel_negro_claveteado.png"),
-  framePanelTall: assetPath("icons-ui/marco_panel_vertical_negro.png"),
-  rewardCoinBag: assetPath("icons-ui/bolsa_monedas_cruz.png"),
-  rewardCoinBagSmall: assetPath("icons-ui/bolsa_monedas_pequena.png"),
-  rewardCoinHelmet: assetPath("icons-ui/casco_cuero_monedas.png"),
-  rewardSun: assetPath("icons-ui/sol_dorado_cara.png"),
-  rewardMedal: assetPath("icons-ui/medalla_cruz_roja_bronce.png"),
-  rewardHonor: assetPath("icons-ui/condecoracion_estrella_laurel.png"),
-  rewardHourglass: assetPath("icons-ui/reloj_arena_bronce.png"),
-  rewardSwordHammer: assetPath("icons-ui/espada_martillo_cruzados.png"),
-  banner: assetPath("icons-ui/estandarte_cruz_roja_colgante.png"),
-  bottlePoison: assetPath("icons-ui/botella_vidrio_verde.png"),
-  woundCare: assetPath("icons-ui/vendas_tarros_medicina.png"),
-  smoke: assetPath("icons-ui/humo_negro_transparente.png"),
-  mudSplatter: assetPath("icons-ui/salpicadura_barro_transparente.png"),
-  ornament: assetPath("icons-ui/ornamento_dorado_horizontal.png"),
-  bag: assetPath("icons-ui/saquito_monedas_documento.png"),
-  skull: assetPath("icons-ui/calavera_medallon.png"),
-  skullDark: assetPath("icons-ui/medallon_calavera_oscuro.png"),
-  crossSwordHammer: assetPath("icons-ui/espada_martillo_yunque.png"),
+  waxSeal: assetPath("ui/icons/sello_lacre_cruz_roja.png"),
+  waxSealBroken: assetPath("ui/icons/medallon_calavera_oscuro.png"),
+  scrollQuill: assetPath("ui/icons/pergamino_pluma_sello.png"),
+  scrollDivider: assetPath("ui/icons/divisor_dorado_horizontal.png"),
+  cornerTopLeft: assetPath("ui/icons/esquina_marco_dorada_superior_izquierda.png"),
+  cornerTopRight: assetPath("ui/icons/esquina_marco_dorada_superior_derecha.png"),
+  cornerBottomLeft: assetPath("ui/icons/esquina_marco_dorada_inferior_izquierda.png"),
+  cornerBottomRight: assetPath("ui/icons/esquina_marco_dorada_inferior_derecha.png"),
+  framePanelRivets: assetPath("ui/icons/marco_panel_negro_claveteado.png"),
+  framePanelTall: assetPath("ui/icons/marco_panel_vertical_negro.png"),
+  rewardCoinBag: assetPath("ui/icons/bolsa_monedas_cruz.png"),
+  rewardCoinBagSmall: assetPath("ui/icons/bolsa_monedas_pequena.png"),
+  rewardCoinHelmet: assetPath("ui/icons/casco_cuero_monedas.png"),
+  rewardSun: assetPath("ui/icons/sol_dorado_cara.png"),
+  rewardMedal: assetPath("ui/icons/medalla_cruz_roja_bronce.png"),
+  rewardHonor: assetPath("ui/icons/condecoracion_estrella_laurel.png"),
+  rewardHourglass: assetPath("ui/icons/reloj_arena_bronce.png"),
+  rewardSwordHammer: assetPath("ui/icons/espada_martillo_cruzados.png"),
+  banner: assetPath("ui/icons/estandarte_cruz_roja_colgante.png"),
+  bottlePoison: assetPath("ui/icons/botella_vidrio_verde.png"),
+  woundCare: assetPath("ui/icons/vendas_tarros_medicina.png"),
+  smoke: assetPath("ui/icons/humo_negro_transparente.png"),
+  mudSplatter: assetPath("ui/icons/salpicadura_barro_transparente.png"),
+  ornament: assetPath("ui/icons/ornamento_dorado_horizontal.png"),
+  bag: assetPath("ui/icons/saquito_monedas_documento.png"),
+  skull: assetPath("ui/icons/calavera_medallon.png"),
+  skullDark: assetPath("ui/icons/medallon_calavera_oscuro.png"),
+  crossSwordHammer: assetPath("ui/icons/espada_martillo_yunque.png"),
 } as const;
 
 export const trainingAssetPaths: Record<StatId, string> = {
-  pike: assetPath("prota/diego_piquero_frontal_firme.png"),
-  sword: assetPath("icons-ui/espada_martillo_cruzados.png"),
-  arquebus: assetPath("armas/arma_021.png"),
-  discipline: assetPath("CG/sprites_events/soldado_arrodillado_ante_ensenia.png"),
-  vigor: assetPath("prota/diego_arrodillado_con_pica.png"),
-  cunning: assetPath("icons-ui/pergamino_pluma_sello.png"),
-  command: assetPath("icons-ui/estandarte_cruz_roja_colgante.png"),
+  pike: assetPath("ui/training/training_pike.png"),
+  sword: assetPath("ui/training/training_sword.png"),
+  arquebus: assetPath("ui/training/training_arquebus.png"),
+  discipline: assetPath("ui/training/training_discipline.png"),
+  vigor: assetPath("ui/training/training_vigor.png"),
+  cunning: assetPath("ui/icons/pergamino_pluma_sello.png"),
+  command: assetPath("ui/icons/estandarte_cruz_roja_colgante.png"),
 };
+
+export const formationRoleIconPaths: Record<FormationSlot, string> = {
+  vanguardia: assetPath("ui/roles/role_vanguardia.png"),
+  fuego: assetPath("ui/roles/role_fuego.png"),
+  apoyo: assetPath("ui/roles/role_apoyo.png"),
+  retaguardia: assetPath("ui/roles/role_retaguardia.png"),
+  banquillo: assetPath("ui/roles/role_banquillo.png"),
+};
+
+export const tercioOrdinanceIconPaths = {
+  cuadro_de_picas: assetPath("ui/ordinances/ordinance_cuadro_de_picas.png"),
+  manga_de_fuego: assetPath("ui/ordinances/ordinance_manga_de_fuego.png"),
+  escuadron_defensivo: assetPath("ui/ordinances/ordinance_escuadron_defensivo.png"),
+  avance_de_socorro: assetPath("ui/ordinances/ordinance_avance_de_socorro.png"),
+  escolta_del_estandarte: assetPath("ui/ordinances/ordinance_escolta_del_estandarte.png"),
+  emboscada_de_arcabuces: assetPath("ui/ordinances/ordinance_emboscada_de_arcabuces.png"),
+  columna_de_marcha: assetPath("ui/ordinances/ordinance_columna_de_marcha.png"),
+  guardia_de_bagajes: assetPath("ui/ordinances/ordinance_guardia_de_bagajes.png"),
+  asalto_de_brecha: assetPath("ui/ordinances/ordinance_asalto_de_brecha.png"),
+  reserva_cerrada: assetPath("ui/ordinances/ordinance_reserva_cerrada.png"),
+} as const;
+
+export const churchBlessings = [
+  {
+    id: "misa_de_marcha",
+    name: "Misa de marcha",
+    cost: 8,
+    effects: { honor: 1, fatigue: -4 },
+    description: "Pan negro, cirio corto y una hora de quietud antes de salir al barro.",
+  },
+  {
+    id: "confesion_de_campana",
+    name: "Confesion de campana",
+    cost: 12,
+    effects: { corruption: -8, reputation: 1 },
+    description: "El capellan escucha saqueos, deudas y miedo. No absuelve gratis.",
+  },
+  {
+    id: "bendicion_del_estandarte",
+    name: "Bendicion del estandarte",
+    cost: 20,
+    effects: { honor: 2, fatigue: -2, reputation: 1 },
+    description: "Cruz sobre paño mojado. La tropa mira el asta y calla un momento.",
+  },
+] as const;
 
 export const trainingOptions: Array<{
   stat: StatId;

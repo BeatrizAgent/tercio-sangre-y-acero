@@ -5,8 +5,8 @@
     "role": "Piquero",
     "rank": "bisono",
     "portraitAssetId": "diego_de_arce_portrait",
-    "tercioAssetId": "tercio_001",
-    "emotionAssetId": "tercio_emocion_001",
+    "tercioAssetId": "companion_v_001",
+    "emotionAssetId": "companion_portrait_v_001",
     "spriteSetId": "diego_pike",
     "formationSlot": "vanguardia",
     "fatigue": 0,
@@ -21,7 +21,7 @@
     },
     "equipment": {
       "head": null,
-      "body": "armadura_003",
+      "body": "armor_cuirass_common_003",
       "mainHand": "common_pike_001",
       "offHand": null,
       "firearm": null,
@@ -36,8 +36,8 @@
     "role": "Tirador",
     "rank": "soldado",
     "portraitAssetId": "sergeant_instructor_portrait",
-    "tercioAssetId": "tercio_007",
-    "emotionAssetId": "tercio_emocion_007",
+    "tercioAssetId": "companion_v_007",
+    "emotionAssetId": "companion_portrait_v_007",
     "formationSlot": "fuego",
     "fatigue": 8,
     "stats": {
@@ -50,13 +50,13 @@
       "command": 1
     },
     "equipment": {
-      "head": "armadura_001",
-      "body": "armadura_003",
+      "head": "armor_helmet_common_001",
+      "body": "armor_cuirass_common_003",
       "mainHand": "common_sword_003",
       "offHand": null,
       "firearm": "uncommon_arquebus_021",
       "accessory": "aux_007",
-      "boots": "armadura_005",
+      "boots": "armor_boots_common_005",
       "consumable": null
     }
   },
@@ -66,8 +66,8 @@
     "role": "Asistente",
     "rank": "bisono",
     "portraitAssetId": "field_surgeon_portrait",
-    "tercioAssetId": "tercio_003",
-    "emotionAssetId": "tercio_emocion_003",
+    "tercioAssetId": "companion_v_003",
+    "emotionAssetId": "companion_portrait_v_003",
     "formationSlot": "apoyo",
     "fatigue": 4,
     "stats": {
@@ -80,14 +80,14 @@
       "command": 0
     },
     "equipment": {
-      "head": "armadura_008",
-      "body": "armadura_007",
+      "head": "armor_helmet_common_008",
+      "body": "armor_cuirass_common_007",
       "mainHand": "common_sword_007",
       "offHand": null,
       "firearm": null,
       "accessory": "aux_008",
-      "boots": "armadura_014",
-      "consumable": "objeto_002"
+      "boots": "armor_cuirass_uncommon_014",
+      "consumable": "prop_vendas_de_lino_002"
     }
   },
   {
@@ -96,8 +96,8 @@
     "role": "Jinete",
     "rank": "soldado",
     "portraitAssetId": "diego_piquero_tres_cuartos",
-    "tercioAssetId": "tercio_010",
-    "emotionAssetId": "tercio_emocion_010",
+    "tercioAssetId": "companion_v_010",
+    "emotionAssetId": "companion_portrait_v_010",
     "formationSlot": "retaguardia",
     "fatigue": 12,
     "stats": {
@@ -110,13 +110,13 @@
       "command": 2
     },
     "equipment": {
-      "head": "armadura_002",
-      "body": "armadura_020",
+      "head": "armor_helmet_common_002",
+      "body": "armor_cuirass_uncommon_020",
       "mainHand": "common_sword_004",
       "offHand": "legendary_off_hand_009",
       "firearm": null,
       "accessory": "aux_003",
-      "boots": "armadura_026",
+      "boots": "armor_boots_rare_026",
       "consumable": null
     }
   },
@@ -126,8 +126,8 @@
     "role": "Gastador",
     "rank": "soldado_viejo",
     "portraitAssetId": "diego_arrodillado_con_pica",
-    "tercioAssetId": "tercio_015",
-    "emotionAssetId": "tercio_emocion_015",
+    "tercioAssetId": "companion_v_015",
+    "emotionAssetId": "companion_portrait_v_015",
     "formationSlot": "vanguardia",
     "fatigue": 18,
     "stats": {
@@ -140,14 +140,14 @@
       "command": 1
     },
     "equipment": {
-      "head": "armadura_018",
-      "body": "armadura_021",
+      "head": "armor_helmet_uncommon_018",
+      "body": "armor_helmet_uncommon_021",
       "mainHand": "common_pike_010",
       "offHand": null,
       "firearm": null,
       "accessory": "aux_005",
-      "boots": "armadura_025",
-      "consumable": "objeto_004"
+      "boots": "armor_boots_uncommon_025",
+      "consumable": "prop_pan_de_municion_004"
     }
   }
 ]

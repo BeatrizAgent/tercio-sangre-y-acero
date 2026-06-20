@@ -5,6 +5,7 @@ import Link from "next/link";
 import { Badge, Card } from "@/components/ui/card";
 import { PageTransition } from "@/components/game/page-transition";
 import { UiAssetIcon } from "@/components/game/ui-asset-icon";
+import { NpcOfferFrame } from "@/components/game/visual-offers";
 import { featuredAssetPaths, getAssetPathById, listArenaOpponents } from "@/lib/game-data";
 import { useGameStore } from "@/lib/game-store";
 
@@ -63,59 +64,36 @@ export default function ArenaPage() {
 
         <div className="grid gap-5 xl:grid-cols-[1.35fr_0.65fr]">
           <Card title="Cartel de Rivales" iconId="arena">
-            <div className="mb-2 hidden grid-cols-[54px_minmax(0,1fr)_54px_78px_78px] gap-2 border-b border-iron px-2 pb-2 font-mono text-[11px] uppercase tracking-wider text-muted md:grid">
-              <span>Rival</span>
-              <span>Descripcion</span>
-              <span>Poder</span>
-              <span>Botin</span>
-              <span>Accion</span>
-            </div>
-            <div className="grid gap-2">
+            <div className="grid gap-3">
               {opponents.map((opponent) => {
                 const portrait = getAssetPathById(opponent.portraitAssetId) ?? featuredAssetPaths.diegoReady;
                 const isTooTired = soldier.fatigue + opponent.fatigue > 115;
                 return (
-                  <article
+                  <NpcOfferFrame
                     key={opponent.id}
-                    className="arena-opponent-row grid gap-2 border border-iron bg-background/45 p-2 md:grid-cols-[54px_minmax(0,1fr)_54px_78px_78px] md:items-center"
-                  >
-                    <div className="scene-frame relative h-12 w-12 overflow-hidden rounded-xs bg-stone-950">
-                      <img
-                        src={portrait}
-                        alt={opponent.name}
-                        className="h-full w-full object-cover portrait-realism"
-                        onError={(event) => {
-                          event.currentTarget.src = featuredAssetPaths.diegoReady;
-                        }}
-                      />
-                    </div>
-
-                    <div className="min-w-0">
-                      <h2 className="font-cinzel text-sm font-bold uppercase tracking-wider text-gold">{opponent.name}</h2>
-                      <p className="font-mono text-[10px] uppercase tracking-wider text-gold-soft">{opponent.rank}</p>
-                      <p className="mt-1 line-clamp-2 text-xs leading-relaxed text-text-muted">{opponent.description}</p>
-                      <p className="mt-1 line-clamp-1 text-xs text-text">Uso: {opponent.style}</p>
-                    </div>
-
-                    <PlainStat title="Poder" value={String(opponent.power)} tone="text-danger" />
-
-                    <div className="grid grid-cols-3 gap-1 text-center font-mono text-[10px] md:grid-cols-1 md:text-left">
-                      <Reward icon="coins" value={`+${opponent.rewards.coins}`} />
-                      <Reward icon="xp" value={`+${opponent.rewards.xp}`} />
-                      <Reward icon="honor" value={`+${opponent.rewards.honor}`} />
-                    </div>
-
-                    <button
-                      type="button"
-                      disabled={!canFight}
-                      onClick={() => handleFight(opponent.id)}
-                      className={`blood-button w-full px-1.5 py-1.5 text-[10px] ${!canFight ? "opacity-40" : ""}`}
-                      title={isTooTired ? "Ganarias mucha fatiga. Mejor descansar pronto." : "Batirse ahora"}
-                    >
-                      Batirse
-                      <span className="block font-mono text-[9px] normal-case tracking-normal">Coste {opponent.fatigue}</span>
-                    </button>
-                  </article>
+                    className="arena-opponent-row"
+                    model={{
+                      id: opponent.id,
+                      title: opponent.name,
+                      subtitle: opponent.rank,
+                      portraitSrc: portrait,
+                      sceneSrc: featuredAssetPaths.tavernTable,
+                      offers: [
+                        { id: "power", iconId: "risk", label: "Poder", value: opponent.power, tooltip: opponent.description },
+                        { id: "fatigue", iconId: "fatigue", label: "Fatiga", value: `+${opponent.fatigue}`, tooltip: isTooTired ? "Fatiga alta tras el duelo" : "Coste de fatiga" },
+                        { id: "coins", iconId: "coins", label: "Botin", value: `+${opponent.rewards.coins}`, tooltip: "Paga posible" },
+                        { id: "honor", iconId: "honor", label: "Honor", value: `+${opponent.rewards.honor}`, tooltip: opponent.style },
+                      ],
+                      primaryAction: {
+                        id: "fight",
+                        iconId: "arena",
+                        label: "Batirse",
+                        disabled: !canFight,
+                        tooltip: "Batirse ahora",
+                        onClick: () => handleFight(opponent.id),
+                      },
+                    }}
+                  />
                 );
               })}
             </div>
@@ -182,23 +160,5 @@ function ArenaStat({ icon, label, value, danger = false }: { icon: React.Compone
         <p className={`font-cinzel text-xl font-bold ${danger ? "text-danger" : "text-text"}`}>{value}</p>
       </div>
     </div>
-  );
-}
-
-function PlainStat({ title, value, tone = "text-text" }: { title: string; value: string; tone?: string }) {
-  return (
-    <div className="border border-iron bg-stone-950/45 px-1.5 py-1 font-mono">
-      <span className="block text-[10px] uppercase tracking-wider text-muted">{title}</span>
-      <span className={`text-base font-bold ${tone}`}>{value}</span>
-    </div>
-  );
-}
-
-function Reward({ icon, value }: { icon: React.ComponentProps<typeof UiAssetIcon>["id"]; value: string }) {
-  return (
-    <span className="flex items-center justify-center gap-1 border border-iron bg-stone-950/50 px-1 py-0.5 text-gold-soft md:justify-start">
-      <UiAssetIcon id={icon} label={value} className="h-3.5 w-3.5" />
-      {value}
-    </span>
   );
 }

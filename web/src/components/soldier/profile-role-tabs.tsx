@@ -1,0 +1,61 @@
+"use client";
+
+import { getAssetPathById, formationRoleIconPaths } from "@/lib/game-data";
+import type { FormationSlot } from "@/lib/types";
+
+export interface ProfileRoleTab {
+  id: string;
+  name: string;
+  role: string;
+  portraitAssetId: string;
+  formationSlot: FormationSlot;
+}
+
+interface ProfileRoleTabsProps {
+  profiles: ProfileRoleTab[];
+  activeProfileId: string;
+  onSelect: (profileId: string) => void;
+  compact?: boolean;
+}
+
+export function ProfileRoleTabs({ profiles, activeProfileId, onSelect, compact = false }: ProfileRoleTabsProps) {
+  return (
+    <div className={`grid gap-1.5 ${compact ? "grid-cols-5" : "grid-cols-2 sm:grid-cols-5"}`}>
+      {profiles.map((profile) => {
+        const portraitPath = getAssetPathById(profile.portraitAssetId);
+        const roleIconPath = formationRoleIconPaths[profile.formationSlot];
+        const isActive = activeProfileId === profile.id;
+
+        return (
+          <button
+            key={profile.id}
+            onClick={() => onSelect(profile.id)}
+            className={`group flex items-center rounded-xs border text-left transition-all ${
+              isActive
+                ? "border-gold bg-gold/10 text-gold"
+                : "border-iron/70 bg-panel-soft/20 text-text-muted hover:border-gold/40 hover:text-gold"
+            } ${compact ? "min-h-12 justify-center p-1" : "min-h-14 gap-2 px-2 py-1.5"}`}
+            aria-label={`Ver ${profile.name}`}
+            title={profile.name}
+          >
+            <span className={`relative shrink-0 overflow-hidden rounded-xs border border-iron/70 bg-stone-950 ${compact ? "h-10 w-10" : "h-9 w-9"}`}>
+              {portraitPath ? (
+                <img src={portraitPath} alt="" className="h-full w-full object-cover object-top" draggable={false} />
+              ) : null}
+              <span className="absolute bottom-0 right-0 flex h-4 w-4 items-center justify-center rounded-tl-xs border-l border-t border-iron/60 bg-stone-950/90">
+                <img src={roleIconPath} alt="" className="h-3 w-3 object-contain" draggable={false} />
+              </span>
+            </span>
+            {!compact && (
+              <span className="min-w-0">
+                <span className="block truncate font-mono text-[10px] font-bold uppercase tracking-wider">
+                  {profile.role}
+                </span>
+              </span>
+            )}
+          </button>
+        );
+      })}
+    </div>
+  );
+}

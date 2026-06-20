@@ -21,6 +21,40 @@ DEFAULT_BACKUP_ROOT = ROOT / "output"
 
 
 PREFIXES = {
+    "armor": "armadura",
+    "weapons": "arma",
+    "support": "auxiliar",
+    "scenes/event-sprites": "evento_sprite",
+    "enemies/bandits": "enemigo_bandido",
+    "enemies/french": "enemigo_frances",
+    "enemies/italian": "enemigo_italiano",
+    "enemies/moors": "enemigo_moro",
+    "enemies/protestants": "enemigo_protestante",
+    "enemies/turks": "enemigo_turco",
+    "enemies/sprites": "enemigo_sprite",
+    "scenes/mature": "epica",
+    "ui/icons": "icono_ui",
+    "props": "objeto",
+    "characters/diego": "diego",
+    "characters/diego/portraits": "diego_emocion",
+    "characters/diego/sprites": "diego_sprite",
+    "characters/diego/sprites-base": "diego_sprite",
+    "characters/companions": "companion",
+    "characters/companions/portraits": "companion_emocion",
+    "missions/combat-sprites": "mission_combat_sprite",
+    "ui/sidebar": "icono_sidebar",
+    "ui/resource": "icono_recurso",
+    "ui/action": "icono_accion",
+    "ui/frames": "marco_ui",
+    "ui/ornaments": "ornamento_ui",
+    "ui/textures": "textura_ui",
+    "scenes/backgrounds": "screen_bg",
+    "portraits/variants": "retrato",
+}
+
+# Backwards-compat: legacy folder names still resolve to a prefix so a
+# drop of old exports does not crash the pipeline.
+LEGACY_PREFIXES = {
     "armadura": "armadura",
     "armas": "arma",
     "auxiliares": "auxiliar",
@@ -41,12 +75,6 @@ PREFIXES = {
     "prota/sprites-base": "diego_sprite",
     "tercios": "tercio",
     "tercios/emociones": "tercio_emocion",
-    "ui/sidebar": "icono_sidebar",
-    "ui/resource": "icono_recurso",
-    "ui/action": "icono_accion",
-    "ui/frames": "marco_ui",
-    "ui/ornaments": "ornamento_ui",
-    "ui/textures": "textura_ui",
     "CG/screen_bg": "screen_bg",
     "CG/portrait_variants": "retrato",
 }
@@ -268,7 +296,7 @@ def output_name(path: Path, root: Path, counters: dict[str, int], used: set[str]
             return candidate
 
     key = dir_key(path, root)
-    prefix = PREFIXES.get(key, slugify(key.replace("/", "_")))
+    prefix = PREFIXES.get(key) or LEGACY_PREFIXES.get(key) or slugify(key.replace("/", "_"))
     stem = slugify(path.stem)
 
     if CHATGPT_RE.match(stem) or stem.startswith("chatgpt_image"):

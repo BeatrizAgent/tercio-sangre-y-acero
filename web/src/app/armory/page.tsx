@@ -5,13 +5,18 @@ import { PageTransition } from "@/components/game/page-transition";
 import { Badge, Card } from "@/components/ui/card";
 import { Tooltip } from "@/components/ui/tooltip";
 import { UiAssetIcon } from "@/components/game/ui-asset-icon";
-import { getItem, getItemFootprint, getItemImagePath, shopInventory } from "@/lib/game-data";
+import { NpcOfferFrame } from "@/components/game/visual-offers";
+import { PlayerChestPanel } from "@/components/soldier/player-chest-panel";
+import { ItemChestGrid, VENDOR_CHEST_GRID, footprintPx } from "@/components/soldier/item-chest-grid";
+import { featuredAssetPaths, getItem, getItemFootprint, getItemImagePath, shopInventory } from "@/lib/game-data";
 import { useGameStore } from "@/lib/game-store";
 import { playCoinSound, playDefeatSound, playPageSound } from "@/lib/sounds";
 import { BACKPACK_CHESTS, BACKPACK_COLS, BACKPACK_ROWS, inventoryWithAutoLayout } from "@/lib/inventory-grid";
 import type { ItemDefinition, InventoryItem } from "@/lib/types";
 
 type DragSource = "merchant" | "backpack";
+
+const ARMORY_CELL_SIZE = VENDOR_CHEST_GRID.cellSize;
 
 const categoryFilters = [
   { id: "all", label: "Todo" },
@@ -33,23 +38,8 @@ function getFootprintImageClassName(item: ItemDefinition) {
   return "h-12 w-12";
 }
 
-const ARMORY_CELL_SIZE = 40;
-const ARMORY_GAP = 4;
-const ARMORY_PADDING = 4;
-
-const armoryGridStyle: React.CSSProperties = {
-  gridTemplateColumns: `repeat(${BACKPACK_COLS}, ${ARMORY_CELL_SIZE}px)`,
-  gridAutoRows: `${ARMORY_CELL_SIZE}px`,
-  gridAutoFlow: "row dense",
-};
-
-function footprintPx(footprint: { cols: number; rows: number }, axis: "x" | "y") {
-  const cells = axis === "x" ? footprint.cols : footprint.rows;
-  return cells * ARMORY_CELL_SIZE + (cells - 1) * ARMORY_GAP;
-}
-
 export default function ArmoryPage() {
-  const { soldier, buyItem, sellItem, payTownBribe } = useGameStore();
+  const { soldier, characters, activeCharacterId, setActiveCharacter, buyItem, sellItem, payTownBribe } = useGameStore();
   const [categoryFilter, setCategoryFilter] = useState<(typeof categoryFilters)[number]["id"]>("all");
   const [notice, setNotice] = useState<{ text: string; isError: boolean } | null>(null);
   const [dragged, setDragged] = useState<{ source: DragSource; itemId: string } | null>(null);
@@ -71,6 +61,18 @@ export default function ArmoryPage() {
     [soldier.inventory],
   );
   const activeChestInventory = laidOutInventory.filter((entry) => (entry.chest ?? 0) === activeChest);
+  const activeChestCells = activeChestInventory.reduce((sum, invItem) => {
+    const item = getItem(invItem.itemId);
+    const footprint = getItemFootprint(item);
+    return sum + footprint.cols * footprint.rows;
+  }, 0);
+  const profileTabs = characters.map((character) => ({
+    id: character.id,
+    name: character.name,
+    role: character.role,
+    portraitAssetId: character.portraitAssetId,
+    formationSlot: character.formationSlot,
+  }));
 
   const showNotice = (text: string, isError: boolean) => {
     setNotice({ text, isError });
@@ -115,6 +117,15 @@ export default function ArmoryPage() {
     setDropTarget(null);
   };
 
+  const handleBackpackDrop = (event: React.DragEvent) => {
+    event.preventDefault();
+    handleDrop("backpack");
+  };
+
+  const handleBackpackCellDrop = (_x: number, _y: number, event: React.DragEvent) => {
+    handleBackpackDrop(event);
+  };
+
   if (soldier.banMissionsLeft > 0) {
     return (
       <PageTransition>
@@ -157,8 +168,22 @@ export default function ArmoryPage() {
           </div>
         )}
 
-        <div className="grid min-w-0 gap-4 xl:grid-cols-2">
-          <Card title="Mercader" iconId="armory">
+        <div className="grid min-w-0 gap-4 xl:grid-cols-[0.95fr_1.05fr]">
+          <NpcOfferFrame
+            model={{
+              id: "armorer",
+              title: "Mercader",
+              subtitle: "Armeria",
+              portraitSrc: featuredAssetPaths.armorerPortrait,
+              sceneSrc: featuredAssetPaths.armory,
+              offers: [
+                { id: "coins", iconId: "coins", label: "Doblones", value: soldier.coins, tooltip: "Doblones disponibles" },
+                { id: "stock", iconId: "inventory", label: "Piezas", value: filteredShopRows.length, tooltip: "Objetos en venta" },
+                { id: "sell", iconId: "cityHouseOfTrade", label: "Vender", value: "drag", tooltip: "Arrastra del baul al mercader para vender" },
+                { id: "buy", iconId: "confirm", label: "Comprar", value: "doble", tooltip: "Doble click para comprar" },
+              ],
+            }}
+          >
             <div className="mb-3 flex flex-wrap items-center justify-between gap-2 border-b border-iron pb-2">
               <div className="flex flex-wrap gap-1">
                 {categoryFilters.map((filter) => (
@@ -177,14 +202,8 @@ export default function ArmoryPage() {
               </div>
             </div>
 
-            <DropZone
-              target="merchant"
-              active={dropTarget === "merchant"}
-              onDropTarget={setDropTarget}
-              onDrop={handleDrop}
-              label="Arrastra aqui para vender"
-            >
-              <ArmoryGrid cols={BACKPACK_COLS} rows={BACKPACK_ROWS} inventory={[]} renderItem={null}>
+            <VendorChest title="Mostrador">
+              <ItemChestGrid metrics={{ ...VENDOR_CHEST_GRID, cellSize: ARMORY_CELL_SIZE }} className="armory-slot-grid">
                 {filteredShopRows.map((row) => {
                   const item = getItem(row.itemId);
                   if (!item) return null;
@@ -195,13 +214,18 @@ export default function ArmoryPage() {
                     <Tooltip key={row.itemId} type="item" itemId={row.itemId}>
                       <button
                         type="button"
-                        className={`armory-market-row armory-item-slot relative flex h-full w-full items-center justify-center border bg-background/45 p-1 transition hover:border-gold/45 focus:border-gold focus:outline-hidden ${canBuy ? "cursor-grab" : "opacity-45"}`}
+                        className={`armory-market-row armory-item-slot relative flex items-center justify-center border bg-background/45 p-1 transition hover:border-gold/45 focus:border-gold focus:outline-hidden ${canBuy ? "cursor-grab" : "opacity-45"}`}
                         style={{
                           gridColumn: `span ${footprint.cols}`,
                           gridRow: `span ${footprint.rows}`,
+                          width: footprintPx(footprint, VENDOR_CHEST_GRID, "x"),
+                          height: footprintPx(footprint, VENDOR_CHEST_GRID, "y"),
                         }}
                         draggable={canBuy}
-                        onDragStart={() => setDragged({ source: "merchant", itemId: row.itemId })}
+                        onDragStart={(event) => {
+                          event.dataTransfer.setData("text/plain", row.itemId);
+                          setDragged({ source: "merchant", itemId: row.itemId });
+                        }}
                         onDragEnd={() => {
                           setDragged(null);
                           setDropTarget(null);
@@ -221,142 +245,80 @@ export default function ArmoryPage() {
                     </Tooltip>
                   );
                 })}
-              </ArmoryGrid>
-            </DropZone>
-          </Card>
+              </ItemChestGrid>
+            </VendorChest>
 
-          <Card title="Baul" iconId="inventory">
-            <div className="mb-3 flex flex-wrap gap-1 border-b border-iron pb-2">
-              {Array.from({ length: BACKPACK_CHESTS }).map((_, chestIndex) => {
-                const used = laidOutInventory
-                  .filter((entry) => (entry.chest ?? 0) === chestIndex)
-                  .reduce((sum, invItem) => {
-                    const item = getItem(invItem.itemId);
-                    const footprint = getItemFootprint(item);
-                    return sum + footprint.cols * footprint.rows;
-                  }, 0);
-                return (
-                  <button
-                    key={chestIndex}
-                    type="button"
-                    onClick={() => {
-                      playPageSound();
-                      setActiveChest(chestIndex);
-                    }}
-                    className={`border px-2 py-1 font-mono text-[10px] uppercase ${
-                      activeChest === chestIndex
-                        ? "border-gold/70 bg-gold/10 text-gold"
-                        : "border-iron/70 text-text-muted hover:border-gold/40"
-                    }`}
-                  >
-                    Baúl {chestIndex + 1} · {used}/{BACKPACK_COLS * BACKPACK_ROWS}
-                  </button>
-                );
-              })}
-            </div>
-            <DropZone
-              target="backpack"
-              active={dropTarget === "backpack"}
-              onDropTarget={setDropTarget}
-              onDrop={handleDrop}
-              label="Arrastra aqui para comprar"
-            >
-              <ArmoryGrid cols={BACKPACK_COLS} rows={BACKPACK_ROWS} inventory={activeChestInventory} renderItem={(invItem) => {
-                const item = getItem(invItem.itemId);
-                if (!item) return null;
-                if (invItem.x === undefined || invItem.y === undefined) return null;
-                const footprint = getItemFootprint(item);
-                const imageClassName = getFootprintImageClassName(item);
-                return (
-                  <Tooltip type="item" itemId={invItem.itemId}>
-                    <button
-                      type="button"
-                      className="armory-item-slot relative flex h-full w-full items-center justify-center border border-iron bg-background/45 p-1 transition hover:border-gold/45 focus:border-gold focus:outline-hidden"
-                      style={{
-                        width: footprintPx(footprint, "x"),
-                        height: footprintPx(footprint, "y"),
-                      }}
-                      draggable
-                      onDragStart={() => setDragged({ source: "backpack", itemId: invItem.itemId })}
-                      onDragEnd={() => {
-                        setDragged(null);
-                        setDropTarget(null);
-                      }}
-                      onDoubleClick={() => handleSell(invItem.itemId)}
-                      aria-label={`${item.name}. Arrastra para vender.`}
-                    >
-                      <img
-                        src={getItemImagePath(invItem.itemId)}
-                        alt=""
-                        className={`${imageClassName} max-h-full max-w-full object-contain`}
-                        onError={(event) => {
-                          event.currentTarget.style.display = "none";
-                        }}
-                      />
-                    </button>
-                  </Tooltip>
-                );
-              }}>
-                <></>
-              </ArmoryGrid>
-            </DropZone>
-          </Card>
+            <VendorChest title="Venta">
+              <DropZone
+                target="merchant"
+                active={dropTarget === "merchant"}
+                onDropTarget={setDropTarget}
+                onDrop={handleDrop}
+                label="Suelta aqui para vender"
+              >
+              <ItemChestGrid metrics={{ ...VENDOR_CHEST_GRID, cellSize: ARMORY_CELL_SIZE }} className="armory-slot-grid" />
+              </DropZone>
+            </VendorChest>
+          </NpcOfferFrame>
+
+          <div
+            onDragOver={(event) => {
+              event.preventDefault();
+              setDropTarget("backpack");
+            }}
+            onDragLeave={() => setDropTarget(null)}
+            onDrop={handleBackpackDrop}
+          >
+            <PlayerChestPanel
+              profiles={profileTabs}
+              activeProfileId={activeCharacterId}
+              onProfileSelect={(id) => {
+                playPageSound();
+                setActiveCharacter(id);
+              }}
+              items={laidOutInventory}
+              equipment={soldier.equipment}
+              activeChest={activeChest}
+              activeChestCells={activeChestCells}
+              selectedItemId={null}
+              draggingItemId={dragged?.itemId ?? null}
+              isOverBackpack={dropTarget === "backpack"}
+              onChestChange={(idx) => {
+                playPageSound();
+                setActiveChest(idx);
+              }}
+              onSelectItem={handleSell}
+              onDragStart={(itemId, event) => {
+                event.dataTransfer.setData("text/plain", itemId);
+                setDragged({ source: "backpack", itemId });
+              }}
+              onDragEnd={() => {
+                setDragged(null);
+                setDropTarget(null);
+              }}
+              onDragOverBackpack={(event) => {
+                event.preventDefault();
+                setDropTarget("backpack");
+              }}
+              onDragLeaveBackpack={() => setDropTarget(null)}
+              onDropBackpack={handleBackpackDrop}
+              onCellDrop={handleBackpackCellDrop}
+            />
+          </div>
         </div>
       </div>
     </PageTransition>
   );
 }
 
-function ArmoryGrid({
-  cols,
-  rows,
-  inventory,
-  renderItem,
-  children,
-}: {
-  cols: number;
-  rows: number;
-  inventory: InventoryItem[];
-  renderItem: ((item: InventoryItem) => React.ReactNode) | null;
-  children: React.ReactNode;
-}) {
-  const width = cols * ARMORY_CELL_SIZE + (cols - 1) * ARMORY_GAP + ARMORY_PADDING * 2;
-  const height = rows * ARMORY_CELL_SIZE + (rows - 1) * ARMORY_GAP + ARMORY_PADDING * 2;
-
+function VendorChest({ title, children }: { title: string; children: React.ReactNode }) {
   return (
-    <div
-      className="armory-slot-grid relative max-w-full overflow-hidden border border-iron bg-black/20 p-0"
-      style={{
-        width,
-        height,
-        padding: ARMORY_PADDING,
-        backgroundImage:
-          "linear-gradient(to right, rgba(187, 163, 106, 0.12) 1px, transparent 1px), linear-gradient(to bottom, rgba(187, 163, 106, 0.12) 1px, transparent 1px)",
-        backgroundSize: `${ARMORY_CELL_SIZE + ARMORY_GAP}px ${ARMORY_CELL_SIZE + ARMORY_GAP}px`,
-      }}
-    >
-      {renderItem ? (
-        inventory.map((invItem) => {
-          if (invItem.x === undefined || invItem.y === undefined) return null;
-          return (
-            <div
-              key={invItem.itemId}
-              className="absolute"
-              style={{
-                left: ARMORY_PADDING + invItem.x * (ARMORY_CELL_SIZE + ARMORY_GAP),
-                top: ARMORY_PADDING + invItem.y * (ARMORY_CELL_SIZE + ARMORY_GAP),
-              }}
-            >
-              {renderItem(invItem)}
-            </div>
-          );
-        })
-      ) : (
-        <div className="armory-slot-grid-fallback grid" style={{ ...armoryGridStyle, gap: ARMORY_GAP }}>
-          {children}
-        </div>
-      )}
-    </div>
+    <section className="space-y-2">
+      <div className="flex items-center justify-between border-b border-iron/45 pb-1">
+        <h3 className="font-cinzel text-xs font-bold uppercase tracking-[0.16em] text-gold-soft">{title}</h3>
+      </div>
+      <div className="overflow-x-auto pb-1">{children}</div>
+    </section>
   );
 }
 

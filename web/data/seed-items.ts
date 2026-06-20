@@ -94,3 +94,11 @@ export const shopItems: readonly ShopItem[] = (armory?.inventory ?? []).map((ite
   sellPrice: item.sell_price,
   stock: item.stock,
 }));
+
+const church = (shopsJson as RawShop[]).find((s) => s.id === "church_reliquary");
+export const churchShopItems: readonly ShopItem[] = (church?.inventory ?? []).map((item) => ({
+  itemId: item.item_id,
+  buyPrice: item.buy_price,
+  sellPrice: item.sell_price,
+  stock: item.stock,
+}));

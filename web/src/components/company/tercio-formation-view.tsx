@@ -19,7 +19,7 @@ import {
 import { UiAssetIcon } from "@/components/game/ui-asset-icon";
 import { Tooltip } from "@/components/ui/tooltip";
 import { playPageSound } from "@/lib/sounds";
-import { getAssetPathById, reportAssetPaths } from "@/lib/game-data";
+import { formationRoleIconPaths, getAssetPathById, reportAssetPaths, tercioOrdinanceIconPaths } from "@/lib/game-data";
 
 const PLAYER_ID = "diego_de_arce";
 const FORMATION_FIELD_BG = "/assets/generated/scenes/tercio_formation_field_v01.png";
@@ -327,6 +327,16 @@ function PresetCard({
       }`}
     >
       <div className="flex items-start justify-between gap-2">
+        <span className="relative flex h-12 w-12 shrink-0 items-center justify-center rounded-xs border border-amber-900/45 bg-stone-950/60 shadow-inner">
+          <Image
+            src={tercioOrdinanceIconPaths[preset.id]}
+            alt=""
+            width={64}
+            height={64}
+            aria-hidden="true"
+            className="h-10 w-10 object-contain drop-shadow-[0_2px_4px_rgba(0,0,0,0.65)]"
+          />
+        </span>
         <div className="min-w-0">
           <div className="flex items-center gap-1.5">
             <span className="font-mono text-[9px] font-bold text-amber-300/75">
@@ -414,7 +424,15 @@ function FormationLane({
   return (
     <section className="relative min-h-[104px] rounded-xs border border-stone-700/55 bg-stone-950/46 px-2 pb-2 pt-8 shadow-[inset_0_0_24px_rgba(0,0,0,0.25)]">
       <div className="absolute left-2 top-2 flex max-w-[calc(100%-1rem)] items-center gap-1.5 rounded-xs border border-stone-700/55 bg-stone-950/78 px-2 py-1">
-        <Icon className="h-3 w-3 text-amber-200/85" aria-hidden="true" />
+        <Image
+          src={formationRoleIconPaths[slot]}
+          alt=""
+          width={32}
+          height={32}
+          aria-hidden="true"
+          className="h-5 w-5 object-contain"
+        />
+        <Icon className="h-3 w-3 text-amber-200/65" aria-hidden="true" />
         <span className="truncate font-cinzel text-[10px] font-bold uppercase tracking-wider text-amber-100">
           {meta.label}
         </span>

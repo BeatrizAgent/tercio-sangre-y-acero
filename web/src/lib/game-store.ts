@@ -4,6 +4,8 @@ import type { ArenaResult, EquipmentSlot, GameState, StatId } from "./types";
 import { resolveMission } from "./resolver";
 import {
   createCharacterStates,
+  churchBlessings,
+  churchInventory,
   trainingOptions,
   getItem,
   getNextRank,
@@ -104,6 +106,8 @@ export interface GameStore extends GameState {
   setActiveCharacter: (characterId: string) => void;
   setFormationSlot: (characterId: string, slot: GameState["characters"][number]["formationSlot"]) => void;
   buyItem: (itemId: string) => { ok: boolean; message: string };
+  buyChurchItem: (itemId: string) => { ok: boolean; message: string };
+  buyChurchBlessing: (blessingId: string) => { ok: boolean; message: string };
   sellItem: (itemId: string) => { ok: boolean; message: string };
   equipItem: (itemId: string) => { ok: boolean; message: string };
   unequipItem: (slot: EquipmentSlot) => { ok: boolean; message: string };
@@ -244,6 +248,61 @@ export const useGameStore = create<GameStore>()(
               inventory: inserted.inventory,
             },
           };
+        });
+        return result;
+      },
+
+      buyChurchItem: (itemId: string) => {
+        let result = { ok: false, message: "El relicario no vende ese objeto." };
+        set((state) => {
+          const row = churchInventory.find((item) => item.itemId === itemId);
+          if (!row) return {};
+          if (state.soldier.coins < row.buyPrice) {
+            result = { ok: false, message: "Doblones insuficientes para el relicario." };
+            return {};
+          }
+
+          const inserted = addInventoryItem(state.soldier.inventory, itemId, 1, BACKPACK_COLS, BACKPACK_ROWS, BACKPACK_CHESTS);
+          if (!inserted.ok) {
+            result = { ok: false, message: "No hay hueco en ningun baul." };
+            return {};
+          }
+
+          const itemDef = getItem(itemId);
+          result = { ok: true, message: `Has comprado en la iglesia: ${itemDef?.name ?? itemId}.` };
+          return {
+            soldier: {
+              ...state.soldier,
+              coins: state.soldier.coins - row.buyPrice,
+              inventory: inserted.inventory,
+            },
+          };
+        });
+        return result;
+      },
+
+      buyChurchBlessing: (blessingId: string) => {
+        let result = { ok: false, message: "Bendicion no encontrada." };
+        set((state) => {
+          const blessing = churchBlessings.find((entry) => entry.id === blessingId);
+          if (!blessing) return {};
+          if (state.soldier.coins < blessing.cost) {
+            result = { ok: false, message: "Doblones insuficientes para la ofrenda." };
+            return {};
+          }
+          const effects: Partial<Record<"honor" | "fatigue" | "reputation" | "corruption", number>> = blessing.effects;
+
+          const updatedSoldier = {
+            ...state.soldier,
+            coins: state.soldier.coins - blessing.cost,
+            honor: Math.max(0, state.soldier.honor + Number(effects.honor ?? 0)),
+            fatigue: Math.max(0, Math.min(100, state.soldier.fatigue + Number(effects.fatigue ?? 0))),
+            reputation: Math.max(-50, Math.min(50, state.soldier.reputation + Number(effects.reputation ?? 0))),
+            corruption: Math.max(0, Math.min(100, state.soldier.corruption + Number(effects.corruption ?? 0))),
+          };
+
+          result = { ok: true, message: `${blessing.name}: el capellan hace la senal y cobra la ofrenda.` };
+          return { soldier: updatedSoldier };
         });
         return result;
       },

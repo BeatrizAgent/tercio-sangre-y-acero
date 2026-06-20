@@ -6,9 +6,11 @@ import { useRouter, useSearchParams } from "next/navigation";
 import { ArrowLeft, Compass } from "lucide-react";
 import { UiAssetIcon } from "@/components/game/ui-asset-icon";
 import { PageTransition } from "@/components/game/page-transition";
+import { NpcOfferFrame } from "@/components/game/visual-offers";
 import {
   campaignNodeIconPaths,
   featuredAssetPaths,
+  getAssetPathById,
   getEnemy,
   getEnemySpriteImagePath,
   getMission,
@@ -288,6 +290,7 @@ function RegionPanel({
         {region.bosses.map((boss) => {
           const isOpen = openBossId === boss.id;
           const pending = isPending(boss);
+          const bossPortrait = getAssetPathById(boss.portraitAssetId);
 
           return (
             <li
@@ -307,13 +310,22 @@ function RegionPanel({
                 aria-expanded={isOpen}
                 className="flex w-full cursor-pointer items-center gap-3 p-3 text-left focus:outline-hidden disabled:cursor-not-allowed"
               >
-                <span className="asset-icon-frame inline-flex h-12 w-12 shrink-0 items-center justify-center rounded-xs border border-iron bg-stone-950/80 p-1">
-                  <img
-                    src={getBossIcon(boss.type)}
-                    alt=""
-                    aria-hidden="true"
-                    className="h-full w-full object-contain"
-                  />
+                <span className="asset-icon-frame inline-flex h-14 w-14 shrink-0 items-center justify-center overflow-hidden rounded-xs border border-iron bg-stone-950/80 p-0.5">
+                  {bossPortrait ? (
+                    <img
+                      src={bossPortrait}
+                      alt=""
+                      aria-hidden="true"
+                      className="h-full w-full object-cover"
+                    />
+                  ) : (
+                    <img
+                      src={getBossIcon(boss.type)}
+                      alt=""
+                      aria-hidden="true"
+                      className="h-full w-full object-contain p-1"
+                    />
+                  )}
                 </span>
 
                 <div className="min-w-0 flex-1">
@@ -363,75 +375,35 @@ function RegionPanel({
 
               {isOpen && openMission && !pending && (
                 <div className="border-t border-iron/50 p-3 space-y-3 animate-in fade-in slide-in-from-top-1 duration-200">
-                  <div className="grid gap-3 sm:grid-cols-[160px_1fr]">
-                    <div className="scene-frame relative h-28 overflow-hidden rounded-xs border border-iron bg-stone-950">
-                      <img
-                        src={getMissionSceneImagePath(openMission.id)}
-                        alt={openMission.title}
-                        className="h-full w-full object-cover opacity-90"
-                      />
-                      <div className="pointer-events-none absolute inset-0 bg-gradient-to-t from-background/95 to-transparent" />
-                      {openEnemySprite && (
-                        <span className="asset-icon-frame absolute bottom-1.5 right-1.5 inline-flex h-10 w-10 items-center justify-center rounded-xs border border-iron bg-stone-950/85 p-0.5">
-                          <img src={openEnemySprite} alt={openEnemyName ?? "Enemigo"} className="h-full w-full object-contain" />
-                        </span>
-                      )}
-                    </div>
-
-                    <div className="space-y-2 font-sans">
-                      {openEnemyName && (
-                        <div className="flex items-center gap-2">
-                          <UiAssetIcon id="risk" label="Enemigo" className="h-5 w-5" />
-                          <span className="font-cinzel text-sm font-bold uppercase text-text">
-                            {openEnemyName}
-                          </span>
-                        </div>
-                      )}
-
-                      <div className="grid grid-cols-2 gap-2 sm:grid-cols-4">
-                        <StatTile icon="fatigue" label="Fatiga" value={`+${openMission.fatigue}`} tone="text-ember" />
-                        <StatTile icon="wound" label="Herida" value={`${openMission.woundChance}%`} tone="text-danger" />
-                        <StatTile icon="coins" label="Paga" value={`+${openMission.rewards.coins}`} tone="text-gold" />
-                        <StatTile icon="xp" label="Fama" value={`+${openMission.rewards.xp}`} tone="text-text" />
-                      </div>
-                    </div>
-                  </div>
-
-                  <Link
-                    href={`/missions/${openMission.id}`}
-                    className="flex w-full cursor-pointer items-center justify-center gap-2 rounded-xs border border-blood-bright bg-blood py-2.5 font-mono text-xs font-bold uppercase tracking-widest text-text shadow-md transition-colors hover:bg-blood-bright hover:text-white"
+                  <NpcOfferFrame
+                    model={{
+                      id: openMission.id,
+                      title: openEnemyName ?? openMission.title,
+                      subtitle: getLocationLabel(boss.type),
+                      portraitSrc: openEnemySprite ?? bossPortrait ?? getBossIcon(boss.type),
+                      sceneSrc: getMissionSceneImagePath(openMission.id),
+                      offers: [
+                        { id: "fatigue", iconId: "fatigue", label: "Fatiga", value: `+${openMission.fatigue}`, tooltip: "Fatiga de despliegue" },
+                        { id: "wound", iconId: "wound", label: "Herida", value: `${openMission.woundChance}%`, tooltip: "Riesgo de herida" },
+                        { id: "coins", iconId: "coins", label: "Paga", value: `+${openMission.rewards.coins}`, tooltip: "Paga posible" },
+                        { id: "xp", iconId: "xp", label: "Fama", value: `+${openMission.rewards.xp}`, tooltip: "Experiencia posible" },
+                      ],
+                    }}
                   >
-                    <UiAssetIcon id="confirm" label="" className="h-5 w-5" />
-                    <span>Desplegar</span>
-                  </Link>
+                    <Link
+                      href={`/missions/${openMission.id}`}
+                      className="blood-button flex w-full cursor-pointer items-center justify-center gap-2 py-2.5 text-xs"
+                    >
+                      <UiAssetIcon id="confirm" label="" className="h-5 w-5" />
+                      <span>Desplegar</span>
+                    </Link>
+                  </NpcOfferFrame>
                 </div>
               )}
             </li>
           );
         })}
       </ul>
-    </div>
-  );
-}
-
-function StatTile({
-  icon,
-  label,
-  value,
-  tone,
-}: {
-  icon: React.ComponentProps<typeof UiAssetIcon>["id"];
-  label: string;
-  value: string;
-  tone: string;
-}) {
-  return (
-    <div className="icon-stat-tile flex items-center gap-2 rounded-xs px-2 py-1.5">
-      <UiAssetIcon id={icon} label={label} className="h-6 w-6" />
-      <div className="min-w-0 leading-tight">
-        <div className="font-mono text-[8.5px] uppercase tracking-wider text-muted">{label}</div>
-        <div className={`font-cinzel text-xs font-bold ${tone}`}>{value}</div>
-      </div>
     </div>
   );
 }

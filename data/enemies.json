@@ -4,20 +4,20 @@
     "name": "desertores hambrientos",
     "power": 1,
     "description": "Hombres que conocen mal el orden de combate y bien el hambre.",
-    "portraitAssetId": "enemigo_chusma_001"
+    "portraitAssetId": "enemy_bandit_001"
   },
   {
     "id": "road_raiders",
     "name": "salteadores de caminos",
     "power": 3,
     "description": "Cuchillos rápidos cerca de carros rotos.",
-    "portraitAssetId": "enemigo_italiano_001"
+    "portraitAssetId": "enemy_italian_001"
   },
   {
     "id": "enemy_skirmishers",
     "name": "escaramuzadores enemigos",
     "power": 4,
     "description": "Disparos dispersos y retirada rápida.",
-    "portraitAssetId": "enemigo_frances_001"
+    "portraitAssetId": "enemy_french_001"
   }
 ]

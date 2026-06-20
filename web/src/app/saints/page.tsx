@@ -14,12 +14,12 @@ type UiIconId = ComponentProps<typeof UiAssetIcon>["id"];
 const tabs: Array<{
   key: SaintsTab;
   label: string;
-  iconId: "cityChurch" | "missions" | "order" | "coins";
+  iconId: "saintsDevotion" | "longMissions" | "objectives" | "chestChamber";
 }> = [
-  { key: "misiones", label: "Misiones largas", iconId: "missions" },
-  { key: "objetivos", label: "Objetivos", iconId: "order" },
-  { key: "panteon", label: "Santos", iconId: "cityChurch" },
-  { key: "camara", label: "Camara de cobres", iconId: "coins" },
+  { key: "misiones", label: "Misiones largas", iconId: "longMissions" },
+  { key: "objetivos", label: "Objetivos", iconId: "objectives" },
+  { key: "panteon", label: "Santos", iconId: "saintsDevotion" },
+  { key: "camara", label: "Camara de cofres", iconId: "chestChamber" },
 ];
 
 const longMissions: Array<{
@@ -32,7 +32,7 @@ const longMissions: Array<{
 }> = [
   {
     title: "Vence a 9 enemigos seguidos en expediciones, mazmorras o en las arenas",
-    iconId: "arena",
+    iconId: "longMissions",
     progress: "2 / 9",
     coins: 76,
     rewardIcons: ["coins", "honor", "wound", "cityHouseOfTrade", null],
@@ -40,7 +40,7 @@ const longMissions: Array<{
   },
   {
     title: "Encuentra 8 objetos en expediciones o mazmorras",
-    iconId: "packages",
+    iconId: "longMissions",
     progress: "",
     coins: 179,
     rewardIcons: ["coins", "inventory", "honor", null, null],
@@ -48,7 +48,7 @@ const longMissions: Array<{
   },
   {
     title: "Arena: gana en 3 ataques seguidos contra enemigos de los que puedes conseguir oro",
-    iconId: "soldier",
+    iconId: "longMissions",
     progress: "00:14:23",
     coins: 210,
     rewardIcons: ["coins", "rank", "wound", null, null],
@@ -56,7 +56,7 @@ const longMissions: Array<{
   },
   {
     title: "Bosque Sombrio: vence 6 x Lobo",
-    iconId: "missions",
+    iconId: "longMissions",
     progress: "",
     coins: 218,
     rewardIcons: ["coins", "honor", "shield", null, "risk"],
@@ -64,7 +64,7 @@ const longMissions: Array<{
   },
   {
     title: "Puerto Pirata: vence a cada enemigo al menos una vez",
-    iconId: "order",
+    iconId: "longMissions",
     progress: "",
     coins: 332,
     rewardIcons: ["coins", "confirm", "honor", null, "risk"],
@@ -72,7 +72,7 @@ const longMissions: Array<{
   },
   {
     title: "Vence a 5 enemigos en expediciones, en mazmorras o en las arenas",
-    iconId: "arena",
+    iconId: "longMissions",
     progress: "",
     coins: 79,
     rewardIcons: ["coins", "inventory", "cityHouseOfTrade", "wound", "risk"],
@@ -204,7 +204,7 @@ const churchSaints: Array<{
     name: "Santiago Apostol",
     progress: "43 / 63",
     level: "II",
-    iconId: null,
+    iconId: "saintsDevotion",
     positionClass: "left-1/2 top-2 -translate-x-1/2",
     orbClass: "left-1/2 top-[40%] -translate-x-1/2 bg-[#b89232]",
   },
@@ -212,7 +212,7 @@ const churchSaints: Array<{
     name: "San Miguel Arcangel",
     progress: "10 / 26",
     level: "II",
-    iconId: null,
+    iconId: "saintsDevotion",
     positionClass: "left-[8%] top-[24%]",
     orbClass: "left-[34%] top-[44%] bg-[#e9d56a]",
   },
@@ -220,7 +220,7 @@ const churchSaints: Array<{
     name: "Santa Barbara",
     progress: "8 / 28",
     level: "II",
-    iconId: null,
+    iconId: "saintsDevotion",
     positionClass: "right-[8%] top-[24%]",
     orbClass: "right-[34%] top-[44%] bg-[#7d2d84]",
   },
@@ -228,7 +228,7 @@ const churchSaints: Array<{
     name: "San Sebastian",
     progress: "10 / 28",
     level: "II",
-    iconId: null,
+    iconId: "saintsDevotion",
     positionClass: "left-[8%] bottom-[12%]",
     orbClass: "left-[34%] bottom-[34%] bg-[#8d1f1f]",
   },
@@ -236,7 +236,7 @@ const churchSaints: Array<{
     name: "San Mauricio",
     progress: "29 / 49",
     level: "II",
-    iconId: null,
+    iconId: "saintsDevotion",
     positionClass: "right-[8%] bottom-[12%]",
     orbClass: "right-[34%] bottom-[34%] bg-[#c56d1b]",
   },
@@ -244,7 +244,7 @@ const churchSaints: Array<{
     name: "San Martin de Tours",
     progress: "6 / 26",
     level: "II",
-    iconId: null,
+    iconId: "saintsDevotion",
     positionClass: "left-1/2 bottom-0 -translate-x-1/2",
     orbClass: "left-1/2 bottom-[29%] -translate-x-1/2 bg-[#2d9b39]",
   },
@@ -262,7 +262,7 @@ const treasureDrops: Array<{ label: string; iconId: UiIconId | null; quantity?: 
   { label: "Elixir piadoso", iconId: "wound", quantity: 2 },
   { label: "Cobre bendecido", iconId: "coins", quantity: 2 },
   { label: "Cobre viejo", iconId: "coins", quantity: 2 },
-  { label: "Reliquia mayor", iconId: null, rare: true },
+  { label: "Reliquia mayor", iconId: "saintsDevotion", rare: true },
 ];
 
 export default function SaintsPage() {
@@ -284,7 +284,7 @@ export default function SaintsPage() {
       <div className="space-y-4">
         <header className="flex flex-wrap items-center justify-between gap-3 border-b border-iron pb-3">
           <div className="flex items-center gap-3">
-            <UiAssetIcon id="cityChurch" label="Santos" className="h-12 w-12" />
+            <UiAssetIcon id="saintsDevotion" label="Santos" className="h-12 w-12" />
             <div>
               <h1 className="font-cinzel text-2xl font-extrabold uppercase text-gold md:text-3xl">Los Santos</h1>
               <p className="text-sm text-text-muted">Votos, largas guardias y arcas de cobre bajo llave.</p>
@@ -325,7 +325,10 @@ export default function SaintsPage() {
           <section className="game-panel p-3 md:p-4">
             <div className="relative z-10 mb-4 flex flex-wrap items-center justify-between gap-3">
               <h2 className="font-cinzel text-xl font-extrabold uppercase tracking-wide text-gold-soft">
-                Misiones aceptadas: 1 / 3
+                <span className="inline-flex items-center gap-2">
+                  <UiAssetIcon id="longMissions" label="Misiones largas" className="h-9 w-9" />
+                  Misiones aceptadas: 1 / 3
+                </span>
               </h2>
               <span className="border border-gold/25 bg-background/70 px-3 py-1 font-mono text-xs uppercase text-gold-soft">
                 Tiempo largo
@@ -420,8 +423,9 @@ export default function SaintsPage() {
               <div className="space-y-3">
                 {objectiveSections.map((section) => (
                   <section key={section.title} className="overflow-hidden border border-[#6b3416] bg-[#6a3d1d] shadow-md">
-                    <h2 className="bg-linear-to-r from-[#9d7442] via-[#7c4b24] to-[#3f2412] px-4 py-1.5 font-cinzel text-xl font-extrabold text-[#ffe6ad] shadow-inner">
-                      {section.title}
+                    <h2 className="flex items-center gap-2 bg-linear-to-r from-[#9d7442] via-[#7c4b24] to-[#3f2412] px-4 py-1.5 font-cinzel text-xl font-extrabold text-[#ffe6ad] shadow-inner">
+                      <UiAssetIcon id="objectives" label="Objetivos" className="h-8 w-8" />
+                      <span>{section.title}</span>
                     </h2>
                     <div className="space-y-0.5 p-1.5">
                       {section.rows.map((objective) => {
@@ -522,7 +526,7 @@ export default function SaintsPage() {
                     key={`${saint.name}-orb`}
                     className={`absolute z-30 flex h-11 w-11 items-center justify-center rounded-full border-[3px] border-[#514522] shadow-[0_0_0_2px_#1d1609,0_4px_10px_rgba(0,0,0,0.35)] ${saint.orbClass}`}
                   >
-                    <UiAssetIcon id="cityChurch" label={saint.name} className="h-7 w-7" />
+                    <UiAssetIcon id="saintsDevotion" label={saint.name} className="h-7 w-7" />
                   </span>
                 ))}
               </div>
@@ -536,7 +540,7 @@ export default function SaintsPage() {
               <div className="grid gap-4 border border-[#b99550] bg-[#f0dfb2] p-3 shadow-[inset_0_0_0_1px_rgba(255,245,200,0.45)] md:grid-cols-[92px_1fr_140px]">
                 <div className="border border-[#8b642d] bg-[#7f180d] p-1 shadow-inner">
                   <div className="flex h-20 items-center justify-center border border-[#4d160a] bg-[#2c1208]">
-                    <UiAssetIcon id="packages" label="Baul de la providencia divina" className="h-16 w-16" />
+                    <UiAssetIcon id="chestChamber" label="Baul de la providencia divina" className="h-16 w-16" />
                   </div>
                   <div className="mt-1 bg-[#89150d] py-1 text-center font-mono text-lg font-extrabold text-white">0</div>
                 </div>
@@ -577,9 +581,7 @@ export default function SaintsPage() {
                         {drop.iconId ? (
                           <UiAssetIcon id={drop.iconId} label={drop.label} className="h-14 w-14" />
                         ) : (
-                          <span className="px-1 text-center font-mono text-[10px] uppercase leading-tight text-[#f4d58a]">
-                            Vacio
-                          </span>
+                          <UiAssetIcon id="chestChamber" label={drop.label} className="h-14 w-14 opacity-80" />
                         )}
                       </div>
                       {drop.quantity && (

@@ -12,7 +12,7 @@
       "discipline": 1
     },
     "description": "Pica corta, madera de enebro y punta mal templada. Sirve para alinear.",
-    "assetId": "arma_001",
+    "assetId": "weapon_pike_common_001",
     "rarity": "common",
     "tier": 1,
     "footprint": {
@@ -33,7 +33,7 @@
       "discipline": 1
     },
     "description": "Pica corta, madera de enebro y punta mal templada. Sirve para alinear.",
-    "assetId": "arma_002",
+    "assetId": "weapon_pike_common_002",
     "rarity": "common",
     "tier": 1,
     "footprint": {
@@ -53,7 +53,7 @@
       "sword": 1
     },
     "description": "Hoja de cinto, filo irregular, mejor en el envés que en el tajo.",
-    "assetId": "arma_003",
+    "assetId": "weapon_sword_common_003",
     "rarity": "common",
     "tier": 1,
     "footprint": {
@@ -73,7 +73,7 @@
       "sword": 1
     },
     "description": "Hoja de cinto, filo irregular, mejor en el envés que en el tajo.",
-    "assetId": "arma_004",
+    "assetId": "weapon_sword_common_004",
     "rarity": "common",
     "tier": 1,
     "footprint": {
@@ -93,7 +93,7 @@
       "arquebus": 2
     },
     "description": "Mechero y llave lentos, dispara más por inercia que por puntería.",
-    "assetId": "arma_005",
+    "assetId": "weapon_arquebus_common_005",
     "rarity": "common",
     "tier": 1,
     "footprint": {
@@ -114,7 +114,7 @@
       "discipline": 0
     },
     "description": "Pica corta, madera de enebro y punta mal templada. Sirve para alinear.",
-    "assetId": "arma_006",
+    "assetId": "weapon_pike_common_006",
     "rarity": "common",
     "tier": 1,
     "footprint": {
@@ -134,7 +134,7 @@
       "sword": 1
     },
     "description": "Hoja de cinto, filo irregular, mejor en el envés que en el tajo.",
-    "assetId": "arma_007",
+    "assetId": "weapon_sword_common_007",
     "rarity": "common",
     "tier": 1,
     "footprint": {
@@ -154,7 +154,7 @@
       "sword": 1
     },
     "description": "Hoja de cinto, filo irregular, mejor en el envés que en el tajo.",
-    "assetId": "arma_008",
+    "assetId": "weapon_sword_common_008",
     "rarity": "common",
     "tier": 1,
     "footprint": {
@@ -174,7 +174,7 @@
       "arquebus": 2
     },
     "description": "Mechero y llave lentos, dispara más por inercia que por puntería.",
-    "assetId": "arma_009",
+    "assetId": "weapon_arquebus_common_009",
     "rarity": "common",
     "tier": 1,
     "footprint": {
@@ -195,7 +195,7 @@
       "discipline": 0
     },
     "description": "Pica corta, madera de enebro y punta mal templada. Sirve para alinear.",
-    "assetId": "arma_010",
+    "assetId": "weapon_pike_common_010",
     "rarity": "common",
     "tier": 1,
     "footprint": {
@@ -216,7 +216,7 @@
       "discipline": 1
     },
     "description": "Asta recta, contrapesada, mejor empuñadura y regatón de hierro.",
-    "assetId": "arma_011",
+    "assetId": "weapon_pike_uncommon_011",
     "rarity": "uncommon",
     "tier": 2,
     "footprint": {
@@ -237,7 +237,7 @@
       "discipline": 1
     },
     "description": "Asta recta, contrapesada, mejor empuñadura y regatón de hierro.",
-    "assetId": "arma_012",
+    "assetId": "weapon_pike_uncommon_012",
     "rarity": "uncommon",
     "tier": 2,
     "footprint": {
@@ -258,7 +258,7 @@
       "discipline": 1
     },
     "description": "Asta recta, contrapesada, mejor empuñadura y regatón de hierro.",
-    "assetId": "arma_013",
+    "assetId": "weapon_pike_uncommon_013",
     "rarity": "uncommon",
     "tier": 2,
     "footprint": {
@@ -279,7 +279,7 @@
       "discipline": 1
     },
     "description": "Asta recta, contrapesada, mejor empuñadura y regatón de hierro.",
-    "assetId": "arma_014",
+    "assetId": "weapon_pike_uncommon_014",
     "rarity": "uncommon",
     "tier": 2,
     "footprint": {
@@ -300,7 +300,7 @@
       "discipline": 1
     },
     "description": "Asta recta, contrapesada, mejor empuñadura y regatón de hierro.",
-    "assetId": "arma_015",
+    "assetId": "weapon_pike_uncommon_015",
     "rarity": "uncommon",
     "tier": 2,
     "footprint": {
@@ -321,7 +321,7 @@
       "cunning": 1
     },
     "description": "Hoja larga, cazoleta o gavilanes, el peso va adelante.",
-    "assetId": "arma_016",
+    "assetId": "weapon_sword_uncommon_016",
     "rarity": "uncommon",
     "tier": 2,
     "footprint": {
@@ -342,7 +342,7 @@
       "cunning": 1
     },
     "description": "Hoja larga, cazoleta o gavilanes, el peso va adelante.",
-    "assetId": "arma_017",
+    "assetId": "weapon_sword_uncommon_017",
     "rarity": "uncommon",
     "tier": 2,
     "footprint": {
@@ -363,7 +363,7 @@
       "cunning": 1
     },
     "description": "Hoja larga, cazoleta o gavilanes, el peso va adelante.",
-    "assetId": "arma_018",
+    "assetId": "weapon_sword_uncommon_018",
     "rarity": "uncommon",
     "tier": 2,
     "footprint": {
@@ -384,7 +384,7 @@
       "cunning": 1
     },
     "description": "Hoja larga, cazoleta o gavilanes, el peso va adelante.",
-    "assetId": "arma_019",
+    "assetId": "weapon_sword_uncommon_019",
     "rarity": "uncommon",
     "tier": 2,
     "footprint": {
@@ -405,7 +405,7 @@
       "cunning": 1
     },
     "description": "Hoja larga, cazoleta o gavilanes, el peso va adelante.",
-    "assetId": "arma_020",
+    "assetId": "weapon_sword_uncommon_020",
     "rarity": "uncommon",
     "tier": 2,
     "footprint": {
@@ -426,7 +426,7 @@
       "cunning": 1
     },
     "description": "Mechero fiable, llave engrasada. Recarga sin jurar demasiado.",
-    "assetId": "arma_021",
+    "assetId": "weapon_arquebus_uncommon_021",
     "rarity": "uncommon",
     "tier": 2,
     "footprint": {
@@ -447,7 +447,7 @@
       "cunning": 1
     },
     "description": "Mechero fiable, llave engrasada. Recarga sin jurar demasiado.",
-    "assetId": "arma_022",
+    "assetId": "weapon_arquebus_uncommon_022",
     "rarity": "uncommon",
     "tier": 2,
     "footprint": {
@@ -468,7 +468,7 @@
       "cunning": 1
     },
     "description": "Mechero fiable, llave engrasada. Recarga sin jurar demasiado.",
-    "assetId": "arma_023",
+    "assetId": "weapon_arquebus_uncommon_023",
     "rarity": "uncommon",
     "tier": 2,
     "footprint": {
@@ -489,7 +489,7 @@
       "cunning": 1
     },
     "description": "Mechero fiable, llave engrasada. Recarga sin jurar demasiado.",
-    "assetId": "arma_024",
+    "assetId": "weapon_arquebus_uncommon_024",
     "rarity": "uncommon",
     "tier": 2,
     "footprint": {
@@ -510,7 +510,7 @@
       "discipline": 1
     },
     "description": "Asta recta, contrapesada, mejor empuñadura y regatón de hierro.",
-    "assetId": "arma_025",
+    "assetId": "weapon_pike_uncommon_025",
     "rarity": "uncommon",
     "tier": 2,
     "footprint": {
@@ -531,7 +531,7 @@
       "discipline": 1
     },
     "description": "Asta recta, contrapesada, mejor empuñadura y regatón de hierro.",
-    "assetId": "arma_026",
+    "assetId": "weapon_pike_uncommon_026",
     "rarity": "uncommon",
     "tier": 2,
     "footprint": {
@@ -552,7 +552,7 @@
       "discipline": 1
     },
     "description": "Asta recta, contrapesada, mejor empuñadura y regatón de hierro.",
-    "assetId": "arma_027",
+    "assetId": "weapon_pike_uncommon_027",
     "rarity": "uncommon",
     "tier": 2,
     "footprint": {
@@ -573,7 +573,7 @@
       "cunning": 1
     },
     "description": "Hoja larga, cazoleta o gavilanes, el peso va adelante.",
-    "assetId": "arma_028",
+    "assetId": "weapon_sword_uncommon_028",
     "rarity": "uncommon",
     "tier": 2,
     "footprint": {
@@ -594,7 +594,7 @@
       "cunning": 1
     },
     "description": "Hoja larga, cazoleta o gavilanes, el peso va adelante.",
-    "assetId": "arma_029",
+    "assetId": "weapon_sword_uncommon_029",
     "rarity": "uncommon",
     "tier": 2,
     "footprint": {
@@ -615,7 +615,7 @@
       "cunning": 1
     },
     "description": "Hoja larga, cazoleta o gavilanes, el peso va adelante.",
-    "assetId": "arma_030",
+    "assetId": "weapon_sword_uncommon_030",
     "rarity": "uncommon",
     "tier": 2,
     "footprint": {
@@ -636,7 +636,7 @@
       "discipline": 1
     },
     "description": "Pica de oficial, balance mejor, hierro de mejor temple.",
-    "assetId": "arma_031",
+    "assetId": "weapon_pike_rare_031",
     "rarity": "rare",
     "tier": 3,
     "passives": [
@@ -668,7 +668,7 @@
       "discipline": 1
     },
     "description": "Pica de oficial, balance mejor, hierro de mejor temple.",
-    "assetId": "arma_032",
+    "assetId": "weapon_pike_rare_032",
     "rarity": "rare",
     "tier": 3,
     "passives": [
@@ -700,7 +700,7 @@
       "discipline": 1
     },
     "description": "Pica de oficial, balance mejor, hierro de mejor temple.",
-    "assetId": "arma_033",
+    "assetId": "weapon_pike_rare_033",
     "rarity": "rare",
     "tier": 3,
     "passives": [
@@ -732,7 +732,7 @@
       "discipline": 1
     },
     "description": "Pica de oficial, balance mejor, hierro de mejor temple.",
-    "assetId": "arma_034",
+    "assetId": "weapon_pike_rare_034",
     "rarity": "rare",
     "tier": 3,
     "passives": [
@@ -764,7 +764,7 @@
       "discipline": 1
     },
     "description": "Pica de oficial, balance mejor, hierro de mejor temple.",
-    "assetId": "arma_035",
+    "assetId": "weapon_pike_rare_035",
     "rarity": "rare",
     "tier": 3,
     "passives": [
@@ -796,7 +796,7 @@
       "discipline": 1
     },
     "description": "Acero de Toledo, gavilanes curvados. Ya tiene nombre.",
-    "assetId": "arma_036",
+    "assetId": "weapon_sword_rare_036",
     "rarity": "rare",
     "tier": 3,
     "passives": [
@@ -828,7 +828,7 @@
       "discipline": 1
     },
     "description": "Acero de Toledo, gavilanes curvados. Ya tiene nombre.",
-    "assetId": "arma_037",
+    "assetId": "weapon_sword_rare_037",
     "rarity": "rare",
     "tier": 3,
     "passives": [
@@ -860,7 +860,7 @@
       "discipline": 1
     },
     "description": "Acero de Toledo, gavilanes curvados. Ya tiene nombre.",
-    "assetId": "arma_038",
+    "assetId": "weapon_sword_rare_038",
     "rarity": "rare",
     "tier": 3,
     "passives": [
@@ -892,7 +892,7 @@
       "discipline": 1
     },
     "description": "Acero de Toledo, gavilanes curvados. Ya tiene nombre.",
-    "assetId": "arma_039",
+    "assetId": "weapon_sword_rare_039",
     "rarity": "rare",
     "tier": 3,
     "passives": [
@@ -924,7 +924,7 @@
       "discipline": 1
     },
     "description": "Acero de Toledo, gavilanes curvados. Ya tiene nombre.",
-    "assetId": "arma_040",
+    "assetId": "weapon_sword_rare_040",
     "rarity": "rare",
     "tier": 3,
     "passives": [
@@ -956,7 +956,7 @@
       "cunning": 1
     },
     "description": "Mechero de pistón, recarga fiable en lluvia fina.",
-    "assetId": "arma_041",
+    "assetId": "weapon_arquebus_rare_041",
     "rarity": "rare",
     "tier": 3,
     "passives": [
@@ -988,7 +988,7 @@
       "cunning": 1
     },
     "description": "Mechero de pistón, recarga fiable en lluvia fina.",
-    "assetId": "arma_042",
+    "assetId": "weapon_arquebus_rare_042",
     "rarity": "rare",
     "tier": 3,
     "passives": [
@@ -1020,7 +1020,7 @@
       "cunning": 1
     },
     "description": "Mechero de pistón, recarga fiable en lluvia fina.",
-    "assetId": "arma_043",
+    "assetId": "weapon_arquebus_rare_043",
     "rarity": "rare",
     "tier": 3,
     "passives": [
@@ -1052,7 +1052,7 @@
       "cunning": 1
     },
     "description": "Mechero de pistón, recarga fiable en lluvia fina.",
-    "assetId": "arma_044",
+    "assetId": "weapon_arquebus_rare_044",
     "rarity": "rare",
     "tier": 3,
     "passives": [
@@ -1084,7 +1084,7 @@
       "discipline": 1
     },
     "description": "Hoja corta, contrapesada. Cosa de oficiales y deudos.",
-    "assetId": "arma_045",
+    "assetId": "weapon_sword_rare_045",
     "rarity": "rare",
     "tier": 3,
     "passives": [
@@ -1116,7 +1116,7 @@
       "discipline": 1
     },
     "description": "Hoja corta, contrapesada. Cosa de oficiales y deudos.",
-    "assetId": "arma_046",
+    "assetId": "weapon_sword_rare_046",
     "rarity": "rare",
     "tier": 3,
     "passives": [
@@ -1148,7 +1148,7 @@
       "discipline": 1
     },
     "description": "Hoja corta, contrapesada. Cosa de oficiales y deudos.",
-    "assetId": "arma_047",
+    "assetId": "weapon_sword_rare_047",
     "rarity": "rare",
     "tier": 3,
     "passives": [
@@ -1180,7 +1180,7 @@
       "discipline": 1
     },
     "description": "Hoja corta, contrapesada. Cosa de oficiales y deudos.",
-    "assetId": "arma_048",
+    "assetId": "weapon_sword_rare_048",
     "rarity": "rare",
     "tier": 3,
     "passives": [
@@ -1212,7 +1212,7 @@
       "discipline": 1
     },
     "description": "Pica de oficial, balance mejor, hierro de mejor temple.",
-    "assetId": "arma_049",
+    "assetId": "weapon_pike_rare_049",
     "rarity": "rare",
     "tier": 3,
     "passives": [
@@ -1244,7 +1244,7 @@
       "discipline": 1
     },
     "description": "Pica de oficial, balance mejor, hierro de mejor temple.",
-    "assetId": "arma_050",
+    "assetId": "weapon_pike_rare_050",
     "rarity": "rare",
     "tier": 3,
     "passives": [
@@ -1276,7 +1276,7 @@
       "discipline": 2
     },
     "description": "Asta noble, contrapesada y firmada por el armero del tercio.",
-    "assetId": "arma_051",
+    "assetId": "weapon_pike_epic_051",
     "rarity": "epic",
     "tier": 4,
     "passives": [
@@ -1321,7 +1321,7 @@
       "discipline": 1
     },
     "description": "Asta noble, contrapesada y firmada por el armero del tercio.",
-    "assetId": "arma_052",
+    "assetId": "weapon_pike_epic_052",
     "rarity": "epic",
     "tier": 4,
     "passives": [
@@ -1358,7 +1358,7 @@
       "discipline": 1
     },
     "description": "Asta noble, contrapesada y firmada por el armero del tercio.",
-    "assetId": "arma_053",
+    "assetId": "weapon_pike_epic_053",
     "rarity": "epic",
     "tier": 4,
     "passives": [
@@ -1403,7 +1403,7 @@
       "honor": 0
     },
     "description": "Hoja con nombre, vaina de cuero repujado. Pide respeto.",
-    "assetId": "arma_054",
+    "assetId": "weapon_sword_epic_054",
     "rarity": "epic",
     "tier": 4,
     "passives": [
@@ -1448,7 +1448,7 @@
       "honor": 1
     },
     "description": "Hoja con nombre, vaina de cuero repujado. Pide respeto.",
-    "assetId": "arma_055",
+    "assetId": "weapon_sword_epic_055",
     "rarity": "epic",
     "tier": 4,
     "passives": [
@@ -1494,7 +1494,7 @@
       "honor": 0
     },
     "description": "Hoja con nombre, vaina de cuero repujado. Pide respeto.",
-    "assetId": "arma_056",
+    "assetId": "weapon_sword_epic_056",
     "rarity": "epic",
     "tier": 4,
     "passives": [
@@ -1539,7 +1539,7 @@
       "cunning": 1
     },
     "description": "Llave de pistón, mira de hierro, madera de nogal.",
-    "assetId": "arma_057",
+    "assetId": "weapon_arquebus_epic_057",
     "rarity": "epic",
     "tier": 4,
     "passives": [
@@ -1584,7 +1584,7 @@
       "vigor": -1
     },
     "description": "Llave de pistón, mira de hierro, madera de nogal.",
-    "assetId": "arma_058",
+    "assetId": "weapon_arquebus_epic_058",
     "rarity": "epic",
     "tier": 4,
     "passives": [
@@ -1620,7 +1620,7 @@
       "cunning": 1
     },
     "description": "Llave de pistón, mira de hierro, madera de nogal.",
-    "assetId": "arma_059",
+    "assetId": "weapon_arquebus_epic_059",
     "rarity": "epic",
     "tier": 4,
     "passives": [
@@ -1665,7 +1665,7 @@
       "honor": 0
     },
     "description": "Hoja corta, contrapesada. Cosa de oficiales y deudos.",
-    "assetId": "arma_060",
+    "assetId": "weapon_sword_epic_060",
     "rarity": "epic",
     "tier": 4,
     "passives": [
@@ -1710,7 +1710,7 @@
       "discipline": 1
     },
     "description": "Asta noble, contrapesada y firmada por el armero del tercio.",
-    "assetId": "arma_061",
+    "assetId": "weapon_pike_epic_061",
     "rarity": "epic",
     "tier": 4,
     "passives": [
@@ -1755,7 +1755,7 @@
       "discipline": 1
     },
     "description": "Asta noble, contrapesada y firmada por el armero del tercio.",
-    "assetId": "arma_062",
+    "assetId": "weapon_pike_epic_062",
     "rarity": "epic",
     "tier": 4,
     "passives": [
@@ -1800,7 +1800,7 @@
       "honor": 0
     },
     "description": "Hoja con nombre, vaina de cuero repujado. Pide respeto.",
-    "assetId": "arma_063",
+    "assetId": "weapon_sword_epic_063",
     "rarity": "epic",
     "tier": 4,
     "passives": [
@@ -1845,7 +1845,7 @@
       "cunning": 1
     },
     "description": "Llave de pistón, mira de hierro, madera de nogal.",
-    "assetId": "arma_064",
+    "assetId": "weapon_arquebus_epic_064",
     "rarity": "epic",
     "tier": 4,
     "passives": [
@@ -1890,7 +1890,7 @@
       "discipline": 1
     },
     "description": "Asta noble, contrapesada y firmada por el armero del tercio.",
-    "assetId": "arma_065",
+    "assetId": "weapon_pike_epic_065",
     "rarity": "epic",
     "tier": 4,
     "passives": [
@@ -1936,7 +1936,7 @@
       "honor": 2
     },
     "description": "Asta bendecida en la capilla del tercio. Quien la porta, no se rinde.",
-    "assetId": "arma_066",
+    "assetId": "weapon_pike_legendary_066",
     "rarity": "legendary",
     "tier": 5,
     "passives": [
@@ -1991,7 +1991,7 @@
       "honor": 1
     },
     "description": "Hoja forjada por un armero que ya no tiene nombre. Tres campañas ha visto.",
-    "assetId": "arma_067",
+    "assetId": "weapon_sword_legendary_067",
     "rarity": "legendary",
     "tier": 5,
     "passives": [
@@ -2047,7 +2047,7 @@
       "command": 1
     },
     "description": "Pieza única, heredada de un maestre caído. Sólo se rompe con su dueño.",
-    "assetId": "arma_068",
+    "assetId": "weapon_arquebus_legendary_068",
     "rarity": "legendary",
     "tier": 5,
     "passives": [
@@ -2103,7 +2103,7 @@
       "honor": 1
     },
     "description": "Asta bendecida en la capilla del tercio. Quien la porta, no se rinde.",
-    "assetId": "arma_069",
+    "assetId": "weapon_pike_legendary_069",
     "rarity": "legendary",
     "tier": 5,
     "passives": [
@@ -2158,7 +2158,7 @@
       "vigor": 2
     },
     "description": "Hoja forjada por un armero que ya no tiene nombre. Tres campañas ha visto.",
-    "assetId": "arma_070",
+    "assetId": "weapon_sword_legendary_070",
     "rarity": "legendary",
     "tier": 5,
     "passives": [
@@ -2201,7 +2201,7 @@
     }
   },
   {
-    "id": "armadura_001",
+    "id": "armor_helmet_common_001",
     "name": "Capacete de tropa genérico 1",
     "type": "helmet",
     "slot": "head",
@@ -2213,7 +2213,7 @@
       "discipline": 0
     },
     "description": "Hierro de serie, ajuste de taller, ni mejor ni peor que los del lado.",
-    "assetId": "armadura_001",
+    "assetId": "armor_helmet_common_001",
     "rarity": "common",
     "tier": 1,
     "footprint": {
@@ -2222,7 +2222,7 @@
     }
   },
   {
-    "id": "armadura_002",
+    "id": "armor_helmet_common_002",
     "name": "Yelmo de milán genérico 2",
     "type": "helmet",
     "slot": "head",
@@ -2234,7 +2234,7 @@
       "discipline": 0
     },
     "description": "Hierro de serie, ajuste de taller, ni mejor ni peor que los del lado.",
-    "assetId": "armadura_002",
+    "assetId": "armor_helmet_common_002",
     "rarity": "common",
     "tier": 1,
     "footprint": {
@@ -2243,7 +2243,7 @@
     }
   },
   {
-    "id": "armadura_003",
+    "id": "armor_cuirass_common_003",
     "name": "Caperuza de acero genérico 3",
     "type": "cuirass",
     "slot": "body",
@@ -2255,7 +2255,7 @@
       "discipline": 0
     },
     "description": "Acero de milán, sin grabados, talla común. Sirve.",
-    "assetId": "armadura_003",
+    "assetId": "armor_cuirass_common_003",
     "rarity": "common",
     "tier": 1,
     "footprint": {
@@ -2264,7 +2264,7 @@
     }
   },
   {
-    "id": "armadura_004",
+    "id": "armor_cuirass_common_004",
     "name": "Capacete con ala genérico 4",
     "type": "cuirass",
     "slot": "body",
@@ -2276,7 +2276,7 @@
       "discipline": 0
     },
     "description": "Acero de milán, sin grabados, talla común. Sirve.",
-    "assetId": "armadura_004",
+    "assetId": "armor_cuirass_common_004",
     "rarity": "common",
     "tier": 1,
     "footprint": {
@@ -2285,7 +2285,7 @@
     }
   },
   {
-    "id": "armadura_005",
+    "id": "armor_boots_common_005",
     "name": "Peto genérico 5",
     "type": "boots",
     "slot": "boots",
@@ -2297,7 +2297,7 @@
       "cunning": 0
     },
     "description": "Cuero encerado, suela claveteada. Marcha y barro.",
-    "assetId": "armadura_005",
+    "assetId": "armor_boots_common_005",
     "rarity": "common",
     "tier": 1,
     "footprint": {
@@ -2306,7 +2306,7 @@
     }
   },
   {
-    "id": "armadura_006",
+    "id": "armor_boots_common_006",
     "name": "Coraza genérico 6",
     "type": "boots",
     "slot": "boots",
@@ -2318,7 +2318,7 @@
       "cunning": 0
     },
     "description": "Cuero encerado, suela claveteada. Marcha y barro.",
-    "assetId": "armadura_006",
+    "assetId": "armor_boots_common_006",
     "rarity": "common",
     "tier": 1,
     "footprint": {
@@ -2327,7 +2327,7 @@
     }
   },
   {
-    "id": "armadura_007",
+    "id": "armor_cuirass_common_007",
     "name": "Brigantina genérico 7",
     "type": "cuirass",
     "slot": "body",
@@ -2339,7 +2339,7 @@
       "discipline": 0
     },
     "description": "Acero de milán, sin grabados, talla común. Sirve.",
-    "assetId": "armadura_007",
+    "assetId": "armor_cuirass_common_007",
     "rarity": "common",
     "tier": 1,
     "footprint": {
@@ -2348,7 +2348,7 @@
     }
   },
   {
-    "id": "armadura_008",
+    "id": "armor_helmet_common_008",
     "name": "Cota de malla genérico 8",
     "type": "helmet",
     "slot": "head",
@@ -2360,7 +2360,7 @@
       "discipline": 0
     },
     "description": "Hierro de serie, ajuste de taller, ni mejor ni peor que los del lado.",
-    "assetId": "armadura_008",
+    "assetId": "armor_helmet_common_008",
     "rarity": "common",
     "tier": 1,
     "footprint": {
@@ -2369,7 +2369,7 @@
     }
   },
   {
-    "id": "armadura_009",
+    "id": "armor_boots_common_009",
     "name": "Peto articulado genérico 9",
     "type": "boots",
     "slot": "boots",
@@ -2381,7 +2381,7 @@
       "cunning": 0
     },
     "description": "Cuero encerado, suela claveteada. Marcha y barro.",
-    "assetId": "armadura_009",
+    "assetId": "armor_boots_common_009",
     "rarity": "common",
     "tier": 1,
     "footprint": {
@@ -2390,7 +2390,7 @@
     }
   },
   {
-    "id": "armadura_010",
+    "id": "armor_cuirass_common_010",
     "name": "Botas de campaña genérico 10",
     "type": "cuirass",
     "slot": "body",
@@ -2402,7 +2402,7 @@
       "discipline": 0
     },
     "description": "Acero de milán, sin grabados, talla común. Sirve.",
-    "assetId": "armadura_010",
+    "assetId": "armor_cuirass_common_010",
     "rarity": "common",
     "tier": 1,
     "footprint": {
@@ -2411,7 +2411,7 @@
     }
   },
   {
-    "id": "armadura_011",
+    "id": "armor_helmet_uncommon_011",
     "name": "Botas de jineta genérico 11",
     "type": "helmet",
     "slot": "head",
@@ -2423,7 +2423,7 @@
       "discipline": 0
     },
     "description": "Hierro de serie, ajuste de taller, ni mejor ni peor que los del lado.",
-    "assetId": "armadura_011",
+    "assetId": "armor_helmet_uncommon_011",
     "rarity": "uncommon",
     "tier": 2,
     "footprint": {
@@ -2432,7 +2432,7 @@
     }
   },
   {
-    "id": "armadura_012",
+    "id": "armor_helmet_uncommon_012",
     "name": "Botas de tropa genérico 12",
     "type": "helmet",
     "slot": "head",
@@ -2444,7 +2444,7 @@
       "discipline": 0
     },
     "description": "Hierro de serie, ajuste de taller, ni mejor ni peor que los del lado.",
-    "assetId": "armadura_012",
+    "assetId": "armor_helmet_uncommon_012",
     "rarity": "uncommon",
     "tier": 2,
     "footprint": {
@@ -2453,7 +2453,7 @@
     }
   },
   {
-    "id": "armadura_013",
+    "id": "armor_cuirass_uncommon_013",
     "name": "Polainas de cuero genérico 13",
     "type": "cuirass",
     "slot": "body",
@@ -2465,7 +2465,7 @@
       "discipline": 1
     },
     "description": "Acero de milán, sin grabados, talla común. Sirve.",
-    "assetId": "armadura_013",
+    "assetId": "armor_cuirass_uncommon_013",
     "rarity": "uncommon",
     "tier": 2,
     "footprint": {
@@ -2474,7 +2474,7 @@
     }
   },
   {
-    "id": "armadura_014",
+    "id": "armor_cuirass_uncommon_014",
     "name": "Botas embarradas genérico 14",
     "type": "cuirass",
     "slot": "body",
@@ -2486,7 +2486,7 @@
       "discipline": 1
     },
     "description": "Acero de milán, sin grabados, talla común. Sirve.",
-    "assetId": "armadura_014",
+    "assetId": "armor_cuirass_uncommon_014",
     "rarity": "uncommon",
     "tier": 2,
     "footprint": {
@@ -2495,7 +2495,7 @@
     }
   },
   {
-    "id": "armadura_015",
+    "id": "armor_boots_uncommon_015",
     "name": "Capacete genérico 15",
     "type": "boots",
     "slot": "boots",
@@ -2507,7 +2507,7 @@
       "cunning": 0
     },
     "description": "Cuero encerado, suela claveteada. Marcha y barro.",
-    "assetId": "armadura_015",
+    "assetId": "armor_boots_uncommon_015",
     "rarity": "uncommon",
     "tier": 2,
     "footprint": {
@@ -2516,7 +2516,7 @@
     }
   },
   {
-    "id": "armadura_016",
+    "id": "armor_boots_uncommon_016",
     "name": "Capacete de tropa genérico 16",
     "type": "boots",
     "slot": "boots",
@@ -2528,7 +2528,7 @@
       "cunning": 0
     },
     "description": "Cuero encerado, suela claveteada. Marcha y barro.",
-    "assetId": "armadura_016",
+    "assetId": "armor_boots_uncommon_016",
     "rarity": "uncommon",
     "tier": 2,
     "footprint": {
@@ -2537,7 +2537,7 @@
     }
   },
   {
-    "id": "armadura_017",
+    "id": "armor_cuirass_uncommon_017",
     "name": "Yelmo de milán genérico 17",
     "type": "cuirass",
     "slot": "body",
@@ -2549,7 +2549,7 @@
       "discipline": 1
     },
     "description": "Acero de milán, sin grabados, talla común. Sirve.",
-    "assetId": "armadura_017",
+    "assetId": "armor_cuirass_uncommon_017",
     "rarity": "uncommon",
     "tier": 2,
     "footprint": {
@@ -2558,7 +2558,7 @@
     }
   },
   {
-    "id": "armadura_018",
+    "id": "armor_helmet_uncommon_018",
     "name": "Caperuza de acero genérico 18",
     "type": "helmet",
     "slot": "head",
@@ -2570,7 +2570,7 @@
       "discipline": 0
     },
     "description": "Hierro de serie, ajuste de taller, ni mejor ni peor que los del lado.",
-    "assetId": "armadura_018",
+    "assetId": "armor_helmet_uncommon_018",
     "rarity": "uncommon",
     "tier": 2,
     "footprint": {
@@ -2579,7 +2579,7 @@
     }
   },
   {
-    "id": "armadura_019",
+    "id": "armor_boots_uncommon_019",
     "name": "Capacete con ala genérico 19",
     "type": "boots",
     "slot": "boots",
@@ -2591,7 +2591,7 @@
       "cunning": 0
     },
     "description": "Cuero encerado, suela claveteada. Marcha y barro.",
-    "assetId": "armadura_019",
+    "assetId": "armor_boots_uncommon_019",
     "rarity": "uncommon",
     "tier": 2,
     "footprint": {
@@ -2600,7 +2600,7 @@
     }
   },
   {
-    "id": "armadura_020",
+    "id": "armor_cuirass_uncommon_020",
     "name": "Peto genérico 20",
     "type": "cuirass",
     "slot": "body",
@@ -2612,7 +2612,7 @@
       "discipline": 1
     },
     "description": "Acero de milán, sin grabados, talla común. Sirve.",
-    "assetId": "armadura_020",
+    "assetId": "armor_cuirass_uncommon_020",
     "rarity": "uncommon",
     "tier": 2,
     "footprint": {
@@ -2621,7 +2621,7 @@
     }
   },
   {
-    "id": "armadura_021",
+    "id": "armor_helmet_uncommon_021",
     "name": "Coraza genérico 21",
     "type": "helmet",
     "slot": "head",
@@ -2633,7 +2633,7 @@
       "discipline": 0
     },
     "description": "Hierro de serie, ajuste de taller, ni mejor ni peor que los del lado.",
-    "assetId": "armadura_021",
+    "assetId": "armor_helmet_uncommon_021",
     "rarity": "uncommon",
     "tier": 2,
     "footprint": {
@@ -2642,7 +2642,7 @@
     }
   },
   {
-    "id": "armadura_022",
+    "id": "armor_helmet_uncommon_022",
     "name": "Brigantina genérico 22",
     "type": "helmet",
     "slot": "head",
@@ -2654,7 +2654,7 @@
       "discipline": 0
     },
     "description": "Hierro de serie, ajuste de taller, ni mejor ni peor que los del lado.",
-    "assetId": "armadura_022",
+    "assetId": "armor_helmet_uncommon_022",
     "rarity": "uncommon",
     "tier": 2,
     "footprint": {
@@ -2663,7 +2663,7 @@
     }
   },
   {
-    "id": "armadura_023",
+    "id": "armor_cuirass_uncommon_023",
     "name": "Cota de malla genérico 23",
     "type": "cuirass",
     "slot": "body",
@@ -2675,7 +2675,7 @@
       "discipline": 1
     },
     "description": "Acero de milán, sin grabados, talla común. Sirve.",
-    "assetId": "armadura_023",
+    "assetId": "armor_cuirass_uncommon_023",
     "rarity": "uncommon",
     "tier": 2,
     "footprint": {
@@ -2684,7 +2684,7 @@
     }
   },
   {
-    "id": "armadura_024",
+    "id": "armor_cuirass_uncommon_024",
     "name": "Peto articulado genérico 24",
     "type": "cuirass",
     "slot": "body",
@@ -2696,7 +2696,7 @@
       "discipline": 1
     },
     "description": "Acero de milán, sin grabados, talla común. Sirve.",
-    "assetId": "armadura_024",
+    "assetId": "armor_cuirass_uncommon_024",
     "rarity": "uncommon",
     "tier": 2,
     "footprint": {
@@ -2705,7 +2705,7 @@
     }
   },
   {
-    "id": "armadura_025",
+    "id": "armor_boots_uncommon_025",
     "name": "Botas de campaña genérico 25",
     "type": "boots",
     "slot": "boots",
@@ -2717,7 +2717,7 @@
       "cunning": 0
     },
     "description": "Cuero encerado, suela claveteada. Marcha y barro.",
-    "assetId": "armadura_025",
+    "assetId": "armor_boots_uncommon_025",
     "rarity": "uncommon",
     "tier": 2,
     "footprint": {
@@ -2726,7 +2726,7 @@
     }
   },
   {
-    "id": "armadura_026",
+    "id": "armor_boots_rare_026",
     "name": "Botas de jineta genérico 26",
     "type": "boots",
     "slot": "boots",
@@ -2738,7 +2738,7 @@
       "cunning": 1
     },
     "description": "Cuero encerado, suela claveteada. Marcha y barro.",
-    "assetId": "armadura_026",
+    "assetId": "armor_boots_rare_026",
     "rarity": "rare",
     "tier": 3,
     "footprint": {
@@ -2747,7 +2747,7 @@
     }
   },
   {
-    "id": "armadura_027",
+    "id": "armor_cuirass_rare_027",
     "name": "Botas de tropa genérico 27",
     "type": "cuirass",
     "slot": "body",
@@ -2759,7 +2759,7 @@
       "discipline": 1
     },
     "description": "Acero de milán, sin grabados, talla común. Sirve.",
-    "assetId": "armadura_027",
+    "assetId": "armor_cuirass_rare_027",
     "rarity": "rare",
     "tier": 3,
     "footprint": {
@@ -2768,7 +2768,7 @@
     }
   },
   {
-    "id": "armadura_028",
+    "id": "armor_helmet_rare_028",
     "name": "Polainas de cuero genérico 28",
     "type": "helmet",
     "slot": "head",
@@ -2780,7 +2780,7 @@
       "discipline": 1
     },
     "description": "Hierro de serie, ajuste de taller, ni mejor ni peor que los del lado.",
-    "assetId": "armadura_028",
+    "assetId": "armor_helmet_rare_028",
     "rarity": "rare",
     "tier": 3,
     "footprint": {
@@ -2789,7 +2789,7 @@
     }
   },
   {
-    "id": "armadura_029",
+    "id": "armor_boots_rare_029",
     "name": "Botas embarradas genérico 29",
     "type": "boots",
     "slot": "boots",
@@ -2801,7 +2801,7 @@
       "cunning": 1
     },
     "description": "Cuero encerado, suela claveteada. Marcha y barro.",
-    "assetId": "armadura_029",
+    "assetId": "armor_boots_rare_029",
     "rarity": "rare",
     "tier": 3,
     "footprint": {
@@ -2810,7 +2810,7 @@
     }
   },
   {
-    "id": "armadura_030",
+    "id": "armor_cuirass_rare_030",
     "name": "Capacete genérico 30",
     "type": "cuirass",
     "slot": "body",
@@ -2822,7 +2822,7 @@
       "discipline": 1
     },
     "description": "Acero de milán, sin grabados, talla común. Sirve.",
-    "assetId": "armadura_030",
+    "assetId": "armor_cuirass_rare_030",
     "rarity": "rare",
     "tier": 3,
     "footprint": {
@@ -2831,7 +2831,7 @@
     }
   },
   {
-    "id": "armadura_031",
+    "id": "armor_helmet_rare_031",
     "name": "Capacete de tropa genérico 31",
     "type": "helmet",
     "slot": "head",
@@ -2843,7 +2843,7 @@
       "discipline": 1
     },
     "description": "Hierro de serie, ajuste de taller, ni mejor ni peor que los del lado.",
-    "assetId": "armadura_031",
+    "assetId": "armor_helmet_rare_031",
     "rarity": "rare",
     "tier": 3,
     "footprint": {
@@ -2852,7 +2852,7 @@
     }
   },
   {
-    "id": "armadura_032",
+    "id": "armor_helmet_rare_032",
     "name": "Yelmo de milán genérico 32",
     "type": "helmet",
     "slot": "head",
@@ -2864,7 +2864,7 @@
       "discipline": 1
     },
     "description": "Hierro de serie, ajuste de taller, ni mejor ni peor que los del lado.",
-    "assetId": "armadura_032",
+    "assetId": "armor_helmet_rare_032",
     "rarity": "rare",
     "tier": 3,
     "footprint": {
@@ -2873,7 +2873,7 @@
     }
   },
   {
-    "id": "armadura_033",
+    "id": "armor_cuirass_rare_033",
     "name": "Caperuza de acero genérico 33",
     "type": "cuirass",
     "slot": "body",
@@ -2885,7 +2885,7 @@
       "discipline": 1
     },
     "description": "Acero de milán, sin grabados, talla común. Sirve.",
-    "assetId": "armadura_033",
+    "assetId": "armor_cuirass_rare_033",
     "rarity": "rare",
     "tier": 3,
     "footprint": {
@@ -2894,7 +2894,7 @@
     }
   },
   {
-    "id": "armadura_034",
+    "id": "armor_cuirass_rare_034",
     "name": "Capacete con ala genérico 34",
     "type": "cuirass",
     "slot": "body",
@@ -2906,7 +2906,7 @@
       "discipline": 1
     },
     "description": "Acero de milán, sin grabados, talla común. Sirve.",
-    "assetId": "armadura_034",
+    "assetId": "armor_cuirass_rare_034",
     "rarity": "rare",
     "tier": 3,
     "footprint": {
@@ -2915,7 +2915,7 @@
     }
   },
   {
-    "id": "armadura_035",
+    "id": "armor_boots_rare_035",
     "name": "Peto genérico 35",
     "type": "boots",
     "slot": "boots",
@@ -2927,7 +2927,7 @@
       "cunning": 1
     },
     "description": "Cuero encerado, suela claveteada. Marcha y barro.",
-    "assetId": "armadura_035",
+    "assetId": "armor_boots_rare_035",
     "rarity": "rare",
     "tier": 3,
     "footprint": {
@@ -2936,7 +2936,7 @@
     }
   },
   {
-    "id": "armadura_036",
+    "id": "armor_boots_rare_036",
     "name": "Coraza genérico 36",
     "type": "boots",
     "slot": "boots",
@@ -2948,7 +2948,7 @@
       "cunning": 1
     },
     "description": "Cuero encerado, suela claveteada. Marcha y barro.",
-    "assetId": "armadura_036",
+    "assetId": "armor_boots_rare_036",
     "rarity": "rare",
     "tier": 3,
     "footprint": {
@@ -2957,7 +2957,7 @@
     }
   },
   {
-    "id": "armadura_037",
+    "id": "armor_cuirass_rare_037",
     "name": "Brigantina genérico 37",
     "type": "cuirass",
     "slot": "body",
@@ -2969,7 +2969,7 @@
       "discipline": 1
     },
     "description": "Acero de milán, sin grabados, talla común. Sirve.",
-    "assetId": "armadura_037",
+    "assetId": "armor_cuirass_rare_037",
     "rarity": "rare",
     "tier": 3,
     "footprint": {
@@ -2978,7 +2978,7 @@
     }
   },
   {
-    "id": "armadura_038",
+    "id": "armor_helmet_rare_038",
     "name": "Cota de malla genérico 38",
     "type": "helmet",
     "slot": "head",
@@ -2990,7 +2990,7 @@
       "discipline": 1
     },
     "description": "Hierro de serie, ajuste de taller, ni mejor ni peor que los del lado.",
-    "assetId": "armadura_038",
+    "assetId": "armor_helmet_rare_038",
     "rarity": "rare",
     "tier": 3,
     "footprint": {
@@ -2999,7 +2999,7 @@
     }
   },
   {
-    "id": "armadura_039",
+    "id": "armor_boots_rare_039",
     "name": "Peto articulado genérico 39",
     "type": "boots",
     "slot": "boots",
@@ -3011,7 +3011,7 @@
       "cunning": 1
     },
     "description": "Cuero encerado, suela claveteada. Marcha y barro.",
-    "assetId": "armadura_039",
+    "assetId": "armor_boots_rare_039",
     "rarity": "rare",
     "tier": 3,
     "footprint": {
@@ -3020,7 +3020,7 @@
     }
   },
   {
-    "id": "armadura_040",
+    "id": "armor_cuirass_rare_040",
     "name": "Botas de campaña genérico 40",
     "type": "cuirass",
     "slot": "body",
@@ -3032,7 +3032,7 @@
       "discipline": 1
     },
     "description": "Acero de milán, sin grabados, talla común. Sirve.",
-    "assetId": "armadura_040",
+    "assetId": "armor_cuirass_rare_040",
     "rarity": "rare",
     "tier": 3,
     "footprint": {
@@ -3041,7 +3041,7 @@
     }
   },
   {
-    "id": "armadura_041",
+    "id": "armor_helmet_epic_041",
     "name": "Botas de jineta genérico 41",
     "type": "helmet",
     "slot": "head",
@@ -3053,7 +3053,7 @@
       "discipline": 1
     },
     "description": "Hierro de serie, ajuste de taller, ni mejor ni peor que los del lado.",
-    "assetId": "armadura_041",
+    "assetId": "armor_helmet_epic_041",
     "rarity": "epic",
     "tier": 4,
     "passives": [
@@ -3076,7 +3076,7 @@
     }
   },
   {
-    "id": "armadura_042",
+    "id": "armor_helmet_epic_042",
     "name": "Botas de tropa genérico 42",
     "type": "helmet",
     "slot": "head",
@@ -3088,7 +3088,7 @@
       "discipline": 1
     },
     "description": "Hierro de serie, ajuste de taller, ni mejor ni peor que los del lado.",
-    "assetId": "armadura_042",
+    "assetId": "armor_helmet_epic_042",
     "rarity": "epic",
     "tier": 4,
     "passives": [
@@ -3111,7 +3111,7 @@
     }
   },
   {
-    "id": "armadura_043",
+    "id": "armor_cuirass_epic_043",
     "name": "Polainas de cuero genérico 43",
     "type": "cuirass",
     "slot": "body",
@@ -3123,7 +3123,7 @@
       "discipline": 1
     },
     "description": "Acero de milán, sin grabados, talla común. Sirve.",
-    "assetId": "armadura_043",
+    "assetId": "armor_cuirass_epic_043",
     "rarity": "epic",
     "tier": 4,
     "passives": [
@@ -3146,7 +3146,7 @@
     }
   },
   {
-    "id": "armadura_044",
+    "id": "armor_cuirass_epic_044",
     "name": "Botas embarradas genérico 44",
     "type": "cuirass",
     "slot": "body",
@@ -3158,7 +3158,7 @@
       "discipline": 1
     },
     "description": "Acero de milán, sin grabados, talla común. Sirve.",
-    "assetId": "armadura_044",
+    "assetId": "armor_cuirass_epic_044",
     "rarity": "epic",
     "tier": 4,
     "passives": [
@@ -3181,7 +3181,7 @@
     }
   },
   {
-    "id": "armadura_045",
+    "id": "armor_boots_epic_045",
     "name": "Capacete genérico 45",
     "type": "boots",
     "slot": "boots",
@@ -3193,7 +3193,7 @@
       "cunning": 1
     },
     "description": "Cuero encerado, suela claveteada. Marcha y barro.",
-    "assetId": "armadura_045",
+    "assetId": "armor_boots_epic_045",
     "rarity": "epic",
     "tier": 4,
     "passives": [
@@ -3216,7 +3216,7 @@
     }
   },
   {
-    "id": "armadura_046",
+    "id": "armor_boots_epic_046",
     "name": "Capacete de tropa genérico 46",
     "type": "boots",
     "slot": "boots",
@@ -3228,7 +3228,7 @@
       "cunning": 1
     },
     "description": "Cuero encerado, suela claveteada. Marcha y barro.",
-    "assetId": "armadura_046",
+    "assetId": "armor_boots_epic_046",
     "rarity": "epic",
     "tier": 4,
     "passives": [
@@ -3251,7 +3251,7 @@
     }
   },
   {
-    "id": "armadura_047",
+    "id": "armor_cuirass_epic_047",
     "name": "Yelmo de milán genérico 47",
     "type": "cuirass",
     "slot": "body",
@@ -3263,7 +3263,7 @@
       "discipline": 1
     },
     "description": "Acero de milán, sin grabados, talla común. Sirve.",
-    "assetId": "armadura_047",
+    "assetId": "armor_cuirass_epic_047",
     "rarity": "epic",
     "tier": 4,
     "passives": [
@@ -3286,7 +3286,7 @@
     }
   },
   {
-    "id": "armadura_048",
+    "id": "armor_helmet_epic_048",
     "name": "Caperuza de acero genérico 48",
     "type": "helmet",
     "slot": "head",
@@ -3298,7 +3298,7 @@
       "discipline": 1
     },
     "description": "Hierro de serie, ajuste de taller, ni mejor ni peor que los del lado.",
-    "assetId": "armadura_048",
+    "assetId": "armor_helmet_epic_048",
     "rarity": "epic",
     "tier": 4,
     "passives": [
@@ -3321,7 +3321,7 @@
     }
   },
   {
-    "id": "armadura_049",
+    "id": "armor_boots_epic_049",
     "name": "Capacete con ala genérico 49",
     "type": "boots",
     "slot": "boots",
@@ -3333,7 +3333,7 @@
       "cunning": 1
     },
     "description": "Cuero encerado, suela claveteada. Marcha y barro.",
-    "assetId": "armadura_049",
+    "assetId": "armor_boots_epic_049",
     "rarity": "epic",
     "tier": 4,
     "passives": [
@@ -3356,7 +3356,7 @@
     }
   },
   {
-    "id": "armadura_050",
+    "id": "armor_cuirass_epic_050",
     "name": "Peto genérico 50",
     "type": "cuirass",
     "slot": "body",
@@ -3368,7 +3368,7 @@
       "discipline": 1
     },
     "description": "Acero de milán, sin grabados, talla común. Sirve.",
-    "assetId": "armadura_050",
+    "assetId": "armor_cuirass_epic_050",
     "rarity": "epic",
     "tier": 4,
     "passives": [
@@ -3391,7 +3391,7 @@
     }
   },
   {
-    "id": "armadura_051",
+    "id": "armor_helmet_epic_051",
     "name": "Coraza genérico 51",
     "type": "helmet",
     "slot": "head",
@@ -3403,7 +3403,7 @@
       "discipline": 1
     },
     "description": "Hierro de serie, ajuste de taller, ni mejor ni peor que los del lado.",
-    "assetId": "armadura_051",
+    "assetId": "armor_helmet_epic_051",
     "rarity": "epic",
     "tier": 4,
     "passives": [
@@ -3426,7 +3426,7 @@
     }
   },
   {
-    "id": "armadura_052",
+    "id": "armor_helmet_epic_052",
     "name": "Brigantina genérico 52",
     "type": "helmet",
     "slot": "head",
@@ -3438,7 +3438,7 @@
       "discipline": 1
     },
     "description": "Hierro de serie, ajuste de taller, ni mejor ni peor que los del lado.",
-    "assetId": "armadura_052",
+    "assetId": "armor_helmet_epic_052",
     "rarity": "epic",
     "tier": 4,
     "passives": [
@@ -3461,7 +3461,7 @@
     }
   },
   {
-    "id": "armadura_053",
+    "id": "armor_cuirass_epic_053",
     "name": "Cota de malla genérico 53",
     "type": "cuirass",
     "slot": "body",
@@ -3473,7 +3473,7 @@
       "discipline": 1
     },
     "description": "Acero de milán, sin grabados, talla común. Sirve.",
-    "assetId": "armadura_053",
+    "assetId": "armor_cuirass_epic_053",
     "rarity": "epic",
     "tier": 4,
     "passives": [
@@ -4198,7 +4198,7 @@
       "honor": 1
     },
     "description": "Hueso bendecido en la capilla. Da paz en noches largas.",
-    "assetId": "auxiliar_001",
+    "assetId": "support_aux_001",
     "rarity": "uncommon",
     "tier": 2,
     "passives": [
@@ -4230,7 +4230,7 @@
       "honor": 1
     },
     "description": "Plata labrada, cordón de seda. Lo entrega el sargento.",
-    "assetId": "auxiliar_002",
+    "assetId": "support_aux_002",
     "rarity": "uncommon",
     "tier": 2,
     "passives": [
@@ -4262,7 +4262,7 @@
       "discipline": 1
     },
     "description": "Tela del estandarte del tercio, doblado al pecho.",
-    "assetId": "auxiliar_003",
+    "assetId": "support_aux_003",
     "rarity": "uncommon",
     "tier": 2,
     "passives": [
@@ -4293,7 +4293,7 @@
       "cunning": 1
     },
     "description": "Cobre soldado a martillo, ojo pintado.",
-    "assetId": "auxiliar_004",
+    "assetId": "support_aux_004",
     "rarity": "common",
     "tier": 1,
     "passives": [
@@ -4325,7 +4325,7 @@
       "discipline": 1
     },
     "description": "Trozo de cuerda de ahorcado. Funciona. No preguntes.",
-    "assetId": "auxiliar_005",
+    "assetId": "support_aux_005",
     "rarity": "common",
     "tier": 1,
     "passives": [
@@ -4356,7 +4356,7 @@
       "honor": 1
     },
     "description": "Vidrio sellado. Usar en capillas, no en batalla.",
-    "assetId": "auxiliar_006",
+    "assetId": "support_aux_006",
     "rarity": "common",
     "tier": 1,
     "footprint": {
@@ -4376,7 +4376,7 @@
       "arquebus": 2
     },
     "description": "Pólvora sellada en cuero encerado. Una carga fiable.",
-    "assetId": "auxiliar_007",
+    "assetId": "support_aux_007",
     "rarity": "uncommon",
     "tier": 2,
     "footprint": {
@@ -4396,7 +4396,7 @@
       "wound_treatment": 3
     },
     "description": "Vendas, alcohol y aguja. Cura dos heridas seguidas.",
-    "assetId": "auxiliar_008",
+    "assetId": "support_aux_008",
     "rarity": "rare",
     "tier": 3,
     "footprint": {
@@ -4417,7 +4417,7 @@
       "honor": 1
     },
     "description": "Pan bendecido, sabe a manta vieja y esperanza.",
-    "assetId": "auxiliar_009",
+    "assetId": "support_aux_009",
     "rarity": "common",
     "tier": 1,
     "footprint": {
@@ -4438,7 +4438,7 @@
       "discipline": 1
     },
     "description": "Tabaco fuerte, pipa de arcilla. Calma el miedo.",
-    "assetId": "auxiliar_010",
+    "assetId": "support_aux_010",
     "rarity": "uncommon",
     "tier": 2,
     "footprint": {
@@ -4447,7 +4447,7 @@
     }
   },
   {
-    "id": "objeto_001",
+    "id": "prop_polvora_humeda_001",
     "name": "Pólvora húmeda",
     "type": "trade_good",
     "slot": "accessory",
@@ -4459,7 +4459,7 @@
       "cunning": 1
     },
     "description": "Pólvora que ha conocido demasiada lluvia.",
-    "assetId": "objeto_001",
+    "assetId": "prop_polvora_humeda_001",
     "rarity": "common",
     "tier": 1,
     "footprint": {
@@ -4468,7 +4468,7 @@
     }
   },
   {
-    "id": "objeto_002",
+    "id": "prop_vendas_de_lino_002",
     "name": "Vendas de lino",
     "type": "medicine",
     "slot": "consumable",
@@ -4479,7 +4479,7 @@
       "wound_treatment": 1
     },
     "description": "Lino lavado, tan raro que nadie lo desperdicia.",
-    "assetId": "objeto_002",
+    "assetId": "prop_vendas_de_lino_002",
     "rarity": "common",
     "tier": 1,
     "footprint": {
@@ -4488,7 +4488,7 @@
     }
   },
   {
-    "id": "objeto_003",
+    "id": "prop_bota_de_vino_003",
     "name": "Bota de vino",
     "type": "food",
     "slot": "consumable",
@@ -4500,7 +4500,7 @@
       "discipline": -1
     },
     "description": "Vino agrio. Consuelo primero, arrepentimiento después.",
-    "assetId": "objeto_003",
+    "assetId": "prop_bota_de_vino_003",
     "rarity": "common",
     "tier": 1,
     "footprint": {
@@ -4509,7 +4509,7 @@
     }
   },
   {
-    "id": "objeto_004",
+    "id": "prop_pan_de_municion_004",
     "name": "Pan de munición",
     "type": "food",
     "slot": "consumable",
@@ -4520,7 +4520,7 @@
       "fatigue": -2
     },
     "description": "Pan tan seco que suena a mosquetazo al partirse.",
-    "assetId": "objeto_004",
+    "assetId": "prop_pan_de_municion_004",
     "rarity": "common",
     "tier": 1,
     "footprint": {
@@ -4529,7 +4529,7 @@
     }
   },
   {
-    "id": "objeto_005",
+    "id": "prop_reliquia_dudosa_005",
     "name": "Reliquia dudosa",
     "type": "relic",
     "slot": "accessory",
@@ -4540,7 +4540,7 @@
       "honor": 1
     },
     "description": "Una astilla de santo, o el negocio del miedo de alguien.",
-    "assetId": "objeto_005",
+    "assetId": "prop_reliquia_dudosa_005",
     "rarity": "common",
     "tier": 1,
     "footprint": {
@@ -4549,7 +4549,7 @@
     }
   },
   {
-    "id": "objeto_006",
+    "id": "prop_fragmento_de_bandera_006",
     "name": "Fragmento de bandera",
     "type": "relic",
     "slot": "accessory",
@@ -4560,7 +4560,7 @@
       "honor": 2
     },
     "description": "Tela rota de la vergüenza de otra compañía.",
-    "assetId": "objeto_006",
+    "assetId": "prop_fragmento_de_bandera_006",
     "rarity": "common",
     "tier": 1,
     "footprint": {
@@ -4569,7 +4569,7 @@
     }
   },
   {
-    "id": "objeto_007",
+    "id": "prop_botella_de_aguardiente_007",
     "name": "Botella de aguardiente",
     "type": "food",
     "slot": "consumable",
@@ -4581,7 +4581,7 @@
       "discipline": -2
     },
     "description": "Aguardiente del bueno. Para antes o después, no durante.",
-    "assetId": "objeto_007",
+    "assetId": "prop_botella_de_aguardiente_007",
     "rarity": "common",
     "tier": 1,
     "footprint": {
@@ -4590,7 +4590,7 @@
     }
   },
   {
-    "id": "objeto_008",
+    "id": "prop_salazon_de_carne_008",
     "name": "Salazón de carne",
     "type": "food",
     "slot": "consumable",
@@ -4602,7 +4602,7 @@
       "vigor": 1
     },
     "description": "Carne salada, dura como cuero. Pero llena.",
-    "assetId": "objeto_008",
+    "assetId": "prop_salazon_de_carne_008",
     "rarity": "common",
     "tier": 1,
     "footprint": {
@@ -4611,7 +4611,7 @@
     }
   },
   {
-    "id": "objeto_009",
+    "id": "prop_mechas_de_repuesto_009",
     "name": "Mechas de repuesto",
     "type": "food",
     "slot": "consumable",
@@ -4622,7 +4622,7 @@
       "arquebus": 1
     },
     "description": "Cuerda embreada, lista para el mechero.",
-    "assetId": "objeto_009",
+    "assetId": "prop_mechas_de_repuesto_009",
     "rarity": "common",
     "tier": 1,
     "footprint": {
@@ -4631,7 +4631,7 @@
     }
   },
   {
-    "id": "objeto_010",
+    "id": "prop_botas_viejas_010",
     "name": "Botas viejas",
     "type": "boots",
     "slot": "boots",
@@ -4642,7 +4642,7 @@
       "vigor": 1
     },
     "description": "Cuero agrietado, mejor que marchar descalzo.",
-    "assetId": "objeto_010",
+    "assetId": "prop_botas_viejas_010",
     "rarity": "common",
     "tier": 1,
     "footprint": {
@@ -4651,7 +4651,7 @@
     }
   },
   {
-    "id": "objeto_011",
+    "id": "prop_moneda_de_plata_011",
     "name": "Moneda de plata",
     "type": "relic",
     "slot": "accessory",
@@ -4662,7 +4662,7 @@
       "honor": 1
     },
     "description": "Moneda antigua, mira gastada. Suerte, dicen.",
-    "assetId": "objeto_011",
+    "assetId": "prop_moneda_de_plata_011",
     "rarity": "common",
     "tier": 1,
     "footprint": {
@@ -4671,7 +4671,7 @@
     }
   },
   {
-    "id": "objeto_012",
+    "id": "prop_carta_del_hogar_012",
     "name": "Carta del hogar",
     "type": "trade_good",
     "slot": "accessory",
@@ -4682,7 +4682,7 @@
       "discipline": 1
     },
     "description": "Carta olida cien veces. La firma es de alguien.",
-    "assetId": "objeto_012",
+    "assetId": "prop_carta_del_hogar_012",
     "rarity": "common",
     "tier": 1,
     "footprint": {
@@ -4691,7 +4691,7 @@
     }
   },
   {
-    "id": "objeto_013",
+    "id": "prop_aceite_de_armas_013",
     "name": "Aceite de armas",
     "type": "food",
     "slot": "consumable",
@@ -4702,7 +4702,7 @@
       "discipline": 1
     },
     "description": "Aceite para acero. Mantenimiento, no magia.",
-    "assetId": "objeto_013",
+    "assetId": "prop_aceite_de_armas_013",
     "rarity": "common",
     "tier": 1,
     "footprint": {
@@ -4711,7 +4711,7 @@
     }
   },
   {
-    "id": "objeto_014",
+    "id": "prop_piedra_de_mechero_014",
     "name": "Piedra de mechero",
     "type": "food",
     "slot": "consumable",
@@ -4722,7 +4722,7 @@
       "arquebus": 1
     },
     "description": "Pedernal y eslabón. Enciende en lluvia si tienes paciencia.",
-    "assetId": "objeto_014",
+    "assetId": "prop_piedra_de_mechero_014",
     "rarity": "common",
     "tier": 1,
     "footprint": {
@@ -4731,7 +4731,7 @@
     }
   },
   {
-    "id": "objeto_015",
+    "id": "prop_especias_de_italia_015",
     "name": "Especias de Italia",
     "type": "food",
     "slot": "consumable",
@@ -4743,7 +4743,7 @@
       "cunning": 1
     },
     "description": "Bolsita de clavo y canela. Sólo para oficiales.",
-    "assetId": "objeto_015",
+    "assetId": "prop_especias_de_italia_015",
     "rarity": "uncommon",
     "tier": 2,
     "footprint": {
@@ -4752,7 +4752,7 @@
     }
   },
   {
-    "id": "objeto_016",
+    "id": "prop_mapa_de_flandes_016",
     "name": "Mapa de Flandes",
     "type": "trade_good",
     "slot": "accessory",
@@ -4763,7 +4763,7 @@
       "cunning": 2
     },
     "description": "Mapa copiado a mano. Marca los vados.",
-    "assetId": "objeto_016",
+    "assetId": "prop_mapa_de_flandes_016",
     "rarity": "uncommon",
     "tier": 2,
     "passives": [
@@ -4783,7 +4783,7 @@
     }
   },
   {
-    "id": "objeto_017",
+    "id": "prop_capa_de_la_compania_017",
     "name": "Capa de la Compañía",
     "type": "coat",
     "slot": "body",
@@ -4795,7 +4795,7 @@
       "honor": 1
     },
     "description": "Capa de paño basta, capucha grande. Sirve para dormir.",
-    "assetId": "objeto_017",
+    "assetId": "prop_capa_de_la_compania_017",
     "rarity": "common",
     "tier": 1,
     "footprint": {
@@ -4804,7 +4804,7 @@
     }
   },
   {
-    "id": "objeto_018",
+    "id": "prop_bolsa_de_suministros_018",
     "name": "Bolsa de suministros",
     "type": "trade_good",
     "slot": "accessory",
@@ -4815,7 +4815,7 @@
       "fatigue": -2
     },
     "description": "Bolsa con pan, queso y un mendrugo. Lo justo.",
-    "assetId": "objeto_018",
+    "assetId": "prop_bolsa_de_suministros_018",
     "rarity": "common",
     "tier": 1,
     "footprint": {
@@ -4824,7 +4824,7 @@
     }
   },
   {
-    "id": "objeto_019",
+    "id": "prop_reliquia_de_santiago_019",
     "name": "Reliquia de Santiago",
     "type": "relic",
     "slot": "accessory",
@@ -4836,7 +4836,7 @@
       "discipline": 1
     },
     "description": "Concha del camino. La entregan en la misa del domingo.",
-    "assetId": "objeto_019",
+    "assetId": "prop_reliquia_de_santiago_019",
     "rarity": "uncommon",
     "tier": 2,
     "passives": [
@@ -4856,7 +4856,7 @@
     }
   },
   {
-    "id": "objeto_020",
+    "id": "prop_cuentas_de_un_rosario_020",
     "name": "Cuentas de un rosario",
     "type": "relic",
     "slot": "accessory",
@@ -4868,7 +4868,7 @@
       "honor": 1
     },
     "description": "Madera y hueso. Rezo breve, mente en blanco.",
-    "assetId": "objeto_020",
+    "assetId": "prop_cuentas_de_un_rosario_020",
     "rarity": "common",
     "tier": 1,
     "footprint": {
@@ -4890,7 +4890,7 @@
       "honor": 1
     },
     "description": "Pieza única, no se vende, no se roba. Quien la lleva, responde ante el tercio.",
-    "assetId": "epica_001",
+    "assetId": "loot_body_001",
     "rarity": "legendary",
     "tier": 5,
     "passives": [
@@ -4946,7 +4946,7 @@
       "cunning": 1
     },
     "description": "Celada forjada para un maestre que ya no tiene nombre. La usan los herederos.",
-    "assetId": "epica_002",
+    "assetId": "loot_head_002",
     "rarity": "legendary",
     "tier": 5,
     "passives": [
@@ -5001,7 +5001,7 @@
       "vigor": 1
     },
     "description": "Asta bendecida en la capilla. Tres batallas ha visto, tres veces ha vuelto.",
-    "assetId": "epica_003",
+    "assetId": "loot_main_hand_003",
     "rarity": "legendary",
     "tier": 5,
     "passives": [
@@ -5057,7 +5057,7 @@
       "honor": 1
     },
     "description": "Asta bendecida en la capilla. Tres batallas ha visto, tres veces ha vuelto.",
-    "assetId": "epica_004",
+    "assetId": "loot_main_hand_004",
     "rarity": "legendary",
     "tier": 5,
     "passives": [
@@ -5112,7 +5112,7 @@
       "vigor": -1
     },
     "description": "Mosquete único, llave de pistón de un armero ya difunto. Dispara sólo con su dueño.",
-    "assetId": "epica_005",
+    "assetId": "loot_firearm_005",
     "rarity": "legendary",
     "tier": 5,
     "passives": [
@@ -5166,7 +5166,7 @@
       "discipline": 2
     },
     "description": "Insignia de mando, entregada en misa. Sólo cambia de manos por muerte.",
-    "assetId": "epica_006",
+    "assetId": "loot_accessory_006",
     "rarity": "legendary",
     "tier": 5,
     "passives": [
@@ -5220,7 +5220,7 @@
       "discipline": 1
     },
     "description": "Insignia de mando, entregada en misa. Sólo cambia de manos por muerte.",
-    "assetId": "epica_007",
+    "assetId": "loot_accessory_007",
     "rarity": "legendary",
     "tier": 5,
     "passives": [
@@ -5275,7 +5275,7 @@
       "cunning": 1
     },
     "description": "Pieza única, no se vende, no se roba. Quien la lleva, responde ante el tercio.",
-    "assetId": "epica_008",
+    "assetId": "loot_body_008",
     "rarity": "legendary",
     "tier": 5,
     "passives": [
@@ -5320,7 +5320,7 @@
       "cunning": 3
     },
     "description": "Pieza única, no se vende, no se roba. Quien la lleva, responde ante el tercio.",
-    "assetId": "epica_009",
+    "assetId": "loot_off_hand_009",
     "rarity": "legendary",
     "tier": 5,
     "passives": [
@@ -5376,7 +5376,7 @@
       "honor": 1
     },
     "description": "Asta bendecida en la capilla. Tres batallas ha visto, tres veces ha vuelto.",
-    "assetId": "epica_010",
+    "assetId": "loot_main_hand_010",
     "rarity": "legendary",
     "tier": 5,
     "passives": [
@@ -5430,7 +5430,7 @@
       "discipline": 2
     },
     "description": "Celada forjada para un maestre que ya no tiene nombre. La usan los herederos.",
-    "assetId": "epica_011",
+    "assetId": "loot_head_011",
     "rarity": "legendary",
     "tier": 5,
     "passives": [
@@ -5476,7 +5476,7 @@
       "discipline": 1
     },
     "description": "Pieza única, no se vende, no se roba. Quien la lleva, responde ante el tercio.",
-    "assetId": "epica_012",
+    "assetId": "loot_boots_012",
     "rarity": "legendary",
     "tier": 5,
     "passives": [
@@ -5522,7 +5522,7 @@
       "discipline": 1
     },
     "description": "Pieza única, no se vende, no se roba. Quien la lleva, responde ante el tercio.",
-    "assetId": "epica_013",
+    "assetId": "loot_body_013",
     "rarity": "legendary",
     "tier": 5,
     "passives": [
@@ -5568,7 +5568,7 @@
       "command": 1
     },
     "description": "Asta bendecida en la capilla. Tres batallas ha visto, tres veces ha vuelto.",
-    "assetId": "epica_014",
+    "assetId": "loot_main_hand_014",
     "rarity": "legendary",
     "tier": 5,
     "passives": [
@@ -5614,7 +5614,7 @@
       "discipline": 1
     },
     "description": "Mosquete único, llave de pistón de un armero ya difunto. Dispara sólo con su dueño.",
-    "assetId": "epica_015",
+    "assetId": "loot_firearm_015",
     "rarity": "legendary",
     "tier": 5,
     "passives": [
@@ -5661,7 +5661,7 @@
       "honor": 2
     },
     "description": "Pieza única, no se vende, no se roba. Quien la lleva, responde ante el tercio.",
-    "assetId": "epica_016",
+    "assetId": "loot_body_016",
     "rarity": "legendary",
     "tier": 5,
     "passives": [
@@ -5716,7 +5716,7 @@
       "honor": 2
     },
     "description": "Celada forjada para un maestre que ya no tiene nombre. La usan los herederos.",
-    "assetId": "epica_017",
+    "assetId": "loot_head_017",
     "rarity": "legendary",
     "tier": 5,
     "passives": [
@@ -5761,7 +5761,7 @@
       "cunning": 4
     },
     "description": "Pieza única, no se vende, no se roba. Quien la lleva, responde ante el tercio.",
-    "assetId": "epica_018",
+    "assetId": "loot_off_hand_018",
     "rarity": "legendary",
     "tier": 5,
     "passives": [
@@ -5816,7 +5816,7 @@
       "discipline": 1
     },
     "description": "Insignia de mando, entregada en misa. Sólo cambia de manos por muerte.",
-    "assetId": "epica_019",
+    "assetId": "loot_accessory_019",
     "rarity": "legendary",
     "tier": 5,
     "passives": [
@@ -5871,7 +5871,7 @@
       "honor": 2
     },
     "description": "Asta bendecida en la capilla. Tres batallas ha visto, tres veces ha vuelto.",
-    "assetId": "epica_020",
+    "assetId": "loot_main_hand_020",
     "rarity": "legendary",
     "tier": 5,
     "passives": [

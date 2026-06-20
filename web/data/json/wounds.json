@@ -8,7 +8,7 @@
     },
     "description": "Sangre suficiente para manchar la manga.",
     "treatment_items": [
-      "objeto_002"
+      "prop_vendas_de_lino_002"
     ]
   },
   {
@@ -21,7 +21,7 @@
     },
     "description": "Una herida que se abre al moverse la línea de combate.",
     "treatment_items": [
-      "objeto_002"
+      "prop_vendas_de_lino_002"
     ]
   },
   {
@@ -33,7 +33,7 @@
     },
     "description": "Piel ennegrecida por mala pólvora y peor sincronización.",
     "treatment_items": [
-      "objeto_002"
+      "prop_vendas_de_lino_002"
     ]
   },
   {
@@ -46,7 +46,7 @@
     },
     "description": "Sudor, rezos y olor a paja mojada.",
     "treatment_items": [
-      "objeto_002",
+      "prop_vendas_de_lino_002",
       "wine_skin"
     ]
   },
@@ -59,7 +59,7 @@
     },
     "description": "Cada marcha se hace más larga.",
     "treatment_items": [
-      "objeto_002"
+      "prop_vendas_de_lino_002"
     ]
   },
   {
@@ -72,7 +72,7 @@
     },
     "description": "Respirar duele, toser castiga.",
     "treatment_items": [
-      "objeto_002"
+      "prop_vendas_de_lino_002"
     ]
   },
   {
@@ -85,7 +85,7 @@
     },
     "description": "Calor bajo la piel y miedo en las palabras.",
     "treatment_items": [
-      "objeto_002"
+      "prop_vendas_de_lino_002"
     ]
   },
   {
@@ -108,7 +108,7 @@
     },
     "description": "Nudillos morados, mal agarre.",
     "treatment_items": [
-      "objeto_002"
+      "prop_vendas_de_lino_002"
     ]
   },
   {

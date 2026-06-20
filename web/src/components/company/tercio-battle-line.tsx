@@ -21,7 +21,7 @@ import {
   getFitState,
   pickTopStat,
 } from "@/lib/formation";
-import { getAssetPathById } from "@/lib/game-data";
+import { formationRoleIconPaths, getAssetPathById } from "@/lib/game-data";
 import { Tooltip } from "@/components/ui/tooltip";
 
 const LINE_ORDER: FormationSlot[] = [
@@ -34,13 +34,13 @@ const LINE_ORDER: FormationSlot[] = [
 
 const FORMATION_FIELD_BG = "/assets/generated/scenes/tercio_formation_field_v01.png";
 const UI_ART = {
-  smoke: "/assets/gpt-bank/icons-ui/humo_negro_transparente.png",
-  mud: "/assets/gpt-bank/icons-ui/salpicadura_barro_transparente.png",
-  cornerTopLeft: "/assets/gpt-bank/icons-ui/esquina_marco_dorada_superior_izquierda.png",
-  cornerTopRight: "/assets/gpt-bank/icons-ui/esquina_marco_dorada_superior_derecha.png",
-  cornerBottomLeft: "/assets/gpt-bank/icons-ui/esquina_marco_dorada_inferior_izquierda.png",
-  cornerBottomRight: "/assets/gpt-bank/icons-ui/esquina_marco_dorada_inferior_derecha.png",
-  banner: "/assets/gpt-bank/icons-ui/estandarte_cruz_roja_colgante.png",
+  smoke: "/assets/gpt-bank/ui/icons/humo_negro_transparente.png",
+  mud: "/assets/gpt-bank/ui/icons/salpicadura_barro_transparente.png",
+  cornerTopLeft: "/assets/gpt-bank/ui/icons/esquina_marco_dorada_superior_izquierda.png",
+  cornerTopRight: "/assets/gpt-bank/ui/icons/esquina_marco_dorada_superior_derecha.png",
+  cornerBottomLeft: "/assets/gpt-bank/ui/icons/esquina_marco_dorada_inferior_izquierda.png",
+  cornerBottomRight: "/assets/gpt-bank/ui/icons/esquina_marco_dorada_inferior_derecha.png",
+  banner: "/assets/gpt-bank/ui/icons/estandarte_cruz_roja_colgante.png",
 } as const;
 
 const SLOT_LAYOUT: Record<
@@ -570,7 +570,15 @@ function SlotPlaque({
   return (
     <div className="absolute left-1/2 top-0 z-30 max-w-[170px] -translate-x-1/2 rounded-xs border border-stone-700/55 bg-stone-950/76 px-2 py-1 shadow-lg backdrop-blur-[2px]">
       <div className="flex items-center gap-1.5">
-        <Icon className="h-3 w-3 text-amber-200/85" aria-hidden="true" />
+        <Image
+          src={formationRoleIconPaths[slot]}
+          alt=""
+          width={32}
+          height={32}
+          aria-hidden="true"
+          className="h-5 w-5 object-contain"
+        />
+        <Icon className="h-3 w-3 text-amber-200/65" aria-hidden="true" />
         <span className="truncate font-cinzel text-[10px] font-bold uppercase tracking-wider text-amber-100">
           {meta.label}
         </span>

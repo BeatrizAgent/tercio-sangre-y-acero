@@ -98,6 +98,7 @@ export interface SpriteSheetRef {
   frameHeight: number;
   frames: number;
   fps: number;
+  row?: number;
 }
 
 export interface SpriteSetDefinition {
@@ -107,6 +108,18 @@ export interface SpriteSetDefinition {
     walk?: SpriteSheetRef;
     pikeAttack?: SpriteSheetRef;
     swordAttack?: SpriteSheetRef;
+  };
+}
+
+export interface MissionCombatSpriteSet {
+  id: string;
+  name: string;
+  role: "team" | "minion" | "boss";
+  frames: {
+    idle: SpriteSheetRef;
+    walk: SpriteSheetRef;
+    attack: SpriteSheetRef;
+    hurt: SpriteSheetRef;
   };
 }
 

@@ -1,16 +1,22 @@
 "use client";
 
 import { useEffect, useRef } from "react";
-import type { Application, Text } from "pixi.js";
+import type { Application, Sprite, Text, Texture } from "pixi.js";
 import type { CombatResult } from "@/lib/combat/combat-types";
 import { COMBAT_CANVAS_HEIGHT, COMBAT_CANVAS_WIDTH, outcomeDelayMs } from "@/lib/combat/combat-animation-script";
 import { combatAnimationPreset, combatShakePreset } from "@/lib/combat/animation-presets";
 import { LayeredSoldierSprite } from "./LayeredSoldierSprite";
 import { SpriteEffectLayer, type RuntimeParticle } from "./SpriteEffectLayer";
 import { CombatTimeline, createCombatTimelineState } from "./CombatTimeline";
+import { buildCombatScenePlan, getActorStateAt, type CombatSceneActor } from "@/lib/combat/combat-scene-plan";
 
-import { getMission, getMissionSceneImagePath } from "@/lib/game-data";
-import { getRelevantCombatStat } from "@/lib/combat/combat-resolver";
+import {
+  getMission,
+  getMissionCombatSpritePath,
+  getMissionCombatSpriteSet,
+  getMissionSceneImagePath,
+} from "@/lib/game-data";
+import type { MissionCombatSpriteSet, SpriteSheetRef } from "@/lib/types";
 
 interface CombatStageProps {
   missionTitle: string;
@@ -18,6 +24,21 @@ interface CombatStageProps {
   result: CombatResult;
   onSequenceComplete?: () => void;
 }
+
+type MissionAnimation = {
+  set: MissionCombatSpriteSet;
+  idle: Texture[];
+  walk: Texture[];
+  attack: Texture[];
+  hurt: Texture[];
+};
+
+type MissionSpriteRuntime = {
+  sprite: Sprite;
+  animation: MissionAnimation;
+  baseScale: number;
+  facing: 1 | -1;
+};
 
 export function CombatStage({ missionTitle, missionId, result, onSequenceComplete }: CombatStageProps) {
   const hostRef = useRef<HTMLDivElement | null>(null);
@@ -142,18 +163,18 @@ export function CombatStage({ missionTitle, missionId, result, onSequenceComplet
 
       // Determine what weapon the player is using for this mission
       const mission = missionId ? getMission(missionId) : null;
-      const relevantStat = mission ? getRelevantCombatStat(mission.type) : "arquebus";
-      const enemyWeapon = result.target > 10 ? "arquebus" : "pike";
+      const scenePlan = buildCombatScenePlan({ missionType: mission?.type, result });
+      const relevantStat = scenePlan.relevantStat;
+      const enemyWeapon = scenePlan.enemyWeapon === "sword" ? "pike" : scenePlan.enemyWeapon;
 
       // Try to load textures
-      let playerTexture = null;
-      let enemyTexture = null;
-      let allyTexture = null;
-      let enemyFarTexture = null;
-      let bgTexture = null;
-      let walkSheetTexture = null;
-      let pikeAttackSheetTexture = null;
-      let swordAttackSheetTexture = null;
+      let playerTexture: Texture | null = null;
+      let enemyTexture: Texture | null = null;
+      let bgTexture: Texture | null = null;
+      let walkSheetTexture: Texture | null = null;
+      let pikeAttackSheetTexture: Texture | null = null;
+      let swordAttackSheetTexture: Texture | null = null;
+      const missionSpriteTextures = new Map<string, Texture>();
 
       try {
         let playerPath = "/assets/combat/units/arquebusier_player.png";
@@ -164,18 +185,23 @@ export function CombatStage({ missionTitle, missionId, result, onSequenceComplet
         const enemyFallbackPath = enemyWeapon === "arquebus" ? "/assets/combat/units/arquebusier_enemy.png" : "/assets/combat/units/pikeman_enemy.png";
         const bgPath = getMissionSceneImagePath(missionId);
 
-        [playerTexture, enemyTexture, allyTexture, enemyFarTexture, bgTexture, walkSheetTexture, pikeAttackSheetTexture, swordAttackSheetTexture] = await Promise.all([
+        [playerTexture, enemyTexture, bgTexture, walkSheetTexture, pikeAttackSheetTexture, swordAttackSheetTexture] = await Promise.all([
           pixi.Assets.load(playerPath).catch(() => null),
           pixi.Assets.load(result.enemy.spritePath ?? enemyFallbackPath).catch(() => pixi.Assets.load(enemyFallbackPath).catch(() => null)),
-          pixi.Assets.load("/assets/combat/units/pikeman_player.png").catch(() => null),
-          pixi.Assets.load(result.enemy.spritePath ?? "/assets/combat/units/pikeman_enemy.png").catch(() =>
-            pixi.Assets.load("/assets/combat/units/pikeman_enemy.png").catch(() => null),
-          ),
-          pixi.Assets.load(bgPath).catch(() => pixi.Assets.load("/assets/gpt-bank/CG/cg_events/night_watch_rain_bg.png").catch(() => null)),
-          pixi.Assets.load("/assets/gpt-bank/prota/sprites-animation/diego_sprite_caminar.png").catch(() => null),
-          pixi.Assets.load("/assets/gpt-bank/prota/sprites-animation/diego_sprite_ataque_pica.png").catch(() => null),
-          pixi.Assets.load("/assets/gpt-bank/prota/sprites-animation/diego_sprite_golpe_espada.png").catch(() => null),
+          pixi.Assets.load(bgPath).catch(() => pixi.Assets.load("/assets/gpt-bank/scenes/events/night_watch_rain_bg.png").catch(() => null)),
+          pixi.Assets.load("/assets/gpt-bank/characters/diego/sprites/diego_sprite_caminar.png").catch(() => null),
+          pixi.Assets.load("/assets/gpt-bank/characters/diego/sprites/diego_sprite_ataque_pica.png").catch(() => null),
+          pixi.Assets.load("/assets/gpt-bank/characters/diego/sprites/diego_sprite_golpe_espada.png").catch(() => null),
         ]);
+
+        await Promise.all(
+          scenePlan.loadedSpriteIds.map(async (spriteId) => {
+            const spritePath = getMissionCombatSpritePath(spriteId);
+            if (!spritePath) return;
+            const texture = await pixi.Assets.load(spritePath).catch(() => null);
+            if (texture) missionSpriteTextures.set(spriteId, texture);
+          }),
+        );
       } catch (err) {
         console.warn("Error loading textures:", err);
       }
@@ -227,9 +253,9 @@ export function CombatStage({ missionTitle, missionId, result, onSequenceComplet
       }
 
       // Slice sheet helper function
-      const sliceSheet = (sheetTexture: any, frameWidth: number, frameHeight: number) => {
+      const sliceSheet = (sheetTexture: Texture, frameWidth: number, frameHeight: number): Texture[] => {
         if (!sheetTexture) return [];
-        const frames = [];
+        const frames: Texture[] = [];
         for (let i = 0; i < 3; i++) {
           const rect = new pixi.Rectangle(i * frameWidth, 0, frameWidth, frameHeight);
           const tex = new pixi.Texture({
@@ -239,6 +265,67 @@ export function CombatStage({ missionTitle, missionId, result, onSequenceComplet
           frames.push(tex);
         }
         return frames;
+      };
+
+      const sliceMissionFrames = (sheetTexture: Texture, frame: SpriteSheetRef): Texture[] => {
+        if (!sheetTexture) return [];
+        const frames: Texture[] = [];
+        const row = frame.row ?? 0;
+        for (let i = 0; i < frame.frames; i++) {
+          const rect = new pixi.Rectangle(i * frame.frameWidth, row * frame.frameHeight, frame.frameWidth, frame.frameHeight);
+          frames.push(
+            new pixi.Texture({
+              source: sheetTexture.source,
+              frame: rect,
+            }),
+          );
+        }
+        return frames;
+      };
+
+      const missionAnimations = new Map<string, MissionAnimation>();
+
+      for (const [spriteId, texture] of missionSpriteTextures) {
+        const spriteSet = getMissionCombatSpriteSet(spriteId);
+        if (!spriteSet) continue;
+        missionAnimations.set(spriteId, {
+          set: spriteSet,
+          idle: sliceMissionFrames(texture, spriteSet.frames.idle),
+          walk: sliceMissionFrames(texture, spriteSet.frames.walk),
+          attack: sliceMissionFrames(texture, spriteSet.frames.attack),
+          hurt: sliceMissionFrames(texture, spriteSet.frames.hurt),
+        });
+      }
+
+      const createMissionSprite = (spriteId: string, scale: number, facing: 1 | -1): MissionSpriteRuntime | null => {
+        const animation = missionAnimations.get(spriteId);
+        if (!animation?.idle.length) return null;
+        const sprite = new pixi.Sprite(animation.idle[0]);
+        sprite.anchor.set(0.5, 0.92);
+        sprite.scale.set(scale * facing, scale);
+        return { sprite, animation, baseScale: scale, facing };
+      };
+
+      const createSceneSprite = (actor: CombatSceneActor) => {
+        const runtime = createMissionSprite(actor.spriteId, actor.scale, actor.facing);
+        if (!runtime) return null;
+        runtime.sprite.x = actor.x;
+        runtime.sprite.y = actor.y;
+        runtime.sprite.alpha = actor.alpha;
+        return { actor, runtime };
+      };
+
+      const setMissionSpriteFrame = (
+        runtime: MissionSpriteRuntime | null,
+        state: "idle" | "walk" | "attack" | "hurt",
+        elapsed: number,
+      ) => {
+        if (!runtime) return;
+        const frames = runtime.animation[state].length ? runtime.animation[state] : runtime.animation.idle;
+        const frameDef = runtime.animation.set.frames[state];
+        const frameIndex = Math.floor((elapsed / 1000) * frameDef.fps) % frames.length;
+        runtime.sprite.texture = frames[frameIndex];
+        runtime.sprite.scale.set(runtime.baseScale * runtime.facing, runtime.baseScale);
       };
 
       const walkScale = 0.26;
@@ -253,20 +340,28 @@ export function CombatStage({ missionTitle, missionId, result, onSequenceComplet
       const canAnimate = walkFrames.length > 0 &&
                          (relevantStat === "pike" || relevantStat === "discipline" || relevantStat === "sword");
 
-      let player: any;
+      let player: Sprite | ReturnType<typeof LayeredSoldierSprite>;
+      let animatedPlayerSprite: Sprite | null = null;
       let isAnimatedPlayer = false;
+      const playerSceneSprite = createSceneSprite(scenePlan.player);
+      const playerMissionSprite = playerSceneSprite?.runtime ?? null;
 
-      if (canAnimate) {
-        player = new pixi.Sprite(walkFrames[0]);
-        player.anchor.set(0.5, 0.94);
-        player.scale.set(walkScale);
-        player.y = 575;
+      if (playerMissionSprite) {
+        player = playerMissionSprite.sprite;
+      } else if (canAnimate) {
+        const walkPlayerSprite = new pixi.Sprite(walkFrames[0]);
+        walkPlayerSprite.anchor.set(0.5, 0.94);
+        walkPlayerSprite.scale.set(walkScale);
+        walkPlayerSprite.y = 575;
+        animatedPlayerSprite = walkPlayerSprite;
+        player = walkPlayerSprite;
         isAnimatedPlayer = true;
       } else if (playerTexture) {
-        player = new pixi.Sprite(playerTexture);
-        (player as any).anchor.set(0.5, 0.94);
-        player.scale.set(0.26);
-        player.y = 575;
+        const playerSprite = new pixi.Sprite(playerTexture);
+        playerSprite.anchor.set(0.5, 0.94);
+        playerSprite.scale.set(0.26);
+        playerSprite.y = 575;
+        player = playerSprite;
       } else {
         player = LayeredSoldierSprite(pixi, { kind: "tercioRecruit", weapon: "arquebus", facing: 1, scale: 1.08 });
         player.y = 450;
@@ -274,13 +369,18 @@ export function CombatStage({ missionTitle, missionId, result, onSequenceComplet
       player.x = combatAnimationPreset.playerStartX;
       player.alpha = 0;
 
-      let enemy;
-      if (enemyTexture) {
-        enemy = new pixi.Sprite(enemyTexture);
-        (enemy as any).anchor.set(0.5, 0.94);
+      let enemy: Sprite | ReturnType<typeof LayeredSoldierSprite>;
+      const enemySceneSprite = createSceneSprite(scenePlan.enemy);
+      const enemyMissionSprite = enemySceneSprite?.runtime ?? null;
+      if (enemyMissionSprite) {
+        enemy = enemyMissionSprite.sprite;
+      } else if (enemyTexture) {
+        const enemySprite = new pixi.Sprite(enemyTexture);
+        enemySprite.anchor.set(0.5, 0.94);
         const enemyScale = Math.min(0.34, 240 / Math.max(enemyTexture.height, 1));
-        enemy.scale.set(-enemyScale, enemyScale);
-        enemy.y = 592;
+        enemySprite.scale.set(-enemyScale, enemyScale);
+        enemySprite.y = 592;
+        enemy = enemySprite;
       } else {
         enemy = LayeredSoldierSprite(pixi, { kind: "enemyScout", weapon: enemyWeapon, facing: -1, scale: 1.05 });
         enemy.y = 450;
@@ -288,50 +388,13 @@ export function CombatStage({ missionTitle, missionId, result, onSequenceComplet
       enemy.x = combatAnimationPreset.enemyStartX;
       enemy.alpha = 0;
 
-      let ally;
-      if (allyTexture) {
-        ally = new pixi.Sprite(allyTexture);
-        (ally as any).anchor.set(0.5, 0.94);
-        ally.scale.set(0.14);
-        ally.y = 540;
-      } else {
-        ally = LayeredSoldierSprite(pixi, { kind: "tercioRecruit", weapon: "pike", facing: 1, scale: 0.52 });
-        ally.y = 510;
-      }
-      ally.x = 110;
-      ally.alpha = 0.38;
+      const supportSprites = scenePlan.support.map(createSceneSprite).filter((entry): entry is NonNullable<typeof entry> => Boolean(entry));
 
-      let enemyFar;
-      if (enemyFarTexture) {
-        enemyFar = new pixi.Sprite(enemyFarTexture);
-        (enemyFar as any).anchor.set(0.5, 0.94);
-        const enemyFarScale = Math.min(0.2, 150 / Math.max(enemyFarTexture.height, 1));
-        enemyFar.scale.set(-enemyFarScale, enemyFarScale);
-        enemyFar.y = 548;
-      } else {
-        enemyFar = LayeredSoldierSprite(pixi, { kind: "enemyScout", weapon: "pike", facing: -1, scale: 0.5 });
-        enemyFar.y = 510;
-      }
-      enemyFar.x = 1160;
-      enemyFar.alpha = 0.32;
-
-      unitsLayer.addChild(ally, enemyFar, player, enemy);
-
-      const title = new pixi.Text({
-        text: missionTitle,
-        style: {
-          fill: 0xd7bd75,
-          fontFamily: "Georgia, serif",
-          fontSize: 30,
-          fontWeight: "700",
-          stroke: { color: 0x060504, width: 5 },
-        },
-      });
-      title.anchor.set(0.5);
-      title.x = COMBAT_CANVAS_WIDTH / 2;
-      title.y = 92;
-      title.alpha = 0;
-      hudLayer.addChild(title);
+      unitsLayer.addChild(
+        ...supportSprites.map((entry) => entry.runtime.sprite),
+        player,
+        enemy,
+      );
 
       // White overlay for combat flashes (arquebus shot, weapon impact)
       const flashOverlay = new pixi.Graphics();
@@ -384,33 +447,38 @@ export function CombatStage({ missionTitle, missionId, result, onSequenceComplet
           flashOverlay.alpha = 0;
         }
 
-        title.alpha = Math.min(1, Math.max(0, (elapsed - 350) / 600));
         player.alpha = Math.min(1, Math.max(0, (elapsed - 800) / 500));
         enemy.alpha = Math.min(1, Math.max(0, (elapsed - 1050) / 600));
         player.x += (combatAnimationPreset.playerReadyX - player.x) * 0.04;
         enemy.x += (combatAnimationPreset.enemyReadyX - enemy.x) * 0.04;
         
-        const playerBaseY = (playerTexture || isAnimatedPlayer) ? 575 : 450;
-        const enemyBaseY = enemyTexture ? 592 : 450;
+        const playerBaseY = playerMissionSprite ? scenePlan.player.y : (playerTexture || isAnimatedPlayer) ? 575 : 450;
+        const enemyBaseY = enemyMissionSprite ? scenePlan.enemy.y : enemyTexture ? 592 : 450;
         
         player.y = playerBaseY + Math.sin(elapsed * 0.007) * 5;
         enemy.y = enemyBaseY + Math.cos(elapsed * 0.006) * 3;
 
+        setMissionSpriteFrame(playerMissionSprite, getActorStateAt(scenePlan.player, elapsed), elapsed);
+        setMissionSpriteFrame(enemyMissionSprite, getActorStateAt(scenePlan.enemy, elapsed), elapsed);
+        supportSprites.forEach(({ actor, runtime }, index) => {
+          setMissionSpriteFrame(runtime, getActorStateAt(actor, elapsed), elapsed + index * 90);
+        });
+
         // Animate spritesheet texture frames based on current time elapsed
-        if (isAnimatedPlayer) {
+        if (!playerMissionSprite && animatedPlayerSprite) {
           if (elapsed < 900) {
-            player.texture = walkFrames[0];
-            player.scale.set(walkScale);
+            animatedPlayerSprite.texture = walkFrames[0];
+            animatedPlayerSprite.scale.set(walkScale);
           } else if (elapsed >= 900 && elapsed < 2200) {
             // walking loop during deployment
             const walkSpeed = 120;
             const frameIndex = Math.floor((elapsed - 900) / walkSpeed) % 3;
-            player.texture = walkFrames[frameIndex];
-            player.scale.set(walkScale);
+            animatedPlayerSprite.texture = walkFrames[frameIndex];
+            animatedPlayerSprite.scale.set(walkScale);
           } else if (elapsed >= 2200 && elapsed < 2550) {
             // standing guard/idle pose
-            player.texture = walkFrames[1];
-            player.scale.set(walkScale);
+            animatedPlayerSprite.texture = walkFrames[1];
+            animatedPlayerSprite.scale.set(walkScale);
           } else if (elapsed >= 2550 && elapsed < 3350) {
             // attack lunges and hits
             if ((relevantStat === "pike" || relevantStat === "discipline") && pikeFrames.length > 0) {
@@ -418,23 +486,23 @@ export function CombatStage({ missionTitle, missionId, result, onSequenceComplet
               let frameIdx = 0;
               if (attackElapsed > 550) frameIdx = 2; // recovery
               else if (attackElapsed > 150) frameIdx = 1; // thrust forward
-              player.texture = pikeFrames[frameIdx];
-              player.scale.set(pikeScale);
+              animatedPlayerSprite.texture = pikeFrames[frameIdx];
+              animatedPlayerSprite.scale.set(pikeScale);
             } else if (relevantStat === "sword" && swordFrames.length > 0) {
               const attackElapsed = elapsed - 2550;
               let frameIdx = 0;
               if (attackElapsed > 550) frameIdx = 2; // recovery
               else if (attackElapsed > 150) frameIdx = 1; // slash hit
-              player.texture = swordFrames[frameIdx];
-              player.scale.set(swordScale);
+              animatedPlayerSprite.texture = swordFrames[frameIdx];
+              animatedPlayerSprite.scale.set(swordScale);
             } else {
-              player.texture = walkFrames[1];
-              player.scale.set(walkScale);
+              animatedPlayerSprite.texture = walkFrames[1];
+              animatedPlayerSprite.scale.set(walkScale);
             }
           } else {
             // post-attack guard pose
-            player.texture = walkFrames[1];
-            player.scale.set(walkScale);
+            animatedPlayerSprite.texture = walkFrames[1];
+            animatedPlayerSprite.scale.set(walkScale);
           }
         }
 
@@ -445,17 +513,17 @@ export function CombatStage({ missionTitle, missionId, result, onSequenceComplet
         }
 
         if (events.fireShot) {
-          if (relevantStat === "arquebus") {
-            createArquebusShot(388, 337);
+          if (scenePlan.actionKind === "shot") {
+            createArquebusShot(scenePlan.impact.x, scenePlan.impact.y);
             player.rotation = -0.035;
             shakeCamera(combatShakePreset.shot);
-            flashOverlay.alpha = 0.45; // trigger muzzle flash overlay
+            flashOverlay.alpha = scenePlan.impact.flashAlpha;
           } else {
             // Melee charge/lunge forward
-            player.x += 100;
+            player.x += scenePlan.impact.lunge;
             player.rotation = 0.04;
             shakeCamera(combatShakePreset.clash);
-            flashOverlay.alpha = 0.35; // trigger strike flash overlay
+            flashOverlay.alpha = scenePlan.impact.flashAlpha;
           }
           createFloatingText(`Tirada determinista: +${result.roll}`, COMBAT_CANVAS_WIDTH / 2, 162, 0xffdc68);
         }
@@ -463,10 +531,10 @@ export function CombatStage({ missionTitle, missionId, result, onSequenceComplet
         if (events.enemyResponse) {
           enemy.x -= 42;
           player.rotation = 0;
-          effects.createSparkBurst(hitEffectsLayer, particles, 650, 330);
+          effects.createSparkBurst(hitEffectsLayer, particles, scenePlan.impact.x, scenePlan.impact.y);
           createFloatingText("¡Choque de armas!", COMBAT_CANVAS_WIDTH / 2, 238, 0xf2e0b8);
           shakeCamera(combatShakePreset.clash);
-          flashOverlay.alpha = 0.55; // trigger weapons clash flash overlay
+          flashOverlay.alpha = 0.55;
         }
 
         if (events.showOutcome) {

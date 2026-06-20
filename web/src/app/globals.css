@@ -70,7 +70,7 @@ body {
 .game-panel {
   background-color: var(--panel);
   background-image: 
-    url("/assets/gpt-bank/icons-ui/textura_madera_oscura.png"),
+    url("/assets/gpt-bank/ui/icons/textura_madera_oscura.png"),
     linear-gradient(180deg, rgba(255, 255, 255, 0.035), rgba(255, 255, 255, 0) 34%),
     linear-gradient(90deg, rgba(255, 255, 255, 0.018) 1px, transparent 1px),
     linear-gradient(rgba(255, 255, 255, 0.012) 1px, transparent 1px);
@@ -117,10 +117,10 @@ body {
   position: absolute;
   inset: -1px;
   background-image:
-    url("/assets/gpt-bank/icons-ui/esquina_marco_dorada_superior_izquierda.png"),
-    url("/assets/gpt-bank/icons-ui/esquina_marco_dorada_superior_derecha.png"),
-    url("/assets/gpt-bank/icons-ui/esquina_marco_dorada_inferior_izquierda.png"),
-    url("/assets/gpt-bank/icons-ui/esquina_marco_dorada_inferior_derecha.png");
+    url("/assets/gpt-bank/ui/icons/esquina_marco_dorada_superior_izquierda.png"),
+    url("/assets/gpt-bank/ui/icons/esquina_marco_dorada_superior_derecha.png"),
+    url("/assets/gpt-bank/ui/icons/esquina_marco_dorada_inferior_izquierda.png"),
+    url("/assets/gpt-bank/ui/icons/esquina_marco_dorada_inferior_derecha.png");
   background-position: left top, right top, left bottom, right bottom;
   background-repeat: no-repeat;
   background-size: 38px 38px;
@@ -134,7 +134,7 @@ body {
   background-color: #f3ebd4;
   /* Authentic parchment design with warm stains, paper fibers, and a Burgundy Cross watermark */
   background-image: 
-    url("/assets/gpt-bank/icons-ui/textura_pergamino_envejecido.png"),
+    url("/assets/gpt-bank/ui/icons/textura_pergamino_envejecido.png"),
     /* Burgundy Cross watermark (red saltire with saw-tooth edges) */
     url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100' opacity='0.05' fill='%238f1f1f'><path d='M12 8 L22 5 L50 35 L78 5 L88 8 L54 42 L88 76 L78 80 L50 50 L22 80 L12 76 L46 42 Z'/><path d='M23 20 L27 16' stroke='%238f1f1f' stroke-width='2'/><path d='M33 30 L37 26' stroke='%238f1f1f' stroke-width='2'/><path d='M77 20 L73 16' stroke='%238f1f1f' stroke-width='2'/><path d='M67 30 L63 26' stroke='%238f1f1f' stroke-width='2'/><path d='M23 70 L27 74' stroke='%238f1f1f' stroke-width='2'/><path d='M33 60 L37 64' stroke='%238f1f1f' stroke-width='2'/><path d='M77 70 L73 74' stroke='%238f1f1f' stroke-width='2'/><path d='M67 60 L63 64' stroke='%238f1f1f' stroke-width='2'/></svg>"),
     radial-gradient(circle at 10% 20%, rgba(215, 185, 142, 0.2) 0%, transparent 60%),
@@ -335,7 +335,7 @@ body {
   height: 68px;
   background-color: var(--panel-soft);
   background-image:
-    url("/assets/gpt-bank/icons-ui/textura_metal_oscuro_remaches.png"),
+    url("/assets/gpt-bank/ui/icons/textura_metal_oscuro_remaches.png"),
     radial-gradient(circle at 50% 38%, rgba(148, 134, 105, 0.16) 0%, rgba(51, 42, 31, 0.14) 48%, transparent 74%),
     radial-gradient(rgba(0, 0, 0, 0.46) 0%, transparent 80%);
   background-size: 120px 120px, auto, auto;
@@ -353,7 +353,7 @@ body {
 .asset-icon-frame {
   position: relative;
   background:
-    url("/assets/gpt-bank/icons-ui/textura_cuero_marron.png"),
+    url("/assets/gpt-bank/ui/icons/textura_cuero_marron.png"),
     radial-gradient(circle at 50% 40%, rgba(86, 76, 60, 0.32) 0%, rgba(29, 25, 20, 0.92) 66%, rgba(7, 6, 4, 0.98) 100%),
     linear-gradient(180deg, rgba(255, 255, 255, 0.035), rgba(0, 0, 0, 0.28));
   background-size: 260px 260px, auto, auto;
@@ -396,7 +396,7 @@ body {
 
 .sidebar-shell {
   background:
-    url("/assets/gpt-bank/icons-ui/textura_madera_oscura.png"),
+    url("/assets/gpt-bank/ui/icons/textura_madera_oscura.png"),
     linear-gradient(180deg, rgba(255, 255, 255, 0.025), rgba(0, 0, 0, 0.18)),
     radial-gradient(circle at 50% 0%, rgba(108, 75, 36, 0.14), transparent 18rem),
     #0b0907;
@@ -415,7 +415,7 @@ body {
 
 .sidebar-nav-item {
   background:
-    url("/assets/gpt-bank/icons-ui/barra_panel_negra_dorada.png"),
+    url("/assets/gpt-bank/ui/icons/barra_panel_negra_dorada.png"),
     linear-gradient(180deg, rgba(255, 255, 255, 0.025), rgba(0, 0, 0, 0.18)),
     rgba(14, 12, 9, 0.86);
   background-size: 100% 100%, auto, auto;
@@ -445,7 +445,7 @@ body {
 
 .top-command-bar {
   background:
-    url("/assets/gpt-bank/icons-ui/textura_metal_oscuro_remaches.png"),
+    url("/assets/gpt-bank/ui/icons/textura_metal_oscuro_remaches.png"),
     linear-gradient(180deg, rgba(18, 15, 11, 0.98), rgba(7, 6, 4, 0.96)),
     radial-gradient(circle at 16% 0%, rgba(143, 31, 31, 0.14), transparent 18rem);
   background-size: 320px 320px, auto, auto;
@@ -466,7 +466,7 @@ body {
 .gladiatus-character-card,
 .gladiatus-resource-rail {
   background:
-    url("/assets/gpt-bank/icons-ui/barra_panel_negra_dorada.png"),
+    url("/assets/gpt-bank/ui/icons/barra_panel_negra_dorada.png"),
     linear-gradient(180deg, rgba(255, 242, 190, 0.055), rgba(0, 0, 0, 0.38)),
     rgba(14, 10, 7, 0.92);
   background-size: 100% 100%, auto, auto;
@@ -554,7 +554,7 @@ body {
   grid-template-columns: repeat(3, minmax(0, 1fr));
   gap: 8px;
   background:
-    url("/assets/gpt-bank/icons-ui/textura_cuero_marron.png"),
+    url("/assets/gpt-bank/ui/icons/textura_cuero_marron.png"),
     linear-gradient(180deg, rgba(20, 13, 8, 0.92), rgba(7, 5, 3, 0.96));
   background-size: 260px 260px, auto;
   background-blend-mode: soft-light, normal;
@@ -597,7 +597,7 @@ body {
   align-items: center;
   padding: 10px 12px;
   background:
-    url("/assets/gpt-bank/icons-ui/barra_panel_negra_ornamento.png"),
+    url("/assets/gpt-bank/ui/icons/barra_panel_negra_ornamento.png"),
     linear-gradient(180deg, rgba(255, 255, 255, 0.025), rgba(0, 0, 0, 0.18)),
     rgba(12, 10, 8, 0.72);
   background-size: 100% 100%, auto, auto;
@@ -640,10 +640,10 @@ body {
   position: absolute;
   inset: 0;
   background-image:
-    url("/assets/gpt-bank/icons-ui/esquina_marco_dorada_superior_izquierda.png"),
-    url("/assets/gpt-bank/icons-ui/esquina_marco_dorada_superior_derecha.png"),
-    url("/assets/gpt-bank/icons-ui/esquina_marco_dorada_inferior_izquierda.png"),
-    url("/assets/gpt-bank/icons-ui/esquina_marco_dorada_inferior_derecha.png");
+    url("/assets/gpt-bank/ui/icons/esquina_marco_dorada_superior_izquierda.png"),
+    url("/assets/gpt-bank/ui/icons/esquina_marco_dorada_superior_derecha.png"),
+    url("/assets/gpt-bank/ui/icons/esquina_marco_dorada_inferior_izquierda.png"),
+    url("/assets/gpt-bank/ui/icons/esquina_marco_dorada_inferior_derecha.png");
   background-position: left top, right top, left bottom, right bottom;
   background-repeat: no-repeat;
   background-size: 30px 30px;
@@ -719,7 +719,7 @@ body {
 
 .icon-stat-tile {
   background:
-    url("/assets/gpt-bank/icons-ui/barra_panel_negra_ornamento.png"),
+    url("/assets/gpt-bank/ui/icons/barra_panel_negra_ornamento.png"),
     linear-gradient(180deg, rgba(255, 255, 255, 0.035), rgba(0, 0, 0, 0.22)),
     rgba(12, 10, 8, 0.78);
   background-size: 100% 100%, auto, auto;
@@ -736,7 +736,7 @@ body {
   left: 0;
   width: min(210px, 100%);
   height: 14px;
-  background-image: url("/assets/gpt-bank/icons-ui/ornamento_dorado_horizontal.png");
+  background-image: url("/assets/gpt-bank/ui/icons/ornamento_dorado_horizontal.png");
   background-repeat: no-repeat;
   background-size: contain;
   background-position: left center;
@@ -799,7 +799,7 @@ body {
   padding: 56px 40px 40px;
   background-color: #e8dcb8;
   background-image:
-    url("/assets/gpt-bank/icons-ui/textura_pergamino_envejecido.png"),
+    url("/assets/gpt-bank/ui/icons/textura_pergamino_envejecido.png"),
     radial-gradient(ellipse at 12% 14%, rgba(255, 240, 200, 0.5) 0%, transparent 55%),
     radial-gradient(ellipse at 88% 88%, rgba(120, 90, 50, 0.25) 0%, transparent 60%),
     linear-gradient(rgba(0, 0, 0, 0.012) 1px, transparent 1px);
@@ -851,19 +851,19 @@ body {
 }
 .sealed-letter .sealed-corner.tl {
   top: -10px; left: -10px;
-  background-image: url("/assets/gpt-bank/icons-ui/esquina_marco_dorada_superior_izquierda.png");
+  background-image: url("/assets/gpt-bank/ui/icons/esquina_marco_dorada_superior_izquierda.png");
 }
 .sealed-letter .sealed-corner.tr {
   top: -10px; right: -10px;
-  background-image: url("/assets/gpt-bank/icons-ui/esquina_marco_dorada_superior_derecha.png");
+  background-image: url("/assets/gpt-bank/ui/icons/esquina_marco_dorada_superior_derecha.png");
 }
 .sealed-letter .sealed-corner.bl {
   bottom: -10px; left: -10px;
-  background-image: url("/assets/gpt-bank/icons-ui/esquina_marco_dorada_inferior_izquierda.png");
+  background-image: url("/assets/gpt-bank/ui/icons/esquina_marco_dorada_inferior_izquierda.png");
 }
 .sealed-letter .sealed-corner.br {
   bottom: -10px; right: -10px;
-  background-image: url("/assets/gpt-bank/icons-ui/esquina_marco_dorada_inferior_derecha.png");
+  background-image: url("/assets/gpt-bank/ui/icons/esquina_marco_dorada_inferior_derecha.png");
 }
 
 .sealed-body {
@@ -924,7 +924,7 @@ body {
 .seal-crack {
   position: absolute;
   inset: 0;
-  background-image: url("/assets/gpt-bank/icons-ui/humo_negro_transparente.png");
+  background-image: url("/assets/gpt-bank/ui/icons/humo_negro_transparente.png");
   background-size: cover;
   background-position: center;
   opacity: 0;
@@ -994,7 +994,7 @@ body {
   width: 220px;
   height: 320px;
   transform: translateX(-50%);
-  background-image: url("/assets/gpt-bank/icons-ui/humo_negro_transparente.png");
+  background-image: url("/assets/gpt-bank/ui/icons/humo_negro_transparente.png");
   background-size: cover;
   background-position: bottom center;
   background-repeat: no-repeat;
@@ -1019,7 +1019,7 @@ body {
   min-height: 150px;
   border: none;
   background-color: #110d09;
-  background-image: url("/assets/gpt-bank/icons-ui/marco_panel_negro_claveteado.png");
+  background-image: url("/assets/gpt-bank/ui/icons/marco_panel_negro_claveteado.png");
   background-size: 100% 100%;
   background-repeat: no-repeat;
   box-shadow:
@@ -1110,7 +1110,7 @@ body {
   inset: 0;
   pointer-events: none;
   z-index: 4;
-  background-image: url("/assets/gpt-bank/icons-ui/humo_negro_transparente.png");
+  background-image: url("/assets/gpt-bank/ui/icons/humo_negro_transparente.png");
   background-size: cover;
   background-position: center;
   opacity: 0.15;
@@ -1152,7 +1152,7 @@ body {
 /* Custom premium wooden panel for topbar columns */
 .topbar-panel {
   background:
-    url("/assets/gpt-bank/icons-ui/textura_madera_oscura.png"),
+    url("/assets/gpt-bank/ui/icons/textura_madera_oscura.png"),
     linear-gradient(180deg, rgba(255, 255, 255, 0.02), rgba(0, 0, 0, 0.35)),
     rgba(18, 16, 13, 0.85);
   background-size: 220px 220px, auto, auto;

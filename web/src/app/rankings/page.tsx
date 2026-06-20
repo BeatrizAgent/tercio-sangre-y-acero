@@ -56,11 +56,11 @@ export default function RankingsPage() {
   return (
     <PageTransition>
       <section className="game-panel mx-auto w-full max-w-[780px] overflow-hidden p-0">
-        <div className="relative overflow-hidden border-b border-gold/20 bg-[url('/assets/gpt-bank/icons-ui/barra_panel_negra_dorada.png')] bg-[length:100%_100%] px-4 py-5 text-center">
-          <div className="pointer-events-none absolute inset-x-10 top-3 h-5 bg-[url('/assets/gpt-bank/icons-ui/ornamento_dorado_horizontal.png')] bg-contain bg-center bg-no-repeat opacity-55" />
+        <div className="relative overflow-hidden border-b border-gold/20 bg-[url('/assets/gpt-bank/ui/icons/barra_panel_negra_dorada.png')] bg-[length:100%_100%] px-4 py-5 text-center">
+          <div className="pointer-events-none absolute inset-x-10 top-3 h-5 bg-[url('/assets/gpt-bank/ui/icons/ornamento_dorado_horizontal.png')] bg-contain bg-center bg-no-repeat opacity-55" />
           <div className="relative flex items-center justify-center gap-3">
             <img
-              src="/assets/gpt-bank/icons-ui/estandarte_cruz_roja_colgante.png"
+              src="/assets/gpt-bank/ui/icons/estandarte_cruz_roja_colgante.png"
               alt=""
               className="h-10 w-10 object-contain opacity-90"
             />
@@ -68,7 +68,7 @@ export default function RankingsPage() {
               Clasificacion - Jugadores
             </h1>
             <img
-              src="/assets/gpt-bank/icons-ui/condecoracion_estrella_laurel.png"
+              src="/assets/gpt-bank/ui/icons/condecoracion_estrella_laurel.png"
               alt=""
               className="h-10 w-10 object-contain opacity-90"
             />
@@ -92,7 +92,7 @@ export default function RankingsPage() {
         <div className="overflow-x-auto">
           <table className="w-full min-w-[640px] border-collapse bg-[#201409] text-[13px] text-[#f1ddbd]">
             <thead>
-              <tr className="border-b border-gold/25 bg-[url('/assets/gpt-bank/icons-ui/barra_panel_marron_larga.png')] bg-[length:100%_100%] font-cinzel text-[11px] uppercase text-gold-soft">
+              <tr className="border-b border-gold/25 bg-[url('/assets/gpt-bank/ui/icons/barra_panel_marron_larga.png')] bg-[length:100%_100%] font-cinzel text-[11px] uppercase text-gold-soft">
                 <th className="w-11 px-1 py-2 text-center">Rango</th>
                 <th className="px-1 py-2 text-left">Nombre</th>
                 <th className="px-1 py-2 text-center"><SortLabel>Nivel</SortLabel></th>

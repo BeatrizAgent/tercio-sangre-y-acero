@@ -3,7 +3,7 @@
 import React, { useEffect, useState } from "react";
 import { useGameStore } from "@/lib/game-store";
 import { Card, Badge } from "@/components/ui/card";
-import { getItemImagePath, getWound } from "@/lib/game-data";
+import { featuredAssetPaths, getWound } from "@/lib/game-data";
 import { UiAssetIcon } from "@/components/game/ui-asset-icon";
 import { playCoinSound, playDefeatSound, playDrumSound, playPageSound } from "@/lib/sounds";
 import { PageTransition } from "@/components/game/page-transition";
@@ -111,6 +111,25 @@ export default function HospitalPage() {
           <h1 className="font-cinzel text-3xl font-extrabold tracking-wider text-gold">HOSPITAL DE SANGRE</h1>
         </div>
 
+        <div className="scene-frame relative min-h-56 overflow-hidden rounded-xs border border-iron bg-stone-950">
+          <img
+            src={featuredAssetPaths.hospitalFieldWard}
+            alt="Hospital de campana"
+            className="absolute inset-0 h-full w-full object-cover"
+            onError={(e) => {
+              e.currentTarget.src = featuredAssetPaths.hospital;
+            }}
+          />
+          <div className="absolute inset-0 bg-linear-to-r from-background/90 via-background/35 to-background/10" />
+          <div className="relative max-w-xl p-5 sm:p-7">
+            <p className="text-[10px] font-mono uppercase tracking-[0.24em] text-gold-soft">Cirujano de campana</p>
+            <h2 className="mt-2 font-cinzel text-2xl font-bold text-text">Lino, aguardiente y mesa fria</h2>
+            <p className="mt-3 text-sm leading-6 text-text-muted">
+              Aqui se paga por seguir marchando: vendas limpias, reposo corto y una promesa seca de que la fiebre no subira esta noche.
+            </p>
+          </div>
+        </div>
+
         {notification && (
           <div
             className={`p-3 text-xs font-mono border rounded-xs transition-all ${
@@ -126,6 +145,12 @@ export default function HospitalPage() {
         <div className="grid gap-6 lg:grid-cols-[2fr_1.1fr]">
           <div className="space-y-6">
             <Card title="Tratamiento de heridas">
+              <HospitalSceneImage
+                src={featuredAssetPaths.hospitalTreatment}
+                fallbackSrc={featuredAssetPaths.woundCare}
+                alt="Cirujano vendando a un soldado"
+              />
+
               {soldier.wounds.length === 0 ? (
                 <div className="border border-dashed border-iron p-8 text-center text-xs text-muted">
                   Sin heridas abiertas.
@@ -181,16 +206,11 @@ export default function HospitalPage() {
 
             <Card title="Reposo en camastro">
               <div className="space-y-4 font-mono text-xs">
-                <div className="asset-icon-frame h-32 overflow-hidden rounded-xs border border-iron bg-stone-950">
-                  <img
-                    src="/assets/gpt-bank/icons-ui/camastro_manta_lana.png"
-                    alt="Camastro de campana"
-                    className="h-full w-full object-contain p-3"
-                    onError={(e) => {
-                      e.currentTarget.style.display = "none";
-                    }}
-                  />
-                </div>
+                <HospitalSceneImage
+                  src={featuredAssetPaths.hospitalRecoveryCot}
+                  fallbackSrc="/assets/gpt-bank/ui/icons/camastro_manta_lana.png"
+                  alt="Camastro de recuperacion"
+                />
 
                 <div className="grid gap-3 sm:grid-cols-2">
                   <RestTile icon="fatigue" label="Efecto" value="-25 fatiga" tone="text-success" />
@@ -215,14 +235,47 @@ export default function HospitalPage() {
           <div className="space-y-6">
             <Card title="Medicina">
               <div className="space-y-3 text-xs font-mono">
-                <SupplyRow itemId="objeto_002" label="Vendas de lino" value={`${bandageCount} disp.`} tone={bandageCount > 0 ? "text-success" : "text-danger"} />
-                <SupplyRow itemId="wine_skin" label="Odras de vino" value={`${wineSkinCount} disp.`} tone="text-text" />
+                <SupplyRow
+                  icon="hospitalBandages"
+                  label="Vendas de lino"
+                  value={`${bandageCount} disp.`}
+                  tone={bandageCount > 0 ? "text-success" : "text-danger"}
+                />
+                <SupplyRow
+                  icon="hospitalWineSkin"
+                  label="Odras de vino"
+                  value={`${wineSkinCount} disp.`}
+                  tone="text-text"
+                />
               </div>
             </Card>
           </div>
         </div>
       </div>
     </PageTransition>
+  );
+}
+
+function HospitalSceneImage({
+  src,
+  fallbackSrc,
+  alt,
+}: {
+  src: string;
+  fallbackSrc: string;
+  alt: string;
+}) {
+  return (
+    <div className="mb-4 h-40 overflow-hidden rounded-xs border border-iron bg-stone-950">
+      <img
+        src={src}
+        alt={alt}
+        className="h-full w-full object-cover"
+        onError={(e) => {
+          e.currentTarget.src = fallbackSrc;
+        }}
+      />
+    </div>
   );
 }
 
@@ -249,12 +302,12 @@ function RestTile({
 }
 
 function SupplyRow({
-  itemId,
+  icon,
   label,
   value,
   tone,
 }: {
-  itemId: string;
+  icon: React.ComponentProps<typeof UiAssetIcon>["id"];
   label: string;
   value: string;
   tone: string;
@@ -262,14 +315,7 @@ function SupplyRow({
   return (
     <div className="flex items-center justify-between gap-3 border-b border-iron pb-2 last:border-0">
       <span className="flex items-center gap-2 text-text-muted">
-        <img
-          src={getItemImagePath(itemId)}
-          alt=""
-          className="h-9 w-9 shrink-0 object-contain"
-          onError={(e) => {
-            e.currentTarget.style.display = "none";
-          }}
-        />
+        <UiAssetIcon id={icon} label={label} className="h-9 w-9" />
         <span>{label}</span>
       </span>
       <span className={`font-bold ${tone}`}>{value}</span>

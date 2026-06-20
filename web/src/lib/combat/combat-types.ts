@@ -93,7 +93,7 @@ export const mockCombatResult: CombatResult = {
     name: "escaramuzadores enemigos",
     description: "Disparos dispersos y retirada rápida.",
     power: 4,
-    spritePath: "/assets/gpt-bank/enemigos/franceses/enemigo_frances_001.png",
+    spritePath: "/assets/gpt-bank/enemies/french/enemy_french_001.png",
   },
   eventLog: [
     { id: "mock-deploy", at: 900, phase: "deployment", text: "La lluvia arrecia sobre el camino embarrado.", tone: "neutral" },

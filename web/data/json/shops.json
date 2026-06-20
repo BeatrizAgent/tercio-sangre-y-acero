@@ -71,43 +71,43 @@
         "stock": 1
       },
       {
-        "item_id": "armadura_050",
+        "item_id": "armor_cuirass_epic_050",
         "buy_price": 14,
         "sell_price": 6,
         "stock": 2
       },
       {
-        "item_id": "objeto_011",
+        "item_id": "prop_moneda_de_plata_011",
         "buy_price": 9,
         "sell_price": 4,
         "stock": 6
       },
       {
-        "item_id": "objeto_012",
+        "item_id": "prop_carta_del_hogar_012",
         "buy_price": 7,
         "sell_price": 3,
         "stock": 5
       },
       {
-        "item_id": "objeto_013",
+        "item_id": "prop_aceite_de_armas_013",
         "buy_price": 3,
         "sell_price": 1,
         "stock": 10
       },
       {
-        "item_id": "objeto_007",
+        "item_id": "prop_botella_de_aguardiente_007",
         "buy_price": 14,
         "sell_price": 6,
         "stock": 5
       },
       {
-        "item_id": "objeto_002",
+        "item_id": "prop_vendas_de_lino_002",
         "buy_price": 10,
         "sell_price": 4,
         "stock": 6
       },
       {
-        "item_id": "objeto_004",
+        "item_id": "prop_pan_de_municion_004",
         "buy_price": 4,
         "sell_price": 1,
         "stock": 10
@@ -222,13 +222,13 @@
         "stock": 4
       },
       {
-        "item_id": "objeto_015",
+        "item_id": "prop_especias_de_italia_015",
         "buy_price": 60,
         "sell_price": 25,
         "stock": 3
       },
       {
-        "item_id": "objeto_019",
+        "item_id": "prop_reliquia_de_santiago_019",
         "buy_price": 95,
         "sell_price": 40,
         "stock": 2
@@ -325,7 +325,7 @@
         "stock": 4
       },
       {
-        "item_id": "objeto_016",
+        "item_id": "prop_mapa_de_flandes_016",
         "buy_price": 90,
         "sell_price": 38,
         "stock": 2

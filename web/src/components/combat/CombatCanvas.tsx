@@ -230,9 +230,9 @@ export function CombatCanvas({ missionTitle, result, onSequenceComplete }: Comba
           pixi.Assets.load(enemyPath).catch(() => null),
           pixi.Assets.load("/assets/combat/units/pikeman_player.png").catch(() => null),
           pixi.Assets.load("/assets/combat/units/pikeman_enemy.png").catch(() => null),
-          pixi.Assets.load("/assets/gpt-bank/prota/sprites-animation/diego_sprite_caminar.png").catch(() => null),
-          pixi.Assets.load("/assets/gpt-bank/prota/sprites-animation/diego_sprite_ataque_pica.png").catch(() => null),
-          pixi.Assets.load("/assets/gpt-bank/prota/sprites-animation/diego_sprite_golpe_espada.png").catch(() => null),
+          pixi.Assets.load("/assets/gpt-bank/characters/diego/sprites/diego_sprite_caminar.png").catch(() => null),
+          pixi.Assets.load("/assets/gpt-bank/characters/diego/sprites/diego_sprite_ataque_pica.png").catch(() => null),
+          pixi.Assets.load("/assets/gpt-bank/characters/diego/sprites/diego_sprite_golpe_espada.png").catch(() => null),
         ]);
       } catch (err) {
         console.warn("Error loading textures:", err);

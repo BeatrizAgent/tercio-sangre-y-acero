@@ -4,7 +4,7 @@ import React, { useMemo, useState } from "react";
 import { PageTransition } from "@/components/game/page-transition";
 import { Badge, Card } from "@/components/ui/card";
 import { Tooltip } from "@/components/ui/tooltip";
-import { UiAssetIcon } from "@/components/game/ui-asset-icon";
+import { UiAssetIcon } from "@/components/ui/ui-asset-icon";
 import { NpcOfferFrame } from "@/components/game/visual-offers";
 import { PlayerChestPanel } from "@/components/soldier/player-chest-panel";
 import { ItemChestGrid, VENDOR_CHEST_GRID, footprintPx } from "@/components/soldier/item-chest-grid";

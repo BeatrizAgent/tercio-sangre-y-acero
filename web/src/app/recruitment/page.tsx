@@ -2,7 +2,7 @@
 
 import { useMemo, useState } from "react";
 import { PageTransition } from "@/components/game/page-transition";
-import { UiAssetIcon } from "@/components/game/ui-asset-icon";
+import { UiAssetIcon } from "@/components/ui/ui-asset-icon";
 import { NpcOfferFrame } from "@/components/game/visual-offers";
 import { getAssetPathById } from "@/lib/game-data";
 import { useGameStore } from "@/lib/game-store";

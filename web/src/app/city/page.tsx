@@ -3,7 +3,7 @@
 import Link from "next/link";
 import Image from "next/image";
 import { PageTransition } from "@/components/game/page-transition";
-import { UiAssetIcon } from "@/components/game/ui-asset-icon";
+import { UiAssetIcon } from "@/components/ui/ui-asset-icon";
 import { featuredAssetPaths } from "@/lib/game-data";
 
 const citySpots = [

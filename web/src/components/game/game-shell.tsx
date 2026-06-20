@@ -4,7 +4,7 @@ import React, { useEffect, useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import { SidebarNav } from "./sidebar-nav";
-import { UiAssetIcon } from "./ui-asset-icon";
+import { UiAssetIcon } from "@/components/ui/ui-asset-icon";
 import { useGameStore } from "@/lib/game-store";
 import { getRankName, featuredAssetPaths, missionDefinitions } from "@/lib/game-data";
 import { playPageSound } from "@/lib/sounds";

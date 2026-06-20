@@ -3,7 +3,7 @@
 import type { ComponentProps, ReactNode } from "react";
 import { motion } from "motion/react";
 import { playSwordSound, playDrumSound } from "@/lib/sounds";
-import { UiAssetIcon } from "@/components/game/ui-asset-icon";
+import { UiAssetIcon } from "./ui-asset-icon";
 
 export function Card({
   title,

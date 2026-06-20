@@ -3,7 +3,7 @@
 import { useEffect, useState } from "react";
 import { Card } from "@/components/ui/card";
 import { PageTransition } from "@/components/game/page-transition";
-import { UiAssetIcon } from "@/components/game/ui-asset-icon";
+import { UiAssetIcon } from "@/components/ui/ui-asset-icon";
 import { useGameStore } from "@/lib/game-store";
 
 export default function NewsPage() {

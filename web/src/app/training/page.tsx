@@ -3,7 +3,7 @@
 import React, { useEffect, useState } from "react";
 import { Coins, TrendingUp } from "lucide-react";
 import { PageTransition } from "@/components/game/page-transition";
-import { UiAssetIcon } from "@/components/game/ui-asset-icon";
+import { UiAssetIcon } from "@/components/ui/ui-asset-icon";
 import { Card, Badge } from "@/components/ui/card";
 import { Tooltip } from "@/components/ui/tooltip";
 import { featuredAssetPaths, getAssetPathById, trainingAssetPaths, trainingOptions } from "@/lib/game-data";

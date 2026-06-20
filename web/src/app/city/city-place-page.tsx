@@ -1,7 +1,7 @@
 import Link from "next/link";
 import type React from "react";
 import { PageTransition } from "@/components/game/page-transition";
-import { UiAssetIcon } from "@/components/game/ui-asset-icon";
+import { UiAssetIcon } from "@/components/ui/ui-asset-icon";
 
 type PlaceIcon = React.ComponentProps<typeof UiAssetIcon>["id"];
 

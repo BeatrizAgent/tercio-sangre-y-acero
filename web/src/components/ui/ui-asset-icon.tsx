@@ -1,3 +1,6 @@
+// UI atom for asset-backed icons. Lives in ui/ because it is a pure
+// presentation primitive consumed by both the game layer and the design system.
+
 import { uiIconPaths } from "@/lib/game-data";
 
 type UiIconId = keyof typeof uiIconPaths;

@@ -4,7 +4,7 @@ import React, { Suspense, useCallback } from "react";
 import Link from "next/link";
 import { useRouter, useSearchParams } from "next/navigation";
 import { ArrowLeft, Compass } from "lucide-react";
-import { UiAssetIcon } from "@/components/game/ui-asset-icon";
+import { UiAssetIcon } from "@/components/ui/ui-asset-icon";
 import { PageTransition } from "@/components/game/page-transition";
 import { NpcOfferFrame } from "@/components/game/visual-offers";
 import {

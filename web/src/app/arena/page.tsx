@@ -4,7 +4,7 @@ import React, { useState } from "react";
 import Link from "next/link";
 import { Badge, Card } from "@/components/ui/card";
 import { PageTransition } from "@/components/game/page-transition";
-import { UiAssetIcon } from "@/components/game/ui-asset-icon";
+import { UiAssetIcon } from "@/components/ui/ui-asset-icon";
 import { NpcOfferFrame } from "@/components/game/visual-offers";
 import { featuredAssetPaths, getAssetPathById, listArenaOpponents } from "@/lib/game-data";
 import { useGameStore } from "@/lib/game-store";

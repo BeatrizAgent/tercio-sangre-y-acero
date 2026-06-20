@@ -4,7 +4,7 @@ import React, { useState, useRef, useEffect } from "react";
 import { Info } from "lucide-react";
 import { useGameStore } from "@/lib/game-store";
 import { getItem, getItemImagePath, getWound, getEquipmentBonuses } from "@/lib/game-data";
-import { UiAssetIcon } from "../game/ui-asset-icon";
+import { UiAssetIcon } from "./ui-asset-icon";
 import type { StatId } from "@/lib/types";
 import { passiveShortLine, rarityStyle, TRIGGER_LABEL } from "@/lib/item-format";
 

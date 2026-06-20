@@ -16,7 +16,7 @@ import {
   type TercioFormationPreset,
   type TercioFormationPresetId,
 } from "@/lib/formation";
-import { UiAssetIcon } from "@/components/game/ui-asset-icon";
+import { UiAssetIcon } from "@/components/ui/ui-asset-icon";
 import { Tooltip } from "@/components/ui/tooltip";
 import { playPageSound } from "@/lib/sounds";
 import { formationRoleIconPaths, getAssetPathById, reportAssetPaths, tercioOrdinanceIconPaths } from "@/lib/game-data";

@@ -4,7 +4,7 @@ import React, { useEffect, useState } from "react";
 import { useGameStore } from "@/lib/game-store";
 import { Card, Badge } from "@/components/ui/card";
 import { featuredAssetPaths, getWound } from "@/lib/game-data";
-import { UiAssetIcon } from "@/components/game/ui-asset-icon";
+import { UiAssetIcon } from "@/components/ui/ui-asset-icon";
 import { playCoinSound, playDefeatSound, playDrumSound, playPageSound } from "@/lib/sounds";
 import { PageTransition } from "@/components/game/page-transition";
 import { Tooltip } from "@/components/ui/tooltip";

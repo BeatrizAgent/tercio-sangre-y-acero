@@ -3,7 +3,7 @@
 import React, { useEffect, useState } from "react";
 import Link from "next/link";
 import { usePathname, useSearchParams } from "next/navigation";
-import { UiAssetIcon } from "./ui-asset-icon";
+import { UiAssetIcon } from "@/components/ui/ui-asset-icon";
 import { playPageSound } from "@/lib/sounds";
 import { regions } from "@/lib/regions";
 

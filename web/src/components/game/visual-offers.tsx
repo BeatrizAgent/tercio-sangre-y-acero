@@ -2,7 +2,7 @@
 
 import type React from "react";
 import { Tooltip } from "@/components/ui/tooltip";
-import { UiAssetIcon } from "@/components/game/ui-asset-icon";
+import { UiAssetIcon } from "@/components/ui/ui-asset-icon";
 
 type IconId = React.ComponentProps<typeof UiAssetIcon>["id"];
 

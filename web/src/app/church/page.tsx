@@ -7,7 +7,7 @@ import { Check, Cross, ScrollText, ShieldCheck } from "lucide-react";
 import { PageTransition } from "@/components/game/page-transition";
 import { Badge, Card } from "@/components/ui/card";
 import { Tooltip } from "@/components/ui/tooltip";
-import { UiAssetIcon } from "@/components/game/ui-asset-icon";
+import { UiAssetIcon } from "@/components/ui/ui-asset-icon";
 import { NpcOfferFrame } from "@/components/game/visual-offers";
 import { PlayerChestPanel } from "@/components/soldier/player-chest-panel";
 import { BACKPACK_CHESTS, BACKPACK_COLS, BACKPACK_ROWS, inventoryWithAutoLayout } from "@/lib/inventory-grid";

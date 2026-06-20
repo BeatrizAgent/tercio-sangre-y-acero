@@ -2,9 +2,9 @@ import assert from "node:assert/strict";
 import { createInitialState } from "../src/lib/game-store";
 import {
   canRecruitCandidate,
-  recruitCandidateIntoState,
-  recruitmentCandidates,
-} from "../src/lib/recruitment";
+  recruitCandidateInState,
+} from "../src/lib/domain/recruitment";
+import { recruitmentCandidates } from "../src/lib/data/recruitment";
 
 const base = createInitialState();
 
@@ -12,18 +12,18 @@ const paid = recruitmentCandidates.find((candidate) => candidate.id === "tomas_d
 assert.ok(paid, "paid candidate exists");
 assert.equal(canRecruitCandidate(base.soldier, paid).ok, true);
 
-const paidResult = recruitCandidateIntoState(base, paid.id);
-assert.equal(paidResult.ok, true);
-assert.equal(paidResult.state.soldier.coins, base.soldier.coins - (paid.cost.coins ?? 0));
-assert.equal(paidResult.state.characters.some((character) => character.id === paid.character.id), true);
+const paidResult = recruitCandidateInState(base, paid.id);
+assert.equal(paidResult.result.ok, true);
+assert.equal(paidResult.next.soldier.coins, base.soldier.coins - (paid.cost.coins ?? 0));
+assert.equal(paidResult.next.characters.some((character) => character.id === paid.character.id), true);
 assert.equal(
-  paidResult.state.characters.find((character) => character.id === paid.character.id)?.formationSlot,
+  paidResult.next.characters.find((character) => character.id === paid.character.id)?.formationSlot,
   "banquillo",
 );
 
-const duplicateResult = recruitCandidateIntoState(paidResult.state, paid.id);
-assert.equal(duplicateResult.ok, false);
-assert.equal(duplicateResult.message, "Ya esta en tu tercio.");
+const duplicateResult = recruitCandidateInState(paidResult.next, paid.id);
+assert.equal(duplicateResult.result.ok, false);
+assert.equal(duplicateResult.result.message, "Ya está en tu tercio.");
 
 const honor = recruitmentCandidates.find((candidate) => candidate.id === "hernan_de_ula");
 assert.ok(honor, "honor candidate exists");

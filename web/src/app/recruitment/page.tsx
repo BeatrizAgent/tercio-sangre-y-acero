@@ -8,9 +8,8 @@ import { getAssetPathById } from "@/lib/game-data";
 import { useGameStore } from "@/lib/game-store";
 import {
   canRecruitCandidate,
-  recruitmentCandidates,
-  type RecruitmentCandidate,
-} from "@/lib/recruitment";
+} from "@/lib/domain/recruitment";
+import { recruitmentCandidates, type RecruitmentCandidate } from "@/lib/data/recruitment";
 import { playCoinSound, playPageSound } from "@/lib/sounds";
 
 export default function RecruitmentPage() {

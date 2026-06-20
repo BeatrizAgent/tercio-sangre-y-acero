@@ -84,7 +84,7 @@ else {
   }
 }
 
-const store = fs.readFileSync(path.join(root, "src/lib/game-store.ts"), "utf8");
+const store = fs.readFileSync(path.join(root, "src/lib/stores/game-store.ts"), "utf8");
 for (const token of ["arenaResults", "fightArenaOpponent"]) {
   if (!store.includes(token)) failures.push(`store missing ${token}`);
 }
@@ -113,8 +113,11 @@ for (const token of ["TercioFormationPresetId", "TERCIO_FORMATION_PRESETS", "cua
   if (!formation.includes(token)) failures.push(`formation presets missing ${token}`);
 }
 
-const recruitment = fs.readFileSync(path.join(root, "src/lib/recruitment.ts"), "utf8");
-for (const token of ["recruitmentCandidates", "canRecruitCandidate", "recruitCandidateIntoState", "tomas_de_orduna"]) {
+const recruitment = [
+  fs.readFileSync(path.join(root, "src/lib/data/recruitment.ts"), "utf8"),
+  fs.readFileSync(path.join(root, "src/lib/domain/recruitment.ts"), "utf8"),
+].join("\n");
+for (const token of ["recruitmentCandidates", "canRecruitCandidate", "recruitCandidateInState", "tomas_de_orduna"]) {
   if (!recruitment.includes(token)) failures.push(`recruitment missing ${token}`);
 }
 

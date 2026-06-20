@@ -136,7 +136,7 @@ export default function MissionDetailPage() {
                         playDrumSound();
                         window.setTimeout(() => {
                           const res = resolveActiveEventChoice(choice.id);
-                          if (res.ok && res.reportId) router.push(`/reports/${res.reportId}`);
+                          if (res.ok && res.data?.reportId) router.push(`/reports/${res.data.reportId}`);
                           else setResolving(false);
                         }, 700);
                       }}
@@ -226,8 +226,8 @@ export default function MissionDetailPage() {
             onComplete={() => {
               const res = startMission(mission.id);
               if (res.ok) {
-                if (res.eventTriggered) setResolving(false);
-                else if (res.reportId) router.push(`/reports/${res.reportId}`);
+                if (res.data?.eventTriggered) setResolving(false);
+                else if (res.data?.reportId) router.push(`/reports/${res.data.reportId}`);
               } else {
                 setResolving(false);
               }

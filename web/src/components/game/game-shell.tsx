@@ -4,6 +4,7 @@ import React, { useEffect, useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import { SidebarNav } from "./sidebar-nav";
+import { QuickAction, ResourceChip } from "@/components/ui/resource-chip";
 import { UiAssetIcon } from "@/components/ui/ui-asset-icon";
 import { useGameStore } from "@/lib/game-store";
 import { getRankName, featuredAssetPaths, missionDefinitions } from "@/lib/game-data";
@@ -132,6 +133,7 @@ export function GameShell({ children }: { children: React.ReactNode }) {
                   value={actionsRemaining}
                   max={ACTION_MAX}
                   tone={actionsRemaining > 0 ? "text-gold" : "text-muted"}
+                  onNavigate={() => playPageSound()}
                 />
                 <QuickAction
                   href="/missions"
@@ -140,6 +142,7 @@ export function GameShell({ children }: { children: React.ReactNode }) {
                   value={missionsRemaining}
                   max={ACTION_MAX}
                   tone={missionsRemaining > 0 ? "text-gold-soft" : "text-muted"}
+                  onNavigate={() => playPageSound()}
                 />
                 <QuickAction
                   href="/arena"
@@ -148,6 +151,7 @@ export function GameShell({ children }: { children: React.ReactNode }) {
                   value={pvpRemaining}
                   max={ACTION_MAX}
                   tone="text-ember"
+                  onNavigate={() => playPageSound()}
                 />
                 <QuickAction
                   href="/missions"
@@ -156,6 +160,7 @@ export function GameShell({ children }: { children: React.ReactNode }) {
                   value={warRemaining}
                   max={ACTION_MAX}
                   tone="text-danger"
+                  onNavigate={() => playPageSound()}
                 />
               </div>
             </div>
@@ -236,84 +241,3 @@ export function GameShell({ children }: { children: React.ReactNode }) {
   );
 }
 
-function ResourceChip({
-  icon,
-  label,
-  value,
-  tone,
-  compact = false,
-}: {
-  icon: React.ComponentProps<typeof UiAssetIcon>["id"];
-  label: string;
-  value: string | number;
-  tone: string;
-  compact?: boolean;
-}) {
-  return (
-    <div
-      title={`${label}: ${value}`}
-      className={`gladiatus-resource-chip min-w-0 ${compact ? "px-1 py-0.5 gap-0.5" : "px-1.5 py-0.5 gap-1"}`}
-    >
-      <UiAssetIcon id={icon} label={label} className={`shrink-0 ${compact ? "h-3.5 w-3.5" : "h-4 w-4"}`} />
-      <div className="flex min-w-0 flex-col leading-tight">
-        <span className="truncate font-sans text-[9px] font-bold uppercase tracking-[0.04em] text-text-muted">
-          {label}
-        </span>
-        <span className={`truncate font-mono text-[11px] font-extrabold ${tone}`}>{value}</span>
-      </div>
-    </div>
-  );
-}
-
-function QuickAction({
-  href,
-  icon,
-  label,
-  value,
-  max,
-  tone,
-}: {
-  href: string;
-  icon: React.ComponentProps<typeof UiAssetIcon>["id"];
-  label: string;
-  value: number;
-  max: number;
-  tone: string;
-}) {
-  const ratio = max > 0 ? Math.max(0, Math.min(1, value / max)) : 0;
-  const barColor = tone.startsWith("text-")
-    ? tone.replace("text-", "bg-")
-    : "bg-gold";
-
-  return (
-    <Link
-      href={href}
-      onClick={() => playPageSound()}
-      className="gladiatus-resource-chip group min-w-0 cursor-pointer flex-row items-center gap-1 px-1.5 py-1 transition-all hover:border-gold/45 hover:bg-black/40"
-      title={`${label}: ${value}/${max}`}
-    >
-      <UiAssetIcon id={icon} label={label} className="h-4 w-4 shrink-0 transition-transform group-hover:scale-105" />
-      <div className="flex min-w-0 flex-col leading-tight">
-        <span className="truncate font-sans text-[10px] font-bold uppercase tracking-[0.04em] text-text-muted group-hover:text-gold-soft">
-          {label}
-        </span>
-        <span className={`truncate font-mono text-xs font-extrabold leading-tight ${tone}`}>
-          {value}/{max}
-        </span>
-      </div>
-      <div
-        className="ml-auto h-1 w-8 shrink-0 overflow-hidden rounded-full bg-black/60 ring-1 ring-inset ring-iron/40"
-        role="progressbar"
-        aria-valuenow={value}
-        aria-valuemin={0}
-        aria-valuemax={max}
-        aria-label={`${label} restantes`}
-      >
-        <div
-          className={`h-full ${barColor} transition-all duration-300`}
-          style={{ width: `${ratio * 100}%` }}
-        />
-      </div>
-    </Link>
-  );
-}

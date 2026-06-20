@@ -1,6 +1,6 @@
 // CharacterPortrait: single source of truth for rendering a CharacterState
 // portrait via getAssetPathById. Provides consistent fallback (initials),
-// size variants, and an optional RoleIcon overlay.
+// size variants, and an optional "tu" player badge.
 //
 // Previously the same pattern was inlined in stripe-card.tsx, stripe-token.tsx,
 // profile-role-tabs.tsx, the RosterCard inside tercio-battle-line.tsx, and
@@ -11,7 +11,6 @@
 import React from "react";
 import Image from "next/image";
 import { getAssetPathById } from "@/lib/game-data";
-import { RoleIcon } from "./role-icon";
 
 export type PortraitSize = "xs" | "sm" | "md" | "lg" | "xl";
 
@@ -35,36 +34,26 @@ function initialsFor(name: string): string {
 export function CharacterPortrait({
   assetId,
   name,
-  role,
   size = "md",
   className = "",
   rounded = "xs",
-  withRoleIcon = false,
   withPlayerBadge = false,
-  roundedFull = false,
   onErrorHide = true,
+  children,
 }: {
   assetId: string | undefined;
   name: string;
-  role?: string;
   size?: PortraitSize;
   className?: string;
   rounded?: "xs" | "sm" | "md" | "full";
-  withRoleIcon?: boolean;
   withPlayerBadge?: boolean;
-  roundedFull?: boolean;
   onErrorHide?: boolean;
+  children?: React.ReactNode;
 }) {
   const px = SIZE_PX[size];
   const src = getAssetPathById(assetId);
-  const radiusClass = roundedFull
-    ? "rounded-full"
-    : rounded === "full"
-      ? "rounded-full"
-      : `rounded-${rounded}`;
-  const roleBadgeSize = size === "xs" || size === "sm" ? "h-3 w-3" : "h-4 w-4";
-  const playerBadgeSize =
-    size === "xs" || size === "sm" ? "text-[7px] py-0" : "text-[8px] py-0.5";
+  const radiusClass = rounded === "full" ? "rounded-full" : `rounded-${rounded}`;
+  const playerBadgeText = size === "xs" || size === "sm" ? "text-[7px]" : "text-[8px]";
 
   return (
     <div
@@ -96,15 +85,11 @@ export function CharacterPortrait({
         </div>
       )}
 
-      {withRoleIcon && role && (
-        <div className="pointer-events-none absolute left-0 top-0 flex h-4 w-4 items-center justify-center rounded-br-xs border-b border-r border-stone-700/55 bg-stone-950/82">
-          <RoleIcon role={role} className={`${roleBadgeSize} text-amber-100/90`} />
-        </div>
-      )}
+      {children}
 
       {withPlayerBadge && (
-        <div className="pointer-events-none absolute inset-x-0 bottom-0 bg-gold/85 text-stone-950 text-center font-mono font-extrabold uppercase tracking-widest leading-tight ${playerBadgeSize}">
-          <span className={playerBadgeSize}>tu</span>
+        <div className="pointer-events-none absolute inset-x-0 bottom-0 bg-gold/85 text-center font-mono font-extrabold uppercase tracking-widest leading-tight text-stone-950 py-0.5">
+          <span className={playerBadgeText}>tu</span>
         </div>
       )}
     </div>

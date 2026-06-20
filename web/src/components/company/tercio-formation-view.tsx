@@ -19,10 +19,12 @@ import {
 import { UiAssetIcon } from "@/components/ui/ui-asset-icon";
 import { Tooltip } from "@/components/ui/tooltip";
 import { playPageSound } from "@/lib/sounds";
-import { formationRoleIconPaths, getAssetPathById, reportAssetPaths, tercioOrdinanceIconPaths } from "@/lib/game-data";
+import { getAssetPathById, reportAssetPaths, tercioOrdinanceIconPaths } from "@/lib/game-data";
+import { CharacterPortrait } from "@/components/ui/character-portrait";
+import { FormationField } from "@/components/ui/formation-backdrop";
+import { SlotPlaque } from "@/components/ui/slot-plaque";
 
 const PLAYER_ID = "diego_de_arce";
-const FORMATION_FIELD_BG = "/assets/generated/scenes/tercio_formation_field_v01.png";
 
 const DOCTRINE_LABEL: Record<FormationDoctrine, string> = {
   pica: "Pica",
@@ -380,11 +382,7 @@ function FormationPreview({
   return (
     <section className="overflow-hidden rounded-xs border border-stone-700/55 bg-stone-950/65 shadow-inner">
       <div className="relative overflow-hidden bg-[#213514]">
-        <div
-          aria-hidden="true"
-          className="absolute inset-0 bg-cover bg-center opacity-90"
-          style={{ backgroundImage: `url("${FORMATION_FIELD_BG}")` }}
-        />
+        <FormationField className="opacity-90" />
         <div
           aria-hidden="true"
           className="absolute inset-0"
@@ -418,30 +416,15 @@ function FormationLane({
   slot: FormationSlot;
   characters: CharacterState[];
 }) {
-  const meta = FORMATION_META[slot];
-  const { Icon, preferredStat } = meta;
-
   return (
     <section className="relative min-h-[104px] rounded-xs border border-stone-700/55 bg-stone-950/46 px-2 pb-2 pt-8 shadow-[inset_0_0_24px_rgba(0,0,0,0.25)]">
-      <div className="absolute left-2 top-2 flex max-w-[calc(100%-1rem)] items-center gap-1.5 rounded-xs border border-stone-700/55 bg-stone-950/78 px-2 py-1">
-        <Image
-          src={formationRoleIconPaths[slot]}
-          alt=""
-          width={32}
-          height={32}
-          aria-hidden="true"
-          className="h-5 w-5 object-contain"
+      <div className="absolute left-2 top-2">
+        <SlotPlaque
+          slot={slot}
+          count={characters.length}
+          size="sm"
+          className="max-w-[calc(100%-1rem)]"
         />
-        <Icon className="h-3 w-3 text-amber-200/65" aria-hidden="true" />
-        <span className="truncate font-cinzel text-[10px] font-bold uppercase tracking-wider text-amber-100">
-          {meta.label}
-        </span>
-        <span className="font-mono text-[8px] text-stone-500">{characters.length}</span>
-        {preferredStat && (
-          <span className="rounded-xs border border-stone-700/55 px-1 font-mono text-[7px] font-bold uppercase text-stone-300">
-            {COMBAT_STAT_LABEL[preferredStat]}
-          </span>
-        )}
       </div>
 
       <div className="flex min-h-[70px] flex-wrap items-end justify-center gap-2">
@@ -466,7 +449,6 @@ function FormationToken({
   character: CharacterState;
   slot: FormationSlot;
 }) {
-  const portraitSrc = getAssetPathById(character.portraitAssetId);
   const fit = getFitState(character, slot);
   const ring =
     fit === "encaja"
@@ -482,22 +464,13 @@ function FormationToken({
         className={`absolute bottom-7 h-9 w-20 rounded-[50%] border-4 shadow-[0_0_18px_rgba(62,136,255,0.18)] ${ring}`}
         style={{ transform: "perspective(240px) rotateX(64deg)" }}
       />
-      <div className="relative z-10 h-16 w-16 overflow-hidden rounded-full border border-amber-200/35 bg-stone-900 shadow-lg">
-        {portraitSrc ? (
-          <Image
-            src={portraitSrc}
-            alt={character.name}
-            width={128}
-            height={128}
-            className="h-full w-full object-cover object-top"
-            draggable={false}
-          />
-        ) : (
-          <div className="flex h-full w-full items-center justify-center font-mono text-[10px] text-stone-500">
-            {character.name.slice(0, 2)}
-          </div>
-        )}
-      </div>
+      <CharacterPortrait
+        assetId={character.portraitAssetId}
+        name={character.name}
+        size="md"
+        rounded="full"
+        className="relative z-10 h-16 w-16 border-amber-200/35"
+      />
       <span className="relative z-10 mt-1 max-w-full truncate rounded-xs border border-stone-700/60 bg-stone-950/78 px-1.5 py-0.5 text-center font-mono text-[8px] font-bold uppercase text-amber-100">
         {character.id === PLAYER_ID ? "Diego" : character.name.split(" ")[0]}
       </span>

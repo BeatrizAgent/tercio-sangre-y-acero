@@ -1,6 +1,7 @@
 "use client";
 
-import { getAssetPathById, formationRoleIconPaths } from "@/lib/game-data";
+import { CharacterPortrait } from "@/components/ui/character-portrait";
+import { formationRoleIconPaths } from "@/lib/game-data";
 import type { FormationSlot } from "@/lib/types";
 
 export interface ProfileRoleTab {
@@ -22,7 +23,6 @@ export function ProfileRoleTabs({ profiles, activeProfileId, onSelect, compact =
   return (
     <div className={`grid gap-1.5 ${compact ? "grid-cols-5" : "grid-cols-2 sm:grid-cols-5"}`}>
       {profiles.map((profile) => {
-        const portraitPath = getAssetPathById(profile.portraitAssetId);
         const roleIconPath = formationRoleIconPaths[profile.formationSlot];
         const isActive = activeProfileId === profile.id;
 
@@ -38,14 +38,19 @@ export function ProfileRoleTabs({ profiles, activeProfileId, onSelect, compact =
             aria-label={`Ver ${profile.name}`}
             title={profile.name}
           >
-            <span className={`relative shrink-0 overflow-hidden rounded-xs border border-iron/70 bg-stone-950 ${compact ? "h-10 w-10" : "h-9 w-9"}`}>
-              {portraitPath ? (
-                <img src={portraitPath} alt="" className="h-full w-full object-cover object-top" draggable={false} />
+            <CharacterPortrait
+              assetId={profile.portraitAssetId}
+              name={profile.name}
+              size="sm"
+              rounded="xs"
+              className={`${compact ? "h-10 w-10" : "h-9 w-9"} border-iron/70`}
+            >
+              {roleIconPath ? (
+                <span className="pointer-events-none absolute bottom-0 right-0 flex h-4 w-4 items-center justify-center rounded-tl-xs border-l border-t border-iron/60 bg-stone-950/90">
+                  <img src={roleIconPath} alt="" className="h-3 w-3 object-contain" draggable={false} />
+                </span>
               ) : null}
-              <span className="absolute bottom-0 right-0 flex h-4 w-4 items-center justify-center rounded-tl-xs border-l border-t border-iron/60 bg-stone-950/90">
-                <img src={roleIconPath} alt="" className="h-3 w-3 object-contain" draggable={false} />
-              </span>
-            </span>
+            </CharacterPortrait>
             {!compact && (
               <span className="min-w-0">
                 <span className="block truncate font-mono text-[10px] font-bold uppercase tracking-wider">

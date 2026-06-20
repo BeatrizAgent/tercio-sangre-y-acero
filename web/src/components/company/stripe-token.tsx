@@ -2,15 +2,7 @@
 
 import React, { useMemo } from "react";
 import Image from "next/image";
-import {
-  AlertTriangle,
-  Axe,
-  Check,
-  Crosshair,
-  HeartHandshake,
-  Swords,
-} from "lucide-react";
-import type { LucideIcon } from "lucide-react";
+import { AlertTriangle, Check } from "lucide-react";
 import type { CharacterState } from "@/lib/types";
 import { getAssetPathById } from "@/lib/game-data";
 import { TERCIO_DND_TYPE } from "./stripe-card";
@@ -20,15 +12,9 @@ import {
   isNCOInStress,
   pickTopStat,
 } from "@/lib/formation";
+import { RoleIcon } from "@/components/ui/role-icon";
+import { fatigueLabel } from "@/components/ui/stat-chip";
 import { Tooltip } from "@/components/ui/tooltip";
-
-const ROLE_ICON: Record<string, LucideIcon> = {
-  Piquero: Swords,
-  Tirador: Crosshair,
-  Asistente: HeartHandshake,
-  Jinete: Swords,
-  Gastador: Axe,
-};
 
 export type TokenSize = "sm" | "md" | "lg";
 
@@ -102,12 +88,10 @@ export function StripeToken({
   const spriteSrc = inStress ? emotionSrc ?? defaultSrc : defaultSrc;
   const topStat = pickTopStat(character.stats);
   const fit = getFitState(character, character.formationSlot);
-  const RoleIcon = ROLE_ICON[character.role] ?? Swords;
   const poseClass = `${SLOT_POSE[character.formationSlot] ?? ""} ${
     ROLE_POSE[character.role] ?? ""
   } ${STAGGER[poseIndex % STAGGER.length]}`;
-  const fatigueLabel =
-    character.fatigue > 75 ? "agotado" : character.fatigue > 40 ? "cansado" : "fresco";
+  const fatigueLabelText = fatigueLabel(character.fatigue);
 
   return (
     <div
@@ -154,7 +138,7 @@ export function StripeToken({
         )}
 
         <div className="pointer-events-none absolute left-0 top-0 flex h-4 w-4 items-center justify-center rounded-br-xs border-b border-r border-stone-700/55 bg-stone-950/82">
-          <RoleIcon className="h-2.5 w-2.5 text-amber-100/90" />
+          <RoleIcon role={character.role} className="h-2.5 w-2.5 text-amber-100/90" />
         </div>
 
         <div className="pointer-events-none absolute right-0 top-0 flex h-4 w-4 items-center justify-center rounded-bl-xs border-b border-l border-stone-700/55 bg-stone-950/82">
@@ -198,7 +182,7 @@ export function StripeToken({
             {character.name}
           </p>
           <Tooltip
-            content={`${character.role}. ${COMBAT_STAT_LABEL[topStat]} ${character.stats[topStat]}. Fatiga ${character.fatigue}/100 (${fatigueLabel}).`}
+            content={`${character.role}. ${COMBAT_STAT_LABEL[topStat]} ${character.stats[topStat]}. Fatiga ${character.fatigue}/100 (${fatigueLabelText}).`}
           >
             <span className="rounded-xs border border-amber-900/45 bg-amber-950/35 px-1 font-mono text-[8px] text-amber-200">
               {COMBAT_STAT_LABEL[topStat]} {character.stats[topStat]}

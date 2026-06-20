@@ -21,8 +21,10 @@ import {
   getFitState,
   pickTopStat,
 } from "@/lib/formation";
-import { formationRoleIconPaths, getAssetPathById } from "@/lib/game-data";
-import { Tooltip } from "@/components/ui/tooltip";
+import { getAssetPathById } from "@/lib/game-data";
+import { CharacterPortrait } from "@/components/ui/character-portrait";
+import { FormationBackdrop } from "@/components/ui/formation-backdrop";
+import { SlotPlaque } from "@/components/ui/slot-plaque";
 
 const LINE_ORDER: FormationSlot[] = [
   "retaguardia",
@@ -31,17 +33,6 @@ const LINE_ORDER: FormationSlot[] = [
   "vanguardia",
   "banquillo",
 ];
-
-const FORMATION_FIELD_BG = "/assets/generated/scenes/tercio_formation_field_v01.png";
-const UI_ART = {
-  smoke: "/assets/gpt-bank/ui/icons/humo_negro_transparente.png",
-  mud: "/assets/gpt-bank/ui/icons/salpicadura_barro_transparente.png",
-  cornerTopLeft: "/assets/gpt-bank/ui/icons/esquina_marco_dorada_superior_izquierda.png",
-  cornerTopRight: "/assets/gpt-bank/ui/icons/esquina_marco_dorada_superior_derecha.png",
-  cornerBottomLeft: "/assets/gpt-bank/ui/icons/esquina_marco_dorada_inferior_izquierda.png",
-  cornerBottomRight: "/assets/gpt-bank/ui/icons/esquina_marco_dorada_inferior_derecha.png",
-  banner: "/assets/gpt-bank/ui/icons/estandarte_cruz_roja_colgante.png",
-} as const;
 
 const SLOT_LAYOUT: Record<
   FormationSlot,
@@ -282,15 +273,7 @@ function FormationStage({
 
   return (
     <div className="relative min-h-[660px] flex-1 overflow-hidden bg-[#213514] lg:min-h-[640px]">
-      <div
-        aria-hidden="true"
-        className="absolute inset-0 bg-cover bg-center"
-        style={{
-          backgroundImage: `url("${FORMATION_FIELD_BG}")`,
-        }}
-      />
-      <UiArtFrame />
-      <CampBackdrop />
+      <FormationBackdrop />
 
       <div className="absolute left-3 right-3 top-3 z-30 flex flex-wrap items-center justify-between gap-2 rounded-xs border border-stone-800/45 bg-stone-950/72 px-3 py-2 shadow-lg backdrop-blur-[2px]">
         <div>
@@ -405,7 +388,9 @@ function FormationDropSpot({
         minHeight: layout.minHeight,
       }}
     >
-      <SlotPlaque slot={slot} count={characters.length} willSwap={willSwap} />
+      <div className="absolute left-1/2 top-0 z-30 max-w-[170px] -translate-x-1/2">
+        <SlotPlaque slot={slot} count={characters.length} willSwap={willSwap} size="sm" showIcon={false} />
+      </div>
       <div
         className={`relative flex min-h-[inherit] items-end ${layout.justify} gap-1.5 px-2 pb-2 pt-9 md:gap-3`}
       >
@@ -555,49 +540,6 @@ function EmptyRing({
   );
 }
 
-function SlotPlaque({
-  slot,
-  count,
-  willSwap,
-}: {
-  slot: FormationSlot;
-  count: number;
-  willSwap: boolean;
-}) {
-  const meta = FORMATION_META[slot];
-  const { Icon, preferredStat } = meta;
-
-  return (
-    <div className="absolute left-1/2 top-0 z-30 max-w-[170px] -translate-x-1/2 rounded-xs border border-stone-700/55 bg-stone-950/76 px-2 py-1 shadow-lg backdrop-blur-[2px]">
-      <div className="flex items-center gap-1.5">
-        <Image
-          src={formationRoleIconPaths[slot]}
-          alt=""
-          width={32}
-          height={32}
-          aria-hidden="true"
-          className="h-5 w-5 object-contain"
-        />
-        <Icon className="h-3 w-3 text-amber-200/65" aria-hidden="true" />
-        <span className="truncate font-cinzel text-[10px] font-bold uppercase tracking-wider text-amber-100">
-          {meta.label}
-        </span>
-        <span className="font-mono text-[8px] text-stone-500">
-          {count}
-          {willSwap ? " swap" : ""}
-        </span>
-      </div>
-      {preferredStat && (
-        <Tooltip type="stat" statId={preferredStat}>
-          <span className="mt-0.5 inline-flex rounded-xs border border-stone-700/55 bg-stone-950/55 px-1 font-mono text-[7px] font-bold uppercase tracking-widest text-stone-300">
-            {COMBAT_STAT_LABEL[preferredStat]}
-          </span>
-        </Tooltip>
-      )}
-    </div>
-  );
-}
-
 function RosterPanel({
   characters,
   playerId,
@@ -688,88 +630,5 @@ function CheckMark() {
     <span className="absolute -right-1 -top-1 flex h-8 w-8 rotate-12 items-center justify-center rounded-full border border-lime-200/60 bg-lime-500/90 text-stone-950 shadow">
       <Check className="h-5 w-5 stroke-[4]" aria-hidden="true" />
     </span>
-  );
-}
-
-function CampBackdrop() {
-  return (
-    <>
-      <div className="pointer-events-none absolute bottom-5 left-10 z-10 h-5 w-16 -rotate-6 rounded-[50%] bg-stone-200/25" />
-      <div className="pointer-events-none absolute bottom-12 right-16 z-10 h-4 w-12 rotate-12 rounded-[50%] bg-stone-200/20" />
-      <div className="pointer-events-none absolute left-[28%] top-[26%] z-10 h-3 w-24 rounded-full bg-stone-950/18 blur-sm" />
-      <div className="pointer-events-none absolute right-[22%] top-[35%] z-10 h-3 w-28 rounded-full bg-stone-950/16 blur-sm" />
-      <div
-        aria-hidden="true"
-        className="pointer-events-none absolute inset-0 z-20"
-        style={{
-          background:
-            "radial-gradient(ellipse at 50% 44%, transparent 0%, rgba(0,0,0,0.06) 55%, rgba(0,0,0,0.34) 100%)",
-        }}
-      />
-    </>
-  );
-}
-
-function UiArtFrame() {
-  return (
-    <>
-      <div className="pointer-events-none absolute inset-0 z-10 bg-stone-950/10" />
-      <Image
-        src={UI_ART.smoke}
-        alt=""
-        width={640}
-        height={640}
-        aria-hidden="true"
-        className="pointer-events-none absolute left-[16%] top-[10%] z-20 h-56 w-56 opacity-[0.10] mix-blend-multiply"
-      />
-      <Image
-        src={UI_ART.mud}
-        alt=""
-        width={320}
-        height={320}
-        aria-hidden="true"
-        className="pointer-events-none absolute bottom-2 left-[16%] z-20 h-32 w-32 opacity-[0.18] mix-blend-multiply"
-      />
-      <Image
-        src={UI_ART.banner}
-        alt=""
-        width={160}
-        height={220}
-        aria-hidden="true"
-        className="pointer-events-none absolute left-3 top-[17%] z-20 hidden h-24 w-16 opacity-80 drop-shadow-lg md:block"
-      />
-      <Image
-        src={UI_ART.cornerTopLeft}
-        alt=""
-        width={96}
-        height={96}
-        aria-hidden="true"
-        className="pointer-events-none absolute left-1 top-1 z-30 h-10 w-10 opacity-70"
-      />
-      <Image
-        src={UI_ART.cornerTopRight}
-        alt=""
-        width={96}
-        height={96}
-        aria-hidden="true"
-        className="pointer-events-none absolute right-1 top-1 z-30 h-10 w-10 opacity-70"
-      />
-      <Image
-        src={UI_ART.cornerBottomLeft}
-        alt=""
-        width={96}
-        height={96}
-        aria-hidden="true"
-        className="pointer-events-none absolute bottom-1 left-1 z-30 h-10 w-10 opacity-55"
-      />
-      <Image
-        src={UI_ART.cornerBottomRight}
-        alt=""
-        width={96}
-        height={96}
-        aria-hidden="true"
-        className="pointer-events-none absolute bottom-1 right-1 z-30 h-10 w-10 opacity-55"
-      />
-    </>
   );
 }

@@ -1,4 +1,4 @@
-import { combatAnimationPreset } from "@/lib/combat/animation-presets";
+import { combatAnimationPreset } from "@/lib/domain/combat/animation-presets";
 import { enemyDefinitions, getEnemy, getEnemySpriteImagePath, getEquipmentBonuses, getWound } from "@/lib/game-data";
 import type { MissionDefinition, Soldier } from "@/lib/types";
 import type { CombatEnemy, CombatEventLogEntry, CombatPreview, CombatResult } from "./combat-types";

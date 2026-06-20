@@ -11,7 +11,7 @@ import { ItemChestGrid, VENDOR_CHEST_GRID, footprintPx } from "@/components/sold
 import { featuredAssetPaths, getItem, getItemFootprint, getItemImagePath, shopInventory } from "@/lib/game-data";
 import { useGameStore } from "@/lib/game-store";
 import { playCoinSound, playDefeatSound, playPageSound } from "@/lib/sounds";
-import { BACKPACK_CHESTS, BACKPACK_COLS, BACKPACK_ROWS, inventoryWithAutoLayout } from "@/lib/inventory-grid";
+import { BACKPACK_CHESTS, BACKPACK_COLS, BACKPACK_ROWS, inventoryWithAutoLayout } from "@/lib/domain/inventory-grid";
 import type { ItemDefinition, InventoryItem } from "@/lib/types";
 
 type DragSource = "merchant" | "backpack";

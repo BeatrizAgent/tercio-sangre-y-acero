@@ -4,7 +4,7 @@
 
 import { AlertTriangle, Check } from "lucide-react";
 import { Tooltip } from "./tooltip";
-import type { FitState } from "@/lib/formation";
+import type { FitState } from "@/lib/domain/formation";
 
 const FIT_COPY: Record<FitState, { label: string; tooltip: string }> = {
   encaja: {

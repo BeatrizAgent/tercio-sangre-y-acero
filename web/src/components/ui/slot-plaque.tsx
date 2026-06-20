@@ -11,7 +11,7 @@ import {
   COMBAT_STAT_LABEL,
   FORMATION_META,
   type FormationMeta,
-} from "@/lib/formation";
+} from "@/lib/domain/formation";
 import type { FormationSlot } from "@/lib/types";
 import { formationRoleIconPaths } from "@/lib/game-data";
 

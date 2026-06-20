@@ -2,7 +2,7 @@
 
 import type { MissionDefinition, Soldier } from "@/lib/types";
 import { CombatResolutionModal } from "@/components/combat/CombatResolutionModal";
-import { buildCombatResult } from "@/lib/combat/combat-resolver";
+import { buildCombatResult } from "@/lib/domain/combat/combat-resolver";
 
 interface MissionCanvasResolverProps {
   mission: MissionDefinition;

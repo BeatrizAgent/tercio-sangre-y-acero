@@ -1,7 +1,7 @@
 import { missionDefinitions } from "./game-data";
 import { getState, saveState } from "./demo-store";
 import { getNextRank } from "./soldier";
-import { resolveMission } from "./resolver";
+import { resolveMission } from "./domain/resolver";
 
 export function listAvailableMissions() {
   return missionDefinitions;

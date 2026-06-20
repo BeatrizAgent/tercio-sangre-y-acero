@@ -1,7 +1,7 @@
 import { create } from "zustand";
 import { persist } from "zustand/middleware";
 import type { ArenaResult, EquipmentSlot, GameState, StatId } from "./types";
-import { resolveMission } from "./resolver";
+import { resolveMission } from "./domain/resolver";
 import {
   createCharacterStates,
   churchBlessings,
@@ -23,7 +23,7 @@ import {
   canPlaceItem,
   inventoryWithAutoLayout,
   moveInventoryItem as gridMoveItem,
-} from "./inventory-grid";
+} from "./domain/inventory-grid";
 import { recruitCandidateIntoState } from "./recruitment";
 
 const PLAYER_CHARACTER_ID = "diego_de_arce";

@@ -1,5 +1,5 @@
-import type { InventoryItem } from "./types";
-import { getItem, getItemFootprint } from "./game-data";
+import type { InventoryItem } from "../types";
+import { getItem, getItemFootprint } from "../game-data";
 
 export const BACKPACK_COLS = 8;
 export const BACKPACK_ROWS = 5;

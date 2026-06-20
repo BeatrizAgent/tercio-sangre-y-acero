@@ -1,7 +1,7 @@
 import { mkdir, readFile, writeFile } from "node:fs/promises";
 import path from "node:path";
 import type { GameState } from "./types";
-import { inventoryWithAutoLayout } from "./inventory-grid";
+import { inventoryWithAutoLayout } from "./domain/inventory-grid";
 import { createCharacterStates } from "./game-data";
 
 const PLAYER_CHARACTER_ID = "diego_de_arce";

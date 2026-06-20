@@ -8,7 +8,7 @@ import {
   FORMATION_META,
   FORMATION_ORDER,
   getFitState,
-} from "@/lib/formation";
+} from "@/lib/domain/formation";
 import { Tooltip } from "@/components/ui/tooltip";
 
 const ROMAN = ["I", "II", "III", "IV", "V", "VI", "VII", "VIII", "IX", "X"];

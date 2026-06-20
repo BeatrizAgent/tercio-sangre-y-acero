@@ -2,13 +2,13 @@
 
 import { useEffect, useRef } from "react";
 import type { Application, Sprite, Text, Texture } from "pixi.js";
-import type { CombatResult } from "@/lib/combat/combat-types";
-import { COMBAT_CANVAS_HEIGHT, COMBAT_CANVAS_WIDTH, outcomeDelayMs } from "@/lib/combat/combat-animation-script";
-import { combatAnimationPreset, combatShakePreset } from "@/lib/combat/animation-presets";
+import type { CombatResult } from "@/lib/domain/combat/combat-types";
+import { COMBAT_CANVAS_HEIGHT, COMBAT_CANVAS_WIDTH, outcomeDelayMs } from "@/lib/domain/combat/combat-animation-script";
+import { combatAnimationPreset, combatShakePreset } from "@/lib/domain/combat/animation-presets";
 import { LayeredSoldierSprite } from "./LayeredSoldierSprite";
 import { SpriteEffectLayer, type RuntimeParticle } from "./SpriteEffectLayer";
 import { CombatTimeline, createCombatTimelineState } from "./CombatTimeline";
-import { buildCombatScenePlan, getActorStateAt, type CombatSceneActor } from "@/lib/combat/combat-scene-plan";
+import { buildCombatScenePlan, getActorStateAt, type CombatSceneActor } from "@/lib/domain/combat/combat-scene-plan";
 
 import {
   getMission,

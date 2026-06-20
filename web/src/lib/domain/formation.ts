@@ -9,7 +9,7 @@ import {
   Tent,
   type LucideIcon,
 } from "lucide-react";
-import type { CharacterState, FormationSlot, StatId, Stats } from "./types";
+import type { CharacterState, FormationSlot, StatId, Stats } from "../types";
 
 export const FORMATION_CHARACTER_IDS = [
   "diego_de_arce",

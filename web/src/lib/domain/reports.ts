@@ -1,5 +1,5 @@
-import { reportFragmentDefinitions, getItem, getWound } from "./game-data";
-import type { MissionDefinition, MissionResult, Soldier } from "./types";
+import { reportFragmentDefinitions, getItem, getWound } from "../game-data";
+import type { MissionDefinition, MissionResult, Soldier } from "../types";
 
 export function generateReport(
   result: Pick<MissionResult, "success" | "rewards" | "fatigue" | "wounds" | "loot"> & { bestPower: string },

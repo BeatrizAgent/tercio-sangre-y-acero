@@ -9,7 +9,7 @@ import {
   BACKPACK_CHESTS,
   BACKPACK_COLS,
   BACKPACK_ROWS,
-} from "@/lib/inventory-grid";
+} from "@/lib/domain/inventory-grid";
 import type { Equipment, InventoryItem } from "@/lib/types";
 
 const ROMAN = ["I", "II", "III", "IV", "V", "VI", "VII", "VIII"];

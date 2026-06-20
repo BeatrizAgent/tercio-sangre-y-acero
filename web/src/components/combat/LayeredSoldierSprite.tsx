@@ -1,8 +1,8 @@
 "use client";
 
 import type { Container } from "pixi.js";
-import { combatSpriteManifest } from "@/lib/combat/sprite-manifest";
-import type { CombatSpriteKind, CombatWeaponKind } from "@/lib/combat/sprite-types";
+import { combatSpriteManifest } from "@/lib/domain/combat/sprite-manifest";
+import type { CombatSpriteKind, CombatWeaponKind } from "@/lib/domain/combat/sprite-types";
 import { addRimLight, drawWeaponSprite, type PixiRuntime } from "./CombatSprite";
 
 export interface LayeredSoldierOptions {

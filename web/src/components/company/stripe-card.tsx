@@ -12,7 +12,7 @@ import {
   COMBAT_STAT_LABEL,
   getFitState,
   pickTopStat,
-} from "@/lib/formation";
+} from "@/lib/domain/formation";
 
 export const TERCIO_DND_TYPE = "application/x-tercio-character";
 

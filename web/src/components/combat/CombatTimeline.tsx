@@ -1,8 +1,8 @@
 "use client";
 
-import { combatAnimationPreset, combatShakePreset } from "@/lib/combat/animation-presets";
-import type { CombatResult } from "@/lib/combat/combat-types";
-import { playCombatSound } from "@/lib/combat/combat-audio";
+import { combatAnimationPreset, combatShakePreset } from "@/lib/domain/combat/animation-presets";
+import type { CombatResult } from "@/lib/domain/combat/combat-types";
+import { playCombatSound } from "@/lib/domain/combat/combat-audio";
 
 export type CombatTimelineState = {
   shotTriggered: boolean;

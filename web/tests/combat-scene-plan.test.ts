@@ -1,6 +1,6 @@
 import assert from "node:assert/strict";
-import { buildCombatScenePlan, getActorStateAt } from "../src/lib/combat/combat-scene-plan";
-import type { CombatResult } from "../src/lib/combat/combat-types";
+import { buildCombatScenePlan, getActorStateAt } from "../src/lib/domain/combat/combat-scene-plan";
+import type { CombatResult } from "../src/lib/domain/combat/combat-types";
 
 const baseResult: CombatResult = {
   success: true,

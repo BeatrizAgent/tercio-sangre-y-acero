@@ -20,7 +20,7 @@ import {
   FORMATION_META,
   getFitState,
   pickTopStat,
-} from "@/lib/formation";
+} from "@/lib/domain/formation";
 import { getAssetPathById } from "@/lib/game-data";
 import { CharacterPortrait } from "@/components/ui/character-portrait";
 import { FormationBackdrop } from "@/components/ui/formation-backdrop";

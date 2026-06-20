@@ -14,8 +14,8 @@ const required = [
   "src/app/arena/page.tsx",
   "src/app/company/page.tsx",
   "src/app/recruitment/page.tsx",
-  "src/lib/resolver.ts",
-  "src/lib/reports.ts",
+  "src/lib/domain/resolver.ts",
+  "src/lib/domain/reports.ts",
   "src/lib/actions.ts",
   "prisma/schema.prisma",
   "prisma/seed.ts",
@@ -103,7 +103,7 @@ for (const token of ["armory-slot-grid", "ARMORY_CELL_SIZE", "getItemFootprint",
 }
 if (armoryPage.includes("Inspeccion")) failures.push("armory UX still has inspection panel");
 
-const formation = fs.readFileSync(path.join(root, "src/lib/formation.ts"), "utf8");
+const formation = fs.readFileSync(path.join(root, "src/lib/domain/formation.ts"), "utf8");
 for (const token of ["TercioFormationPresetId", "TERCIO_FORMATION_PRESETS", "cuadro_de_picas", "reserva_cerrada"]) {
   if (!formation.includes(token)) failures.push(`formation presets missing ${token}`);
 }

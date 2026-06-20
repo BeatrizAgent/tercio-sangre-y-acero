@@ -1,6 +1,6 @@
-import { combatAnimationPreset } from "@/lib/combat/animation-presets";
-import type { CombatResult } from "@/lib/combat/combat-types";
-import { getRelevantCombatStat } from "@/lib/combat/combat-resolver";
+import { combatAnimationPreset } from "@/lib/domain/combat/animation-presets";
+import type { CombatResult } from "@/lib/domain/combat/combat-types";
+import { getRelevantCombatStat } from "@/lib/domain/combat/combat-resolver";
 import { missionTeamSpriteByStat } from "@/lib/game-data";
 import type { StatId } from "@/lib/types";
 

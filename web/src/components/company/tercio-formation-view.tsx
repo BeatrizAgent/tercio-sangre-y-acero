@@ -15,7 +15,7 @@ import {
   type FormationDoctrine,
   type TercioFormationPreset,
   type TercioFormationPresetId,
-} from "@/lib/formation";
+} from "@/lib/domain/formation";
 import { UiAssetIcon } from "@/components/ui/ui-asset-icon";
 import { Tooltip } from "@/components/ui/tooltip";
 import { playPageSound } from "@/lib/sounds";

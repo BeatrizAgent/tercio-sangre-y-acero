@@ -2,8 +2,8 @@
 
 import { useCallback, useEffect, useMemo, useState } from "react";
 import { Swords, X } from "lucide-react";
-import type { CombatResolutionModalProps } from "@/lib/combat/combat-types";
-import { outcomeDelayMs } from "@/lib/combat/combat-animation-script";
+import type { CombatResolutionModalProps } from "@/lib/domain/combat/combat-types";
+import { outcomeDelayMs } from "@/lib/domain/combat/combat-animation-script";
 import { CombatStage } from "./CombatStage";
 import { CombatHud } from "./CombatHud";
 import { CombatLog } from "./CombatLog";

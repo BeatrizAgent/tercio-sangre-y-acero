@@ -10,7 +10,7 @@ import { Tooltip } from "@/components/ui/tooltip";
 import { UiAssetIcon } from "@/components/ui/ui-asset-icon";
 import { NpcOfferFrame } from "@/components/game/visual-offers";
 import { PlayerChestPanel } from "@/components/soldier/player-chest-panel";
-import { BACKPACK_CHESTS, BACKPACK_COLS, BACKPACK_ROWS, inventoryWithAutoLayout } from "@/lib/inventory-grid";
+import { BACKPACK_CHESTS, BACKPACK_COLS, BACKPACK_ROWS, inventoryWithAutoLayout } from "@/lib/domain/inventory-grid";
 import {
   assetPath,
   churchBlessings,

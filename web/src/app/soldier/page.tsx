@@ -7,7 +7,7 @@ import {
   BACKPACK_CHESTS,
   BACKPACK_ROWS,
   inventoryWithAutoLayout,
-} from "@/lib/inventory-grid";
+} from "@/lib/domain/inventory-grid";
 import {
   getEquipmentBonuses,
   getAssetPathById,

@@ -1,7 +1,7 @@
 "use client";
 
 import type { Container, Graphics, Text } from "pixi.js";
-import { rainParticlePreset, smokeParticlePreset, sparkParticlePreset } from "@/lib/combat/particle-presets";
+import { rainParticlePreset, smokeParticlePreset, sparkParticlePreset } from "@/lib/domain/combat/particle-presets";
 import type { PixiRuntime } from "./CombatSprite";
 
 export interface RuntimeParticle {

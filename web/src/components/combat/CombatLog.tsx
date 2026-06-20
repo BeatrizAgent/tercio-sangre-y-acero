@@ -1,4 +1,4 @@
-import type { CombatEventLogEntry, CombatResult } from "@/lib/combat/combat-types";
+import type { CombatEventLogEntry, CombatResult } from "@/lib/domain/combat/combat-types";
 
 interface CombatLogProps {
   result: CombatResult;

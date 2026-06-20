@@ -1,6 +1,6 @@
-import { enemyDefinitions, lootTableDefinitions, getEquipmentBonuses } from "./game-data";
+import { enemyDefinitions, lootTableDefinitions, getEquipmentBonuses } from "../game-data";
 import { generateReport } from "./reports";
-import type { MissionDefinition, MissionResult, Soldier, StatId } from "./types";
+import type { MissionDefinition, MissionResult, Soldier, StatId } from "../types";
 
 export function resolveMission(soldier: Soldier, mission: MissionDefinition): MissionResult {
   const equipmentBonuses = getEquipmentBonuses(soldier.equipment);

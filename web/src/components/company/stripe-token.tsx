@@ -11,7 +11,7 @@ import {
   getFitState,
   isNCOInStress,
   pickTopStat,
-} from "@/lib/formation";
+} from "@/lib/domain/formation";
 import { RoleIcon } from "@/components/ui/role-icon";
 import { fatigueLabel } from "@/components/ui/stat-chip";
 import { Tooltip } from "@/components/ui/tooltip";

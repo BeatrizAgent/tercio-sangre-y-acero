@@ -62,7 +62,12 @@ for (const token of ["interface CharacterDefinition", "interface CharacterState"
   if (!types.includes(token)) failures.push(`types missing ${token}`);
 }
 
-const data = fs.readFileSync(path.join(root, "src/lib/game-data.ts"), "utf8");
+const dataFiles = [
+  "src/lib/data/index.ts",
+  "src/lib/data/arena.ts",
+  "src/lib/data/characters.ts",
+].map((file) => fs.readFileSync(path.join(root, file), "utf8"));
+const data = dataFiles.join("\n");
 for (const token of ["arenaOpponents", "listArenaOpponents", "getArenaOpponent"]) {
   if (!data.includes(token)) failures.push(`game-data missing ${token}`);
 }

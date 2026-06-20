@@ -253,6 +253,84 @@ export interface ArenaResult {
   createdAt: string;
 }
 
+export interface Rank {
+  id: string;
+  name: string;
+  minXp: number;
+  minHonor: number;
+}
+
+export interface Enemy {
+  id: string;
+  name: string;
+  power: number;
+  description: string;
+  portraitAssetId: string;
+}
+
+export interface WoundDefinition {
+  id: string;
+  name: string;
+  severity: number;
+  effects: Partial<Record<string, number>>;
+  description: string;
+  treatmentItems: string[];
+}
+
+export interface ReportFragment {
+  id: string;
+  type: string;
+  tags: string[];
+  text: string;
+}
+
+export interface BossEntry {
+  id: string;
+  title: string;
+  type: string;
+  difficulty: number;
+  enemyId: string;
+  portraitAssetId?: string;
+  rewards: { coins: number; xp: number; honor: number };
+  fatigue: number;
+  woundChance: number;
+  missionId?: string;
+}
+
+export interface Region {
+  id: RegionId;
+  name: string;
+  description: string;
+  x: number;
+  y: number;
+  bosses: BossEntry[];
+}
+
+export interface RecruitmentCost {
+  coins?: number;
+  honor?: number;
+  reputation?: number;
+}
+
+export interface RecruitmentCandidate {
+  id: string;
+  hook: string;
+  cost: RecruitmentCost;
+  character: CharacterDefinition;
+}
+
+export interface LootDrop {
+  itemId: string;
+  quantity: number;
+  weight?: number;
+}
+
+export interface LootTable {
+  id: string;
+  description?: string;
+  drops: LootDrop[];
+}
+
 export interface GameState {
   soldier: Soldier;
   characters: CharacterState[];

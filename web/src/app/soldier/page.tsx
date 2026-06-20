@@ -22,21 +22,12 @@ import { PageTransition } from "@/components/game/page-transition";
 import { EquipmentMannequin } from "@/components/soldier/equipment-mannequin";
 import { PlayerChestPanel } from "@/components/soldier/player-chest-panel";
 import { passiveShortLine, rarityStyle, TRIGGER_LABEL } from "@/lib/item-format";
+import { STAT_LABELS } from "@/lib/stats";
 import type { CharacterState, Equipment, EquipmentSlot, FormationSlot, Passive, Stats, StatId } from "@/lib/types";
 
 type Tab = "vision_general" | "estadisticas" | "logros" | "familia";
 
 const STAT_ORDER: StatId[] = ["pike", "sword", "arquebus", "discipline", "vigor", "cunning", "command"];
-
-const STAT_LABELS: Record<StatId, string> = {
-  pike: "Pica",
-  sword: "Espada",
-  arquebus: "Arcabuz",
-  discipline: "Disciplina",
-  vigor: "Vigor",
-  cunning: "Astucia",
-  command: "Mando",
-};
 
 type ProfilePreset = {
   id: string;

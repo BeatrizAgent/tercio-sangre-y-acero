@@ -96,6 +96,8 @@ export function createInitialState(): GameState {
     arenaResults: [],
     activeEvent: null,
     pendingMissionId: null,
+    // Multiplayer fields stay undefined in single-player state; lib/realtime/*
+    // will populate them when Django Channels is wired up.
   };
   return rosterWithSoldier(state);
 }
@@ -118,6 +120,13 @@ export interface GameStore extends GameState {
   resolveActiveEventChoice: (choiceId: string) => ActionResult<{ reportId?: string }>;
   payTownBribe: () => ActionResult;
   treatWound: (woundInstanceId: string) => ActionResult;
+  /**
+   * Apply a server-pushed event (Django Channels). Today the realtime
+   * layer does not exist; the method is here so the WebSocket client
+   * will have a single entry point to mutate the store from outside
+   * React. Each variant of the ServerEvent union is handled explicitly.
+   */
+  applyServerEvent: (event: import("../types").ServerEvent) => void;
   resetState: () => void;
 }
 
@@ -409,6 +418,49 @@ export const useGameStore = create<GameStore>()(
 
       resetState: () => {
         set({ ...createInitialState() });
+      },
+
+      applyServerEvent: (event) => {
+        switch (event.type) {
+          case "leaderboard.updated":
+            set({ leaderboard: event.entries });
+            return;
+          case "guild.member.joined":
+            set((state) => ({
+              guildMembers: [
+                ...(state.guildMembers ?? []).filter((member) => member.id !== event.member.id),
+                event.member,
+              ],
+            }));
+            return;
+          case "guild.member.left":
+            set((state) => ({
+              guildMembers: (state.guildMembers ?? []).filter(
+                (member) => member.id !== event.memberId,
+              ),
+            }));
+            return;
+          case "notification.new":
+            set((state) => ({
+              notifications: [event.notification, ...(state.notifications ?? [])],
+            }));
+            return;
+          case "notification.read":
+            set((state) => ({
+              notifications: (state.notifications ?? []).map((notification) =>
+                notification.id === event.notificationId
+                  ? { ...notification, read: true }
+                  : notification,
+              ),
+            }));
+            return;
+          default: {
+            // Exhaustiveness check: if a new ServerEvent variant is added
+            // without an arm here, TypeScript will flag this assignment.
+            const _exhaustive: never = event;
+            return _exhaustive;
+          }
+        }
       },
     }),
     {

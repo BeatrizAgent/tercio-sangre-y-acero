@@ -339,4 +339,55 @@ export interface GameState {
   arenaResults: ArenaResult[];
   activeEvent: GameEvent | null;
   pendingMissionId: string | null;
+  // Multiplayer fields: all optional so single-player state shape keeps
+  // working. They are populated by lib/realtime/* when Django Channels
+  // pushes updates; today they are simply undefined.
+  guildMembers?: GuildMember[];
+  leaderboard?: LeaderboardEntry[];
+  notifications?: Notification[];
 }
+
+// ---- Multiplayer primitives (commit 5 seam) -------------------------------
+//
+// Three types the WebSocket layer will push. The current build never sets
+// these fields; when Channels is wired up, lib/realtime/* will call
+// useGameStore.getState().applyServerEvent(...) to fold a ServerEvent
+// into the right slice of state.
+
+export interface GuildMember {
+  id: string;
+  name: string;
+  role: string;
+  rank: string;
+  isOnline: boolean;
+  contribution: number;
+}
+
+export interface LeaderboardEntry {
+  rank: number;
+  playerId: string;
+  playerName: string;
+  honor: number;
+  reputation: number;
+  guildId?: string;
+}
+
+export type NotificationKind = "report" | "wound" | "rank" | "guild" | "market" | "message";
+
+export interface Notification {
+  id: string;
+  type: NotificationKind;
+  title: string;
+  body: string;
+  read: boolean;
+  createdAt: string;
+}
+
+// Discriminated union of every server-pushed event the client can apply.
+// Add a new variant here when lib/realtime/* learns to push a new shape.
+export type ServerEvent =
+  | { type: "leaderboard.updated"; entries: LeaderboardEntry[] }
+  | { type: "guild.member.joined"; member: GuildMember }
+  | { type: "guild.member.left"; memberId: string }
+  | { type: "notification.new"; notification: Notification }
+  | { type: "notification.read"; notificationId: string };

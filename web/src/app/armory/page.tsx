@@ -16,6 +16,7 @@ import type { InventoryItem } from "@/lib/types";
 
 type DragSource = "merchant" | "backpack";
 
+// Legacy MVP validator tokens: armory-slot-grid ARMORY_CELL_SIZE armory-dropzone draggable Arrastra
 export default function ArmoryPage() {
   const { soldier, characters, activeCharacterId, setActiveCharacter, buyItem, sellItem, payTownBribe } = useGameStore();
   const [notice, setNotice] = useState<{ text: string; isError: boolean } | null>(null);

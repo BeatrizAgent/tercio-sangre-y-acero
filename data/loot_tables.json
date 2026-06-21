@@ -1,32 +1,32 @@
 [
   {
     "id": "watch_loot",
-    "description": "Botín de guardia nocturna. Pólvora, mendrugos, reliquias dudosas.",
+    "description": "Botín de guardia nocturna. Mendrugos, aceite y reliquias dudosas.",
     "drops": [
       {
-        "id": "prop_aceite_de_armas_013",
+        "id": "prop_pan_de_municion_004",
         "quantity": 1,
-        "weight": 40
+        "weight": 30
       },
       {
-        "id": "prop_moneda_de_plata_011",
+        "id": "prop_aceite_de_armas_013",
         "quantity": 1,
         "weight": 25
       },
       {
-        "id": "prop_polvora_humeda_001",
+        "id": "prop_moneda_de_plata_011",
         "quantity": 1,
-        "weight": 15
+        "weight": 20
       },
       {
-        "id": "prop_mechas_de_repuesto_009",
+        "id": "prop_polvora_humeda_001",
         "quantity": 1,
-        "weight": 10
+        "weight": 12
       },
       {
         "id": "prop_cuentas_de_un_rosario_020",
         "quantity": 1,
-        "weight": 5
+        "weight": 8
       },
       {
         "id": "prop_capa_de_la_compania_017",
@@ -37,17 +37,17 @@
   },
   {
     "id": "patrol_loot",
-    "description": "Patrulla de camino. Comida, monedas, fragmentos de estandarte.",
+    "description": "Patrulla de camino. Comida, monedas y piezas menores de campaña.",
     "drops": [
-      {
-        "id": "prop_aceite_de_armas_013",
-        "quantity": 2,
-        "weight": 30
-      },
       {
         "id": "prop_salazon_de_carne_008",
         "quantity": 1,
-        "weight": 20
+        "weight": 24
+      },
+      {
+        "id": "prop_bota_de_vino_003",
+        "quantity": 1,
+        "weight": 18
       },
       {
         "id": "prop_fragmento_de_bandera_006",
@@ -60,109 +60,196 @@
         "weight": 15
       },
       {
-        "id": "prop_especias_de_italia_015",
+        "id": "prop_bolsa_de_suministros_018",
         "quantity": 1,
         "weight": 10
       },
       {
-        "id": "prop_bolsa_de_suministros_018",
+        "id": "common_sword_007",
         "quantity": 1,
-        "weight": 5
+        "weight": 8
       },
       {
         "id": "aux_001",
         "quantity": 1,
-        "weight": 4
+        "weight": 6
       },
       {
-        "id": "prop_reliquia_de_santiago_019",
+        "id": "prop_mapa_de_flandes_016",
         "quantity": 1,
-        "weight": 1
+        "weight": 4
       }
     ]
   },
   {
     "id": "powder_loot",
-    "description": "Escolta de pólvora. Munición fiable, alguna pieza uncommon.",
+    "description": "Escolta de pólvora. Mechas, piedra, pólvora y armas de fuego tempranas.",
     "drops": [
-      {
-        "id": "aux_007",
-        "quantity": 2,
-        "weight": 25
-      },
       {
         "id": "prop_mechas_de_repuesto_009",
         "quantity": 2,
-        "weight": 20
+        "weight": 24
       },
       {
         "id": "prop_piedra_de_mechero_014",
         "quantity": 1,
+        "weight": 18
+      },
+      {
+        "id": "prop_polvora_humeda_001",
+        "quantity": 1,
         "weight": 15
       },
       {
-        "id": "uncommon_pike_011",
+        "id": "common_arquebus_009",
+        "quantity": 1,
+        "weight": 12
+      },
+      {
+        "id": "uncommon_arquebus_021",
         "quantity": 1,
         "weight": 10
       },
       {
-        "id": "uncommon_sword_016",
+        "id": "aux_007",
         "quantity": 1,
-        "weight": 10
+        "weight": 8
       },
       {
         "id": "prop_botella_de_aguardiente_007",
         "quantity": 1,
-        "weight": 10
-      },
-      {
-        "id": "rare_pike_031",
-        "quantity": 1,
-        "weight": 5
-      },
-      {
-        "id": "aux_005",
-        "quantity": 1,
-        "weight": 4
-      },
-      {
-        "id": "prop_mapa_de_flandes_016",
-        "quantity": 1,
-        "weight": 1
-      }
-    ]
-  },
-  {
-    "id": "siege_loot",
-    "description": "Botín de sitio. Piezas raras y épicas. Honor antes que vida.",
-    "drops": [
-      {
-        "id": "rare_sword_036",
-        "quantity": 1,
-        "weight": 20
+        "weight": 8
       },
       {
         "id": "rare_arquebus_041",
         "quantity": 1,
-        "weight": 15
+        "weight": 5
+      }
+    ]
+  },
+  {
+    "id": "ambush_loot",
+    "description": "Botín de emboscada. Equipo arrancado de un camino perdido.",
+    "drops": [
+      {
+        "id": "uncommon_sword_016",
+        "quantity": 1,
+        "weight": 22
+      },
+      {
+        "id": "uncommon_pike_011",
+        "quantity": 1,
+        "weight": 18
+      },
+      {
+        "id": "armor_boots_uncommon_015",
+        "quantity": 1,
+        "weight": 14
+      },
+      {
+        "id": "prop_bolsa_de_suministros_018",
+        "quantity": 1,
+        "weight": 14
+      },
+      {
+        "id": "prop_vendas_de_lino_002",
+        "quantity": 2,
+        "weight": 12
+      },
+      {
+        "id": "aux_005",
+        "quantity": 1,
+        "weight": 10
+      },
+      {
+        "id": "rare_sword_036",
+        "quantity": 1,
+        "weight": 6
       },
       {
         "id": "rare_pike_031",
         "quantity": 1,
-        "weight": 15
-      },
+        "weight": 4
+      }
+    ]
+  },
+  {
+    "id": "skirmish_loot",
+    "description": "Botín de escaramuza. Armas fiables, vendas y piezas raras.",
+    "drops": [
       {
-        "id": "epic_pike_051",
+        "id": "uncommon_arquebus_022",
         "quantity": 1,
-        "weight": 10
+        "weight": 20
       },
       {
-        "id": "epic_sword_054",
+        "id": "uncommon_sword_017",
         "quantity": 1,
-        "weight": 10
+        "weight": 18
       },
       {
-        "id": "epic_arquebus_057",
+        "id": "armor_helmet_uncommon_011",
+        "quantity": 1,
+        "weight": 14
+      },
+      {
+        "id": "prop_vendas_de_lino_002",
+        "quantity": 2,
+        "weight": 14
+      },
+      {
+        "id": "prop_reliquia_dudosa_005",
+        "quantity": 1,
+        "weight": 12
+      },
+      {
+        "id": "rare_arquebus_041",
+        "quantity": 1,
+        "weight": 9
+      },
+      {
+        "id": "rare_sword_037",
+        "quantity": 1,
+        "weight": 8
+      },
+      {
+        "id": "aux_008",
+        "quantity": 1,
+        "weight": 5
+      }
+    ]
+  },
+  {
+    "id": "pay_chest_loot",
+    "description": "Cofre de pagas mal cerrado. Plata, vergüenza y objetos empeñados.",
+    "drops": [
+      {
+        "id": "prop_moneda_de_plata_011",
+        "quantity": 2,
+        "weight": 25
+      },
+      {
+        "id": "prop_carta_del_hogar_012",
+        "quantity": 1,
+        "weight": 18
+      },
+      {
+        "id": "prop_reliquia_de_santiago_019",
+        "quantity": 1,
+        "weight": 12
+      },
+      {
+        "id": "armor_cuirass_uncommon_013",
+        "quantity": 1,
+        "weight": 12
+      },
+      {
+        "id": "uncommon_pike_012",
+        "quantity": 1,
+        "weight": 12
+      },
+      {
+        "id": "rare_sword_038",
         "quantity": 1,
         "weight": 8
       },
@@ -172,29 +259,111 @@
         "weight": 8
       },
       {
+        "id": "rare_pike_032",
+        "quantity": 1,
+        "weight": 5
+      }
+    ]
+  },
+  {
+    "id": "siege_loot",
+    "description": "Botín de sitio. Piezas raras, pólvora útil y heridas que pesan más que la plata.",
+    "drops": [
+      {
+        "id": "rare_sword_036",
+        "quantity": 1,
+        "weight": 18
+      },
+      {
+        "id": "rare_arquebus_041",
+        "quantity": 1,
+        "weight": 16
+      },
+      {
+        "id": "rare_pike_031",
+        "quantity": 1,
+        "weight": 16
+      },
+      {
+        "id": "armor_cuirass_rare_027",
+        "quantity": 1,
+        "weight": 12
+      },
+      {
+        "id": "epic_pike_051",
+        "quantity": 1,
+        "weight": 10
+      },
+      {
+        "id": "epic_sword_054",
+        "quantity": 1,
+        "weight": 9
+      },
+      {
+        "id": "epic_arquebus_057",
+        "quantity": 1,
+        "weight": 7
+      },
+      {
         "id": "prop_reliquia_de_santiago_019",
         "quantity": 1,
-        "weight": 6
+        "weight": 7
       },
       {
         "id": "aux_008",
         "quantity": 1,
-        "weight": 4
+        "weight": 5
+      }
+    ]
+  },
+  {
+    "id": "commander_loot",
+    "description": "Botín del comandante del baluarte. Trofeos de verdad, pocos y caros.",
+    "drops": [
+      {
+        "id": "epic_pike_052",
+        "quantity": 1,
+        "weight": 18
+      },
+      {
+        "id": "epic_sword_055",
+        "quantity": 1,
+        "weight": 16
+      },
+      {
+        "id": "epic_arquebus_058",
+        "quantity": 1,
+        "weight": 14
+      },
+      {
+        "id": "armor_cuirass_epic_043",
+        "quantity": 1,
+        "weight": 12
+      },
+      {
+        "id": "armor_helmet_epic_041",
+        "quantity": 1,
+        "weight": 10
+      },
+      {
+        "id": "prop_mapa_de_flandes_016",
+        "quantity": 1,
+        "weight": 10
       },
       {
         "id": "legendary_main_hand_003",
         "quantity": 1,
-        "weight": 2
+        "weight": 5
       },
       {
         "id": "legendary_body_001",
         "quantity": 1,
-        "weight": 1
+        "weight": 3
       },
       {
         "id": "legendary_firearm_005",
         "quantity": 1,
-        "weight": 1
+        "weight": 2
       }
     ]
   }

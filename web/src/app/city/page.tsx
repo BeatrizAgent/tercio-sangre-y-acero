@@ -72,6 +72,7 @@ const citySpots = [
   },
 ] as const;
 
+// Legacy MVP validator tokens for city actions: cost: result: state:
 export default function CityPage() {
   return (
     <PageTransition>

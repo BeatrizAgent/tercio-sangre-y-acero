@@ -4,7 +4,7 @@ import React, { useMemo } from "react";
 import Image from "next/image";
 import { AlertTriangle, Check } from "lucide-react";
 import type { CharacterState } from "@/lib/types";
-import { getAssetPathById } from "@/lib/game-data";
+import { formationRoleIconPaths, getAssetPathById } from "@/lib/game-data";
 import { TERCIO_DND_TYPE } from "./stripe-card";
 import {
   COMBAT_STAT_LABEL,
@@ -12,7 +12,6 @@ import {
   isNCOInStress,
   pickTopStat,
 } from "@/lib/domain/formation";
-import { RoleIcon } from "@/components/ui/role-icon";
 import { fatigueLabel } from "@/components/ui/stat-chip";
 import { Tooltip } from "@/components/ui/tooltip";
 
@@ -24,9 +23,9 @@ interface TokenDim {
 }
 
 const SIZE: Record<TokenSize, TokenDim> = {
-  sm: { height: 118, width: 54 },
-  md: { height: 158, width: 74 },
-  lg: { height: 198, width: 94 },
+  sm: { height: 150, width: 72 },
+  md: { height: 210, width: 104 },
+  lg: { height: 270, width: 132 },
 };
 
 const SLOT_POSE: Record<string, string> = {
@@ -51,6 +50,14 @@ const STAGGER: string[] = [
   "md:translate-x-3",
   "md:-translate-x-5",
 ];
+
+const COMPANY_SPRITE_PATH: Record<string, string> = {
+  diego_de_arce: "/assets/generated/company-sprites/pikeman_player.png",
+  lope_de_saavedra: "/assets/generated/company-sprites/arquebusier_player.png",
+  martin_de_cuenca: "/assets/generated/company-sprites/surgeon.png",
+  alonso_de_valdes: "/assets/generated/company-sprites/captain_player.png",
+  sancho_de_leiva: "/assets/generated/company-sprites/halberdier_player.png",
+};
 
 interface StripeTokenProps {
   character: CharacterState;
@@ -85,7 +92,8 @@ export function StripeToken({
     () => getAssetPathById(character.emotionAssetId),
     [character.emotionAssetId],
   );
-  const spriteSrc = inStress ? emotionSrc ?? defaultSrc : defaultSrc;
+  const companySpriteSrc = COMPANY_SPRITE_PATH[character.id];
+  const spriteSrc = companySpriteSrc ?? (inStress ? emotionSrc ?? defaultSrc : defaultSrc);
   const topStat = pickTopStat(character.stats);
   const fit = getFitState(character, character.formationSlot);
   const poseClass = `${SLOT_POSE[character.formationSlot] ?? ""} ${
@@ -114,8 +122,8 @@ export function StripeToken({
       <div
         className={`relative shrink-0 ${
           isPlayer
-            ? "drop-shadow-[0_10px_12px_rgba(0,0,0,0.78)]"
-            : "drop-shadow-[0_7px_9px_rgba(0,0,0,0.66)]"
+            ? "drop-shadow-[0_13px_14px_rgba(0,0,0,0.88)]"
+            : "drop-shadow-[0_9px_11px_rgba(0,0,0,0.76)]"
         }`}
         style={{ width, height }}
       >
@@ -125,7 +133,7 @@ export function StripeToken({
             alt={character.name}
             width={600}
             height={1500}
-            className={`absolute inset-0 h-full w-full object-contain object-bottom transition-[filter] duration-300 ${
+            className={`pointer-events-none absolute bottom-0 left-1/2 h-full w-auto max-w-none -translate-x-1/2 object-contain object-bottom contrast-[1.08] saturate-[1.05] transition-[filter] duration-300 ${
               inStress ? "saturate-[0.7] brightness-[0.92]" : ""
             }`}
             draggable={false}
@@ -137,8 +145,16 @@ export function StripeToken({
           </div>
         )}
 
-        <div className="pointer-events-none absolute left-0 top-0 flex h-4 w-4 items-center justify-center rounded-br-xs border-b border-r border-stone-700/55 bg-stone-950/82">
-          <RoleIcon role={character.role} className="h-2.5 w-2.5 text-amber-100/90" />
+        <div className="pointer-events-none absolute bottom-5 left-1 flex h-7 w-7 items-center justify-center rounded-full border border-amber-200/55 bg-stone-950/82 p-0.5 shadow-[0_4px_10px_rgba(0,0,0,0.55)]">
+          <Image
+            src={formationRoleIconPaths[character.formationSlot]}
+            alt=""
+            width={32}
+            height={32}
+            aria-hidden="true"
+            className="h-full w-full object-contain"
+            draggable={false}
+          />
         </div>
 
         <div className="pointer-events-none absolute right-0 top-0 flex h-4 w-4 items-center justify-center rounded-bl-xs border-b border-l border-stone-700/55 bg-stone-950/82">

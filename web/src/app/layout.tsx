@@ -38,6 +38,14 @@ const fontBlackletter = UnifrakturCook({
 export const metadata: Metadata = {
   title: "Tercio: Sangre y Acero",
   description: "A web-first management RPG of tercios, mud, steel, honor, and unpaid wages.",
+  icons: {
+    icon: [
+      { url: "/favicon.ico", sizes: "any" },
+      { url: "/icon.png", type: "image/png", sizes: "256x256" },
+    ],
+    shortcut: "/favicon.ico",
+    apple: "/apple-icon.png",
+  },
 };
 
 export default function RootLayout({

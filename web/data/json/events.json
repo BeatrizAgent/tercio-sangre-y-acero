@@ -54,6 +54,98 @@
     "presentation": "blurred"
   },
   {
+    "id": "wet_powder",
+    "title": "Pólvora húmeda",
+    "text": "La lluvia entra por las costuras del barril. Los arcabuceros sacuden las mechas y nadie quiere ser el primero en probar si la pólvora prenderá.",
+    "choices": [
+      {
+        "id": "dry_powder_over_fire",
+        "label": "Secarla junto al fuego",
+        "requirements": {},
+        "effects": {
+          "fatigue": 6,
+          "wound": "powder_burn",
+          "items": [
+            {
+              "itemId": "prop_piedra_de_mechero_014",
+              "quantity": 1
+            }
+          ]
+        },
+        "result_text": "La pólvora seca a medias. Una chispa salta demasiado pronto y te deja la mano ennegrecida, pero salvas parte del suministro."
+      },
+      {
+        "id": "discard_wet_powder",
+        "label": "Tirar los barriles peores",
+        "requirements": {},
+        "effects": {
+          "honor": 1,
+          "fatigue": 4
+        },
+        "result_text": "Ordenas deshacerse de los barriles podridos. La tropa protesta por perder munición, pero nadie muere por una imprudencia."
+      },
+      {
+        "id": "sell_bad_powder",
+        "label": "Venderla como si estuviera seca",
+        "requirements": {},
+        "effects": {
+          "coins": 14,
+          "corruption": 10,
+          "reputation": -2
+        },
+        "result_text": "Un tratante local compra la pólvora sin mirar demasiado. Ganas monedas, y también una deuda moral que olerá a azufre cuando vuelva la lluvia."
+      }
+    ],
+    "assetId": "loot_body_001",
+    "mature": false,
+    "presentation": "normal"
+  },
+  {
+    "id": "delayed_pay_roll",
+    "title": "La paga no llega",
+    "text": "El pagador trae sellos, excusas y ni una bolsa entera. Los soldados murmuran que Flandes devora hombres y también sus salarios.",
+    "choices": [
+      {
+        "id": "advance_own_coin",
+        "label": "Adelantar paga de tu bolsa",
+        "requirements": {
+          "coins": 12
+        },
+        "effects": {
+          "coins": -12,
+          "reputation": 3,
+          "fatigue": -3
+        },
+        "result_text": "Repartes tus propios doblones. No alcanza para todos, pero basta para que la línea marche sin mirar atrás."
+      },
+      {
+        "id": "threaten_paymaster",
+        "label": "Apretar al pagador contra el carro",
+        "requirements": {},
+        "effects": {
+          "coins": 18,
+          "corruption": 8,
+          "honor": -1
+        },
+        "result_text": "El pagador encuentra de pronto una bolsa olvidada. Tus hombres cobran algo, aunque todos saben de dónde salió el miedo."
+      },
+      {
+        "id": "preach_patience",
+        "label": "Exigir paciencia y disciplina",
+        "requirements": {},
+        "effects": {
+          "honor": 2,
+          "fatigue": 8,
+          "reputation": -1
+        },
+        "result_text": "Hablas de rey, fe y deber. Algunos bajan la cabeza; otros escupen al barro cuando te das la vuelta."
+      }
+    ],
+    "assetId": "loot_body_001",
+    "mature": false,
+    "presentation": "normal"
+  },
+  {
     "id": "dice_brawl",
     "title": "Dados en la taberna",
     "text": "Tus soldados están reunidos alrededor de un barril jugando a los dados con unos lugareños. La tensión sube; algunos acusan a tus hombres de usar dados cargados y las manos acarician las dagas.",
@@ -78,7 +170,7 @@
           "fatigue": 5,
           "reputation": 2
         },
-        "result_text": "Confiscas los dados cargados y ordenas que azoten a los culpables frente a todos. Los aldeanos asienten con respeto, pero tus hombres te miran con resentimiento."
+        "result_text": "Confiscas los dados cargados y ordenas azotes frente a todos. Los aldeanos asienten con respeto, pero tus hombres te miran con resentimiento."
       },
       {
         "id": "join_game",
@@ -105,18 +197,18 @@
     "choices": [
       {
         "id": "extort_tribute",
-        "label": "Exigir un tributo de paso por seguridad",
+        "label": "Exigir tributo de paso",
         "requirements": {},
         "effects": {
           "corruption": 10,
           "reputation": -3,
           "coins": 20
         },
-        "result_text": "Les haces entender que el bosque es peligroso sin la protección de tus picas. Te entregan 20 doblones con manos temblorosas para que los dejes seguir en paz."
+        "result_text": "Les haces entender que el bosque es peligroso sin la protección de tus picas. Entregan 20 doblones con manos temblorosas."
       },
       {
         "id": "pillage_caravan",
-        "label": "Dejar que la tropa la saquee por entero",
+        "label": "Dejar que la tropa la saquee",
         "requirements": {},
         "effects": {
           "corruption": 25,
@@ -125,16 +217,16 @@
           "coins": 40,
           "items": [
             {
-              "itemId": "wine_skin",
+              "itemId": "prop_bota_de_vino_003",
               "quantity": 2
             }
           ]
         },
-        "result_text": "Das la espalda y dejas que la soldadesca haga su trabajo. La caravana es saqueada. El botín te reporta 40 doblones y vino, pero tu reputación queda destrozada."
+        "result_text": "Das la espalda y dejas que la soldadesca haga su trabajo. La caravana es saqueada; el botín paga bien, pero el nombre de tu compañía queda manchado."
       },
       {
         "id": "protect_caravan",
-        "label": "Ayudarles a desatascar y escoltarlos",
+        "label": "Ayudarles y escoltarlos",
         "requirements": {},
         "effects": {
           "honor": 4,
@@ -155,7 +247,7 @@
     "choices": [
       {
         "id": "repair_camp",
-        "label": "Pagar a un paje por repuestos rápidos",
+        "label": "Pagar repuestos rápidos",
         "requirements": {
           "coins": 6
         },
@@ -173,10 +265,59 @@
           "breakEquipment": true,
           "fatigue": 6
         },
-        "result_text": "Decides ignorar el desgaste. En medio de un paso en falso, escuchas un chasquido metálico. ¡Una de tus piezas de equipo equipadas se ha roto por completo!"
+        "result_text": "Decides ignorar el desgaste. En medio de un paso en falso, escuchas un chasquido metálico. Una de tus piezas equipadas se rompe por completo."
       }
     ],
     "assetId": "armory_bg",
+    "mature": false,
+    "presentation": "normal"
+  },
+  {
+    "id": "camp_fever",
+    "title": "Fiebre de campamento",
+    "text": "El agua huele a cuero viejo y las mantas nunca llegan a secarse. Al amanecer, varios hombres tiemblan entre los carros.",
+    "choices": [
+      {
+        "id": "send_to_surgeon",
+        "label": "Pagar al cirujano de campaña",
+        "requirements": {
+          "coins": 10
+        },
+        "effects": {
+          "coins": -10,
+          "fatigue": -6,
+          "items": [
+            {
+              "itemId": "prop_vendas_de_lino_002",
+              "quantity": 1
+            }
+          ]
+        },
+        "result_text": "El cirujano reparte vendas limpias y vino agrio. No cura milagros, pero evita que la fiebre se extienda."
+      },
+      {
+        "id": "march_through_fever",
+        "label": "Marchar pese a la fiebre",
+        "requirements": {},
+        "effects": {
+          "wound": "fever",
+          "fatigue": 10,
+          "honor": 1
+        },
+        "result_text": "Ordenas levantar el campamento. La línea avanza, pero cada tos suena como una deuda que habrá que pagar."
+      },
+      {
+        "id": "burn_bad_bedding",
+        "label": "Quemar mantas y jergones",
+        "requirements": {},
+        "effects": {
+          "fatigue": 5,
+          "reputation": 1
+        },
+        "result_text": "El humo negro sube entre las tiendas. Pierdes comodidad, ganas aire limpio y la tropa entiende que no dudas."
+      }
+    ],
+    "assetId": "loot_body_001",
     "mature": false,
     "presentation": "normal"
   },
@@ -186,30 +327,31 @@
     "text": "Despiertas y descubres que alguien ha hurgado en tu fardaje. Faltan varias monedas y un trozo de pan. Tus hombres señalan sospechosamente a los pajes de la compañía vecina.",
     "choices": [
       {
-        "id": "execute_suspect",
-        "label": "Ahorcar a un sospechoso como advertencia",
+        "id": "public_punishment",
+        "label": "Castigo público ejemplar",
         "requirements": {},
         "effects": {
-          "corruption": 18,
-          "reputation": -3,
-          "honor": -3
+          "corruption": 12,
+          "reputation": -2,
+          "honor": -2,
+          "fatigue": 3
         },
-        "result_text": "Ordenas colgar al primer paje del que sospechas. La tropa se silencia por el terror, y tu disciplina se endurece, pero a un costo moral atroz."
+        "result_text": "Ordenas castigo ante la compañía. Nadie aplaude, pero todos entienden que tocar tu fardaje tiene precio."
       },
       {
         "id": "scour_tents",
-        "label": "Registrar las tiendas de la tropa",
+        "label": "Registrar las tiendas",
         "requirements": {},
         "effects": {
           "reputation": -1,
           "fatigue": 8,
           "coins": 8
         },
-        "result_text": "Das vuelta el campamento de arriba abajo. Creas tensiones con los soldados, pero logras recuperar 8 doblones del fardo de un recluta."
+        "result_text": "Das vuelta el campamento de arriba abajo. Creas tensiones con los soldados, pero recuperas 8 doblones del fardo de un recluta."
       },
       {
         "id": "let_go_robbery",
-        "label": "Ignorar la afrenta para evitar motines",
+        "label": "Ignorar la afrenta",
         "requirements": {
           "coins": 10
         },
@@ -231,7 +373,7 @@
     "choices": [
       {
         "id": "eat_rot",
-        "label": "Forzar a la tropa a comer el rancho podrido",
+        "label": "Forzar a la tropa a comer",
         "requirements": {},
         "effects": {
           "wound": "fever",
@@ -241,7 +383,7 @@
       },
       {
         "id": "buy_rations_private",
-        "label": "Comprar raciones frescas del mercado local",
+        "label": "Comprar raciones frescas",
         "requirements": {
           "coins": 8
         },
@@ -249,11 +391,11 @@
           "coins": -8,
           "fatigue": -4
         },
-        "result_text": "Pagas 8 doblones al asentador local por harina y manteca fresca. Tus hombres comen calientes y recuperan el vigor."
+        "result_text": "Pagas 8 doblones al asentador local por harina y manteca fresca. Tus hombres comen caliente y recuperan el vigor."
       },
       {
         "id": "let_them_plunder",
-        "label": "Dejar que la tropa consiga comida del pueblo",
+        "label": "Dejar que consigan comida del pueblo",
         "requirements": {},
         "effects": {
           "corruption": 12,
@@ -271,5 +413,54 @@
     "assetId": "rotten_rations_blurred",
     "mature": true,
     "presentation": "blurred"
+  },
+  {
+    "id": "field_discipline",
+    "title": "Disciplina en la línea",
+    "text": "Un cabo se adelanta sin orden y arrastra a tres bisoños detrás. La línea se abre justo cuando el enemigo tantea el terreno.",
+    "choices": [
+      {
+        "id": "restore_line_harshly",
+        "label": "Restaurar la línea con dureza",
+        "requirements": {},
+        "effects": {
+          "honor": 2,
+          "fatigue": 6,
+          "reputation": -1
+        },
+        "result_text": "Tu voz corta el ruido como hierro frío. La línea se cierra de nuevo, aunque nadie olvida el tono."
+      },
+      {
+        "id": "cover_with_fire",
+        "label": "Cubrirlos con arcabuces",
+        "requirements": {},
+        "effects": {
+          "fatigue": 8,
+          "items": [
+            {
+              "itemId": "prop_polvora_humeda_001",
+              "quantity": 1
+            }
+          ]
+        },
+        "result_text": "Ordenas fuego para cubrir el error. Salvas la formación, pero quemas munición y las mechas quedan empapadas."
+      },
+      {
+        "id": "reward_quick_recovery",
+        "label": "Premiar la recuperación rápida",
+        "requirements": {
+          "coins": 6
+        },
+        "effects": {
+          "coins": -6,
+          "reputation": 2,
+          "honor": 1
+        },
+        "result_text": "Pagas una pequeña recompensa al cabo cuando corrige la línea. Los veteranos gruñen, pero los bisoños aprenden a moverse vivos."
+      }
+    ],
+    "assetId": "loot_body_001",
+    "mature": false,
+    "presentation": "normal"
   }
 ]

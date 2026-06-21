@@ -1,6 +1,7 @@
 "use client";
 
-import React, { useEffect, useState } from "react";
+import React, { useCallback, useEffect, useLayoutEffect, useRef, useState } from "react";
+import { createPortal } from "react-dom";
 import { useParams, useRouter } from "next/navigation";
 import { Card } from "@/components/ui/card";
 import { UiAssetIcon } from "@/components/ui/ui-asset-icon";
@@ -105,17 +106,45 @@ function EnemyHoverCard({
 }) {
   const [hovered, setHovered] = useState(false);
   const [pinned, setPinned] = useState(false);
+  const [popoverPos, setPopoverPos] = useState<{ top: number; left: number; side: "left" | "right" } | null>(null);
+  const triggerRef = useRef<HTMLButtonElement>(null);
+  const popoverRef = useRef<HTMLDivElement>(null);
   const enterTimer = React.useRef<number | null>(null);
   const leaveTimer = React.useRef<number | null>(null);
 
   const show = hovered || pinned;
+
+  const updatePosition = useCallback(() => {
+    const trigger = triggerRef.current;
+    if (!trigger) return;
+    const rect = trigger.getBoundingClientRect();
+    const popW = popoverRef.current?.offsetWidth ?? 288;
+    const popH = popoverRef.current?.offsetHeight ?? 320;
+    const margin = 8;
+    const edge = 8;
+    const fitsLeft = rect.left - popW - margin >= edge;
+    const side: "left" | "right" = fitsLeft ? "left" : "right";
+    let left =
+      side === "left"
+        ? rect.left - popW - margin
+        : rect.right + margin;
+    const maxLeft = window.innerWidth - popW - edge;
+    left = Math.max(edge, Math.min(left, Math.max(edge, maxLeft)));
+    let top = rect.top + rect.height / 2 - popH / 2;
+    const maxTop = window.innerHeight - popH - edge;
+    top = Math.max(edge, Math.min(top, Math.max(edge, maxTop)));
+    setPopoverPos({ top, left, side });
+  }, []);
 
   const handleEnter = () => {
     if (leaveTimer.current) {
       window.clearTimeout(leaveTimer.current);
       leaveTimer.current = null;
     }
-    enterTimer.current = window.setTimeout(() => setHovered(true), 180);
+    enterTimer.current = window.setTimeout(() => {
+      setHovered(true);
+      requestAnimationFrame(updatePosition);
+    }, 180);
   };
 
   const handleLeave = () => {
@@ -123,8 +152,42 @@ function EnemyHoverCard({
       window.clearTimeout(enterTimer.current);
       enterTimer.current = null;
     }
-    leaveTimer.current = window.setTimeout(() => setHovered(false), 140);
+    leaveTimer.current = window.setTimeout(() => {
+      setHovered((h) => (pinned ? h : false));
+    }, 140);
   };
+
+  useLayoutEffect(() => {
+    if (!show) return;
+    updatePosition();
+    const raf = requestAnimationFrame(updatePosition);
+    window.addEventListener("scroll", updatePosition, true);
+    window.addEventListener("resize", updatePosition);
+    return () => {
+      cancelAnimationFrame(raf);
+      window.removeEventListener("scroll", updatePosition, true);
+      window.removeEventListener("resize", updatePosition);
+    };
+  }, [show, updatePosition]);
+
+  useEffect(() => {
+    if (!pinned) return;
+    const handleOutsidePointer = (e: PointerEvent) => {
+      const target = e.target as Node;
+      if (triggerRef.current?.contains(target)) return;
+      if (popoverRef.current?.contains(target)) return;
+      setPinned(false);
+    };
+    const handleKey = (e: KeyboardEvent) => {
+      if (e.key === "Escape") setPinned(false);
+    };
+    document.addEventListener("pointerdown", handleOutsidePointer);
+    document.addEventListener("keydown", handleKey);
+    return () => {
+      document.removeEventListener("pointerdown", handleOutsidePointer);
+      document.removeEventListener("keydown", handleKey);
+    };
+  }, [pinned]);
 
   React.useEffect(() => () => {
     if (enterTimer.current) window.clearTimeout(enterTimer.current);
@@ -143,6 +206,82 @@ function EnemyHoverCard({
   const threat = enemy.power >= 4 ? "Alta" : enemy.power >= 2 ? "Media" : "Baja";
   const threatTone = enemy.power >= 4 ? "text-danger" : enemy.power >= 2 ? "text-warning" : "text-success";
 
+  const arrowOnRight = popoverPos?.side === "left";
+  const arrowStyle: React.CSSProperties = {
+    position: "absolute",
+    top: "calc(50% - 6px)",
+    width: 12,
+    height: 12,
+    transform: "rotate(45deg)",
+    background: "#f3ebd4",
+    borderColor: "#997e56",
+    borderTopWidth: 1,
+    borderRightWidth: 1,
+    pointerEvents: "none",
+  };
+  if (arrowOnRight) {
+    arrowStyle.right = -6;
+  } else {
+    arrowStyle.left = -6;
+  }
+
+  const popover = show ? (
+    <div
+      ref={popoverRef}
+      role="tooltip"
+      data-enemy-popover
+      style={{
+        position: "fixed",
+        top: popoverPos?.top ?? -10000,
+        left: popoverPos?.left ?? -10000,
+        zIndex: 9999,
+        visibility: popoverPos ? "visible" : "hidden",
+        width: "18rem",
+      }}
+      className="parchment-card p-4 text-stone-800 shadow-2xl animate-in fade-in slide-in-from-right-2 duration-150"
+    >
+      <span aria-hidden="true" style={arrowStyle} />
+      <header className="mb-2 border-b border-stone-700/40 pb-1.5">
+        <p className="font-mono text-[9px] uppercase tracking-widest text-blood">Enemigo</p>
+        <h3 className="font-cinzel text-lg font-bold uppercase leading-tight text-stone-900">{enemy.name}</h3>
+        <p className={`font-mono text-[10px] font-bold uppercase ${threatTone === "text-danger" ? "text-blood" : threatTone === "text-warning" ? "text-amber-700" : "text-emerald-800"}`}>
+          Amenaza {threat}
+        </p>
+      </header>
+
+      <p className="mb-3 font-serif text-xs italic leading-relaxed text-stone-700">&quot;{enemy.description}&quot;</p>
+
+      <div className="mb-2 flex items-center gap-2 rounded-xs border border-stone-700/30 bg-stone-100/60 p-1.5">
+        <span className="font-mono text-[9px] uppercase tracking-widest text-stone-600">Poder</span>
+        <span className="font-cinzel text-lg font-bold text-blood">{enemy.power}</span>
+        <span className="ml-auto font-mono text-[9px] uppercase tracking-widest text-stone-600">vs</span>
+        <span className="font-cinzel text-lg font-bold text-stone-900">{totalPower}</span>
+        <span className="font-mono text-[9px] uppercase tracking-widest text-stone-600">tuyo</span>
+      </div>
+
+      <div className="grid grid-cols-3 gap-1.5 font-mono text-[10px] uppercase">
+        <div className="rounded-xs border border-stone-700/30 bg-stone-100/60 px-1.5 py-1 text-center">
+          <div className="text-stone-600">Herida</div>
+          <div className="font-cinzel text-sm font-bold text-blood">{mission.woundChance}%</div>
+        </div>
+        <div className="rounded-xs border border-stone-700/30 bg-stone-100/60 px-1.5 py-1 text-center">
+          <div className="text-stone-600">Fatiga</div>
+          <div className="font-cinzel text-sm font-bold text-amber-700">+{mission.fatigue}</div>
+        </div>
+        <div className="rounded-xs border border-stone-700/30 bg-stone-100/60 px-1.5 py-1 text-center">
+          <div className="text-stone-600">Éxito</div>
+          <div className={`font-cinzel text-sm font-bold ${chance >= 80 ? "text-emerald-800" : chance >= 50 ? "text-amber-700" : "text-blood"}`}>
+            {chance}%
+          </div>
+        </div>
+      </div>
+
+      <p className="mt-2 text-center font-mono text-[9px] uppercase tracking-widest text-stone-500">
+        Click para {pinned ? "soltar" : "fijar"}
+      </p>
+    </div>
+  ) : null;
+
   return (
     <div
       className="relative"
@@ -150,6 +289,7 @@ function EnemyHoverCard({
       onMouseLeave={handleLeave}
     >
       <button
+        ref={triggerRef}
         type="button"
         onClick={() => setPinned((p) => !p)}
         aria-expanded={show}
@@ -165,56 +305,7 @@ function EnemyHoverCard({
           {enemy.name}
         </span>
       </button>
-
-      {show && (
-        <div
-          className="parchment-card absolute right-full top-1/2 z-30 mr-2 w-72 -translate-y-1/2 p-4 text-stone-800 shadow-2xl animate-in fade-in slide-in-from-right-2 duration-150"
-          role="tooltip"
-        >
-          <span
-            aria-hidden="true"
-            className="absolute -right-1.5 top-1/2 h-3 w-3 -translate-y-1/2 rotate-45 border-t border-r border-parchment-dark bg-parchment"
-          />
-          <header className="mb-2 border-b border-stone-700/40 pb-1.5">
-            <p className="font-mono text-[9px] uppercase tracking-widest text-blood">Enemigo</p>
-            <h3 className="font-cinzel text-lg font-bold uppercase leading-tight text-stone-900">{enemy.name}</h3>
-            <p className={`font-mono text-[10px] font-bold uppercase ${threatTone === "text-danger" ? "text-blood" : threatTone === "text-warning" ? "text-amber-700" : "text-emerald-800"}`}>
-              Amenaza {threat}
-            </p>
-          </header>
-
-          <p className="mb-3 font-serif text-xs italic leading-relaxed text-stone-700">&quot;{enemy.description}&quot;</p>
-
-          <div className="mb-2 flex items-center gap-2 rounded-xs border border-stone-700/30 bg-stone-100/60 p-1.5">
-            <span className="font-mono text-[9px] uppercase tracking-widest text-stone-600">Poder</span>
-            <span className="font-cinzel text-lg font-bold text-blood">{enemy.power}</span>
-            <span className="ml-auto font-mono text-[9px] uppercase tracking-widest text-stone-600">vs</span>
-            <span className="font-cinzel text-lg font-bold text-stone-900">{totalPower}</span>
-            <span className="font-mono text-[9px] uppercase tracking-widest text-stone-600">tuyo</span>
-          </div>
-
-          <div className="grid grid-cols-3 gap-1.5 font-mono text-[10px] uppercase">
-            <div className="rounded-xs border border-stone-700/30 bg-stone-100/60 px-1.5 py-1 text-center">
-              <div className="text-stone-600">Herida</div>
-              <div className="font-cinzel text-sm font-bold text-blood">{mission.woundChance}%</div>
-            </div>
-            <div className="rounded-xs border border-stone-700/30 bg-stone-100/60 px-1.5 py-1 text-center">
-              <div className="text-stone-600">Fatiga</div>
-              <div className="font-cinzel text-sm font-bold text-amber-700">+{mission.fatigue}</div>
-            </div>
-            <div className="rounded-xs border border-stone-700/30 bg-stone-100/60 px-1.5 py-1 text-center">
-              <div className="text-stone-600">Éxito</div>
-              <div className={`font-cinzel text-sm font-bold ${chance >= 80 ? "text-emerald-800" : chance >= 50 ? "text-amber-700" : "text-blood"}`}>
-                {chance}%
-              </div>
-            </div>
-          </div>
-
-          <p className="mt-2 text-center font-mono text-[9px] uppercase tracking-widest text-stone-500">
-            Click para {pinned ? "soltar" : "fijar"}
-          </p>
-        </div>
-      )}
+      {popover && typeof document !== "undefined" && createPortal(popover, document.body)}
     </div>
   );
 }

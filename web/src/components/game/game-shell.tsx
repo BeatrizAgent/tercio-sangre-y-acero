@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useEffect, useState } from "react";
+import React, { Suspense, useEffect, useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import { SidebarNav } from "./sidebar-nav";
@@ -46,7 +46,7 @@ export function GameShell({ children }: { children: React.ReactNode }) {
 
   return (
     <div className="min-h-screen bg-stone-950 text-text font-sans selection:bg-gold/30 selection:text-gold-soft overflow-x-hidden overflow-y-auto py-4 px-2 md:py-8">
-      <div className="mx-auto max-w-[1080px] w-full min-w-0 overflow-hidden flex flex-col bg-background border border-iron shadow-2xl rounded-sm relative">
+      <div className="game-shell-frame mx-auto max-w-[1080px] w-full min-w-0 overflow-hidden flex flex-col bg-background border border-iron shadow-2xl rounded-sm relative">
         <div className="hidden xl:block absolute top-0 -left-10 w-8 h-full bg-[url('/assets/gpt-bank/ui/icons/marco_panel_vertical_negro.png')] bg-repeat-y opacity-25 pointer-events-none border-r border-iron/20" />
         <div className="hidden xl:block absolute top-0 -right-10 w-8 h-full bg-[url('/assets/gpt-bank/ui/icons/marco_panel_vertical_negro.png')] bg-repeat-y opacity-25 pointer-events-none border-l border-iron/20" />
 
@@ -66,7 +66,7 @@ export function GameShell({ children }: { children: React.ReactNode }) {
                   width={2048}
                   height={875}
                   priority
-                  className="h-full w-full max-h-[84px] object-contain drop-shadow-[0_10px_18px_rgba(0,0,0,0.55)]"
+                  className="tercio-brand-logo h-full w-full max-h-[84px] object-contain drop-shadow-[0_10px_18px_rgba(0,0,0,0.55)]"
                 />
               </div>
 
@@ -219,7 +219,17 @@ export function GameShell({ children }: { children: React.ReactNode }) {
         )}
 
         <div className="flex flex-col md:flex-row gap-4 p-4 items-start">
-          <SidebarNav />
+          <Suspense
+            fallback={
+              <aside className="w-full md:w-60 bg-panel border border-iron flex flex-col justify-between shrink-0 rounded-xs p-4 shadow-md">
+                <div className="text-center font-cinzel text-xs text-gold animate-pulse">
+                  Cargando campamento...
+                </div>
+              </aside>
+            }
+          >
+            <SidebarNav />
+          </Suspense>
 
           <main className="flex-1 w-full min-w-0">
             {!mounted ? (

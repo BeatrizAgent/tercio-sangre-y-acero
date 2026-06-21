@@ -3,11 +3,10 @@
 import React, { useEffect, useState } from "react";
 import { useGameStore } from "@/lib/game-store";
 import { Card, Badge } from "@/components/ui/card";
-import { featuredAssetPaths, getWound } from "@/lib/game-data";
+import { getWound } from "@/lib/game-data";
 import { UiAssetIcon } from "@/components/ui/ui-asset-icon";
 import { playCoinSound, playDefeatSound, playDrumSound, playPageSound } from "@/lib/sounds";
 import { PageTransition } from "@/components/game/page-transition";
-import { Tooltip } from "@/components/ui/tooltip";
 
 export default function HospitalPage() {
   const { soldier, treatWound, payTownBribe } = useGameStore();
@@ -71,7 +70,6 @@ export default function HospitalPage() {
   };
 
   const bandageCount = soldier.inventory.find((i) => i.itemId === "objeto_002")?.quantity ?? 0;
-  const wineSkinCount = soldier.inventory.find((i) => i.itemId === "wine_skin")?.quantity ?? 0;
 
   if (soldier.banMissionsLeft > 0) {
     return (
@@ -106,27 +104,19 @@ export default function HospitalPage() {
 
   return (
     <PageTransition>
-      <div className="space-y-6">
-        <div className="border-b border-iron pb-3">
+      <div className="mx-auto max-w-4xl space-y-5">
+        <div className="flex flex-col gap-3 border-b border-iron pb-3 sm:flex-row sm:items-end sm:justify-between">
           <h1 className="font-cinzel text-3xl font-extrabold tracking-wider text-gold">HOSPITAL DE SANGRE</h1>
-        </div>
-
-        <div className="scene-frame relative min-h-56 overflow-hidden rounded-xs border border-iron bg-stone-950">
-          <img
-            src={featuredAssetPaths.hospitalFieldWard}
-            alt="Hospital de campana"
-            className="absolute inset-0 h-full w-full object-cover"
-            onError={(e) => {
-              e.currentTarget.src = featuredAssetPaths.hospital;
-            }}
-          />
-          <div className="absolute inset-0 bg-linear-to-r from-background/90 via-background/35 to-background/10" />
-          <div className="relative max-w-xl p-5 sm:p-7">
-            <p className="text-[10px] font-mono uppercase tracking-[0.24em] text-gold-soft">Cirujano de campana</p>
-            <h2 className="mt-2 font-cinzel text-2xl font-bold text-text">Lino, aguardiente y mesa fria</h2>
-            <p className="mt-3 text-sm leading-6 text-text-muted">
-              Aqui se paga por seguir marchando: vendas limpias, reposo corto y una promesa seca de que la fiebre no subira esta noche.
-            </p>
+          <div className="flex flex-wrap gap-2 text-[10px] font-mono uppercase">
+            <span className="rounded-xs border border-iron bg-stone-900 px-2 py-1 text-muted">
+              Fatiga {soldier.fatigue}
+            </span>
+            <span className="rounded-xs border border-iron bg-stone-900 px-2 py-1 text-muted">
+              Vendas {bandageCount}
+            </span>
+            <span className="rounded-xs border border-iron bg-stone-900 px-2 py-1 text-gold">
+              {soldier.coins} doblones
+            </span>
           </div>
         </div>
 
@@ -142,183 +132,77 @@ export default function HospitalPage() {
           </div>
         )}
 
-        <div className="grid gap-6 lg:grid-cols-[2fr_1.1fr]">
-          <div className="space-y-6">
-            <Card title="Tratamiento de heridas">
-              <HospitalSceneImage
-                src={featuredAssetPaths.hospitalTreatment}
-                fallbackSrc={featuredAssetPaths.woundCare}
-                alt="Cirujano vendando a un soldado"
-              />
+        <Card title="Heridas">
+          {soldier.wounds.length === 0 ? (
+            <div className="border border-dashed border-iron p-6 text-center text-xs text-muted">
+              Sin heridas abiertas.
+            </div>
+          ) : (
+            <div className="divide-y divide-iron">
+              {soldier.wounds.map((active) => {
+                const woundDef = getWound(active.woundId);
+                const canTreat = bandageCount > 0 && !active.treated;
 
-              {soldier.wounds.length === 0 ? (
-                <div className="border border-dashed border-iron p-8 text-center text-xs text-muted">
-                  Sin heridas abiertas.
-                </div>
-              ) : (
-                <div className="space-y-3">
-                  {soldier.wounds.map((active) => {
-                    const woundDef = getWound(active.woundId);
-                    const canTreat = bandageCount > 0 && !active.treated;
-
-                    return (
-                      <div
-                        key={active.id}
-                        className="p-3 bg-stone-900/60 border border-iron rounded-xs flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 hover:border-gold/10 transition-all"
-                      >
-                        <Tooltip type="wound" woundId={active.woundId} treated={active.treated}>
-                          <div className="cursor-help hover:bg-stone-900/20 p-1.5 rounded-xs transition-colors">
-                            <div className="flex items-center gap-2">
-                              <h3 className="font-cinzel text-base font-bold text-gold-soft capitalize">
-                                {woundDef?.name ?? active.woundId}
-                              </h3>
-                              <Badge variant={active.treated ? "success" : "danger"}>
-                                {active.treated ? "Vendada" : "Abierta"}
-                              </Badge>
-                            </div>
-                            <p className="text-[10px] font-mono text-muted uppercase mt-1">
-                              Gravedad: {woundDef?.severity} | Penalizacion: {active.treated ? "Ninguna" : "-2 combate"}
-                            </p>
-                          </div>
-                        </Tooltip>
-
-                        {!active.treated ? (
-                          <button
-                            onClick={() => handleTreat(active.id)}
-                            disabled={!canTreat}
-                            className={`px-4 py-2 text-xs font-mono font-bold uppercase rounded-xs border transition-all cursor-pointer ${
-                              canTreat
-                                ? "bg-blood border-blood-bright text-text hover:bg-blood-bright"
-                                : "bg-stone-900 border-iron text-muted cursor-not-allowed"
-                            }`}
-                          >
-                            {bandageCount === 0 ? "Falta venda" : "Vendar"}
-                          </button>
-                        ) : (
-                          <span className="text-xs font-mono font-bold text-success pr-2">Cerrada</span>
-                        )}
+                return (
+                  <div
+                    key={active.id}
+                    className="flex flex-col gap-3 py-3 first:pt-0 last:pb-0 sm:flex-row sm:items-center sm:justify-between"
+                  >
+                    <div className="min-w-0">
+                      <div className="flex flex-wrap items-center gap-2">
+                        <h3 className="font-cinzel text-base font-bold text-gold-soft capitalize">
+                          {woundDef?.name ?? active.woundId}
+                        </h3>
+                        <Badge variant={active.treated ? "success" : "danger"}>
+                          {active.treated ? "Vendado" : "Abierto"}
+                        </Badge>
                       </div>
-                    );
-                  })}
-                </div>
-              )}
-            </Card>
+                      <p className="mt-1 text-[10px] font-mono uppercase text-muted">
+                        Gravedad {woundDef?.severity ?? "-"} | {active.treated ? "Sin penalizacion" : "-2 combate"}
+                      </p>
+                    </div>
 
-            <Card title="Reposo en camastro">
-              <div className="space-y-4 font-mono text-xs">
-                <HospitalSceneImage
-                  src={featuredAssetPaths.hospitalRecoveryCot}
-                  fallbackSrc="/assets/gpt-bank/ui/icons/camastro_manta_lana.png"
-                  alt="Camastro de recuperacion"
-                />
+                    {!active.treated ? (
+                      <button
+                        onClick={() => handleTreat(active.id)}
+                        disabled={!canTreat}
+                        className={`px-4 py-2 text-xs font-mono font-bold uppercase rounded-xs border transition-all cursor-pointer ${
+                          canTreat
+                            ? "bg-blood border-blood-bright text-text hover:bg-blood-bright"
+                            : "bg-stone-900 border-iron text-muted cursor-not-allowed"
+                        }`}
+                      >
+                        {bandageCount === 0 ? "Falta venda" : "Vendar"}
+                      </button>
+                    ) : null}
+                  </div>
+                );
+              })}
+            </div>
+          )}
+        </Card>
 
-                <div className="grid gap-3 sm:grid-cols-2">
-                  <RestTile icon="fatigue" label="Efecto" value="-25 fatiga" tone="text-success" />
-                  <RestTile icon="coins" label="Coste" value="5 doblones" tone="text-gold" />
-                </div>
-
-                <button
-                  onClick={handleRest}
-                  disabled={soldier.coins < 5 || soldier.fatigue === 0}
-                  className={`w-full py-2.5 text-xs font-mono font-bold uppercase tracking-wider border rounded-xs transition-all cursor-pointer ${
-                    soldier.coins >= 5 && soldier.fatigue > 0
-                      ? "bg-yellow-800/80 border-yellow-600/40 text-text hover:bg-yellow-750"
-                      : "bg-stone-900 border-iron text-muted cursor-not-allowed"
-                  }`}
-                >
-                  Descansar
-                </button>
-              </div>
-            </Card>
+        <Card title="Reposo">
+          <div className="flex flex-col gap-3 text-xs font-mono sm:flex-row sm:items-center sm:justify-between">
+            <div className="text-muted">
+              <span className="text-success">-25 fatiga</span>
+              <span className="mx-2 text-iron">|</span>
+              <span className="text-gold">5 doblones</span>
+            </div>
+            <button
+              onClick={handleRest}
+              disabled={soldier.coins < 5 || soldier.fatigue === 0}
+              className={`px-5 py-2.5 text-xs font-mono font-bold uppercase tracking-wider border rounded-xs transition-all cursor-pointer ${
+                soldier.coins >= 5 && soldier.fatigue > 0
+                  ? "bg-yellow-800/80 border-yellow-600/40 text-text hover:bg-yellow-750"
+                  : "bg-stone-900 border-iron text-muted cursor-not-allowed"
+              }`}
+            >
+              Descansar
+            </button>
           </div>
-
-          <div className="space-y-6">
-            <Card title="Medicina">
-              <div className="space-y-3 text-xs font-mono">
-                <SupplyRow
-                  icon="hospitalBandages"
-                  label="Vendas de lino"
-                  value={`${bandageCount} disp.`}
-                  tone={bandageCount > 0 ? "text-success" : "text-danger"}
-                />
-                <SupplyRow
-                  icon="hospitalWineSkin"
-                  label="Odras de vino"
-                  value={`${wineSkinCount} disp.`}
-                  tone="text-text"
-                />
-              </div>
-            </Card>
-          </div>
-        </div>
+        </Card>
       </div>
     </PageTransition>
-  );
-}
-
-function HospitalSceneImage({
-  src,
-  fallbackSrc,
-  alt,
-}: {
-  src: string;
-  fallbackSrc: string;
-  alt: string;
-}) {
-  return (
-    <div className="mb-4 h-40 overflow-hidden rounded-xs border border-iron bg-stone-950">
-      <img
-        src={src}
-        alt={alt}
-        className="h-full w-full object-cover"
-        onError={(e) => {
-          e.currentTarget.src = fallbackSrc;
-        }}
-      />
-    </div>
-  );
-}
-
-function RestTile({
-  icon,
-  label,
-  value,
-  tone,
-}: {
-  icon: React.ComponentProps<typeof UiAssetIcon>["id"];
-  label: string;
-  value: string;
-  tone: string;
-}) {
-  return (
-    <div className="p-3 bg-stone-900/60 border border-iron rounded-xs space-y-1">
-      <span className="text-[9px] uppercase text-muted block">{label}</span>
-      <span className={`font-sans font-bold flex items-center gap-1 ${tone}`}>
-        <UiAssetIcon id={icon} label={label} className="h-4 w-4" />
-        <span>{value}</span>
-      </span>
-    </div>
-  );
-}
-
-function SupplyRow({
-  icon,
-  label,
-  value,
-  tone,
-}: {
-  icon: React.ComponentProps<typeof UiAssetIcon>["id"];
-  label: string;
-  value: string;
-  tone: string;
-}) {
-  return (
-    <div className="flex items-center justify-between gap-3 border-b border-iron pb-2 last:border-0">
-      <span className="flex items-center gap-2 text-text-muted">
-        <UiAssetIcon id={icon} label={label} className="h-9 w-9" />
-        <span>{label}</span>
-      </span>
-      <span className={`font-bold ${tone}`}>{value}</span>
-    </div>
   );
 }

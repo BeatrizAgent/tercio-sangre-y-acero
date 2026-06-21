@@ -4451,6 +4451,56 @@
     "presentation": "normal"
   },
   {
+    "id": "role_arquebusiers_role_arquebusier_02_powder_burned",
+    "category": "portrait_role_variant",
+    "path": "GPT-ASSETS/portraits/player-options/roles/arquebusiers/role_arquebusier_02_powder_burned.png",
+    "source": "chatgpt_manual",
+    "dimensions": [
+      384,
+      384
+    ],
+    "transparent": false,
+    "usage": [
+      "player_portrait_selection",
+      "role:arquebusiers"
+    ],
+    "mature": false,
+    "presentation": "normal"
+  },
+  {
+    "id": "role_arquebusiers_role_arquebusier_03_matchlock_watch",
+    "category": "portrait_role_variant",
+    "path": "GPT-ASSETS/portraits/player-options/roles/arquebusiers/role_arquebusier_03_matchlock_watch.png",
+    "source": "chatgpt_manual",
+    "dimensions": [
+      384,
+      384
+    ],
+    "transparent": false,
+    "usage": [
+      "player_portrait_selection",
+      "role:arquebusiers"
+    ],
+    "mature": false,
+    "presentation": "normal"
+  },
+  {
+    "id": "asset_pack_2026_06_21_portrait_atlas_imagegen",
+    "category": "asset",
+    "path": "GPT-ASSETS/portraits/player-options/roles/asset_pack_2026_06_21_portrait_atlas_imagegen.png",
+    "source": "chatgpt_manual",
+    "dimensions": [
+      1086,
+      1448
+    ],
+    "transparent": false,
+    "usage": [
+      "player_portrait_selection"
+    ],
+    "mature": false,
+    "presentation": "normal"
+  },
+  {
     "id": "role_epic_officers_epic_01_noble_captain_red_plume",
     "category": "portrait_role_variant_epic",
     "path": "GPT-ASSETS/portraits/player-options/roles/epic-officers/player_portrait_epic_01_noble_captain_red_plume.png",
@@ -4723,6 +4773,23 @@
     "presentation": "normal"
   },
   {
+    "id": "role_guards_role_guard_03_gate_watch",
+    "category": "portrait_role_variant",
+    "path": "GPT-ASSETS/portraits/player-options/roles/guards/role_guard_03_gate_watch.png",
+    "source": "chatgpt_manual",
+    "dimensions": [
+      384,
+      384
+    ],
+    "transparent": false,
+    "usage": [
+      "player_portrait_selection",
+      "role:guards"
+    ],
+    "mature": false,
+    "presentation": "normal"
+  },
+  {
     "id": "role_officers_option_05_old_sergeant",
     "category": "portrait_role_variant",
     "path": "GPT-ASSETS/portraits/player-options/roles/officers/player_portrait_option_05_old_sergeant.png",
@@ -4774,6 +4841,23 @@
     "presentation": "normal"
   },
   {
+    "id": "role_officers_role_officer_02_stern_alferez",
+    "category": "portrait_role_variant",
+    "path": "GPT-ASSETS/portraits/player-options/roles/officers/role_officer_02_stern_alferez.png",
+    "source": "chatgpt_manual",
+    "dimensions": [
+      384,
+      384
+    ],
+    "transparent": false,
+    "usage": [
+      "player_portrait_selection",
+      "role:officers"
+    ],
+    "mature": false,
+    "presentation": "normal"
+  },
+  {
     "id": "role_pikemen_option_02_pike_veteran",
     "category": "portrait_role_variant",
     "path": "GPT-ASSETS/portraits/player-options/roles/pikemen/player_portrait_option_02_pike_veteran.png",
@@ -4815,6 +4899,40 @@
     "dimensions": [
       768,
       768
+    ],
+    "transparent": false,
+    "usage": [
+      "player_portrait_selection",
+      "role:pikemen"
+    ],
+    "mature": false,
+    "presentation": "normal"
+  },
+  {
+    "id": "role_pikemen_role_pikeman_02_old_pike_line",
+    "category": "portrait_role_variant",
+    "path": "GPT-ASSETS/portraits/player-options/roles/pikemen/role_pikeman_02_old_pike_line.png",
+    "source": "chatgpt_manual",
+    "dimensions": [
+      384,
+      384
+    ],
+    "transparent": false,
+    "usage": [
+      "player_portrait_selection",
+      "role:pikemen"
+    ],
+    "mature": false,
+    "presentation": "normal"
+  },
+  {
+    "id": "role_pikemen_role_pikeman_03_battered_vanguard",
+    "category": "portrait_role_variant",
+    "path": "GPT-ASSETS/portraits/player-options/roles/pikemen/role_pikeman_03_battered_vanguard.png",
+    "source": "chatgpt_manual",
+    "dimensions": [
+      384,
+      384
     ],
     "transparent": false,
     "usage": [
@@ -4927,6 +5045,40 @@
     "presentation": "normal"
   },
   {
+    "id": "role_recruits_role_recruit_05_mud_faced_bisono",
+    "category": "portrait_role_variant",
+    "path": "GPT-ASSETS/portraits/player-options/roles/recruits/role_recruit_05_mud_faced_bisono.png",
+    "source": "chatgpt_manual",
+    "dimensions": [
+      384,
+      384
+    ],
+    "transparent": false,
+    "usage": [
+      "player_portrait_selection",
+      "role:recruits"
+    ],
+    "mature": false,
+    "presentation": "normal"
+  },
+  {
+    "id": "role_recruits_role_recruit_06_hungry_pikeman",
+    "category": "portrait_role_variant",
+    "path": "GPT-ASSETS/portraits/player-options/roles/recruits/role_recruit_06_hungry_pikeman.png",
+    "source": "chatgpt_manual",
+    "dimensions": [
+      384,
+      384
+    ],
+    "transparent": false,
+    "usage": [
+      "player_portrait_selection",
+      "role:recruits"
+    ],
+    "mature": false,
+    "presentation": "normal"
+  },
+  {
     "id": "role_sailors_option_15_sailor_soldier",
     "category": "portrait_role_variant",
     "path": "GPT-ASSETS/portraits/player-options/roles/sailors/player_portrait_option_15_sailor_soldier.png",
@@ -4985,6 +5137,23 @@
     "dimensions": [
       768,
       768
+    ],
+    "transparent": false,
+    "usage": [
+      "player_portrait_selection",
+      "role:scouts"
+    ],
+    "mature": false,
+    "presentation": "normal"
+  },
+  {
+    "id": "role_scouts_role_scout_02_road_spy",
+    "category": "portrait_role_variant",
+    "path": "GPT-ASSETS/portraits/player-options/roles/scouts/role_scout_02_road_spy.png",
+    "source": "chatgpt_manual",
+    "dimensions": [
+      384,
+      384
     ],
     "transparent": false,
     "usage": [
@@ -5063,6 +5232,23 @@
     "presentation": "normal"
   },
   {
+    "id": "role_specialists_role_specialist_03_field_surgeon",
+    "category": "portrait_role_variant",
+    "path": "GPT-ASSETS/portraits/player-options/roles/specialists/role_specialist_03_field_surgeon.png",
+    "source": "chatgpt_manual",
+    "dimensions": [
+      384,
+      384
+    ],
+    "transparent": false,
+    "usage": [
+      "player_portrait_selection",
+      "role:specialists"
+    ],
+    "mature": false,
+    "presentation": "normal"
+  },
+  {
     "id": "role_swordsmen_option_03_sword_buckler_soldier",
     "category": "portrait_role_variant",
     "path": "GPT-ASSETS/portraits/player-options/roles/swordsmen/player_portrait_option_03_sword_buckler_soldier.png",
@@ -5087,6 +5273,23 @@
     "dimensions": [
       768,
       768
+    ],
+    "transparent": false,
+    "usage": [
+      "player_portrait_selection",
+      "role:swordsmen"
+    ],
+    "mature": false,
+    "presentation": "normal"
+  },
+  {
+    "id": "role_swordsmen_role_swordsman_02_rodela_guard",
+    "category": "portrait_role_variant",
+    "path": "GPT-ASSETS/portraits/player-options/roles/swordsmen/role_swordsman_02_rodela_guard.png",
+    "source": "chatgpt_manual",
+    "dimensions": [
+      384,
+      384
     ],
     "transparent": false,
     "usage": [
@@ -5165,6 +5368,41 @@
     "presentation": "normal"
   },
   {
+    "id": "role_veterans_role_veteran_03_unpaid_old_soldier",
+    "category": "portrait_role_variant",
+    "path": "GPT-ASSETS/portraits/player-options/roles/veterans/role_veteran_03_unpaid_old_soldier.png",
+    "source": "chatgpt_manual",
+    "dimensions": [
+      384,
+      384
+    ],
+    "transparent": false,
+    "usage": [
+      "player_portrait_selection",
+      "role:veterans"
+    ],
+    "mature": false,
+    "presentation": "normal"
+  },
+  {
+    "id": "food_hard_biscuit_stack",
+    "category": "food",
+    "path": "GPT-ASSETS/props/food/food_hard_biscuit_stack.png",
+    "source": "chatgpt_manual",
+    "dimensions": [
+      192,
+      192
+    ],
+    "transparent": false,
+    "usage": [
+      "consumable",
+      "food",
+      "inventory"
+    ],
+    "mature": false,
+    "presentation": "normal"
+  },
+  {
     "id": "food_pan_municion",
     "category": "food",
     "path": "GPT-ASSETS/props/food/food_pan_municion.png",
@@ -5210,6 +5448,24 @@
       1254
     ],
     "transparent": true,
+    "usage": [
+      "consumable",
+      "food",
+      "inventory"
+    ],
+    "mature": false,
+    "presentation": "normal"
+  },
+  {
+    "id": "food_wine_skin_dark",
+    "category": "food",
+    "path": "GPT-ASSETS/props/food/food_wine_skin_dark.png",
+    "source": "chatgpt_manual",
+    "dimensions": [
+      192,
+      192
+    ],
+    "transparent": false,
     "usage": [
       "consumable",
       "food",
@@ -6157,6 +6413,22 @@
     "presentation": "blurred"
   },
   {
+    "id": "saints_pantheon_bg",
+    "category": "scene",
+    "path": "GPT-ASSETS/scenes/events/saints_pantheon_bg.png",
+    "source": "chatgpt_manual",
+    "dimensions": [
+      1672,
+      941
+    ],
+    "transparent": false,
+    "usage": [
+      "asset_bank"
+    ],
+    "mature": false,
+    "presentation": "normal"
+  },
+  {
     "id": "siege_breach_bg",
     "category": "scene",
     "path": "GPT-ASSETS/scenes/events/siege_breach_bg.png",
@@ -6758,6 +7030,224 @@
     "usage": [
       "event",
       "inventory"
+    ],
+    "mature": false,
+    "presentation": "normal"
+  },
+  {
+    "id": "action_icon_command_banner",
+    "category": "action_icon",
+    "path": "GPT-ASSETS/ui/action/action_icon_command_banner.png",
+    "source": "chatgpt_manual",
+    "dimensions": [
+      192,
+      192
+    ],
+    "transparent": false,
+    "usage": [
+      "asset_bank"
+    ],
+    "mature": false,
+    "presentation": "normal"
+  },
+  {
+    "id": "action_icon_train_arquebus",
+    "category": "action_icon",
+    "path": "GPT-ASSETS/ui/action/action_icon_train_arquebus.png",
+    "source": "chatgpt_manual",
+    "dimensions": [
+      192,
+      192
+    ],
+    "transparent": false,
+    "usage": [
+      "asset_bank"
+    ],
+    "mature": false,
+    "presentation": "normal"
+  },
+  {
+    "id": "action_icon_train_pike",
+    "category": "action_icon",
+    "path": "GPT-ASSETS/ui/action/action_icon_train_pike.png",
+    "source": "chatgpt_manual",
+    "dimensions": [
+      192,
+      192
+    ],
+    "transparent": false,
+    "usage": [
+      "asset_bank"
+    ],
+    "mature": false,
+    "presentation": "normal"
+  },
+  {
+    "id": "asset_pack_2026_06_21_icon_atlas_imagegen",
+    "category": "ui",
+    "path": "GPT-ASSETS/ui/game-icons/asset_pack_2026_06_21_icon_atlas_imagegen.png",
+    "source": "chatgpt_manual",
+    "dimensions": [
+      1254,
+      1254
+    ],
+    "transparent": false,
+    "usage": [
+      "game_icon",
+      "ui"
+    ],
+    "mature": false,
+    "presentation": "normal"
+  },
+  {
+    "id": "game_icon_delayed_pay_chest",
+    "category": "ui",
+    "path": "GPT-ASSETS/ui/game-icons/game_icon_delayed_pay_chest.png",
+    "source": "chatgpt_manual",
+    "dimensions": [
+      192,
+      192
+    ],
+    "transparent": false,
+    "usage": [
+      "game_icon",
+      "ui"
+    ],
+    "mature": false,
+    "presentation": "normal"
+  },
+  {
+    "id": "game_icon_fatigue_watch",
+    "category": "ui",
+    "path": "GPT-ASSETS/ui/game-icons/game_icon_fatigue_watch.png",
+    "source": "chatgpt_manual",
+    "dimensions": [
+      192,
+      192
+    ],
+    "transparent": false,
+    "usage": [
+      "game_icon",
+      "ui"
+    ],
+    "mature": false,
+    "presentation": "normal"
+  },
+  {
+    "id": "game_icon_field_surgery",
+    "category": "ui",
+    "path": "GPT-ASSETS/ui/game-icons/game_icon_field_surgery.png",
+    "source": "chatgpt_manual",
+    "dimensions": [
+      192,
+      192
+    ],
+    "transparent": false,
+    "usage": [
+      "game_icon",
+      "ui"
+    ],
+    "mature": false,
+    "presentation": "normal"
+  },
+  {
+    "id": "game_icon_morale_honor",
+    "category": "ui",
+    "path": "GPT-ASSETS/ui/game-icons/game_icon_morale_honor.png",
+    "source": "chatgpt_manual",
+    "dimensions": [
+      192,
+      192
+    ],
+    "transparent": false,
+    "usage": [
+      "game_icon",
+      "ui"
+    ],
+    "mature": false,
+    "presentation": "normal"
+  },
+  {
+    "id": "game_icon_powder_barrel",
+    "category": "ui",
+    "path": "GPT-ASSETS/ui/game-icons/game_icon_powder_barrel.png",
+    "source": "chatgpt_manual",
+    "dimensions": [
+      192,
+      192
+    ],
+    "transparent": false,
+    "usage": [
+      "game_icon",
+      "ui"
+    ],
+    "mature": false,
+    "presentation": "normal"
+  },
+  {
+    "id": "game_icon_sealed_orders",
+    "category": "ui",
+    "path": "GPT-ASSETS/ui/game-icons/game_icon_sealed_orders.png",
+    "source": "chatgpt_manual",
+    "dimensions": [
+      192,
+      192
+    ],
+    "transparent": false,
+    "usage": [
+      "game_icon",
+      "ui"
+    ],
+    "mature": false,
+    "presentation": "normal"
+  },
+  {
+    "id": "game_icon_supply_cart",
+    "category": "ui",
+    "path": "GPT-ASSETS/ui/game-icons/game_icon_supply_cart.png",
+    "source": "chatgpt_manual",
+    "dimensions": [
+      192,
+      192
+    ],
+    "transparent": false,
+    "usage": [
+      "game_icon",
+      "ui"
+    ],
+    "mature": false,
+    "presentation": "normal"
+  },
+  {
+    "id": "game_icon_tavern_duel",
+    "category": "ui",
+    "path": "GPT-ASSETS/ui/game-icons/game_icon_tavern_duel.png",
+    "source": "chatgpt_manual",
+    "dimensions": [
+      192,
+      192
+    ],
+    "transparent": false,
+    "usage": [
+      "game_icon",
+      "ui"
+    ],
+    "mature": false,
+    "presentation": "normal"
+  },
+  {
+    "id": "game_icon_wet_boots",
+    "category": "ui",
+    "path": "GPT-ASSETS/ui/game-icons/game_icon_wet_boots.png",
+    "source": "chatgpt_manual",
+    "dimensions": [
+      192,
+      192
+    ],
+    "transparent": false,
+    "usage": [
+      "game_icon",
+      "ui"
     ],
     "mature": false,
     "presentation": "normal"
@@ -8573,6 +9063,38 @@
       "formation",
       "ordinance",
       "ui"
+    ],
+    "mature": false,
+    "presentation": "normal"
+  },
+  {
+    "id": "resource_icon_camp_disease",
+    "category": "resource_icon",
+    "path": "GPT-ASSETS/ui/resource/resource_icon_camp_disease.png",
+    "source": "chatgpt_manual",
+    "dimensions": [
+      192,
+      192
+    ],
+    "transparent": false,
+    "usage": [
+      "asset_bank"
+    ],
+    "mature": false,
+    "presentation": "normal"
+  },
+  {
+    "id": "resource_icon_wounds",
+    "category": "resource_icon",
+    "path": "GPT-ASSETS/ui/resource/resource_icon_wounds.png",
+    "source": "chatgpt_manual",
+    "dimensions": [
+      192,
+      192
+    ],
+    "transparent": false,
+    "usage": [
+      "asset_bank"
     ],
     "mature": false,
     "presentation": "normal"

@@ -172,9 +172,10 @@
 body {
   background-color: var(--background);
   background-image:
-    linear-gradient(180deg, rgba(7, 6, 4, 0.88), rgba(7, 6, 4, 0.95)),
-    url("/assets/fondo_juego.png");
-  background-size: cover;
+    radial-gradient(circle at 50% 10%, rgba(101, 67, 27, 0.16), transparent 34rem),
+    linear-gradient(180deg, rgba(7, 6, 4, 0.5), rgba(7, 6, 4, 0.82)),
+    url("/assets/generated/backgrounds/tercio-camp-background-v1.png");
+  background-size: auto, auto, cover;
   background-position: center;
   background-attachment: fixed;
   color: var(--text);
@@ -183,6 +184,48 @@ body {
   margin: 0;
   padding: 0;
   min-height: 100vh;
+}
+
+body::before {
+  content: "";
+  position: fixed;
+  inset: 0;
+  background:
+    radial-gradient(circle at 50% 34%, transparent 0 26rem, rgba(0, 0, 0, 0.5) 60rem),
+    linear-gradient(90deg, rgba(0, 0, 0, 0.48), transparent 22%, transparent 78%, rgba(0, 0, 0, 0.48));
+  pointer-events: none;
+  z-index: -1;
+}
+
+body::after {
+  content: "";
+  position: fixed;
+  inset: 12px;
+  background-image:
+    url("/assets/gpt-bank/ui/icons/esquina_marco_dorada_superior_izquierda.png"),
+    url("/assets/gpt-bank/ui/icons/esquina_marco_dorada_superior_derecha.png"),
+    url("/assets/gpt-bank/ui/icons/esquina_marco_dorada_inferior_izquierda.png"),
+    url("/assets/gpt-bank/ui/icons/esquina_marco_dorada_inferior_derecha.png");
+  background-position: left top, right top, left bottom, right bottom;
+  background-repeat: no-repeat;
+  background-size: 72px 72px;
+  opacity: 0.36;
+  pointer-events: none;
+  z-index: 40;
+}
+
+.game-shell-frame {
+  background:
+    linear-gradient(180deg, rgba(28, 17, 7, 0.72), rgba(11, 8, 5, 0.86)),
+    url("/assets/generated/backgrounds/tercio-camp-background-v1.png");
+  background-size: auto, cover;
+  background-position: center top;
+  background-repeat: no-repeat;
+  border-color: rgba(201, 162, 79, 0.36) !important;
+  box-shadow:
+    0 0 0 1px rgba(0, 0, 0, 0.82),
+    0 18px 46px rgba(0, 0, 0, 0.64),
+    inset 0 0 0 1px rgba(235, 193, 106, 0.08);
 }
 
 /* Custom visual styles for Tercio */
@@ -616,6 +659,20 @@ body {
   gap: 12px;
   min-height: 72px;
   padding: 10px 14px;
+}
+
+.tercio-brand-logo {
+  display: block !important;
+  width: 100% !important;
+  max-width: none !important;
+  height: auto !important;
+  max-height: none !important;
+  object-fit: contain !important;
+}
+
+.gladiatus-titleplate:has(.tercio-brand-logo) {
+  overflow: hidden !important;
+  padding: 0 4px !important;
 }
 
 .gladiatus-crest {

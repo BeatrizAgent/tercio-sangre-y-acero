@@ -23,6 +23,7 @@ import { EquipmentMannequin } from "@/components/soldier/equipment-mannequin";
 import { PlayerChestPanel } from "@/components/soldier/player-chest-panel";
 import { passiveShortLine, rarityStyle, TRIGGER_LABEL } from "@/lib/item-format";
 import { STAT_LABELS } from "@/lib/stats";
+import { getCharacterLevel } from "@/lib/domain/character-level";
 import type { CharacterState, Equipment, EquipmentSlot, FormationSlot, Passive, Stats, StatId } from "@/lib/types";
 
 type Tab = "vision_general" | "estadisticas" | "logros" | "familia";
@@ -37,6 +38,7 @@ type ProfilePreset = {
   portraitAssetId: string;
   spriteSetId?: string;
   formationSlot: FormationSlot;
+  level: number;
   stats: Stats;
   equipment: Equipment;
 };
@@ -52,6 +54,7 @@ function profileFromCharacter(character: CharacterState, soldier: { name: string
     spriteSetId: character.spriteSetId,
     formationSlot: character.formationSlot,
     stats: isPlayer ? soldier.stats : character.stats,
+    level: getCharacterLevel(isPlayer ? soldier.stats : character.stats),
     equipment: isPlayer ? soldier.equipment : character.equipment,
   };
 }
@@ -95,6 +98,7 @@ export default function SoldierPage() {
   const isPlayerProfile = activeProfile.id === "diego_de_arce";
   const activeEquipment = activeProfile.equipment;
   const activeStats = activeProfile.stats;
+  const activeLevel = getCharacterLevel(activeStats);
   const activePortraitPath = getAssetPathById(activeProfile.portraitAssetId);
   const equipmentBonuses = getEquipmentBonuses(activeEquipment);
   const laidOutInventory = useMemo(
@@ -313,7 +317,7 @@ export default function SoldierPage() {
 
               {/* Stats list */}
               <div className="bg-panel border border-iron rounded-xs p-2.5 shadow-md space-y-1 text-[11px] font-mono">
-                <StatLine label="Nivel" value={currentRankIdx + 1} />
+                <StatLine label="Nivel" value={activeLevel} />
                 <StatBar
                   label="Puntos de vida"
                   value={`${lifeRatio}%`}
@@ -346,7 +350,7 @@ export default function SoldierPage() {
             </div>
 
             {/* RIGHT: Mannequin + Backpack */}
-            <div className="lg:col-span-8 space-y-3">
+            <div className="min-w-0 lg:col-span-8 space-y-3">
               <EquipmentMannequin
                 equipment={activeEquipment}
                 draggingItemId={isPlayerProfile ? draggingItemId : null}

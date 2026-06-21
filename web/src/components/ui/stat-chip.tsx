@@ -37,7 +37,7 @@ export function StatChip({
 }) {
   const content = (
     <span
-      className={`inline-flex items-center gap-1 rounded-xs border px-1.5 py-0.5 font-mono ${
+      className={`inline-flex items-center gap-1 rounded-xs border px-1.5 py-0.5 font-mono transition-colors ${
         compact ? "text-[10px]" : "text-[11px]"
       } font-bold ${TONE_CLASS[tone]} ${className}`}
     >

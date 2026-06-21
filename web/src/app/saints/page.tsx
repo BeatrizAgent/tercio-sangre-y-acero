@@ -5,6 +5,7 @@ import type { ComponentProps } from "react";
 import { ArrowRight, Clock, RotateCw } from "lucide-react";
 import { PageTransition } from "@/components/game/page-transition";
 import { UiAssetIcon } from "@/components/ui/ui-asset-icon";
+import { featuredAssetPaths } from "@/lib/game-data";
 import { useGameStore } from "@/lib/game-store";
 import { playCoinSound, playPageSound } from "@/lib/sounds";
 
@@ -483,13 +484,23 @@ export default function SaintsPage() {
 
         {activeTab === "panteon" && (
           <section className="game-panel p-3 md:p-4">
-            <div className="relative z-10 overflow-hidden border border-[#7b3b18] bg-[#ead9ad] p-3 text-[#4a2307] shadow-[inset_0_0_0_2px_rgba(255,245,200,0.35)]">
-              <div className="mb-2 flex items-center justify-between gap-3 border-b border-[#b8944c] pb-2">
-                <h2 className="font-cinzel text-xl font-extrabold uppercase text-[#6b3416]">Santos de la Iglesia</h2>
-                <span className="font-mono text-sm font-bold text-[#7b3d09]">Devocion: 6 / 300</span>
+            <div
+              className="relative z-10 overflow-hidden border border-[#7b3b18] bg-[#1a1008] p-3 text-[#f0ddb0] shadow-[inset_0_0_0_2px_rgba(255,245,200,0.25)]"
+              style={{
+                backgroundImage: `linear-gradient(180deg, rgba(20, 12, 6, 0.1), rgba(20, 12, 6, 0.42)), url(${featuredAssetPaths.saintsPantheon})`,
+                backgroundPosition: "center",
+                backgroundSize: "cover",
+              }}
+            >
+              <div className="pointer-events-none absolute inset-0 z-0 bg-[#120b05]/36" />
+              <div className="relative z-10 mb-2 flex items-center justify-between gap-3 border-b border-[#b8944c]/70 pb-2">
+                <h2 className="font-cinzel text-xl font-extrabold uppercase text-[#f0ddb0] drop-shadow">
+                  Santos de la Iglesia
+                </h2>
+                <span className="font-mono text-sm font-bold text-[#f0ddb0]">Devocion: 6 / 300</span>
               </div>
 
-              <div className="relative mx-auto min-h-[640px] max-w-[760px]">
+              <div className="relative z-10 mx-auto min-h-[640px] max-w-[760px]">
                 <div className="absolute left-1/2 top-1/2 z-10 flex h-28 w-28 -translate-x-1/2 -translate-y-1/2 items-center justify-center border-[6px] border-[#6c5d34] bg-[#d8c378] shadow-[0_0_0_3px_#2f2714,0_8px_18px_rgba(0,0,0,0.35)] [clip-path:polygon(50%_0,95%_25%,95%_75%,50%_100%,5%_75%,5%_25%)]">
                   <span className="font-cinzel text-lg font-extrabold text-[#6b3416]">6 / 300</span>
                 </div>

@@ -18,6 +18,7 @@ import {
   buyChurchBlessingInState,
   buyChurchItemInState,
   buyItemInState,
+  donateItemInState,
   sellItemInState,
 } from "../domain/shop";
 import { equipItemInState, unequipItemInState } from "../domain/equipment";
@@ -110,6 +111,8 @@ export interface GameStore extends GameState {
   buyItem: (itemId: string) => ActionResult;
   buyChurchItem: (itemId: string) => ActionResult;
   buyChurchBlessing: (blessingId: string) => ActionResult;
+  payChurchErrand: (cost: number) => ActionResult;
+  donateItem: (itemId: string) => ActionResult;
   sellItem: (itemId: string) => ActionResult;
   equipItem: (itemId: string) => ActionResult;
   unequipItem: (slot: EquipmentSlot) => ActionResult;
@@ -200,10 +203,43 @@ export const useGameStore = create<GameStore>()(
         return result;
       },
 
+      payChurchErrand: (cost) => {
+        let result: ActionResult = { ok: false, message: "Doblones insuficientes." };
+        set((state) => {
+          if (state.soldier.coins < cost) {
+            result = { ok: false, message: `Doblones insuficientes (${cost}).` };
+            return state;
+          }
+          result = { ok: true, message: `Ofrenda aceptada (${cost} doblones). El capellán anota el encargo.` };
+          return {
+            ...state,
+            soldier: { ...state.soldier, coins: state.soldier.coins - cost },
+          };
+        });
+        return result;
+      },
+
+      donateItem: (itemId) => {
+        let result: ActionResult = { ok: false, message: "No posees este objeto." };
+        set((state) => {
+          const out = donateItemInState(state, itemId);
+          result = out.result;
+          return out.next;
+        });
+        return result;
+      },
+
       sellItem: (itemId) => {
         let result: ActionResult = { ok: false, message: "No posees este objeto." };
         set((state) => {
           const out = sellItemInState(state, itemId);
+          if (out.result.ok) {
+            const clearedEquipment = { ...out.next.soldier.equipment };
+            for (const slot of Object.keys(clearedEquipment) as Array<keyof typeof clearedEquipment>) {
+              if (clearedEquipment[slot] === itemId) clearedEquipment[slot] = null;
+            }
+            return { ...out.next, soldier: { ...out.next.soldier, equipment: clearedEquipment } };
+          }
           result = out.result;
           return out.next;
         });

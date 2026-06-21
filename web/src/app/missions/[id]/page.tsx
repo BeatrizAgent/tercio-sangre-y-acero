@@ -4,9 +4,9 @@ import React, { useEffect, useState } from "react";
 import { useParams, useRouter } from "next/navigation";
 import { Card } from "@/components/ui/card";
 import { UiAssetIcon } from "@/components/ui/ui-asset-icon";
+import { Tooltip } from "@/components/ui/tooltip";
 import { PageTransition } from "@/components/game/page-transition";
 import { MissionCanvasResolver } from "@/components/game/MissionCanvasResolver";
-import { Tooltip } from "@/components/ui/tooltip";
 import { rarityStyle } from "@/lib/item-format";
 import { useGameStore } from "@/lib/game-store";
 import {
@@ -24,6 +24,8 @@ import {
 } from "@/lib/game-data";
 import { playDrumSound } from "@/lib/sounds";
 import type { MissionDefinition } from "@/lib/types";
+
+type IconId = React.ComponentProps<typeof UiAssetIcon>["id"];
 
 function locationLabel(type: MissionDefinition["locationType"]) {
   switch (type) {
@@ -44,28 +46,177 @@ function locationLabel(type: MissionDefinition["locationType"]) {
 
 function StatTile({
   iconId,
-  label,
   value,
   tone = "text-text",
+  tooltip,
 }: {
-  iconId: React.ComponentProps<typeof UiAssetIcon>["id"];
-  label: string;
+  iconId: IconId;
   value: string | number;
   tone?: string;
+  tooltip: string;
 }) {
   return (
-    <div className="icon-stat-tile flex min-w-0 items-center gap-2 rounded-xs border border-iron bg-stone-950/75 p-2">
-      <UiAssetIcon id={iconId} label={label} className="h-8 w-8" />
-      <div className="min-w-0 leading-tight">
-        <div className="font-mono text-[9px] uppercase tracking-wider text-muted">{label}</div>
-        <div className={`truncate font-cinzel text-base font-bold ${tone}`}>{value}</div>
+    <Tooltip type="simple" content={tooltip} fill>
+      <div className="icon-stat-tile flex min-w-0 flex-col items-center justify-center gap-0.5 rounded-xs border border-iron bg-stone-950/75 px-1.5 py-1 cursor-help">
+        <UiAssetIcon id={iconId} label={tooltip} className="h-5 w-5 shrink-0" />
+        <div className={`truncate font-cinzel text-lg font-bold leading-none ${tone}`}>{value}</div>
       </div>
-    </div>
+    </Tooltip>
   );
 }
 
-function MiniIcon({ iconId, label }: { iconId: React.ComponentProps<typeof UiAssetIcon>["id"]; label: string }) {
+function DropTile({ itemId, weight }: { itemId: string; weight?: number }) {
+  const item = getItem(itemId);
+  if (!item) return null;
+  const style = rarityStyle(item.rarity);
+  const w = weight ?? 0;
+  return (
+    <Tooltip type="item" itemId={itemId} fill>
+      <div className={`group relative flex flex-col items-center justify-center p-1.5 bg-stone-950/80 border ${style.ring} hover:border-gold/60 rounded-xs transition-all cursor-help h-full min-h-[72px]`}>
+        <span className="absolute top-0.5 right-0.5 px-1 bg-stone-950/90 text-gold-soft font-mono text-[8px] font-bold rounded-xs border border-iron/30 z-10">
+          {w}%
+        </span>
+        <span className="h-9 w-9 inline-flex items-center justify-center overflow-hidden mb-1 mt-1">
+          <img src={getItemImagePath(itemId)} alt={item.name} className="h-8 w-8 object-contain group-hover:scale-110 transition-transform duration-200" />
+        </span>
+      </div>
+    </Tooltip>
+  );
+}
+
+function MiniIcon({ iconId, label }: { iconId: IconId; label: string }) {
   return <UiAssetIcon id={iconId} label={label} className="h-10 w-10 rounded-xs border border-iron bg-stone-950/75 p-1" />;
+}
+
+function EnemyHoverCard({
+  enemy,
+  enemySprite,
+  mission,
+  targetPower,
+  totalPower,
+  chance,
+}: {
+  enemy: ReturnType<typeof getEnemy>;
+  enemySprite: string | undefined;
+  mission: MissionDefinition;
+  targetPower: number;
+  totalPower: number;
+  chance: number;
+}) {
+  const [hovered, setHovered] = useState(false);
+  const [pinned, setPinned] = useState(false);
+  const enterTimer = React.useRef<number | null>(null);
+  const leaveTimer = React.useRef<number | null>(null);
+
+  const show = hovered || pinned;
+
+  const handleEnter = () => {
+    if (leaveTimer.current) {
+      window.clearTimeout(leaveTimer.current);
+      leaveTimer.current = null;
+    }
+    enterTimer.current = window.setTimeout(() => setHovered(true), 180);
+  };
+
+  const handleLeave = () => {
+    if (enterTimer.current) {
+      window.clearTimeout(enterTimer.current);
+      enterTimer.current = null;
+    }
+    leaveTimer.current = window.setTimeout(() => setHovered(false), 140);
+  };
+
+  React.useEffect(() => () => {
+    if (enterTimer.current) window.clearTimeout(enterTimer.current);
+    if (leaveTimer.current) window.clearTimeout(leaveTimer.current);
+  }, []);
+
+  if (!enemy) {
+    return (
+      <div className="flex flex-col items-center justify-center gap-1 rounded-xs border border-iron bg-stone-950/75 p-2">
+        <UiAssetIcon id="risk" label="Enemigo" className="h-16 w-16" />
+        <span className="max-w-20 truncate font-mono text-[9px] uppercase text-danger">Enemigo</span>
+      </div>
+    );
+  }
+
+  const threat = enemy.power >= 4 ? "Alta" : enemy.power >= 2 ? "Media" : "Baja";
+  const threatTone = enemy.power >= 4 ? "text-danger" : enemy.power >= 2 ? "text-warning" : "text-success";
+
+  return (
+    <div
+      className="relative"
+      onMouseEnter={handleEnter}
+      onMouseLeave={handleLeave}
+    >
+      <button
+        type="button"
+        onClick={() => setPinned((p) => !p)}
+        aria-expanded={show}
+        aria-label={`Ver ${enemy.name}`}
+        className={`group flex w-full cursor-pointer flex-col items-center justify-center gap-1 rounded-xs border bg-stone-950/75 p-2 transition disabled:cursor-not-allowed ${show ? "border-danger/60" : "border-iron hover:border-danger/40"}`}
+      >
+        {enemySprite ? (
+          <img src={enemySprite} alt={enemy.name} className="h-20 w-20 object-contain transition group-hover:scale-105" />
+        ) : (
+          <UiAssetIcon id="risk" label={enemy.name} className="h-16 w-16" />
+        )}
+        <span className={`max-w-20 truncate font-mono text-[9px] uppercase ${show ? "text-gold-soft" : "text-danger"}`}>
+          {enemy.name}
+        </span>
+      </button>
+
+      {show && (
+        <div
+          className="parchment-card absolute right-full top-1/2 z-30 mr-2 w-72 -translate-y-1/2 p-4 text-stone-800 shadow-2xl animate-in fade-in slide-in-from-right-2 duration-150"
+          role="tooltip"
+        >
+          <span
+            aria-hidden="true"
+            className="absolute -right-1.5 top-1/2 h-3 w-3 -translate-y-1/2 rotate-45 border-t border-r border-parchment-dark bg-parchment"
+          />
+          <header className="mb-2 border-b border-stone-700/40 pb-1.5">
+            <p className="font-mono text-[9px] uppercase tracking-widest text-blood">Enemigo</p>
+            <h3 className="font-cinzel text-lg font-bold uppercase leading-tight text-stone-900">{enemy.name}</h3>
+            <p className={`font-mono text-[10px] font-bold uppercase ${threatTone === "text-danger" ? "text-blood" : threatTone === "text-warning" ? "text-amber-700" : "text-emerald-800"}`}>
+              Amenaza {threat}
+            </p>
+          </header>
+
+          <p className="mb-3 font-serif text-xs italic leading-relaxed text-stone-700">&quot;{enemy.description}&quot;</p>
+
+          <div className="mb-2 flex items-center gap-2 rounded-xs border border-stone-700/30 bg-stone-100/60 p-1.5">
+            <span className="font-mono text-[9px] uppercase tracking-widest text-stone-600">Poder</span>
+            <span className="font-cinzel text-lg font-bold text-blood">{enemy.power}</span>
+            <span className="ml-auto font-mono text-[9px] uppercase tracking-widest text-stone-600">vs</span>
+            <span className="font-cinzel text-lg font-bold text-stone-900">{totalPower}</span>
+            <span className="font-mono text-[9px] uppercase tracking-widest text-stone-600">tuyo</span>
+          </div>
+
+          <div className="grid grid-cols-3 gap-1.5 font-mono text-[10px] uppercase">
+            <div className="rounded-xs border border-stone-700/30 bg-stone-100/60 px-1.5 py-1 text-center">
+              <div className="text-stone-600">Herida</div>
+              <div className="font-cinzel text-sm font-bold text-blood">{mission.woundChance}%</div>
+            </div>
+            <div className="rounded-xs border border-stone-700/30 bg-stone-100/60 px-1.5 py-1 text-center">
+              <div className="text-stone-600">Fatiga</div>
+              <div className="font-cinzel text-sm font-bold text-amber-700">+{mission.fatigue}</div>
+            </div>
+            <div className="rounded-xs border border-stone-700/30 bg-stone-100/60 px-1.5 py-1 text-center">
+              <div className="text-stone-600">Éxito</div>
+              <div className={`font-cinzel text-sm font-bold ${chance >= 80 ? "text-emerald-800" : chance >= 50 ? "text-amber-700" : "text-blood"}`}>
+                {chance}%
+              </div>
+            </div>
+          </div>
+
+          <p className="mt-2 text-center font-mono text-[9px] uppercase tracking-widest text-stone-500">
+            Click para {pinned ? "soltar" : "fijar"}
+          </p>
+        </div>
+      )}
+    </div>
+  );
 }
 
 export default function MissionDetailPage() {
@@ -186,13 +337,6 @@ export default function MissionDetailPage() {
         ? "discipline"
         : "pike";
 
-  const statLabels: Record<string, string> = {
-    pike: "Pica",
-    sword: "Espada",
-    arquebus: "Arcabuz",
-    discipline: "Disciplina",
-  };
-
   const basePower =
     soldier.stats[relevantStat] +
     soldier.stats.discipline +
@@ -211,6 +355,13 @@ export default function MissionDetailPage() {
   const chance = requiredRoll <= 1 ? 100 : requiredRoll > 5 ? 0 : ((6 - requiredRoll) / 5) * 100;
   const isAgotado = soldier.fatigue >= 100;
   const lootTable = mission ? lootTableDefinitions.find((tbl) => tbl.id === mission.lootTableId) : undefined;
+
+  const relevantStatLabel: Record<string, string> = {
+    pike: "Pica",
+    sword: "Espada",
+    arquebus: "Arcabuz",
+    discipline: "Disciplina",
+  };
 
   const handleStart = () => {
     setResolving(true);
@@ -266,18 +417,18 @@ export default function MissionDetailPage() {
               />
               <div className="pointer-events-none absolute inset-0 bg-gradient-to-t from-background/90 via-background/10 to-transparent" />
               <div className="absolute bottom-4 left-4 right-4 grid grid-cols-2 gap-2 lg:grid-cols-4">
-                <StatTile iconId="shield" label="Habilidad" value={statLabels[relevantStat]} tone="text-gold-soft" />
-                <StatTile iconId="fatigue" label="Fatiga" value={`+${mission.fatigue}`} tone="text-ember" />
-                <StatTile iconId="wound" label="Herida" value={`${mission.woundChance}%`} tone="text-danger" />
-                <StatTile iconId="risk" label="Objetivo" value={targetPower} tone="text-danger" />
+                <StatTile iconId="shield" value={relevantStatLabel[relevantStat]} tone="text-gold-soft" tooltip="Habilidad relevante" />
+                <StatTile iconId="fatigue" value={`+${mission.fatigue}`} tone="text-ember" tooltip="Fatiga de despliegue" />
+                <StatTile iconId="wound" value={`${mission.woundChance}%`} tone="text-danger" tooltip="Riesgo de herida" />
+                <StatTile iconId="risk" value={targetPower} tone="text-danger" tooltip="Poder objetivo" />
               </div>
             </div>
 
             <div className="grid gap-3 sm:grid-cols-4">
-              <StatTile iconId="shield" label="Tu poder" value={totalPower} tone={totalPower >= targetPower ? "text-success" : "text-danger"} />
-              <StatTile iconId="risk" label="Enemigo" value={enemyPower} tone="text-danger" />
-              <StatTile iconId="confirm" label="Éxito" value={`${chance}%`} tone={chance >= 80 ? "text-success" : chance >= 50 ? "text-warning" : "text-danger"} />
-              <StatTile iconId="mud" label="Malus" value={`-${woundPenalty + fatiguePenalty}`} tone="text-danger" />
+              <StatTile iconId="shield" value={totalPower} tone={totalPower >= targetPower ? "text-success" : "text-danger"} tooltip="Tu poder efectivo" />
+              <StatTile iconId="risk" value={enemyPower} tone="text-danger" tooltip="Poder del enemigo" />
+              <StatTile iconId="confirm" value={`${chance}%`} tone={chance >= 80 ? "text-success" : chance >= 50 ? "text-warning" : "text-danger"} tooltip="Probabilidad de éxito" />
+              <StatTile iconId="mud" value={`-${woundPenalty + fatiguePenalty}`} tone="text-danger" tooltip="Malus por heridas y fatiga" />
             </div>
           </div>
 
@@ -286,20 +437,20 @@ export default function MissionDetailPage() {
               <div className="space-y-4">
                 <div className="grid grid-cols-[1fr_88px] gap-3">
                   <div className="grid grid-cols-2 gap-2">
-                    <StatTile iconId="coins" label="Paga" value={`+${mission.rewards.coins}`} tone="text-gold" />
-                    <StatTile iconId="xp" label="XP" value={`+${mission.rewards.xp}`} />
-                    <StatTile iconId="honor" label="Honor" value={`+${mission.rewards.honor}`} tone="text-amber" />
-                    <StatTile iconId="missions" label="Tipo" value={locationLabel(mission.locationType)} tone="text-gold-soft" />
+                    <StatTile iconId="coins" value={`+${mission.rewards.coins}`} tone="text-gold" tooltip="Doblones" />
+                    <StatTile iconId="xp" value={`+${mission.rewards.xp}`} tooltip="Experiencia" />
+                    <StatTile iconId="honor" value={`+${mission.rewards.honor}`} tone="text-amber" tooltip="Honor" />
+                    <StatTile iconId="missions" value={locationLabel(mission.locationType)} tone="text-gold-soft" tooltip="Tipo" />
                   </div>
 
-                  <div className="flex flex-col items-center justify-center gap-2 rounded-xs border border-iron bg-stone-950/75 p-2">
-                    {enemySprite ? (
-                      <img src={enemySprite} alt={enemy?.name ?? "Enemigo"} className="h-20 w-20 object-contain" />
-                    ) : (
-                      <UiAssetIcon id="risk" label="Enemigo" className="h-16 w-16" />
-                    )}
-                    <span className="max-w-20 truncate font-mono text-[9px] uppercase text-danger">{enemy?.name ?? "Enemigo"}</span>
-                  </div>
+                  <EnemyHoverCard
+                    enemy={enemy}
+                    enemySprite={enemySprite}
+                    mission={mission}
+                    targetPower={targetPower}
+                    totalPower={totalPower}
+                    chance={chance}
+                  />
                 </div>
 
                 <div className="grid grid-cols-5 gap-2">
@@ -333,34 +484,11 @@ export default function MissionDetailPage() {
             </Card>
 
             {lootTable && (
-              <Card title="Botín Estimado" iconId="inventory">
-                <div className="space-y-3">
-                  <div className="grid grid-cols-4 gap-2">
-                    {lootTable.drops.map((drop) => {
-                      const item = getItem(drop.itemId);
-                      if (!item) return null;
-                      const style = rarityStyle(item.rarity);
-                      return (
-                        <Tooltip key={drop.itemId} type="item" itemId={drop.itemId}>
-                          <div className={`group relative flex flex-col items-center justify-center p-1.5 bg-stone-950/80 border ${style.ring} hover:border-gold/60 rounded-xs transition-all cursor-help h-full min-h-[72px]`}>
-                            {/* Drop Chance Badge */}
-                            <span className="absolute top-0.5 right-0.5 px-1 bg-stone-950/90 text-gold-soft font-mono text-[8px] font-bold rounded-xs border border-iron/30 z-10">
-                              {drop.weight}%
-                            </span>
-                            <span className="h-9 w-9 inline-flex items-center justify-center overflow-hidden mb-1 mt-1">
-                              <img src={getItemImagePath(drop.itemId)} alt={item.name} className="h-8 w-8 object-contain group-hover:scale-110 transition-transform duration-200" />
-                            </span>
-                            <span className={`font-mono text-[8px] truncate max-w-full text-center ${style.color}`} title={item.name}>
-                              {item.name}
-                            </span>
-                          </div>
-                        </Tooltip>
-                      );
-                    })}
-                  </div>
-                  <p className="text-[10px] text-text-muted mt-1 leading-normal italic border-t border-iron/20 pt-2">
-                    {lootTable.description}
-                  </p>
+              <Card title="Botín" iconId="inventory">
+                <div className="grid grid-cols-4 gap-2">
+                  {lootTable.drops.map((drop) => (
+                    <DropTile key={drop.itemId} itemId={drop.itemId} weight={drop.weight} />
+                  ))}
                 </div>
               </Card>
             )}

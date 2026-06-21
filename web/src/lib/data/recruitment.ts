@@ -1,8 +1,17 @@
 // Recruitment candidates and cost metadata. The state-mutating logic
 // (canRecruitCandidate, recruitCandidateIntoState) lives in
 // `lib/domain/recruitment.ts` so the data file stays read-only.
+//
+// Pure helpers (powerScore, affordability, filter, sort) also live here so
+// the page and the new card component can read the same numbers without
+// duplicating arithmetic.
 
-import type { CharacterDefinition, RecruitmentCandidate, RecruitmentCost } from "../types";
+import type {
+  CharacterDefinition,
+  RecruitmentCandidate,
+  RecruitmentCost,
+  Soldier,
+} from "../types";
 
 export type { RecruitmentCandidate, RecruitmentCost };
 
@@ -27,7 +36,7 @@ export const recruitmentCandidates: readonly RecruitmentCandidate[] = [
       name: "Tomas de Orduna",
       role: "Piquero",
       rank: "bisono",
-      portraitAssetId: "diego_de_arce_portrait",
+      portraitAssetId: "role_recruits_role_recruit_02_village_recruit",
       tercioAssetId: "tercio_001",
       emotionAssetId: "tercio_emocion_001",
       formationSlot: "banquillo",
@@ -45,7 +54,7 @@ export const recruitmentCandidates: readonly RecruitmentCandidate[] = [
       name: "Hernan de Ula",
       role: "Cabo viejo",
       rank: "soldado_viejo",
-      portraitAssetId: "diego_arrodillado_con_pica",
+      portraitAssetId: "role_pikemen_option_02_pike_veteran",
       tercioAssetId: "tercio_015",
       emotionAssetId: "tercio_emocion_015",
       formationSlot: "banquillo",
@@ -63,7 +72,7 @@ export const recruitmentCandidates: readonly RecruitmentCandidate[] = [
       name: "Beltran de Rojas",
       role: "Espadachin",
       rank: "soldado",
-      portraitAssetId: "diego_piquero_tres_cuartos",
+      portraitAssetId: "role_swordsmen_option_03_sword_buckler_soldier",
       tercioAssetId: "tercio_010",
       emotionAssetId: "tercio_emocion_010",
       formationSlot: "banquillo",
@@ -81,7 +90,7 @@ export const recruitmentCandidates: readonly RecruitmentCandidate[] = [
       name: "Mateo de Breda",
       role: "Arcabucero",
       rank: "soldado",
-      portraitAssetId: "sergeant_instructor_portrait",
+      portraitAssetId: "role_arquebusiers_option_04_arquebusier",
       tercioAssetId: "tercio_007",
       emotionAssetId: "tercio_emocion_007",
       formationSlot: "banquillo",
@@ -99,7 +108,7 @@ export const recruitmentCandidates: readonly RecruitmentCandidate[] = [
       name: "Julian de Napoles",
       role: "Ayudante",
       rank: "bisono",
-      portraitAssetId: "field_surgeon_portrait",
+      portraitAssetId: "role_specialists_option_09_surgeon_soldier",
       tercioAssetId: "tercio_003",
       emotionAssetId: "tercio_emocion_003",
       formationSlot: "banquillo",
@@ -117,7 +126,7 @@ export const recruitmentCandidates: readonly RecruitmentCandidate[] = [
       name: "Rodrigo de Soria",
       role: "Sargento",
       rank: "sargento",
-      portraitAssetId: "sergeant_instructor_portrait",
+      portraitAssetId: "role_officers_role_officer_01_sergeant_baton",
       tercioAssetId: "tercio_007",
       emotionAssetId: "tercio_emocion_007",
       formationSlot: "banquillo",
@@ -130,4 +139,80 @@ export const recruitmentCandidates: readonly RecruitmentCandidate[] = [
 
 export function getRecruitmentCandidate(candidateId: string) {
   return recruitmentCandidates.find((candidate) => candidate.id === candidateId);
+}
+
+export type RecruitmentSortMode = "power" | "cost" | "name";
+
+export interface AffordabilityBreakdown {
+  canAfford: boolean;
+  missing: { coins: number; honor: number; reputation: number };
+}
+
+export function candidatePowerScore(candidate: RecruitmentCandidate): number {
+  return Object.values(candidate.character.stats).reduce(
+    (sum, value) => sum + (value ?? 0),
+    0,
+  );
+}
+
+export function candidateTotalCost(candidate: RecruitmentCandidate): number {
+  const coins = candidate.cost.coins ?? 0;
+  const honor = candidate.cost.honor ?? 0;
+  const reputation = candidate.cost.reputation ?? 0;
+  return coins + honor * 5 + reputation * 3;
+}
+
+export function candidateCostLabel(candidate: RecruitmentCandidate): string {
+  const parts: string[] = [];
+  if (candidate.cost.coins) parts.push(`${candidate.cost.coins} doblones`);
+  if (candidate.cost.honor) parts.push(`${candidate.cost.honor} honor`);
+  if (candidate.cost.reputation) parts.push(`${candidate.cost.reputation} fama`);
+  return parts.length > 0 ? parts.join(" + ") : "Gratis";
+}
+
+export function candidateAffordability(
+  soldier: Soldier,
+  candidate: RecruitmentCandidate,
+): AffordabilityBreakdown {
+  const needCoins = candidate.cost.coins ?? 0;
+  const needHonor = candidate.cost.honor ?? 0;
+  const needRep = candidate.cost.reputation ?? 0;
+  const missing = {
+    coins: Math.max(0, needCoins - soldier.coins),
+    honor: Math.max(0, needHonor - soldier.honor),
+    reputation: Math.max(0, needRep - soldier.reputation),
+  };
+  return {
+    canAfford: missing.coins === 0 && missing.honor === 0 && missing.reputation === 0,
+    missing,
+  };
+}
+
+export function filterCandidatesByRole(
+  candidates: readonly RecruitmentCandidate[],
+  role: string | "all",
+): readonly RecruitmentCandidate[] {
+  if (!role || role === "all") return candidates;
+  return candidates.filter((candidate) => candidate.character.role === role);
+}
+
+export function sortCandidates(
+  candidates: readonly RecruitmentCandidate[],
+  mode: RecruitmentSortMode,
+): readonly RecruitmentCandidate[] {
+  const arr = [...candidates];
+  if (mode === "power") {
+    arr.sort((a, b) => candidatePowerScore(b) - candidatePowerScore(a));
+  } else if (mode === "cost") {
+    arr.sort((a, b) => candidateTotalCost(a) - candidateTotalCost(b));
+  } else {
+    arr.sort((a, b) => a.character.name.localeCompare(b.character.name, "es"));
+  }
+  return arr;
+}
+
+export function uniqueRolesFromCandidates(
+  candidates: readonly RecruitmentCandidate[],
+): string[] {
+  return Array.from(new Set(candidates.map((candidate) => candidate.character.role)));
 }

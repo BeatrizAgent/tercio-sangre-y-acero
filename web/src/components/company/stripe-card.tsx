@@ -48,8 +48,8 @@ export function StripeCard({
       onDragEnd={() => onDragEnd?.()}
       className={`group relative flex cursor-grab gap-2 rounded-xs border p-2 transition-all active:cursor-grabbing ${
         isPlayer
-          ? "border-gold/55 bg-gold/8 shadow-[0_0_0_1px_rgba(201,162,79,0.18)]"
-          : "border-iron/70 bg-stone-950/55 hover:border-gold/35"
+          ? "border-gold/55 bg-gold/10 shadow-[0_0_0_1px_rgba(201,162,79,0.18)]"
+          : "border-iron/70 bg-stone-950/55 hover:border-gold/35 hover:bg-stone-900/55"
       } ${isDragging ? "opacity-40" : ""} ${
         fit === "fuera_de_rol" ? "ring-1 ring-inset ring-warning/30" : ""
       }`}

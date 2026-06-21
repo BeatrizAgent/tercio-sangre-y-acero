@@ -45,13 +45,13 @@ export function GameShell({ children }: { children: React.ReactNode }) {
   const warRemaining = Math.max(0, ACTION_MAX - warVictories);
 
   return (
-    <div className="min-h-screen bg-stone-950 text-text font-sans selection:bg-gold/30 selection:text-gold-soft overflow-y-auto py-4 px-2 md:py-8">
-      <div className="mx-auto max-w-[1080px] w-full flex flex-col bg-background border border-iron shadow-2xl rounded-sm relative">
+    <div className="min-h-screen bg-stone-950 text-text font-sans selection:bg-gold/30 selection:text-gold-soft overflow-x-hidden overflow-y-auto py-4 px-2 md:py-8">
+      <div className="mx-auto max-w-[1080px] w-full min-w-0 overflow-hidden flex flex-col bg-background border border-iron shadow-2xl rounded-sm relative">
         <div className="hidden xl:block absolute top-0 -left-10 w-8 h-full bg-[url('/assets/gpt-bank/ui/icons/marco_panel_vertical_negro.png')] bg-repeat-y opacity-25 pointer-events-none border-r border-iron/20" />
         <div className="hidden xl:block absolute top-0 -right-10 w-8 h-full bg-[url('/assets/gpt-bank/ui/icons/marco_panel_vertical_negro.png')] bg-repeat-y opacity-25 pointer-events-none border-l border-iron/20" />
 
         {mounted && (
-          <header className="top-command-bar border-b border-iron px-3 py-2 flex flex-col gap-2">
+          <header className="top-command-bar min-w-0 max-w-full overflow-hidden border-b border-iron px-3 py-2 flex flex-col gap-2">
             <div
               className="gladiatus-masthead"
               style={{ gridTemplateColumns: "minmax(220px, 1.1fr) minmax(280px, 1.3fr) minmax(280px, 1.2fr)", gap: "8px" }}
@@ -240,4 +240,3 @@ export function GameShell({ children }: { children: React.ReactNode }) {
     </div>
   );
 }
-

@@ -36,8 +36,8 @@ export function PlayerChestPanel({
   ...chestProps
 }: PlayerChestPanelProps) {
   return (
-    <section className="game-panel space-y-2 p-3">
-      <div className="flex items-center justify-between border-b border-iron/45 pb-2">
+    <section className="game-panel min-w-0 w-full max-w-full overflow-hidden space-y-2 p-3">
+      <div className="flex min-w-0 flex-wrap items-center justify-between gap-2 border-b border-iron/45 pb-2">
         <h2 className="font-cinzel text-sm font-bold uppercase tracking-[0.16em] text-gold">{title}</h2>
         <span className="font-mono text-[10px] uppercase tracking-wider text-text-muted">personajes + baul</span>
       </div>

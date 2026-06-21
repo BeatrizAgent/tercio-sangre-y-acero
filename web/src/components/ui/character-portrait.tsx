@@ -57,7 +57,7 @@ export function CharacterPortrait({
 
   return (
     <div
-      className={`relative shrink-0 overflow-hidden border border-iron bg-stone-900 shadow-inner ${radiusClass} ${className}`}
+      className={`relative shrink-0 overflow-hidden border border-iron bg-stone-900 shadow-inner transition-transform duration-200 ${radiusClass} ${className}`}
       style={{ width: px, height: px }}
     >
       {src ? (
@@ -66,7 +66,7 @@ export function CharacterPortrait({
           alt={name}
           width={px}
           height={px}
-          className="absolute inset-0 h-full w-full object-cover object-top"
+          className="absolute inset-0 h-full w-full object-cover object-top transition-transform duration-300 hover:scale-[1.02]"
           draggable={false}
           onError={
             onErrorHide
@@ -88,7 +88,7 @@ export function CharacterPortrait({
       {children}
 
       {withPlayerBadge && (
-        <div className="pointer-events-none absolute inset-x-0 bottom-0 bg-gold/85 text-center font-mono font-extrabold uppercase tracking-widest leading-tight text-stone-950 py-0.5">
+        <div className="pointer-events-none absolute inset-x-0 bottom-0 bg-gold/90 text-center font-mono font-extrabold uppercase tracking-widest leading-tight text-stone-950 py-0.5">
           <span className={playerBadgeText}>tu</span>
         </div>
       )}

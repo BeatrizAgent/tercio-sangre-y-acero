@@ -1,6 +1,7 @@
 "use client";
 
-import React, { useEffect, useRef, useState } from "react";
+import React, { useEffect, useLayoutEffect, useRef, useState } from "react";
+import { createPortal } from "react-dom";
 import { Info } from "lucide-react";
 import type { StatId } from "@/lib/types";
 import { ItemTooltipContent } from "./content-item";
@@ -18,59 +19,126 @@ interface TooltipProps {
   statId?: StatId;
   woundId?: string;
   treated?: boolean;
+  fill?: boolean;
 }
 
 type Side = "top" | "bottom" | "left" | "right";
 
-const POSITION_CLASSES: Record<Side, string> = {
-  top: "bottom-full left-1/2 -translate-x-1/2 mb-3",
-  bottom: "top-full left-1/2 -translate-x-1/2 mt-3",
-  left: "right-full top-1/2 -translate-y-1/2 mr-3",
-  right: "left-full top-1/2 -translate-y-1/2 ml-3",
-};
+function pickSide(rect: DOMRect, popoverW: number, popoverH: number, margin: number): Side {
+  const spaces: Record<Side, number> = {
+    top: rect.top,
+    bottom: window.innerHeight - rect.bottom,
+    left: rect.left,
+    right: window.innerWidth - rect.right,
+  };
+  const fits = {
+    top: spaces.top >= popoverH + margin,
+    bottom: spaces.bottom >= popoverH + margin,
+    left: spaces.left >= popoverW + margin,
+    right: spaces.right >= popoverW + margin,
+  };
 
-function pickSide(rect: DOMRect): Side {
-  const spaceAbove = rect.top;
-  const spaceBelow = window.innerHeight - rect.bottom;
-  const spaceLeft = rect.left;
-  const spaceRight = window.innerWidth - rect.right;
-  if (spaceAbove > 340) return "top";
-  if (spaceBelow > 340) return "bottom";
-  if (spaceRight > 320) return "right";
-  return "left";
+  if (fits.bottom) return "bottom";
+  if (fits.top) return "top";
+  if (fits.right) return "right";
+  if (fits.left) return "left";
+
+  return (Object.entries(spaces).sort((a, b) => b[1] - a[1])[0]?.[0] as Side) ?? "bottom";
+}
+
+interface PopoverPosition {
+  top: number;
+  left: number;
+  side: Side;
+}
+
+function estimatePopoverSize(type: TooltipType): { width: number; height: number } {
+  switch (type) {
+    case "item":
+      return { width: 288, height: 280 };
+    case "stat":
+      return { width: 220, height: 180 };
+    case "wound":
+      return { width: 288, height: 220 };
+    default:
+      return { width: 210, height: 90 };
+  }
+}
+
+function computePopoverPosition(rect: DOMRect, popoverW: number, popoverH: number): PopoverPosition {
+  const margin = 12;
+  const side = pickSide(rect, popoverW, popoverH, margin);
+  const cx = rect.left + rect.width / 2;
+  const cy = rect.top + rect.height / 2;
+
+  let top: number;
+  let left: number;
+
+  if (side === "top") {
+    top = rect.top - popoverH - margin;
+    left = cx - popoverW / 2;
+  } else if (side === "bottom") {
+    top = rect.bottom + margin;
+    left = cx - popoverW / 2;
+  } else if (side === "right") {
+    top = cy - popoverH / 2;
+    left = rect.right + margin;
+  } else {
+    top = cy - popoverH / 2;
+    left = rect.left - popoverW - margin;
+  }
+
+  const maxLeft = window.innerWidth - popoverW - margin;
+  const maxTop = window.innerHeight - popoverH - margin;
+  left = Math.max(margin, Math.min(left, Math.max(margin, maxLeft)));
+  top = Math.max(margin, Math.min(top, Math.max(margin, maxTop)));
+
+  return { side, top, left };
 }
 
 function TooltipArrow({ side }: { side: Side }) {
-  const borderClass = "border-4 border-transparent";
+  const borderClass = "w-0 h-0 border-[6px] border-transparent";
   if (side === "top") {
     return (
-      <>
-        <div className={`${borderClass} border-t-gold/45 absolute top-full left-1/2 -translate-x-1/2`} />
-        <div className={`${borderClass} border-t-stone-950 absolute top-full left-1/2 -translate-x-1/2 -mt-[1px]`} />
-      </>
+      <div
+        style={{ position: "absolute", bottom: -1, left: "50%", transform: "translateX(-50%)" }}
+        className="w-0 h-0"
+      >
+        <div className={`${borderClass} border-t-gold/45 -mb-px`} />
+        <div className={`${borderClass} border-t-stone-950/95`} />
+      </div>
     );
   }
   if (side === "bottom") {
     return (
-      <>
-        <div className={`${borderClass} border-b-gold/45 absolute bottom-full left-1/2 -translate-x-1/2`} />
-        <div className={`${borderClass} border-b-stone-950 absolute bottom-full left-1/2 -translate-x-1/2 -mb-[1px]`} />
-      </>
+      <div
+        style={{ position: "absolute", top: -1, left: "50%", transform: "translateX(-50%)" }}
+        className="w-0 h-0"
+      >
+        <div className={`${borderClass} border-b-gold/45 -mb-px`} />
+        <div className={`${borderClass} border-b-stone-950/95`} />
+      </div>
     );
   }
   if (side === "left") {
     return (
-      <>
-        <div className={`${borderClass} border-l-gold/45 absolute left-full top-1/2 -translate-y-1/2`} />
-        <div className={`${borderClass} border-l-stone-950 absolute left-full top-1/2 -translate-y-1/2 -ml-[1px]`} />
-      </>
+      <div
+        style={{ position: "absolute", right: -1, top: "50%", transform: "translateY(-50%)" }}
+        className="w-0 h-0"
+      >
+        <div className={`${borderClass} border-l-gold/45 -mr-px`} />
+        <div className={`${borderClass} border-l-stone-950/95`} />
+      </div>
     );
   }
   return (
-    <>
-      <div className={`${borderClass} border-r-gold/45 absolute right-full top-1/2 -translate-y-1/2`} />
-      <div className={`${borderClass} border-r-stone-950 absolute right-full top-1/2 -translate-y-1/2 -mr-[1px]`} />
-    </>
+    <div
+      style={{ position: "absolute", left: -1, top: "50%", transform: "translateY(-50%)" }}
+      className="w-0 h-0"
+    >
+      <div className={`${borderClass} border-r-gold/45 -ml-px`} />
+      <div className={`${borderClass} border-r-stone-950/95`} />
+    </div>
   );
 }
 
@@ -95,36 +163,94 @@ export function Tooltip({
   statId,
   woundId,
   treated = false,
+  fill = false,
 }: TooltipProps) {
   const [visible, setVisible] = useState(false);
-  const [side, setSide] = useState<Side>("top");
+  const [position, setPosition] = useState<PopoverPosition>({ top: 0, left: 0, side: "top" });
+  const [positioned, setPositioned] = useState(false);
   const containerRef = useRef<HTMLDivElement>(null);
+  const popoverRef = useRef<HTMLDivElement>(null);
 
-  const handleMouseEnter = () => {
-    if (containerRef.current) {
-      setSide(pickSide(containerRef.current.getBoundingClientRect()));
+  const updatePosition = () => {
+    const container = containerRef.current;
+    const popover = popoverRef.current;
+    if (!container || !popover) return false;
+    let rect = container.getBoundingClientRect();
+    if (rect.width <= 0 || rect.height <= 0) {
+      const child = container.firstElementChild as HTMLElement | null;
+      if (child) {
+        const childRect = child.getBoundingClientRect();
+        if (childRect.width > 0 && childRect.height > 0) {
+          rect = childRect;
+        }
+      }
+    }
+    if (rect.width <= 0 || rect.height <= 0) return false;
+    const popW = popover.offsetWidth || 288;
+    const popH = popover.offsetHeight || 200;
+    if (popW <= 0 || popH <= 0) return false;
+    setPosition(computePopoverPosition(rect, popW, popH));
+    setPositioned(true);
+    return true;
+  };
+
+  const showTooltip = () => {
+    const container = containerRef.current;
+    if (container) {
+      const rect = container.getBoundingClientRect();
+      if (rect.width > 0 && rect.height > 0) {
+        const estimate = estimatePopoverSize(type);
+        setPosition(computePopoverPosition(rect, estimate.width, estimate.height));
+        setPositioned(true);
+      } else {
+        setPositioned(false);
+      }
+    } else {
+      setPositioned(false);
     }
     setVisible(true);
   };
 
+  const handleMouseEnter = () => {
+    showTooltip();
+  };
+
   const handleMouseLeave = () => {
     setVisible(false);
+    setPositioned(false);
   };
 
   const handlePointerDown = (e: React.PointerEvent) => {
     if (e.pointerType === "touch" && !visible) {
       e.stopPropagation();
       e.preventDefault();
-      handleMouseEnter();
+      showTooltip();
     }
   };
+
+  useLayoutEffect(() => {
+    if (!visible) return;
+    const settled = updatePosition();
+    let raf = 0;
+    if (!settled) {
+      raf = requestAnimationFrame(() => updatePosition());
+    }
+    window.addEventListener("scroll", updatePosition, true);
+    window.addEventListener("resize", updatePosition);
+    return () => {
+      if (raf) cancelAnimationFrame(raf);
+      window.removeEventListener("scroll", updatePosition, true);
+      window.removeEventListener("resize", updatePosition);
+    };
+  }, [visible]);
 
   useEffect(() => {
     if (!visible) return;
     const handleOutsideClick = (e: PointerEvent) => {
-      if (containerRef.current && !containerRef.current.contains(e.target as Node)) {
-        setVisible(false);
-      }
+      const target = e.target as Node;
+      if (containerRef.current?.contains(target)) return;
+      if (popoverRef.current?.contains(target)) return;
+      setVisible(false);
     };
     document.addEventListener("pointerdown", handleOutsideClick);
     return () => document.removeEventListener("pointerdown", handleOutsideClick);
@@ -132,7 +258,16 @@ export function Tooltip({
 
   const popover = (
     <div
-      className={`absolute z-50 bg-stone-950/98 backdrop-blur-md border border-gold/45 text-text rounded-xs shadow-2xl pointer-events-none animate-in fade-in zoom-in-95 duration-150 ${POSITION_CLASSES[side]}`}
+      ref={popoverRef}
+      data-tooltip-popover
+      style={{
+        position: "fixed",
+        top: positioned ? position.top : -10000,
+        left: positioned ? position.left : -10000,
+        zIndex: 9999,
+        visibility: positioned ? "visible" : "hidden",
+      }}
+      className="bg-stone-950/95 backdrop-blur-md border border-gold/45 text-text rounded-xs shadow-2xl pointer-events-none"
     >
       <TooltipBody
         type={type}
@@ -142,25 +277,26 @@ export function Tooltip({
         woundId={woundId}
         treated={treated}
       />
-      <TooltipArrow side={side} />
+      <TooltipArrow side={position.side} />
     </div>
   );
 
   if (!children) {
     return (
       <div
+        ref={containerRef}
         className="relative inline-flex items-center"
         onMouseEnter={handleMouseEnter}
         onMouseLeave={handleMouseLeave}
       >
         <button
           type="button"
-          className="text-gold-soft/50 hover:text-gold transition-colors cursor-help p-0.5 focus:outline-hidden"
-          aria-label="Informaci\u00f3n"
+          className="rounded-xs p-0.5 text-gold-soft/60 transition-colors hover:text-gold focus:outline-hidden focus-visible:ring-1 focus-visible:ring-gold/60 cursor-help"
+          aria-label="Informacion"
         >
           <Info className="h-4 w-4" />
         </button>
-        {visible && popover}
+        {visible && createPortal(popover, document.body)}
       </div>
     );
   }
@@ -168,13 +304,14 @@ export function Tooltip({
   return (
     <div
       ref={containerRef}
-      className="relative inline-block w-full h-full"
+      data-tooltip-root
+      className={fill ? "relative inline-block h-full w-full" : "relative inline-flex max-w-full align-middle"}
       onMouseEnter={handleMouseEnter}
       onMouseLeave={handleMouseLeave}
       onPointerDown={handlePointerDown}
     >
       {children}
-      {visible && popover}
+      {visible && createPortal(popover, document.body)}
     </div>
   );
 }

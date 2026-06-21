@@ -51,7 +51,8 @@ export function EquipmentMannequin({
   return (
     <section className="bg-panel border border-iron rounded-xs p-3 shadow-md">
       <div className="flex justify-between items-center mb-2 border-b border-iron/40 pb-1">
-        <span className="text-[10px] font-sans font-bold uppercase tracking-[0.16em] text-gold-soft/80">
+        <span className="flex items-center gap-1.5 text-[10px] font-sans font-bold uppercase tracking-[0.16em] text-gold-soft/80">
+          <span aria-hidden="true" className="inline-block h-1.5 w-1.5 rounded-full bg-gold/70" />
           Maniqui
         </span>
         <span className="text-[9px] font-mono italic text-text-muted">
@@ -154,7 +155,7 @@ function MannequinSlot({
     >
       <div className={`equipment-slot flex h-[64px] w-[64px] items-center justify-center rounded-xs border bg-background/30 transition-all sm:h-[68px] sm:w-[68px] ${ringClass}`}>
         {item ? (
-          <Tooltip type="item" itemId={item.id}>
+          <Tooltip type="item" itemId={item.id} fill>
             <button
               draggable={!readOnly}
               onDragStart={(event) => onDragStart(slot, event)}

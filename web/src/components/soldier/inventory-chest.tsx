@@ -52,17 +52,40 @@ export function InventoryChest({
   onCellDrop,
 }: InventoryChestProps) {
   const capacity = BACKPACK_COLS * BACKPACK_ROWS;
+  const gridHostRef = React.useRef<HTMLDivElement>(null);
+  const [gridHostWidth, setGridHostWidth] = React.useState(0);
+  const gridMetrics = React.useMemo(() => {
+    if (gridHostWidth <= 0) return PLAYER_CHEST_GRID;
+    const available = gridHostWidth;
+    const maxCell = Math.floor(
+      (available - PLAYER_CHEST_GRID.padding * 2 - (BACKPACK_COLS - 1) * PLAYER_CHEST_GRID.gap) / BACKPACK_COLS,
+    );
+    return {
+      ...PLAYER_CHEST_GRID,
+      cellSize: Math.max(32, Math.min(PLAYER_CHEST_GRID.cellSize, maxCell)),
+    };
+  }, [gridHostWidth]);
+
+  React.useEffect(() => {
+    const host = gridHostRef.current;
+    if (!host) return;
+    const updateWidth = () => setGridHostWidth(host.clientWidth);
+    updateWidth();
+    const observer = new ResizeObserver(updateWidth);
+    observer.observe(host);
+    return () => observer.disconnect();
+  }, []);
 
   return (
     <section
       onDragOver={readOnly ? undefined : onDragOverBackpack}
       onDragLeave={readOnly ? undefined : onDragLeaveBackpack}
       onDrop={readOnly ? undefined : onDropBackpack}
-      className={`bg-panel border border-iron rounded-xs p-3 shadow-md transition-all ${
+      className={`min-w-0 w-full max-w-full overflow-hidden bg-panel border border-iron rounded-xs p-3 shadow-md transition-all ${
         isOverBackpack ? "ring-2 ring-gold/40" : ""
       }`}
     >
-      <div className="flex justify-between items-center mb-2 border-b border-iron/40 pb-1">
+      <div className="flex min-w-0 flex-wrap justify-between items-center gap-2 mb-2 border-b border-iron/40 pb-1">
         <span className="text-[10px] font-sans font-bold uppercase tracking-[0.16em] text-gold-soft/80 flex items-center gap-1.5">
           <Backpack className="w-3.5 h-3.5" />
           Mochila
@@ -92,9 +115,12 @@ export function InventoryChest({
         className="grid mb-1 text-center text-[9px] font-mono text-text-muted"
         style={{
           gridTemplateColumns: `repeat(${BACKPACK_COLS}, 1fr)`,
-          gap: PLAYER_CHEST_GRID.gap,
-          paddingLeft: 4,
-          paddingRight: 4,
+          gap: gridMetrics.gap,
+          width: gridMetrics.cols * gridMetrics.cellSize + (gridMetrics.cols - 1) * gridMetrics.gap + gridMetrics.padding * 2,
+          maxWidth: "100%",
+          marginInline: "auto",
+          paddingLeft: gridMetrics.padding,
+          paddingRight: gridMetrics.padding,
         }}
       >
         {ROMAN.slice(0, BACKPACK_COLS).map((r) => (
@@ -102,9 +128,9 @@ export function InventoryChest({
         ))}
       </div>
 
-      <div className="flex justify-center overflow-x-auto pb-1">
+      <div ref={gridHostRef} className="flex min-w-0 justify-center overflow-x-hidden pb-1">
         <ItemChestGrid
-          metrics={PLAYER_CHEST_GRID}
+          metrics={gridMetrics}
           inventory={items.filter((entry) => (entry.chest ?? 0) === activeChest)}
           onCellDragOver={
             readOnly
@@ -122,7 +148,6 @@ export function InventoryChest({
               const footprint = getItemFootprint(item);
               const isSelected = selectedItemId === invItem.itemId;
               const isEquipped = Object.values(equipment).includes(invItem.itemId);
-              const isEquipable = item.slot !== "consumable";
 
               return (
                 <div
@@ -132,10 +157,10 @@ export function InventoryChest({
                     height: footprintPx(footprint, metrics, "y"),
                   }}
                 >
-                  <Tooltip type="item" itemId={invItem.itemId}>
+                  <Tooltip type="item" itemId={invItem.itemId} fill>
                     <button
                       onClick={() => onSelectItem(invItem.itemId)}
-                      draggable={!readOnly && isEquipable}
+                      draggable={!readOnly}
                       onDragStart={(event) => onDragStart(invItem.itemId, event)}
                       onDragEnd={onDragEnd}
                       className={`relative flex h-full w-full cursor-pointer items-center justify-center rounded-xs border bg-stone-950/40 p-1 transition-all hover:bg-stone-950/70 ${
@@ -143,7 +168,6 @@ export function InventoryChest({
                           ? "border-gold bg-panel-raised shadow-[0_0_6px_rgba(201,162,79,0.4)]"
                           : "border-iron/40 hover:border-gold/40"
                       } ${draggingItemId === invItem.itemId ? "opacity-30 border-dashed" : ""}`}
-                      title={item.name}
                     >
                       <img
                         src={getItemImagePath(invItem.itemId)}

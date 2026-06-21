@@ -1,6 +1,11 @@
 @import "tailwindcss";
 
+/* =====================================================================
+   DESIGN.md tokens — single source of truth for layout measurements.
+   Update DESIGN.md first, then mirror here. Sizes in px.
+   ===================================================================== */
 :root {
+  /* color palette */
   --background: #1c1107;
   --panel: #2a1d12;
   --panel-soft: #26190e;
@@ -20,9 +25,86 @@
   --muted: #a78a85;
   --text: #f7decc;
   --text-muted: #dfbfba;
+
+  /* shell + chrome */
+  --shell-max-width: 1080px;
+  --shell-frame-width: 32px;
+
+  /* sidebar */
+  --sidebar-width: 224px;        /* md:w-56 */
+  --sidebar-width-wide: 240px;   /* w-60 */
+  --sidebar-nav-height: 28px;    /* h-7 */
+  --sidebar-nav-height-tall: 32px; /* h-8 */
+  --sidebar-icon-size: 20px;     /* h-5 w-5 */
+  --sidebar-icon-size-lg: 24px;  /* h-6 w-6 */
+  --sidebar-icon-inner: 14px;
+  --sidebar-icon-inner-lg: 16px;
+
+  /* topbar */
+  --topbar-height: 84px;
+  --topbar-crest: 54px;
+  --topbar-portrait-thumb: 40px;
+  --topbar-medallion: 42px;
+  --topbar-medallion-sm: 32px;
+  --topbar-medallion-lg: 50px;
+  --topbar-medallion-icon: 30px;
+  --topbar-medallion-icon-sm: 22px;
+  --topbar-icon: 24px;
+  --topbar-action-min: 34px;
+
+  /* equipment mannequin */
+  --equipment-slot: 64px;
+  --equipment-slot-sm: 68px;
+  --mannequin-size: 264px;
+  --mannequin-size-sm: 280px;
+  --mannequin-gap: 8px;
+
+  /* inventory grids */
+  --chest-gap: 4px;
+  --chest-padding: 4px;
+  --cofre-player-cell: 56px;
+  --cofre-player-cols: 8;
+  --cofre-player-rows: 5;
+  --cofre-player-width: 492px;   /* 8*56 + 7*4 + 8 */
+  --cofre-player-height: 304px;  /* 5*56 + 4*4 + 8 */
+  --cofre-vendor-cell: 40px;
+  --cofre-vendor-cols: 8;
+  --cofre-vendor-rows: 4;
+  --cofre-vendor-width: 356px;  /* 8*40 + 7*4 + 8 */
+  --cofre-vendor-height: 180px; /* 4*40 + 3*4 + 8 */
+
+  /* scene + combat */
+  --scene-min-height: 240px;
+  --scene-height-md: 360px;
+  --combat-modal-max: 1024px;
+  --combat-stage-min: 600px;
+  --combat-stage-height: 660px;
+  --combat-stage-height-lg: 640px;
+
+  /* formation */
+  --formation-token-width: 120px;
+  --formation-token-height: 96px;
+  --formation-role-header-max: 220px;
+
+  /* typography scale */
+  --font-size-body: 17px;
+  --font-size-game-panel-base: 16px;
+  --font-size-sidebar: 11px;
+  --font-size-stat: 18px;
+  --font-size-section-title: 24px;
+
+  /* border + radius (DESIGN.md caps: 1-3px border, 2-6px radius) */
+  --border-thin: 1px;
+  --border-thick: 3px;
+  --radius-sm: 2px;
+  --radius-md: 4px;
+  --radius-lg: 6px;
 }
 
+/* Tailwind v4: expose design tokens as utility classes.
+   After this you can write className="w-sidebar h-topbar-medallion" etc. */
 @theme {
+  /* colors */
   --color-background: var(--background);
   --color-panel: var(--panel);
   --color-panel-soft: var(--panel-soft);
@@ -43,10 +125,48 @@
   --color-text: var(--text);
   --color-text-muted: var(--text-muted);
 
+  /* font families */
   --font-cinzel: var(--font-cinzel), serif;
   --font-cormorant: var(--font-cormorant), serif;
   --font-sans: var(--font-inter), sans-serif;
   --font-blackletter: var(--font-blackletter), serif;
+
+  /* width utilities (use as w-shell, w-sidebar, ...) */
+  --width-shell: var(--shell-max-width);
+  --width-sidebar: var(--sidebar-width);
+  --width-sidebar-wide: var(--sidebar-width-wide);
+  --width-crest: var(--topbar-crest);
+  --width-portrait-thumb: var(--topbar-portrait-thumb);
+  --width-medallion: var(--topbar-medallion);
+  --width-medallion-sm: var(--topbar-medallion-sm);
+  --width-medallion-lg: var(--topbar-medallion-lg);
+  --width-equipment-slot: var(--equipment-slot);
+  --width-cofre-player: var(--cofre-player-width);
+  --width-cofre-vendor: var(--cofre-vendor-width);
+  --width-combat-modal: var(--combat-modal-max);
+  --width-formation-token: var(--formation-token-width);
+
+  /* height utilities (use as h-topbar, h-medallion, ...) */
+  --height-topbar: var(--topbar-height);
+  --height-crest: var(--topbar-crest);
+  --height-portrait-thumb: var(--topbar-portrait-thumb);
+  --height-medallion: var(--topbar-medallion);
+  --height-medallion-sm: var(--topbar-medallion-sm);
+  --height-medallion-lg: var(--topbar-medallion-lg);
+  --height-icon-topbar: var(--topbar-icon);
+  --height-equipment-slot: var(--equipment-slot);
+  --height-mannequin: var(--mannequin-size);
+  --height-cofre-player: var(--cofre-player-height);
+  --height-cofre-vendor: var(--cofre-vendor-height);
+  --height-combat-stage: var(--combat-stage-height);
+  --height-combat-stage-lg: var(--combat-stage-height-lg);
+  --height-formation-token: var(--formation-token-height);
+  --height-action-topbar: var(--topbar-action-min);
+
+  /* spacing */
+  --spacing-chest-gap: var(--chest-gap);
+  --spacing-chest-padding: var(--chest-padding);
+  --spacing-mannequin-gap: var(--mannequin-gap);
 }
 
 body {
@@ -331,8 +451,8 @@ body {
 }
 
 .equipment-slot {
-  width: 68px;
-  height: 68px;
+  width: var(--equipment-slot);
+  height: var(--equipment-slot);
   background-color: var(--panel-soft);
   background-image:
     url("/assets/gpt-bank/ui/icons/textura_metal_oscuro_remaches.png"),
@@ -347,7 +467,14 @@ body {
   position: relative;
   transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
   box-shadow: inset 0 1px 3px rgba(0,0,0,0.4);
-  border-radius: 4px;
+  border-radius: var(--radius-md);
+}
+
+@media (min-width: 640px) {
+  .equipment-slot {
+    width: var(--equipment-slot-sm);
+    height: var(--equipment-slot-sm);
+  }
 }
 
 .asset-icon-frame {
@@ -457,8 +584,10 @@ body {
 
 .gladiatus-masthead {
   display: grid;
-  grid-template-columns: minmax(230px, 1.2fr) minmax(220px, 0.9fr) minmax(260px, 1fr);
-  gap: 10px;
+  /* template mirrors the live override in game-shell.tsx:
+     titleplate 220 / char card 280 / resource rail 280, gap 8 */
+  grid-template-columns: minmax(220px, 1.1fr) minmax(280px, 1.3fr) minmax(280px, 1.2fr);
+  gap: 8px;
   align-items: stretch;
 }
 
@@ -491,8 +620,8 @@ body {
 
 .gladiatus-crest {
   display: flex;
-  height: 54px;
-  width: 54px;
+  height: var(--topbar-crest);
+  width: var(--topbar-crest);
   flex-shrink: 0;
   align-items: center;
   justify-content: center;
@@ -503,7 +632,7 @@ body {
   box-shadow:
     inset 0 0 0 2px rgba(0, 0, 0, 0.38),
     0 0 18px rgba(201, 162, 79, 0.12);
-  border-radius: 2px;
+  border-radius: var(--radius-sm);
 }
 
 .gladiatus-character-card {
@@ -1268,8 +1397,8 @@ body {
 
 .topbar-icon-medallion {
   display: inline-flex;
-  height: 42px;
-  width: 42px;
+  height: var(--topbar-medallion);
+  width: var(--topbar-medallion);
   flex-shrink: 0;
   align-items: center;
   justify-content: center;
@@ -1280,17 +1409,17 @@ body {
   box-shadow:
     inset 0 0 0 2px rgba(0, 0, 0, 0.42),
     0 4px 10px rgba(0, 0, 0, 0.28);
-  border-radius: 2px;
+  border-radius: var(--radius-sm);
 }
 
 .topbar-icon-medallion--small {
-  height: 32px;
-  width: 32px;
+  height: var(--topbar-medallion-sm);
+  width: var(--topbar-medallion-sm);
 }
 
 .topbar-icon-medallion--large {
-  height: 50px;
-  width: 50px;
+  height: var(--topbar-medallion-lg);
+  width: var(--topbar-medallion-lg);
 }
 
 .topbar-icon-medallion .ui-asset-icon {

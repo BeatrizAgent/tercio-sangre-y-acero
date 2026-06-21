@@ -35,12 +35,26 @@ Do not build the whole UI in canvas. Keep navigation, buttons, stats, and dialog
 
 ## Layout & Design System
 
+**Source of truth for measurements**: [`DESIGN.md`](DESIGN.md) at the project root.
+Update DESIGN.md first, then mirror the changes into the CSS custom
+properties declared in `web/src/app/globals.css` (`:root` block).
+The token names map 1:1 to the spec (e.g. `--sidebar-width`,
+`--topbar-medallion`, `--cofre-player-cell`).
+
 - Player status metrics live at the top of the left sidebar.
 - Sidebar and main viewport scroll independently.
-- Sidebar labels use `text-[13px]` or larger.
-- Navigation uses Lucide React vector icons.
-- Panels and buttons use subtle 1px borders and restrained shadows (gritty, early-modern aesthetic).
-- Tooltips: Use custom hover tooltips for stats, equipment slots, and status effects. Avoid inline help text to keep the layout clean and modern.
+- Sidebar labels use `text-[10px]` / `text-[11px]` (CSS overrides bump
+  these inside `.sidebar-shell` so they remain legible).
+- Navigation uses Lucide React vector icons as fallback; dedicated
+  icons live in `GPT-ASSETS/icons-ui`.
+- Panels and buttons use 1-3px borders and restrained shadows (gritty,
+  early-modern aesthetic).
+- Tooltips: Use custom hover tooltips for stats, equipment slots, and
+  status effects. Avoid inline help text to keep the layout clean and
+  modern.
+- Viewport base for mockups: **1280x800**. Reference mockup canvas
+  in `DESIGN/*.png` is **1672x941**.
+- Border radius cap: 6px. No glow, no neon, no fantasy palette.
 
 ## Not This
 

@@ -8,6 +8,7 @@ import { Card, Badge } from "@/components/ui/card";
 import { Tooltip } from "@/components/ui/tooltip";
 import { featuredAssetPaths, getAssetPathById, trainingAssetPaths, trainingOptions } from "@/lib/game-data";
 import { useGameStore } from "@/lib/game-store";
+import { getCharacterLevel } from "@/lib/domain/character-level";
 import { playCoinSound, playDefeatSound, playDrumSound } from "@/lib/sounds";
 import type { StatId } from "@/lib/types";
 
@@ -104,7 +105,7 @@ export default function TrainingPage() {
   };
 
   const isFatigued = activeCharacter.fatigue >= 100;
-  const totalStats = Object.values(activeCharacter.stats).reduce((sum, value) => sum + value, 0);
+  const activeLevel = getCharacterLevel(activeCharacter.stats);
 
   return (
     <PageTransition>
@@ -148,6 +149,7 @@ export default function TrainingPage() {
               {characters.map((character) => {
                 const portrait = getAssetPathById(character.portraitAssetId);
                 const isActive = character.id === activeCharacter.id;
+                const level = getCharacterLevel(character.stats);
                 return (
                   <button
                     key={character.id}
@@ -166,7 +168,7 @@ export default function TrainingPage() {
                         {character.name}
                       </span>
                       <span className="block font-mono text-[10px] uppercase text-text-muted">
-                        {character.fatigue}/100 fatiga
+                        Nv {level} - {character.fatigue}/100 fatiga
                       </span>
                     </span>
                   </button>
@@ -290,7 +292,7 @@ export default function TrainingPage() {
               <div className="space-y-4">
                 <div className="grid grid-cols-2 gap-2">
                   <StatusTile icon={<Coins className="h-5 w-5" />} label="Bolsa" value={soldier.coins} tone="text-gold" />
-                  <StatusTile icon={<TrendingUp className="h-5 w-5" />} label="Total" value={totalStats} tone="text-gold-soft" />
+                  <StatusTile icon={<TrendingUp className="h-5 w-5" />} label="Nivel" value={activeLevel} tone="text-gold-soft" />
                 </div>
 
                 <div className="border border-iron bg-stone-950/60 p-3">

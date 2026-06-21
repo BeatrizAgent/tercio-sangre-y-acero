@@ -5,7 +5,6 @@ import Link from "next/link";
 import { motion, AnimatePresence } from "motion/react";
 import {
   HeartPulse,
-  ShieldAlert,
   ArrowRight,
   Skull,
   Sword,
@@ -13,7 +12,6 @@ import {
 } from "lucide-react";
 import {
   getItem,
-  getItemImagePath,
   getWound,
   reportAssetPaths,
   uiIconPaths,
@@ -397,34 +395,24 @@ function LootAndWounds({
   if (!hasWounds && !hasLoot) return null;
 
   return (
-    <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
+    <div className="grid grid-cols-1 gap-3 md:grid-cols-2">
       {hasWounds && (
         <motion.div
-          initial={reduceMotion ? { opacity: 0 } : { opacity: 0, x: -30, rotate: -1 }}
-          animate={{ opacity: 1, x: 0, rotate: 0 }}
-          transition={{ duration: reduceMotion ? 0.2 : 0.55, ease: "easeOut" }}
-          className="relative overflow-hidden border-2 border-danger/40 bg-gradient-to-br from-stone-900 via-stone-900 to-blood/20 p-4 shadow-lg"
+          initial={reduceMotion ? { opacity: 0 } : { opacity: 0, y: 10 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: reduceMotion ? 0.2 : 0.35, ease: "easeOut" }}
+          className="border border-danger/35 bg-panel/70 p-3"
         >
           <div className="flex items-start gap-3">
-            <div className="flex h-14 w-14 shrink-0 items-center justify-center border border-danger/40 bg-black/40">
-              <img
-                src={reportAssetPaths.woundCare}
-                alt="Herida"
-                className="h-10 w-10 object-contain"
-              />
+            <div className="flex h-10 w-10 shrink-0 items-center justify-center border border-danger/35 bg-black/30">
+              <img src={reportAssetPaths.woundCare} alt="Herida" className="h-7 w-7 object-contain" />
             </div>
-            <div className="flex-1">
+            <div className="min-w-0 flex-1">
               <p className="font-cinzel text-[11px] font-bold uppercase tracking-widest text-danger">
-                Herida en el asalto
+                Heridas
               </p>
               <p className="mt-1 font-serif text-sm text-text">
-                {report.wounds
-                  .map((wId) => getWound(wId)?.name ?? wId)
-                  .join(", ")}
-              </p>
-              <p className="mt-1 font-mono text-[10px] uppercase tracking-wide text-text-muted">
-                <ShieldAlert className="-mt-0.5 mr-1 inline h-3 w-3" />
-                Requiere hospital · Penaliza hasta sanar
+                {report.wounds.map((wId) => getWound(wId)?.name ?? wId).join(", ")}
               </p>
             </div>
           </div>
@@ -433,22 +421,18 @@ function LootAndWounds({
 
       {hasLoot && (
         <motion.div
-          initial={reduceMotion ? { opacity: 0 } : { opacity: 0, x: 30, rotate: 1 }}
-          animate={{ opacity: 1, x: 0, rotate: 0 }}
-          transition={{ duration: reduceMotion ? 0.2 : 0.55, ease: "easeOut", delay: 0.05 }}
-          className="relative overflow-hidden border-2 border-gold/40 bg-gradient-to-br from-stone-900 via-stone-900 to-gold/15 p-4 shadow-lg"
+          initial={reduceMotion ? { opacity: 0 } : { opacity: 0, y: 10 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: reduceMotion ? 0.2 : 0.35, ease: "easeOut", delay: 0.05 }}
+          className="border border-gold/35 bg-panel/70 p-3"
         >
           <div className="flex items-start gap-3">
-            <div className="flex h-14 w-14 shrink-0 items-center justify-center border border-gold/40 bg-black/40">
-              <img
-                src={reportAssetPaths.rewardCoinBagSmall}
-                alt="Botín"
-                className="h-10 w-10 object-contain"
-              />
+            <div className="flex h-10 w-10 shrink-0 items-center justify-center border border-gold/35 bg-black/30">
+              <img src={reportAssetPaths.rewardCoinBagSmall} alt="Botin" className="h-7 w-7 object-contain" />
             </div>
-            <div className="flex-1">
+            <div className="min-w-0 flex-1">
               <p className="font-cinzel text-[11px] font-bold uppercase tracking-widest text-gold-soft">
-                Botín confiscado
+                Botin
               </p>
               <ul className="mt-1 space-y-0.5 font-serif text-sm text-text">
                 {report.loot.map((item, i) => {
@@ -464,46 +448,6 @@ function LootAndWounds({
             </div>
           </div>
         </motion.div>
-      )}
-
-      {report.loot.length > 0 && (
-        <div className="md:col-span-2">
-          <p className="font-mono text-[10px] uppercase tracking-widest text-text-muted">
-            Hallado en el campo · Transferido al macuto
-          </p>
-          <div className="mt-2 flex flex-wrap gap-2">
-            {report.loot.map((item, i) => {
-              const def = getItem(item.itemId);
-              return (
-                <motion.div
-                  key={`${item.itemId}-${i}`}
-                  initial={reduceMotion ? { opacity: 0 } : { opacity: 0, y: 16, scale: 0.8 }}
-                  animate={{ opacity: 1, y: 0, scale: 1 }}
-                  transition={{
-                    duration: reduceMotion ? 0.2 : 0.45,
-                    delay: reduceMotion ? 0 : 0.15 + i * 0.08,
-                    type: "spring",
-                    stiffness: 220,
-                    damping: 16,
-                  }}
-                  className="loot-chip"
-                >
-                  <img
-                    src={getItemImagePath(item.itemId)}
-                    alt={def?.name ?? item.itemId}
-                    className="h-8 w-8 object-contain"
-                  />
-                  <div className="leading-tight">
-                    <p className="font-cinzel text-[11px] font-bold text-gold-soft">
-                      {def?.name ?? item.itemId}
-                    </p>
-                    <p className="font-mono text-[10px] text-text-muted">x{item.quantity}</p>
-                  </div>
-                </motion.div>
-              );
-            })}
-          </div>
-        </div>
       )}
     </div>
   );
@@ -554,16 +498,11 @@ function RewardGrid({
 
   return (
     <div className="game-panel relative overflow-hidden rounded-xs border border-iron p-4 md:p-5">
-      <div className="mb-3 flex items-center justify-between">
-        <div className="flex items-center gap-2">
-          <img src={uiIconPaths.coins} alt="" className="h-7 w-7" />
-          <h3 className="font-cinzel text-sm font-bold uppercase tracking-widest text-gold-soft">
-            {report.success ? "Botín de la jornada" : "Consecuencias de la derrota"}
-          </h3>
-        </div>
-        <span className="font-mono text-[9px] uppercase tracking-widest text-text-muted">
-          {report.success ? "Cuenta del Sargento" : "Cuenta del Cirujano"}
-        </span>
+      <div className="mb-3 flex items-center gap-2">
+        <img src={uiIconPaths.coins} alt="" className="h-7 w-7" />
+        <h3 className="font-cinzel text-sm font-bold uppercase tracking-widest text-gold-soft">
+          Resultado
+        </h3>
       </div>
 
       <div className="grid grid-cols-2 gap-3 md:grid-cols-4">
@@ -582,14 +521,11 @@ function RewardGrid({
         ))}
       </div>
 
-      <div className="mt-3 flex items-center gap-2">
-        <img src={reportAssetPaths.banner} alt="" className="h-5 w-5 opacity-70" />
-        <p className="font-mono text-[10px] uppercase tracking-widest text-text-muted">
-          {report.success
-            ? "Saldo total abonado en el macuto del tercio."
-            : "Nada de esto se devolverá. Anotado en la libreta del capitán."}
+      {report.success ? null : (
+        <p className="mt-3 font-mono text-[10px] uppercase tracking-widest text-text-muted">
+          Derrota registrada.
         </p>
-      </div>
+      )}
     </div>
   );
 }

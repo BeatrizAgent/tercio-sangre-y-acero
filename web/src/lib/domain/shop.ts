@@ -120,3 +120,36 @@ export function buyChurchBlessingInState(
     result: ok(`${blessing.name}: el capellán hace la señal y cobra la ofrenda.`),
   };
 }
+
+export function donateItemInState(
+  state: GameState,
+  itemId: string,
+): { next: GameState; result: ActionResult } {
+  const ownedIdx = state.soldier.inventory.findIndex((item) => item.itemId === itemId);
+  if (ownedIdx === -1 || state.soldier.inventory[ownedIdx].quantity < 1) {
+    return { next: state, result: fail("No posees este objeto.") };
+  }
+  const itemDef = getItem(itemId);
+  const inventory = [...state.soldier.inventory];
+  const owned = inventory[ownedIdx];
+  if (owned.quantity > 1) {
+    inventory[ownedIdx] = { ...owned, quantity: owned.quantity - 1 };
+  } else {
+    inventory.splice(ownedIdx, 1);
+  }
+  const clearedEquipment = { ...state.soldier.equipment };
+  for (const slot of Object.keys(clearedEquipment) as Array<keyof typeof clearedEquipment>) {
+    if (clearedEquipment[slot] === itemId) clearedEquipment[slot] = null;
+  }
+  return {
+    next: {
+      ...state,
+      soldier: {
+        ...state.soldier,
+        inventory: inventory.filter((item) => item.quantity > 0),
+        equipment: clearedEquipment,
+      },
+    },
+    result: ok(`Has ofrendado: ${itemDef?.name ?? itemId}. El capellán lo guarda.`),
+  };
+}

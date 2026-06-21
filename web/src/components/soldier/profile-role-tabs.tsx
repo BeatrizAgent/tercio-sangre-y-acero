@@ -10,6 +10,7 @@ export interface ProfileRoleTab {
   role: string;
   portraitAssetId: string;
   formationSlot: FormationSlot;
+  level: number;
 }
 
 interface ProfileRoleTabsProps {
@@ -50,11 +51,17 @@ export function ProfileRoleTabs({ profiles, activeProfileId, onSelect, compact =
                   <img src={roleIconPath} alt="" className="h-3 w-3 object-contain" draggable={false} />
                 </span>
               ) : null}
+              <span className="pointer-events-none absolute left-0 top-0 rounded-br-xs border-b border-r border-iron/60 bg-stone-950/90 px-1 font-mono text-[8px] font-bold text-gold">
+                {profile.level}
+              </span>
             </CharacterPortrait>
             {!compact && (
               <span className="min-w-0">
                 <span className="block truncate font-mono text-[10px] font-bold uppercase tracking-wider">
                   {profile.role}
+                </span>
+                <span className="block font-mono text-[9px] uppercase tracking-wider text-gold-soft">
+                  Nv {profile.level}
                 </span>
               </span>
             )}

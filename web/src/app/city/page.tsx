@@ -13,10 +13,6 @@ const citySpots = [
     icon: "soldier",
     x: "13%",
     y: "68%",
-    note: "Perfil, atributos, equipo y companeros.",
-    cost: "Sin coste",
-    result: "Hoja de servicio clara.",
-    state: "Lista de tropa",
   },
   {
     href: "/training",
@@ -24,10 +20,6 @@ const citySpots = [
     icon: "training",
     x: "25%",
     y: "35%",
-    note: "Pica, espada, arcabuz, disciplina y vigor.",
-    cost: "Doblones y fatiga",
-    result: "Mas poder real.",
-    state: "Sargento gritando",
   },
   {
     href: "/armory",
@@ -35,10 +27,6 @@ const citySpots = [
     icon: "cityBlacksmith",
     x: "75%",
     y: "70%",
-    note: "Compra, venta y mejora de equipo.",
-    cost: "Doblones",
-    result: "Mejor equipo.",
-    state: "Martillos al rojo",
   },
   {
     href: "/arena",
@@ -46,10 +34,6 @@ const citySpots = [
     icon: "arena",
     x: "54%",
     y: "50%",
-    note: "Duelos locales por honor y moneda corta.",
-    cost: "Fatiga y riesgo",
-    result: "Honor, XP y paga.",
-    state: "Apuestas abiertas",
   },
   {
     href: "/church",
@@ -57,10 +41,6 @@ const citySpots = [
     icon: "cityChurch",
     x: "88%",
     y: "43%",
-    note: "Encargos, amuletos, reliquias y bendiciones.",
-    cost: "Ofrendas y doblones",
-    result: "Honor, calma y proteccion.",
-    state: "Cirios encendidos",
   },
   {
     href: "/hospital",
@@ -68,10 +48,6 @@ const citySpots = [
     icon: "hospital",
     x: "88%",
     y: "58%",
-    note: "Vendas, cirujano, fiebre y recuperacion.",
-    cost: "Vendas o doblones",
-    result: "Menos penalizacion.",
-    state: "Camillas llenas",
   },
   {
     href: "/missions",
@@ -79,10 +55,6 @@ const citySpots = [
     icon: "missions",
     x: "42%",
     y: "30%",
-    note: "Salir de la ciudad hacia barro y botin.",
-    cost: "Fatiga alta",
-    result: "Botin e informes.",
-    state: "Estandarte listo",
   },
   {
     href: "/inventory",
@@ -90,10 +62,6 @@ const citySpots = [
     icon: "inventory",
     x: "66%",
     y: "30%",
-    note: "Botin, pan, vendas y pertrechos.",
-    cost: "Sin coste",
-    result: "Petate ordenado.",
-    state: "Mesa ocupada",
   },
   {
     href: "/equipment",
@@ -101,10 +69,6 @@ const citySpots = [
     icon: "equipment",
     x: "37%",
     y: "73%",
-    note: "Ranuras activas y bonos de combate.",
-    cost: "Sin coste",
-    result: "Bonos activos.",
-    state: "Correas tensas",
   },
 ] as const;
 
@@ -156,10 +120,6 @@ export default function CityPage() {
                 </span>
                 <span className="max-w-[9.5rem] border border-iron/70 bg-stone-950/88 px-2 py-1 font-cinzel text-[13px] font-bold uppercase leading-tight text-gold-soft shadow-lg transition group-hover:border-gold/60 group-hover:text-gold">
                   {spot.label}
-                </span>
-                <span className="pointer-events-none absolute top-full mt-2 hidden w-64 border border-gold/35 bg-stone-950/96 p-3 text-left shadow-xl group-hover:block group-focus-visible:block">
-                  <span className="block font-mono text-[11px] uppercase text-gold-soft">{spot.state}</span>
-                  <span className="mt-1 block text-sm leading-relaxed text-text-muted">{spot.note}</span>
                 </span>
               </Link>
             ))}

@@ -6,9 +6,7 @@ import { Check, Flame, Footprints, Shield, Swords } from "lucide-react";
 import type { CharacterState, FormationSlot, Stats } from "@/lib/types";
 import { useGameStore } from "@/lib/game-store";
 import {
-  COMBAT_STAT_LABEL,
   DEFAULT_TERCIO_FORMATION_ID,
-  FORMATION_META,
   FORMATION_ORDER,
   TERCIO_FORMATION_PRESETS,
   getFitState,
@@ -23,6 +21,7 @@ import { getAssetPathById, reportAssetPaths, tercioOrdinanceIconPaths } from "@/
 import { CharacterPortrait } from "@/components/ui/character-portrait";
 import { FormationField } from "@/components/ui/formation-backdrop";
 import { SlotPlaque } from "@/components/ui/slot-plaque";
+import { StatChip } from "@/components/ui/stat-chip";
 
 const PLAYER_ID = "diego_de_arce";
 
@@ -207,12 +206,12 @@ function Header({
         </div>
 
         <div className="flex flex-wrap items-center gap-1.5">
-          <Metric statId="command" label="Mando" value={totalCommand} tone="gold" />
-          <Metric statId="discipline" label="Disc" value={totalDiscipline} tone="stone" />
-          <Metric statId="vigor" label="Vig" value={totalVigor} tone="stone" />
+          <StatChip statId="command" label="Mando" value={totalCommand} tone="gold" compact />
+          <StatChip statId="discipline" label="Disc" value={totalDiscipline} tone="stone" compact />
+          <StatChip statId="vigor" label="Vig" value={totalVigor} tone="stone" compact />
           <Tooltip content={`Fatiga media del tercio en formacion: ${avgFatigue}/100.`}>
             <span
-              className={`flex items-center gap-1 rounded-xs border px-2 py-1 font-mono text-[10px] font-bold ${
+              className={`inline-flex items-center gap-1 rounded-xs border px-1.5 py-0.5 font-mono text-[10px] font-bold transition-colors ${
                 avgFatigue > 60
                   ? "border-danger/45 bg-danger/12 text-danger"
                   : avgFatigue > 30
@@ -238,33 +237,6 @@ function Header({
         />
       )}
     </header>
-  );
-}
-
-function Metric({
-  statId,
-  label,
-  value,
-  tone,
-}: {
-  statId: keyof Stats;
-  label: string;
-  value: number;
-  tone: "gold" | "stone";
-}) {
-  return (
-    <Tooltip type="stat" statId={statId}>
-      <span
-        className={`flex items-center gap-1 rounded-xs border px-2 py-1 font-mono text-[10px] font-bold ${
-          tone === "gold"
-            ? "border-amber-900/45 bg-amber-950/30 text-amber-200"
-            : "border-stone-700/70 bg-stone-900/55 text-amber-100/85"
-        }`}
-      >
-        <span className="text-[8px] uppercase text-stone-400">{label}</span>
-        <span>{value}</span>
-      </span>
-    </Tooltip>
   );
 }
 

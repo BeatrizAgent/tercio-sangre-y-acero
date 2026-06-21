@@ -197,7 +197,7 @@ function WorldMap({ onSelect }: { onSelect: (id: RegionId) => void }) {
                   src={campaignNodeIconPaths.skirmish}
                   alt=""
                   aria-hidden="true"
-                  className="h-12 w-12 object-contain drop-shadow-[0_4px_6px_rgba(0,0,0,0.6)] md:h-14 md:w-14"
+                  className="h-12 w-12 object-contain drop-shadow-[0_4px_6px_rgba(0,0,0,0.6)] md:h-14 md:h-14"
                 />
                 <span
                   className={`absolute -bottom-1.5 -right-1.5 rounded-full border px-1.5 py-0.5 font-mono text-[9px] font-bold ${
@@ -207,15 +207,6 @@ function WorldMap({ onSelect }: { onSelect: (id: RegionId) => void }) {
                   }`}
                 >
                   {readyCount}/{region.bosses.length}
-                </span>
-              </span>
-              <span className="pointer-events-none absolute left-1/2 top-full z-50 mt-2 hidden w-56 -translate-x-1/2 border border-gold/35 bg-stone-950/98 p-2.5 text-left shadow-2xl group-hover:block group-focus-visible:block">
-                <span className="block font-cinzel text-sm font-bold uppercase text-gold">{region.name}</span>
-                <span className="mt-1 block font-mono text-[10px] leading-snug text-text-muted">
-                  {region.description}
-                </span>
-                <span className="mt-1.5 block border-t border-iron/40 pt-1.5 font-mono text-[9px] uppercase tracking-wider text-gold-soft">
-                  Operaciones: <span className="text-gold">{readyCount}/{region.bosses.length}</span>
                 </span>
               </span>
             </button>

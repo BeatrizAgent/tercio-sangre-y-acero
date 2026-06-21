@@ -68,7 +68,7 @@ export function FormationColumn({
       onDrop={handleDrop}
       className={`flex min-h-[260px] flex-col gap-1.5 rounded-xs border p-2 shadow-md transition-all ${
         isOver
-          ? "border-amber-200/70 bg-amber-100/8 shadow-[0_0_0_1px_rgba(232,213,170,0.45),0_8px_24px_rgba(0,0,0,0.55)]"
+          ? "border-amber-200/70 bg-amber-100/10 shadow-[0_0_0_1px_rgba(232,213,170,0.45),0_8px_24px_rgba(0,0,0,0.55)]"
           : "border-stone-700/70 bg-stone-900/45"
       }`}
       style={{

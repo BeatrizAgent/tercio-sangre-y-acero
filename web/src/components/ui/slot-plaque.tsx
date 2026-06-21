@@ -38,10 +38,10 @@ export function SlotPlaque({
 
   return (
     <div
-      className={`flex items-center gap-1.5 ${
+      className={`flex items-center gap-1.5 transition-colors ${
         isSm
-          ? "rounded-xs border border-stone-700/55 bg-stone-950/76 px-2 py-1 shadow-lg backdrop-blur-[2px]"
-          : "rounded-xs border border-stone-700/65 bg-stone-900/60 px-2 pt-1.5 pb-1"
+          ? "rounded-xs border border-stone-700/55 bg-stone-950/76 px-2 py-1 shadow-lg backdrop-blur-[2px] hover:border-amber-400/45"
+          : "rounded-xs border border-stone-700/65 bg-stone-900/60 px-2 pt-1.5 pb-1 hover:border-amber-400/45"
       } ${className}`}
     >
       {showIcon && (

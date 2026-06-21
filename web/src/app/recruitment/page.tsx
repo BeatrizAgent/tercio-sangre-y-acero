@@ -1,139 +1,261 @@
 "use client";
 
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
+import { Check, X } from "lucide-react";
 import { PageTransition } from "@/components/game/page-transition";
+import { ResourceChip } from "@/components/ui/resource-chip";
 import { UiAssetIcon } from "@/components/ui/ui-asset-icon";
-import { NpcOfferFrame } from "@/components/game/visual-offers";
-import { getAssetPathById } from "@/lib/game-data";
-import { useGameStore } from "@/lib/game-store";
+import { RecruitmentCard } from "@/components/recruitment/recruitment-card";
 import {
-  canRecruitCandidate,
-} from "@/lib/domain/recruitment";
-import { recruitmentCandidates, type RecruitmentCandidate } from "@/lib/data/recruitment";
+  RecruitmentFilters,
+  type SortMode,
+} from "@/components/recruitment/recruitment-filters";
+import {
+  candidateAffordability,
+  filterCandidatesByRole,
+  recruitmentCandidates,
+  sortCandidates,
+  uniqueRolesFromCandidates,
+} from "@/lib/data/recruitment";
+import { featuredAssetPaths } from "@/lib/data/ui-paths";
+import { useGameStore } from "@/lib/game-store";
 import { playCoinSound, playPageSound } from "@/lib/sounds";
 
+type Notice = { kind: "ok" | "err"; title: string; detail: string };
+
+const ALL_ROLES = "all";
+
 export default function RecruitmentPage() {
-  const { soldier, characters, recruitCandidate } = useGameStore();
-  const [notice, setNotice] = useState<string | null>(null);
+  const soldier = useGameStore((state) => state.soldier);
+  const characters = useGameStore((state) => state.characters);
+  const recruitCandidate = useGameStore((state) => state.recruitCandidate);
+
+  const [role, setRole] = useState<string>(ALL_ROLES);
+  const [sort, setSort] = useState<SortMode>("power");
+  const [showRecruited, setShowRecruited] = useState(true);
+  const [notice, setNotice] = useState<Notice | null>(null);
+
   const recruitedIds = useMemo(
     () => new Set(characters.map((character) => character.id)),
     [characters],
   );
 
-  function handleRecruit(candidate: RecruitmentCandidate) {
+  const available = useMemo(
+    () => recruitmentCandidates.filter((candidate) => !recruitedIds.has(candidate.character.id)),
+    [recruitedIds],
+  );
+
+  const roles = useMemo(() => uniqueRolesFromCandidates(recruitmentCandidates), []);
+
+  const visible = useMemo(() => {
+    const filtered = showRecruited
+      ? recruitmentCandidates
+      : recruitmentCandidates.filter((candidate) => !recruitedIds.has(candidate.character.id));
+    return sortCandidates(filterCandidatesByRole(filtered, role), sort);
+  }, [recruitedIds, role, sort, showRecruited]);
+
+  const resourcesTone = useMemo(() => {
+    if (available.length === 0) {
+      return { coins: "text-text-muted", honor: "text-text-muted", rank: "text-text-muted" } as const;
+    }
+    const affordCount = available.filter((c) => candidateAffordability(soldier, c).canAfford).length;
+    if (affordCount === 0) {
+      return { coins: "text-danger", honor: "text-danger", rank: "text-danger" } as const;
+    }
+    if (affordCount === available.length) {
+      return { coins: "text-gold", honor: "text-gold", rank: "text-gold" } as const;
+    }
+    return { coins: "text-ember", honor: "text-ember", rank: "text-ember" } as const;
+  }, [available, soldier]);
+
+  useEffect(() => {
+    if (!notice) return;
+    const timer = window.setTimeout(() => setNotice(null), 3500);
+    return () => window.clearTimeout(timer);
+  }, [notice]);
+
+  function handleRecruit(candidate: (typeof recruitmentCandidates)[number]) {
     const result = recruitCandidate(candidate.id);
-    if (result.ok) playCoinSound();
-    else playPageSound();
-    setNotice(result.message);
-    window.setTimeout(() => setNotice(null), 2400);
+    if (result.ok) {
+      playCoinSound();
+      const parts: string[] = [];
+      if (candidate.cost.coins) parts.push(`−${candidate.cost.coins} doblones`);
+      if (candidate.cost.honor) parts.push(`−${candidate.cost.honor} honor`);
+      if (candidate.cost.reputation) parts.push(`−${candidate.cost.reputation} fama`);
+      setNotice({
+        kind: "ok",
+        title: `${candidate.character.name} entró al banquillo.`,
+        detail: parts.join(" · ") || "Sin coste",
+      });
+    } else {
+      playPageSound();
+      setNotice({ kind: "err", title: "No se pudo reclutar", detail: result.message });
+    }
   }
 
   return (
     <PageTransition>
-      <div className="space-y-3">
-        {notice && (
-          <div className="rounded-xs border border-gold/45 bg-gold/10 px-3 py-2 font-mono text-[11px] font-bold uppercase tracking-wider text-gold">
-            {notice}
-          </div>
-        )}
+      <div className="space-y-4">
+        {notice && <NoticeBanner notice={notice} />}
 
-        <header className="rounded-xs border border-iron/70 bg-panel p-3 shadow-md">
-          <div className="flex flex-col gap-3 md:flex-row md:items-center md:justify-between">
-            <div>
-              <span className="font-mono text-[9px] font-bold uppercase tracking-[0.22em] text-gold-soft/75">
-                Plaza de enganche
+        <section className="scene-frame relative overflow-hidden rounded-xs border border-iron bg-stone-950">
+          <img
+            src={featuredAssetPaths.barracks}
+            alt=""
+            className="absolute inset-0 h-full w-full object-cover opacity-45 saturate-75"
+            draggable={false}
+            onError={(event) => {
+              event.currentTarget.style.display = "none";
+            }}
+          />
+          <div className="absolute inset-0 bg-gradient-to-r from-background/95 via-background/65 to-background/35" />
+          <div className="relative z-10 grid gap-3 p-4 md:grid-cols-[auto_minmax(0,1fr)_auto] md:items-center">
+            <div className="flex items-center gap-3">
+              <span className="flex h-12 w-12 items-center justify-center rounded-xs border border-gold/35 bg-background/80 shadow-inner">
+                <UiAssetIcon id="cityHouseOfTrade" label="Reclutamiento" className="h-8 w-8" />
               </span>
-              <h1 className="mt-1 font-cinzel text-xl font-bold uppercase tracking-[0.14em] text-gold">
-                Reclutamiento
-              </h1>
+              <div>
+                <p className="font-mono text-[10px] font-bold uppercase tracking-[0.22em] text-gold-soft/80">
+                  Plaza de enganche
+                </p>
+                <h1 className="font-cinzel text-2xl font-extrabold uppercase tracking-[0.14em] text-gold md:text-3xl">
+                  Reclutamiento
+                </h1>
+                <p className="mt-1 max-w-md text-xs leading-snug text-text-muted">
+                  Veteranos y bisonos buscan capitan con honra o bolsa. Cada recluta
+                  entra al banquillo: sácalo de reserva para llevarlo a mision.
+                </p>
+              </div>
             </div>
-            <div className="grid grid-cols-3 gap-2 text-[10px] font-mono">
-              <ResourceBadge icon="coins" label="Dinero" value={soldier.coins} />
-              <ResourceBadge icon="honor" label="Honor" value={soldier.honor} />
-              <ResourceBadge icon="rank" label="Fama" value={soldier.reputation} />
+            <div className="hidden md:block" />
+            <div className="flex flex-col items-stretch gap-2 md:items-end">
+              <div className="grid grid-cols-3 gap-2">
+                <ResourceChip
+                  icon="coins"
+                  label="Doblones"
+                  value={soldier.coins}
+                  tone={resourcesTone.coins}
+                />
+                <ResourceChip
+                  icon="honor"
+                  label="Honor"
+                  value={soldier.honor}
+                  tone={resourcesTone.honor}
+                />
+                <ResourceChip
+                  icon="rank"
+                  label="Fama"
+                  value={soldier.reputation}
+                  tone={resourcesTone.rank}
+                />
+              </div>
+              <div className="border border-gold/35 bg-background/75 px-3 py-1 text-center font-mono text-[10px] font-bold uppercase tracking-wider text-gold-soft">
+                {recruitedIds.size} / {recruitmentCandidates.length} en el tercio
+              </div>
             </div>
           </div>
-        </header>
+        </section>
 
-        <section className="grid gap-3 md:grid-cols-2 2xl:grid-cols-3">
-          {recruitmentCandidates.map((candidate) => {
-            const recruited = recruitedIds.has(candidate.character.id);
-            const allowed = canRecruitCandidate(soldier, candidate);
-            const disabled = recruited || !allowed.ok;
-            return (
-              <RecruitCard
+        <RecruitmentFilters
+          roles={roles}
+          selectedRole={role}
+          onSelectRole={setRole}
+          sort={sort}
+          onSortChange={setSort}
+          showRecruited={showRecruited}
+          onToggleShowRecruited={setShowRecruited}
+          totalCount={recruitmentCandidates.length}
+          filteredCount={visible.length}
+        />
+
+        {visible.length === 0 ? (
+          <EmptyState
+            hasAnyRecruits={recruitedIds.size > 0}
+            showRecruited={showRecruited}
+            onToggleShowRecruited={setShowRecruited}
+          />
+        ) : (
+          <section className="grid gap-3 lg:grid-cols-2 2xl:grid-cols-3">
+            {visible.map((candidate) => (
+              <RecruitmentCard
                 key={candidate.id}
                 candidate={candidate}
-                recruited={recruited}
-                blockedReason={recruited ? "Ya reclutado" : allowed.ok ? null : allowed.message}
-                disabled={disabled}
+                soldier={soldier}
+                recruited={recruitedIds.has(candidate.character.id)}
                 onRecruit={() => handleRecruit(candidate)}
               />
-            );
-          })}
-        </section>
+            ))}
+          </section>
+        )}
       </div>
     </PageTransition>
   );
 }
 
-function ResourceBadge({
-  icon,
-  label,
-  value,
-}: {
-  icon: "coins" | "honor" | "rank";
-  label: string;
-  value: number;
-}) {
+function NoticeBanner({ notice }: { notice: Notice }) {
+  const ok = notice.kind === "ok";
   return (
-    <span className="flex min-w-24 items-center gap-2 rounded-xs border border-iron/70 bg-stone-950/55 px-2 py-1.5">
-      <UiAssetIcon id={icon} label={label} className="h-4 w-4" />
-      <span>
-        <span className="block text-[8px] uppercase tracking-wider text-text-muted">{label}</span>
-        <span className="text-gold">{value}</span>
+    <div
+      role="status"
+      aria-live="polite"
+      className={`flex items-start gap-3 border px-3 py-2 font-mono text-xs ${
+        ok
+          ? "border-success/45 bg-success/10 text-success"
+          : "border-danger/45 bg-danger/10 text-danger"
+      }`}
+    >
+      <span
+        className={`mt-0.5 flex h-5 w-5 shrink-0 items-center justify-center rounded-xs border ${
+          ok ? "border-success/55 bg-success/15" : "border-danger/55 bg-danger/15"
+        }`}
+      >
+        {ok ? <Check className="h-3.5 w-3.5" /> : <X className="h-3.5 w-3.5" />}
       </span>
-    </span>
+      <div className="min-w-0">
+        <p className="font-bold uppercase tracking-wider">{notice.title}</p>
+        {notice.detail && (
+          <p className="mt-0.5 text-[11px] tracking-wide text-text-muted">{notice.detail}</p>
+        )}
+      </div>
+    </div>
   );
 }
 
-function RecruitCard({
-  candidate,
-  recruited,
-  blockedReason,
-  disabled,
-  onRecruit,
+function EmptyState({
+  hasAnyRecruits,
+  showRecruited,
+  onToggleShowRecruited,
 }: {
-  candidate: RecruitmentCandidate;
-  recruited: boolean;
-  blockedReason: string | null;
-  disabled: boolean;
-  onRecruit: () => void;
+  hasAnyRecruits: boolean;
+  showRecruited: boolean;
+  onToggleShowRecruited: (value: boolean) => void;
 }) {
-  const portrait = getAssetPathById(candidate.character.portraitAssetId);
-
+  if (!hasAnyRecruits) {
+    return (
+      <div className="game-panel rounded-xs border border-iron/70 bg-stone-950/55 p-8 text-center">
+        <p className="font-cinzel text-base font-bold uppercase tracking-wider text-gold-soft">
+          Nadie se ha presentado hoy
+        </p>
+        <p className="mt-2 text-sm text-text-muted">
+          Vuelve mañana, o prueba a cambiar el filtro de rol.
+        </p>
+      </div>
+    );
+  }
   return (
-    <NpcOfferFrame
-      model={{
-        id: candidate.id,
-        title: candidate.character.name,
-        subtitle: candidate.character.rank,
-        portraitSrc: portrait ?? "",
-        offers: [
-          { id: "pike", iconId: "missions", label: "Pica", value: candidate.character.stats.pike, tooltip: candidate.hook },
-          { id: "fire", iconId: "risk", label: "Fuego", value: candidate.character.stats.arquebus, tooltip: candidate.character.role },
-          { id: "coins", iconId: "coins", label: "Dinero", value: candidate.cost.coins ?? 0, tooltip: "Coste en doblones" },
-          { id: "honor", iconId: "honor", label: "Honor", value: candidate.cost.honor ?? 0, tooltip: "Honor requerido" },
-        ],
-        primaryAction: {
-          id: "recruit",
-          iconId: recruited ? "confirm" : "rank",
-          label: recruited ? "Tercio" : blockedReason ?? "Reclutar",
-          disabled,
-          onClick: onRecruit,
-          tooltip: blockedReason ?? "Reclutar",
-        },
-      }}
-    />
+    <div className="game-panel flex flex-col items-center gap-3 rounded-xs border border-iron/70 bg-stone-950/55 p-8 text-center">
+      <p className="font-cinzel text-base font-bold uppercase tracking-wider text-gold-soft">
+        Todos los candidatos visibles ya estan en tu tercio
+      </p>
+      {!showRecruited && (
+        <button
+          type="button"
+          onClick={() => onToggleShowRecruited(true)}
+          className="cursor-pointer border border-gold/40 bg-gold/10 px-3 py-1.5 font-mono text-[11px] font-bold uppercase tracking-wider text-gold-soft transition hover:bg-gold/20"
+        >
+          Mostrar ya reclutados
+        </button>
+      )}
+    </div>
   );
 }

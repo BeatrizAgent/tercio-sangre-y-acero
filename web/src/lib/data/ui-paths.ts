@@ -16,7 +16,7 @@ export const featuredAssetPaths = {
   hospitalRecoveryCot: assetPath("scenes/events/hospital_recovery_cot.png"),
   training: assetPath("scenes/events/training_yard_bg.png"),
   missionSelect: assetPath("scenes/events/mission_select_bg.png"),
-  church: assetPath("scenes/events/church_interior_bg.png"),
+  church: assetPath("scenes/events/saints_pantheon_bg.png"),
   saintsPantheon: assetPath("scenes/events/saints_pantheon_bg.png"),
   soldierProfile: assetPath("scenes/events/soldier_profile_bg.png"),
   diegoPortrait: assetPath("characters/diego/portraits/diego_retrato_serio.png"),

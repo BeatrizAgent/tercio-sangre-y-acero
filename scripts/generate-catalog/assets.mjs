@@ -6,6 +6,10 @@ import fs from "node:fs";
 import path from "node:path";
 import { fileURLToPath } from "node:url";
 
+const __dirname = path.dirname(fileURLToPath(import.meta.url));
+const root = path.resolve(__dirname, "..", "..");
+const gptAssetsDir = path.join(root, "GPT-ASSETS");
+
 function guessKind(category, usage) {
   const u = (usage ?? []).join(",").toLowerCase();
   const c = (category ?? "").toLowerCase();
@@ -19,12 +23,198 @@ function guessKind(category, usage) {
   return "item";
 }
 
+function toPublicPath(filePath) {
+  return `/assets/gpt-bank/${path.relative(gptAssetsDir, filePath).replaceAll(path.sep, "/")}`;
+}
+
+function buildRealAssetPathMap() {
+  const byId = new Map();
+  const byStem = new Map();
+  const all = [];
+
+  function walk(dir) {
+    if (!fs.existsSync(dir)) return;
+    for (const entry of fs.readdirSync(dir, { withFileTypes: true })) {
+      if (entry.name.startsWith("_")) continue;
+      const full = path.join(dir, entry.name);
+      if (entry.isDirectory()) {
+        walk(full);
+      } else if (entry.isFile() && entry.name.endsWith(".png")) {
+        const stem = path.basename(entry.name, ".png");
+        const publicPath = toPublicPath(full);
+        byStem.set(stem, publicPath);
+        all.push({ stem, publicPath });
+      }
+    }
+  }
+
+  walk(gptAssetsDir);
+
+  const prefer = (id, patterns) => {
+    const hit = all.find(({ publicPath }) =>
+      patterns.every((pattern) => publicPath.toLowerCase().includes(pattern)),
+    );
+    if (hit) byId.set(id, hit.publicPath);
+  };
+
+  for (const { stem, publicPath } of all) byId.set(stem, publicPath);
+
+  const variants = {
+    asset_morion_common_001: ["armor/", "morion_conico"],
+    asset_morion_common_002: ["armor/", "morion_correia_cuero.png"],
+    asset_morion_common_003: ["armor/", "morion_liso"],
+    asset_morion_uncommon_001: ["armor/", "morion_oscuro"],
+    asset_morion_uncommon_002: ["armor/", "morion_soldado"],
+    asset_morion_uncommon_003: ["armor/", "morion_correia_cuero_simple"],
+    asset_morion_rare_001: ["armor/", "morion_oscuro"],
+    asset_morion_rare_002: ["armor/", "morion_soldado"],
+    asset_morion_veteran_001: ["armor/", "morion_conico"],
+    asset_morion_masterwork_001: ["armor/", "morion_soldado"],
+    asset_celada_001: ["armor/", "armet_celada"],
+    asset_gambeson_common_001: ["armor/", "gambeson_largo"],
+    asset_gambeson_common_002: ["armor/", "gambeson_marron"],
+    asset_gambeson_uncommon_001: ["armor/", "gambeson_marron"],
+    asset_gambeson_rare_001: ["armor/", "gambeson_rojo"],
+    asset_gambeson_veteran_001: ["armor/", "gipon_azul"],
+    asset_gambeson_masterwork_001: ["armor/", "jubon_acolchado"],
+    asset_consumable_bread_001: ["props/food/", "food_pan"],
+    asset_consumable_wine_001: ["props/food/", "wine_skin"],
+    asset_consumable_bandage_001: ["props/", "vendas"],
+    asset_consumable_ointment_001: ["ui/icons/", "vendas_tarros"],
+    asset_consumable_powder_001: ["ui/game-icons/", "powder"],
+    asset_consumable_lead_001: ["ui/game-icons/", "powder"],
+    asset_consumable_match_001: ["ui/game-icons/", "powder"],
+    asset_consumable_needle_001: ["props/", "vendas"],
+    asset_material_cloth_001: ["props/", "vendas"],
+    asset_material_buckle_001: ["props/", "moneda"],
+    asset_material_leather_001: ["armor/", "armor_boots"],
+    asset_material_powder_001: ["ui/game-icons/", "powder"],
+    asset_material_lead_001: ["ui/game-icons/", "powder"],
+    asset_material_splinter_001: ["weapons/", "weapon_pike"],
+    asset_religious_rosary_001: ["ui/icons/", "medalla"],
+    asset_religious_relic_001: ["ui/icons/", "medalla"],
+    asset_religious_medal_001: ["ui/icons/", "medalla"],
+    asset_religious_cross_001: ["ui/icons/", "bolsa_monedas_cruz"],
+    asset_trinket_map_001: ["props/", "mapa"],
+    asset_trinket_letter_001: ["props/", "carta"],
+    asset_trinket_coin_001: ["props/", "moneda"],
+    asset_glasses_001: ["ui/icons/", "medallon"],
+    asset_portrait_piquero_001: ["portraits/player-options/", "pike"],
+    asset_portrait_arcabucero_001: ["portraits/player-options/", "arquebusier"],
+    asset_portrait_cirujano_001: ["portraits/player-options/roles/specialists/", "surgeon"],
+    asset_portrait_capellan_001: ["portraits/npcs/", "chaplain"],
+    asset_portrait_cabo_001: ["portraits/player-options/roles/officers/", "sergeant"],
+    asset_portrait_sargento_001: ["portraits/player-options/roles/officers/", "sergeant"],
+    asset_portrait_capitan_001: ["portraits/player-options/roles/epic-officers/", "captain"],
+    asset_portrait_intendente_001: ["portraits/player-options/roles/specialists/", "artillery"],
+    asset_portrait_recluta_joven_001: ["portraits/player-options/roles/recruits/", "recruit"],
+    asset_portrait_veterano_001: ["portraits/player-options/roles/veterans/", "veteran"],
+    asset_scene_camino_barroso_001: ["scenes/events/", "muddy_road"],
+    asset_scene_campamento_001: ["scenes/events/", "camp"],
+    asset_scene_patrulla_bosque_001: ["scenes/events/", "night_watch"],
+    asset_scene_trinchera_001: ["scenes/events/", "siege"],
+    asset_scene_convoy_001: ["scenes/events/", "powder_escort"],
+    asset_scene_asedio_001: ["scenes/events/", "siege_breach"],
+    asset_scene_escaramuza_flandes_001: ["scenes/events/", "road_ambush"],
+    asset_scene_escaramuza_italia_001: ["scenes/events/", "muddy_road"],
+    asset_icon_coin_001: ["ui/icons/", "monedas"],
+    asset_icon_honor_001: ["ui/game-icons/", "honor"],
+    asset_icon_fatigue_001: ["ui/icons/", "calavera"],
+    asset_icon_xp_001: ["ui/icons/", "morion_flecha"],
+    asset_enemy_bandolero_001: ["enemies/bandits/", "enemy"],
+    asset_enemy_desertor_001: ["enemies/protestants/", "enemy"],
+    asset_enemy_oficial_001: ["enemies/french/", "enemy"],
+    asset_banner_tercio_001: ["ui/icons/", "estandarte"],
+    asset_banner_compania_001: ["ui/icons/", "estandarte"],
+    asset_banner_campana_001: ["ui/icons/", "estandarte"],
+    asset_effect_coin_rain_001: ["ui/icons/", "monedas"],
+    asset_effect_powder_smoke_001: ["ui/icons/", "humo"],
+    asset_effect_blood_drop_001: ["ui/icons/", "lacre"],
+  };
+
+  for (const [id, patterns] of Object.entries(variants)) prefer(id, patterns);
+
+  for (const id of [
+    "asset_cuirass_common_001",
+    "asset_cuirass_common_002",
+    "asset_cuirass_common_003",
+    "asset_cuirass_uncommon_001",
+    "asset_cuirass_uncommon_002",
+    "asset_cuirass_uncommon_003",
+    "asset_cuirass_rare_001",
+    "asset_cuirass_rare_002",
+    "asset_cuirass_rare_003",
+    "asset_cuirass_veteran_001",
+    "asset_cuirass_veteran_002",
+    "asset_cuirass_masterwork_001",
+  ]) prefer(id, ["armor/", id.includes("rare") || id.includes("veteran") ? "peto_" : "armor_cuirass"]);
+
+  for (const id of [
+    "asset_boots_common_001",
+    "asset_boots_common_002",
+    "asset_boots_uncommon_001",
+    "asset_boots_rare_001",
+    "asset_boots_veteran_001",
+    "asset_boots_masterwork_001",
+  ]) prefer(id, ["armor/", "armor_boots"]);
+
+  for (const id of [
+    "asset_gloves_common_001",
+    "asset_gloves_uncommon_001",
+    "asset_gloves_rare_001",
+    "asset_gloves_veteran_001",
+  ]) prefer(id, ["armor/", "armor_boots"]);
+
+  for (const id of [
+    "asset_pike_common_001",
+    "asset_pike_common_002",
+    "asset_pike_uncommon_001",
+    "asset_pike_uncommon_002",
+    "asset_pike_rare_001",
+    "asset_pike_rare_002",
+    "asset_pike_veteran_001",
+    "asset_pike_masterwork_001",
+  ]) prefer(id, ["missions/combat-sprites/", "pike"]);
+
+  for (const id of [
+    "asset_sword_common_001",
+    "asset_sword_common_002",
+    "asset_sword_uncommon_001",
+    "asset_sword_uncommon_002",
+    "asset_sword_rare_001",
+    "asset_sword_rare_002",
+    "asset_sword_veteran_001",
+    "asset_sword_masterwork_001",
+  ]) prefer(id, ["weapons/", "weapon_sword"]);
+
+  for (const id of [
+    "asset_arquebus_common_001",
+    "asset_arquebus_common_002",
+    "asset_arquebus_uncommon_001",
+    "asset_arquebus_uncommon_002",
+    "asset_arquebus_rare_001",
+    "asset_arquebus_rare_002",
+    "asset_arquebus_veteran_001",
+    "asset_arquebus_masterwork_001",
+  ]) prefer(id, ["weapons/", "weapon_arquebus"]);
+
+  return { byId, byStem };
+}
+
+const realAssets = buildRealAssetPathMap();
+
+function repairPublicPath(record) {
+  const fromId = realAssets.byId.get(record.id);
+  if (fromId) return fromId;
+  const stem = record.publicPath ? path.basename(record.publicPath, ".png") : record.id;
+  return realAssets.byStem.get(stem) ?? record.publicPath;
+}
+
 function loadExistingAssets() {
   // Read the existing assets that the catalog preserved. The generator is
   // idempotent: re-running it should not duplicate existing entries. Since
   // catalog.json is the new source of truth, we extract the assets from it
   // (when it exists) so we never lose the original GPT-ASSETS-backed entries.
-  const __dirname = path.dirname(fileURLToPath(import.meta.url));
   const catalogPath = path.resolve(__dirname, "..", "..", "data", "catalog.json");
   if (!fs.existsSync(catalogPath)) {
     return [];
@@ -33,7 +223,7 @@ function loadExistingAssets() {
   return (catalog.assets ?? []).map((r) => ({
     id: r.id,
     kind: r.kind,
-    publicPath: r.publicPath,
+    publicPath: repairPublicPath(r),
     width: r.width ?? 1024,
     height: r.height ?? 1024,
     usage: r.usage ?? ["inventory"],
@@ -207,7 +397,7 @@ export function buildAssets() {
   for (const na of NEW_ASSETS) {
     if (seen.has(na.id)) continue;
     seen.add(na.id);
-    merged.push(na);
+    merged.push({ ...na, publicPath: repairPublicPath(na) });
   }
   return merged;
 }

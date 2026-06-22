@@ -1,4 +1,7 @@
+import fs from "node:fs";
+import path from "node:path";
 import { itemDefinitions, getItem } from "../../src/lib/data/items";
+import { getItemImagePath } from "../../src/lib/data/items";
 import { shopInventory, churchInventory } from "../../src/lib/data/shop";
 import { missionDefinitions } from "../../src/lib/data/missions";
 import { enemyDefinitions } from "../../src/lib/data/enemies";
@@ -6,10 +9,16 @@ import { lootTableDefinitions } from "../../src/lib/data/missions";
 import { reportFragmentDefinitions } from "../../src/lib/data/report-fragments";
 import { trainingOptions } from "../../src/lib/data/training";
 import { rankDefinitions } from "../../src/lib/data/ranks";
-import { assetDefinitions } from "../../src/lib/data/assets";
+import { assetDefinitions, getAssetPublicPath } from "../../src/lib/data/assets";
 import { recruitmentCandidates } from "../../src/lib/data/recruitment";
 
 const failures: string[] = [];
+const publicDir = path.resolve("public");
+
+function publicFileExists(publicPath: string | undefined) {
+  if (!publicPath) return false;
+  return fs.existsSync(path.join(publicDir, publicPath.replace(/^\//, "")));
+}
 
 // Every shop item exists in catalog.
 for (const row of [...shopInventory, ...churchInventory]) {
@@ -75,6 +84,18 @@ for (const candidate of recruitmentCandidates) {
 for (const item of itemDefinitions) {
   if (item.assetId && !assetIds.has(item.assetId)) {
     failures.push(`item ${item.id} asset ${item.assetId} missing`);
+  }
+  const imagePath = getItemImagePath(item.id);
+  if (!publicFileExists(imagePath)) {
+    failures.push(`item ${item.id} image path missing on disk: ${imagePath}`);
+  }
+}
+
+// Every asset public path must resolve under web/public.
+for (const asset of assetDefinitions) {
+  const publicPath = getAssetPublicPath(asset);
+  if (!publicFileExists(publicPath)) {
+    failures.push(`asset ${asset.id} public path missing on disk: ${publicPath}`);
   }
 }
 

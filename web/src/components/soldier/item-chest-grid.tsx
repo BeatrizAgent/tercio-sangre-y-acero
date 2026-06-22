@@ -54,12 +54,11 @@ export function ItemChestGrid({
 
   return (
     <div
-      className={`relative shrink-0 overflow-y-auto overflow-x-hidden rounded-xs border border-iron bg-stone-950/40 ${className}`}
+      className={`relative shrink-0 overflow-hidden rounded-xs border border-iron bg-stone-950/40 ${className}`}
       style={{
         boxSizing: "border-box",
         width,
-        minHeight: height,
-        maxHeight: height + metrics.cellSize * 3,
+        height,
         padding: metrics.padding,
         backgroundImage:
           "linear-gradient(to right, rgba(187, 163, 106, 0.1) 1px, transparent 1px), linear-gradient(to bottom, rgba(187, 163, 106, 0.1) 1px, transparent 1px)",

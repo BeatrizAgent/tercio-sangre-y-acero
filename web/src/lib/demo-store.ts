@@ -33,13 +33,13 @@ export function createInitialState(): GameState {
       },
       inventory: inventoryWithAutoLayout([
         { itemId: "common_pike_001", quantity: 1 },
-        { itemId: "armadura_003", quantity: 1 },
-        { itemId: "objeto_004", quantity: 2 },
-        { itemId: "objeto_002", quantity: 2 },
+        { itemId: "armor_cuirass_common_003", quantity: 1 },
+        { itemId: "prop_pan_de_municion_004", quantity: 2 },
+        { itemId: "prop_vendas_de_lino_002", quantity: 2 },
       ]),
       equipment: {
         head: null,
-        body: "armadura_003",
+        body: "armor_cuirass_common_003",
         mainHand: "common_pike_001",
         offHand: null,
         firearm: null,

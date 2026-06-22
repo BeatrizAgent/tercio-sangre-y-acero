@@ -10,7 +10,12 @@ const itemsPath = path.join(root, "data", "items.json");
 const items = JSON.parse(fs.readFileSync(itemsPath, "utf8"));
 const ids = new Set(items.map((i) => i.id));
 
-const initialItemIds = ["common_pike_001", "armadura_003", "objeto_002", "objeto_004"];
+const initialItemIds = [
+  "common_pike_001",
+  "armor_cuirass_common_003",
+  "prop_pan_de_municion_004",
+  "prop_vendas_de_lino_002",
+];
 
 let failures = 0;
 

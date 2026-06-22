@@ -3,3 +3,4 @@
 // imports keep working until they are migrated to the new data layer.
 
 export * from "./data";
+export { getAssetPublicPath } from "./data/assets";

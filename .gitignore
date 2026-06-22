@@ -29,7 +29,7 @@ output/
 /.codegraph/
 /.cursor/
 /web/test-results/
-/web/{
+/web/[{]
 __pycache__/
 *.pyc
 .DS_Store

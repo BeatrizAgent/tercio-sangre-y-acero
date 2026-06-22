@@ -8,9 +8,11 @@
     "start": "next start",
     "lint": "eslint",
     "prisma:generate": "prisma generate",
+    "prisma:migrate:deploy": "prisma migrate deploy",
     "db:push": "prisma db push",
+    "db:deploy": "prisma migrate deploy",
     "db:seed": "node scripts/sync-data.mjs && tsx prisma/seed.ts",
-    "validate": "node tests/validate-web-mvp.mjs"
+    "validate": "node tests/validate-web-mvp.mjs && node tests/validate-db-contract.mjs && node ../scripts/validate_data_references.mjs"
   },
   "prisma": {
     "seed": "node scripts/sync-data.mjs && tsx prisma/seed.ts"

@@ -25,6 +25,7 @@ interface InventoryChestProps {
   readOnly?: boolean;
   onChestChange: (chest: number) => void;
   onSelectItem: (itemId: string) => void;
+  onDoubleClickItem?: (itemId: string) => void;
   onDragStart: (itemId: string, event: React.DragEvent) => void;
   onDragEnd: () => void;
   onDragOverBackpack: (event: React.DragEvent) => void;
@@ -44,6 +45,7 @@ export function InventoryChest({
   readOnly = false,
   onChestChange,
   onSelectItem,
+  onDoubleClickItem,
   onDragStart,
   onDragEnd,
   onDragOverBackpack,
@@ -53,7 +55,12 @@ export function InventoryChest({
 }: InventoryChestProps) {
   const capacity = BACKPACK_COLS * BACKPACK_ROWS;
   const gridHostRef = React.useRef<HTMLDivElement>(null);
-  const [gridHostWidth, setGridHostWidth] = React.useState(0);
+  const [gridHostWidth, setGridHostWidth] = React.useState(() => {
+    if (typeof window !== "undefined" && window.innerWidth >= 1280) {
+      return 332;
+    }
+    return 0;
+  });
   const gridMetrics = React.useMemo(() => {
     if (gridHostWidth <= 0) return PLAYER_CHEST_GRID;
     const available = gridHostWidth;
@@ -160,6 +167,7 @@ export function InventoryChest({
                   <Tooltip type="item" itemId={invItem.itemId} fill>
                     <button
                       onClick={() => onSelectItem(invItem.itemId)}
+                      onDoubleClick={() => onDoubleClickItem?.(invItem.itemId)}
                       draggable={!readOnly}
                       onDragStart={(event) => onDragStart(invItem.itemId, event)}
                       onDragEnd={onDragEnd}

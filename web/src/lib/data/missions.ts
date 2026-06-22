@@ -1,7 +1,12 @@
-// Mission definitions + lookups + mission scene/sprite resolution. Combat
-// simulation logic lives in `lib/domain/combat/` and `lib/domain/resolver.ts`.
+// Mission definitions + lookups + mission scene/sprite resolution. Backed by
+// the unified catalog. The shape is bridged here to the legacy
+// `MissionDefinition` so the rest of the app keeps working unchanged.
 
-import { lootTables, missions } from "../../../data/seed-missions";
+import {
+  lootTableDefinitions as catalogLootTables,
+  missionDefinitions as catalogMissions,
+  getMission as catalogGetMission,
+} from "./catalog";
 import { getAssetDimensionsById, getAssetPathById } from "./assets";
 import type { LootTable, MissionCombatSpriteSet, MissionDefinition, StatId } from "../types";
 
@@ -9,16 +14,47 @@ export interface LootDrop {
   itemId: string;
   quantity: number;
   weight?: number;
+  min?: number;
+  max?: number;
 }
 
 export type { LootTable };
 
-export const lootTableDefinitions: LootTable[] = lootTables as LootTable[];
+// Bridge catalog loot tables -> legacy LootTable shape (drops with qty/weight).
+export const lootTableDefinitions: LootTable[] = catalogLootTables.map((lt) => ({
+  id: lt.id,
+  description: "",
+  drops: lt.entries.map((e) => ({
+    itemId: e.itemId,
+    quantity: e.min,
+    weight: e.weight,
+  })),
+}));
 
-export const missionDefinitions: MissionDefinition[] = missions.map((mission) => ({
-  ...mission,
-  rewards: { ...mission.rewards },
-  reportTags: [...mission.reportTags],
+// Bridge catalog missions -> legacy MissionDefinition.
+export const missionDefinitions: MissionDefinition[] = catalogMissions.map((m) => ({
+  id: m.id,
+  title: m.name,
+  type: m.locationType,
+  difficulty: m.minLevel,
+  // Catalog stores enemyPool; legacy uses single enemyId. Pick the first
+  // enemy from the pool as the "primary" for the legacy single-enemy shape.
+  enemyId: m.enemyPool[0] ?? "",
+  sceneAssetId: m.sceneAssetId,
+  rewards: {
+    coins: m.rewards.coinsMin,
+    xp: m.rewards.xpMin,
+    honor: m.rewards.honorMin,
+  },
+  fatigue: m.fatigueCost,
+  woundChance: Math.round(m.risks.woundChance * 100),
+  woundId: "",
+  lootTableId: m.lootTableId,
+  reportTags: [...m.tags],
+  x: m.x,
+  y: m.y,
+  locationType: m.locationType as MissionDefinition["locationType"],
+  region: m.region as MissionDefinition["region"],
 }));
 
 export function listAvailableMissions() {

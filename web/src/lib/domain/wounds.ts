@@ -19,7 +19,7 @@ export function treatWoundInState(
   state: GameState,
   woundInstanceId: string,
 ): { next: GameState; result: ActionResult } {
-  const bandageIdx = state.soldier.inventory.findIndex((item) => item.itemId === "objeto_002");
+  const bandageIdx = state.soldier.inventory.findIndex((item) => item.itemId === "consumable_vendas_001");
   if (bandageIdx === -1 || state.soldier.inventory[bandageIdx].quantity < 1) {
     return { next: state, result: fail("No tienes vendas limpias disponibles.") };
   }

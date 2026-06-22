@@ -13,7 +13,7 @@
 
 "use client";
 
-import { useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import Link from "next/link";
 import { BarChart3, Check, X } from "lucide-react";
 import { CharacterPortrait } from "@/components/ui/character-portrait";
@@ -209,6 +209,8 @@ export function RecruitmentCard({
           <img
             src={formationRoleIconPaths.banquillo}
             alt=""
+            loading="lazy"
+            decoding="async"
             className="h-3 w-3 object-contain"
             draggable={false}
           />
@@ -275,81 +277,86 @@ function RecruitStatsPopup({
   onClose: () => void;
 }) {
   const { character, hook } = candidate;
+  const dialogRef = useRef<HTMLDialogElement>(null);
+
+  useEffect(() => {
+    dialogRef.current?.showModal();
+  }, []);
+
+  function handleBackdropClick(event: React.MouseEvent<HTMLDialogElement>) {
+    if (event.target === event.currentTarget) onClose();
+  }
+
   return (
-    <div
-      className="fixed inset-0 z-50 flex items-center justify-center bg-stone-950/88 p-3"
-      role="dialog"
-      aria-modal="true"
+    <dialog
+      ref={dialogRef}
+      onClose={onClose}
+      onClick={handleBackdropClick}
       aria-labelledby={`recruit-stats-${candidate.id}`}
-      onClick={onClose}
+      className="recruit-stats-dialog mx-auto mt-[10vh] w-full max-w-md overflow-hidden rounded-xs border border-iron bg-panel p-0 text-text shadow-2xl"
     >
-      <div
-        className="w-full max-w-md overflow-hidden rounded-xs border border-iron bg-panel shadow-2xl"
-        onClick={(event) => event.stopPropagation()}
-      >
-        <header className="flex items-start justify-between gap-3 border-b border-iron bg-stone-950/90 px-3 py-2.5">
-          <div className="min-w-0">
-            <p className="font-mono text-[9px] font-bold uppercase tracking-[0.2em] text-gold-soft/80">
-              Estadisticas
-            </p>
-            <h2
-              id={`recruit-stats-${candidate.id}`}
-              className="truncate font-cinzel text-base font-extrabold uppercase tracking-wider text-gold"
-            >
-              {character.name}
-            </h2>
+      <header className="flex items-start justify-between gap-3 border-b border-iron bg-stone-950/90 px-3 py-2.5">
+        <div className="min-w-0">
+          <p className="font-mono text-[9px] font-bold uppercase tracking-[0.2em] text-gold-soft/80">
+            Estadisticas
+          </p>
+          <h2
+            id={`recruit-stats-${candidate.id}`}
+            className="truncate font-cinzel text-base font-extrabold uppercase tracking-wider text-gold"
+          >
+            {character.name}
+          </h2>
+        </div>
+        <button
+          type="button"
+          onClick={onClose}
+          className="flex h-8 w-8 cursor-pointer items-center justify-center border border-blood/60 bg-blood/15 text-blood-bright transition hover:bg-blood hover:text-text"
+          aria-label="Cerrar estadisticas"
+        >
+          <X className="h-4 w-4" />
+        </button>
+      </header>
+
+      <div className="grid gap-3 p-3 sm:grid-cols-[128px_minmax(0,1fr)]">
+        <CharacterPortrait
+          assetId={character.portraitAssetId}
+          name={character.name}
+          size="lg"
+          rounded="xs"
+          className="mx-auto border-gold/35 sm:mx-0"
+        >
+          {recruited && (
+            <span className="absolute inset-x-0 bottom-0 bg-success/90 py-1 text-center font-mono text-[9px] font-extrabold uppercase tracking-wider text-stone-950">
+              En el tercio
+            </span>
+          )}
+        </CharacterPortrait>
+
+        <div className="min-w-0 space-y-3">
+          <p className="text-xs leading-snug italic text-text-muted">&ldquo;{hook}&rdquo;</p>
+          <div className="flex flex-wrap gap-1">
+            <span className="rounded-xs border border-iron/70 bg-stone-900/55 px-2 py-1 font-mono text-[9px] font-bold uppercase tracking-wider text-text-muted">
+              {character.role}
+            </span>
+            <span className="rounded-xs border border-gold/35 bg-gold/10 px-2 py-1 font-mono text-[9px] font-bold uppercase tracking-wider text-gold-soft">
+              {getRankName(character.rank)}
+            </span>
+            <span className="rounded-xs border border-gold/45 bg-gold/10 px-2 py-1 font-mono text-[9px] font-extrabold uppercase tracking-wider text-gold-soft">
+              Poder {power}
+            </span>
           </div>
-          <button
-            type="button"
-            onClick={onClose}
-            className="flex h-8 w-8 cursor-pointer items-center justify-center border border-blood/60 bg-blood/15 text-blood-bright transition hover:bg-blood hover:text-text"
-            aria-label="Cerrar estadisticas"
-          >
-            <X className="h-4 w-4" />
-          </button>
-        </header>
-
-        <div className="grid gap-3 p-3 sm:grid-cols-[128px_minmax(0,1fr)]">
-          <CharacterPortrait
-            assetId={character.portraitAssetId}
-            name={character.name}
-            size="lg"
-            rounded="xs"
-            className="mx-auto border-gold/35 sm:mx-0"
-          >
-            {recruited && (
-              <span className="absolute inset-x-0 bottom-0 bg-success/90 py-1 text-center font-mono text-[9px] font-extrabold uppercase tracking-wider text-stone-950">
-                En el tercio
-              </span>
-            )}
-          </CharacterPortrait>
-
-          <div className="min-w-0 space-y-3">
-            <p className="text-xs leading-snug italic text-text-muted">&ldquo;{hook}&rdquo;</p>
-            <div className="flex flex-wrap gap-1">
-              <span className="rounded-xs border border-iron/70 bg-stone-900/55 px-2 py-1 font-mono text-[9px] font-bold uppercase tracking-wider text-text-muted">
-                {character.role}
-              </span>
-              <span className="rounded-xs border border-gold/35 bg-gold/10 px-2 py-1 font-mono text-[9px] font-bold uppercase tracking-wider text-gold-soft">
-                {getRankName(character.rank)}
-              </span>
-              <span className="rounded-xs border border-gold/45 bg-gold/10 px-2 py-1 font-mono text-[9px] font-extrabold uppercase tracking-wider text-gold-soft">
-                Poder {power}
-              </span>
-            </div>
-            <div className="grid grid-cols-2 gap-1.5" aria-label="Atributos completos">
-              {STAT_ORDER.map((stat) => (
-                <StatRow
-                  key={stat}
-                  statId={stat}
-                  value={character.stats[stat] ?? 0}
-                />
-              ))}
-            </div>
+          <div className="grid grid-cols-2 gap-1.5" aria-label="Atributos completos">
+            {STAT_ORDER.map((stat) => (
+              <StatRow
+                key={stat}
+                statId={stat}
+                value={character.stats[stat] ?? 0}
+              />
+            ))}
           </div>
         </div>
       </div>
-    </div>
+    </dialog>
   );
 }
 

@@ -7,10 +7,13 @@ import { useGameStore } from "@/lib/game-store";
 import { Card } from "@/components/ui/card";
 import { getMission } from "@/lib/game-data";
 import { PageTransition } from "@/components/game/page-transition";
+import { ReportDetailSkeleton } from "@/components/skeletons/report-detail-skeleton";
+import { useGameData } from "@/lib/hooks/use-game-data";
 import { ReportStage } from "./report-stage";
 
 export default function ReportPage() {
   const params = useParams();
+  const { status } = useGameData();
   const { reports } = useGameStore();
   const [mounted, setMounted] = useState(false);
 
@@ -22,16 +25,11 @@ export default function ReportPage() {
   const id = params.id as string;
   const report = reports.find((r) => r.id === id);
 
-  if (!mounted) {
+  if (!mounted || status !== "ready") {
     return (
-      <div className="flex min-h-[50vh] items-center justify-center">
-        <div className="text-center space-y-3">
-          <div className="mx-auto h-10 w-10 animate-spin rounded-full border-2 border-t-gold border-r-transparent border-b-transparent border-l-transparent" />
-          <p className="font-cinzel text-sm text-gold tracking-widest uppercase animate-pulse">
-            Abriendo el archivo del escribano…
-          </p>
-        </div>
-      </div>
+      <PageTransition>
+        <ReportDetailSkeleton />
+      </PageTransition>
     );
   }
 

@@ -8,9 +8,17 @@
     "start": "next start",
     "lint": "eslint",
     "prisma:generate": "prisma generate",
+    "prisma:migrate:deploy": "prisma migrate deploy",
     "db:push": "prisma db push",
+    "db:deploy": "prisma migrate deploy",
     "db:seed": "node scripts/sync-data.mjs && tsx prisma/seed.ts",
-    "validate": "node tests/validate-web-mvp.mjs"
+    "test": "tsx tests/run-all.mjs",
+    "test:api": "node tests/run-api.mjs",
+    "test:domain": "tsx tests/run-domain.mjs",
+    "test:store": "tsx tests/run-store.mjs",
+    "test:data": "tsx tests/run-data.mjs",
+    "test:ux": "tsx tests/run-ux.mjs",
+    "validate": "node tests/validate-web-mvp.mjs && node tests/validate-db-contract.mjs && node ../scripts/validate_data_references.mjs && pnpm test"
   },
   "prisma": {
     "seed": "node scripts/sync-data.mjs && tsx prisma/seed.ts"
@@ -46,17 +54,23 @@
   },
   "devDependencies": {
     "@tailwindcss/postcss": "^4",
+    "@testing-library/jest-dom": "^6.9.1",
+    "@testing-library/react": "^16.3.2",
+    "@testing-library/user-event": "^14.6.1",
     "@types/canvas-confetti": "^1.9.0",
     "@types/howler": "^2.2.13",
     "@types/node": "^20",
     "@types/pg": "^8.20.0",
     "@types/react": "^19",
     "@types/react-dom": "^19",
+    "@vitest/coverage-v8": "^4.1.9",
     "eslint": "^9",
     "eslint-config-next": "16.2.9",
+    "jsdom": "^29.1.1",
     "prisma": "^7.8.0",
     "tailwindcss": "^4",
     "tsx": "^4.22.4",
-    "typescript": "^5"
+    "typescript": "^5",
+    "vitest": "^4.1.9"
   }
 }

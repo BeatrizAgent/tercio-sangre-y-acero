@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { Alegreya, UnifrakturCook, Outfit, Inter } from "next/font/google";
 import { GameShell } from "@/components/game/game-shell";
+import { CriticalPreloads } from "@/components/game/critical-preloads";
 import "./globals.css";
 
 // Required routes for testing:
@@ -60,6 +61,7 @@ export default function RootLayout({
       suppressHydrationWarning
     >
       <body className="antialiased min-h-screen bg-background text-text" suppressHydrationWarning>
+        <CriticalPreloads />
         <GameShell>{children}</GameShell>
       </body>
     </html>

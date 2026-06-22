@@ -7,8 +7,13 @@ import { UiAssetIcon } from "@/components/ui/ui-asset-icon";
 import { NpcOfferFrame } from "@/components/game/visual-offers";
 import { PlayerChestPanel } from "@/components/soldier/player-chest-panel";
 import { ArmorerChestPanel } from "@/components/soldier/armorer-chest-panel";
+import { ArmorySkeleton } from "@/components/skeletons/armory-skeleton";
 import { featuredAssetPaths, getItem, getItemFootprint } from "@/lib/game-data";
 import { useGameStore } from "@/lib/game-store";
+import { useGameData } from "@/lib/hooks/use-game-data";
+import { useOptimisticAction } from "@/lib/hooks/use-optimistic-action";
+import { buyItemInState, sellItemInState } from "@/lib/domain/shop";
+import { buyItemAction, sellItemAction } from "@/lib/actions/shop";
 import { playCoinSound, playDefeatSound, playPageSound } from "@/lib/sounds";
 import { getCharacterLevel } from "@/lib/domain/character-level";
 import { BACKPACK_CHESTS, BACKPACK_COLS, BACKPACK_ROWS, inventoryWithAutoLayout } from "@/lib/domain/inventory-grid";
@@ -18,11 +23,50 @@ type DragSource = "merchant" | "backpack";
 
 // Legacy MVP validator tokens: armory-slot-grid ARMORY_CELL_SIZE armory-dropzone draggable Arrastra
 export default function ArmoryPage() {
-  const { soldier, characters, activeCharacterId, setActiveCharacter, buyItem, sellItem, payTownBribe } = useGameStore();
+  const { status } = useGameData();
+  const { soldier, characters, activeCharacterId, setActiveCharacter, payTownBribe } = useGameStore();
   const [notice, setNotice] = useState<{ text: string; isError: boolean } | null>(null);
   const [dragged, setDragged] = useState<{ source: DragSource; itemId: string } | null>(null);
   const [dropTarget, setDropTarget] = useState<DragSource | null>(null);
   const [activeChest, setActiveChest] = useState(0);
+  const [selectedItemId, setSelectedItemId] = useState<string | null>(null);
+
+  const showNotice = (text: string, isError: boolean) => {
+    setNotice({ text, isError });
+    window.setTimeout(() => setNotice(null), 2600);
+  };
+
+  const { run: runBuy } = useOptimisticAction(
+    buyItemAction,
+    (state, args: { itemId: string }) => buyItemInState(state, args.itemId).next,
+    {
+      successMessage: (result) => result.message,
+      onSuccess: (result) => {
+        playCoinSound();
+        showNotice(result.message, false);
+      },
+      onError: (message) => {
+        playDefeatSound();
+        showNotice(message, true);
+      },
+    },
+  );
+
+  const { run: runSell } = useOptimisticAction(
+    sellItemAction,
+    (state, args: { itemId: string }) => sellItemInState(state, args.itemId).next,
+    {
+      successMessage: (result) => result.message,
+      onSuccess: (result) => {
+        playCoinSound();
+        showNotice(result.message, false);
+      },
+      onError: (message) => {
+        playDefeatSound();
+        showNotice(message, true);
+      },
+    },
+  );
 
   const laidOutInventory = useMemo<InventoryItem[]>(
     () => inventoryWithAutoLayout(soldier.inventory, BACKPACK_COLS, BACKPACK_ROWS, BACKPACK_CHESTS),
@@ -43,31 +87,12 @@ export default function ArmoryPage() {
     level: getCharacterLevel(character.stats),
   }));
 
-  const showNotice = (text: string, isError: boolean) => {
-    setNotice({ text, isError });
-    window.setTimeout(() => setNotice(null), 2600);
-  };
-
   const handleBuy = (itemId: string) => {
-    const result = buyItem(itemId);
-    if (result.ok) {
-      playCoinSound();
-      showNotice(result.message, false);
-    } else {
-      playDefeatSound();
-      showNotice(result.message, true);
-    }
+    runBuy({ itemId });
   };
 
   const handleSell = (itemId: string) => {
-    const result = sellItem(itemId);
-    if (result.ok) {
-      playCoinSound();
-      showNotice(result.message, false);
-    } else {
-      playDefeatSound();
-      showNotice(result.message, true);
-    }
+    runSell({ itemId });
   };
 
   const handleDrop = (target: DragSource) => {
@@ -88,25 +113,51 @@ export default function ArmoryPage() {
     handleBackpackDrop(event);
   };
 
+  if (status !== "ready") {
+    return (
+      <PageTransition>
+        <ArmorySkeleton />
+      </PageTransition>
+    );
+  }
+
   if (soldier.banMissionsLeft > 0) {
     return (
       <PageTransition>
-        <Card title="Acceso prohibido" iconId="armory">
-          <div className="space-y-4 text-sm text-text-muted">
-            <p>Los mercaderes han cerrado sus puestos. Quedan {soldier.banMissionsLeft} misiones de destierro.</p>
-            <button
-              type="button"
-              disabled={soldier.coins < 50}
-              onClick={() => {
-                const result = payTownBribe();
-                showNotice(result.message, !result.ok);
-              }}
-              className="iron-button text-xs"
-            >
-              Sobornar al alguacil (50)
-            </button>
+        <div className="mx-auto max-w-xl py-12 text-center">
+          <div className="parchment-card border-danger/60 shadow-2xl p-6 text-stone-900 space-y-6">
+            <div className="mx-auto flex h-20 w-20 items-center justify-center rounded-full border border-danger/30 bg-danger/10 animate-pulse">
+              <UiAssetIcon id="confirm" label="Acceso prohibido" className="h-12 w-12" />
+            </div>
+            <div className="space-y-2">
+              <h3 className="font-cinzel text-xl font-bold uppercase text-red-800">Expulsado del pueblo</h3>
+              <p className="font-serif text-sm italic text-stone-700">
+                Los mercaderes locales han cerrado sus puestos para ti por orden del alguacil.
+              </p>
+            </div>
+            <div className="border border-red-900/30 bg-stone-900/10 p-3 font-mono text-xs text-red-900">
+              Quedan <strong className="text-red-700">{soldier.banMissionsLeft}</strong> misiones de destierro.
+            </div>
+            <div className="space-y-3 border-t border-red-900/20 pt-4">
+              <button
+                onClick={() => {
+                  const result = payTownBribe();
+                  showNotice(result.message, !result.ok);
+                  if (result.ok) playCoinSound();
+                  else playDefeatSound();
+                }}
+                disabled={soldier.coins < 50}
+                className={`cursor-pointer border px-6 py-2.5 font-mono text-xs font-bold uppercase tracking-wider transition-all w-full md:w-auto ${
+                  soldier.coins >= 50
+                    ? "border-red-800 bg-red-800/15 text-red-900 hover:bg-red-800/25"
+                    : "cursor-not-allowed border-stone-400 bg-stone-200/50 text-stone-500"
+                }`}
+              >
+                Sobornar al alguacil (50 doblones)
+              </button>
+            </div>
           </div>
-        </Card>
+        </div>
       </PageTransition>
     );
   }
@@ -139,18 +190,46 @@ export default function ArmoryPage() {
             sceneSrc: featuredAssetPaths.armory,
             offers: [
               { id: "coins", iconId: "coins", label: "Doblones", value: soldier.coins, tooltip: "Doblones disponibles" },
-              { id: "stock", iconId: "inventory", label: "Piezas", value: "3 tabs", tooltip: "Productos · Objetos comunes · Vender arrastrando" },
-              { id: "sell", iconId: "cityHouseOfTrade", label: "Vender", value: "drag", tooltip: "Arrastra del baul al mercader para vender" },
+              { id: "stock", iconId: "inventory", label: "Piezas", value: "4 tabs", tooltip: "Armas · Armaduras · Otros · Vender arrastrando" },
+              { id: "sell", iconId: "cityHouseOfTrade", label: "Vender", value: "doble/arrastrar", tooltip: "Doble click para vender o arrastra al mercader" },
               { id: "buy", iconId: "confirm", label: "Comprar", value: "doble", tooltip: "Doble click para comprar" },
             ],
           }}
         />
 
-        <div className="grid min-w-0 max-w-full gap-4 overflow-hidden xl:grid-cols-2">
-          <section className="game-panel min-w-0 w-full max-w-full overflow-hidden space-y-2 p-3">
+        <div className="grid min-w-0 max-w-full gap-4 overflow-hidden xl:grid-cols-[1fr_auto_1fr]">
+          <section
+            className={`game-panel min-w-0 w-full max-w-full overflow-hidden space-y-2 p-3 transition-all ${
+              dropTarget === "merchant" ? "ring-2 ring-gold/40" : ""
+            }`}
+            onDragEnter={(event) => {
+              if (dragged?.source === "backpack") {
+                event.preventDefault();
+                setDropTarget("merchant");
+              }
+            }}
+            onDragOver={(event) => {
+              if (dragged?.source === "backpack") {
+                event.preventDefault();
+                setDropTarget("merchant");
+              }
+            }}
+            onDragLeave={(event) => {
+              const next = event.relatedTarget as Node | null;
+              if (next && event.currentTarget.contains(next)) return;
+              setDropTarget(null);
+            }}
+            onDrop={(event) => {
+              if (dragged?.source === "backpack") {
+                event.preventDefault();
+                event.stopPropagation();
+                handleDrop("merchant");
+              }
+            }}
+          >
             <div className="flex min-w-0 flex-wrap items-center justify-between gap-2 border-b border-iron/45 pb-2">
               <h2 className="font-cinzel text-sm font-bold uppercase tracking-[0.16em] text-gold">Baul del armero</h2>
-              <span className="font-mono text-[10px] uppercase tracking-wider text-text-muted">3 pestañas</span>
+              <span className="font-mono text-[10px] uppercase tracking-wider text-text-muted">4 pestañas</span>
             </div>
             <ArmorerChestPanel
               dropTarget={dropTarget}
@@ -162,6 +241,11 @@ export default function ArmoryPage() {
               playPageSound={playPageSound}
             />
           </section>
+
+          {/* Vertical Divider */}
+          <div className="hidden xl:flex items-center justify-center px-1 py-4">
+            <div className="h-full w-[2px] bg-gradient-to-b from-transparent via-gold/30 to-transparent" />
+          </div>
 
           <div
             className="min-w-0 w-full max-w-full overflow-hidden"
@@ -191,14 +275,18 @@ export default function ArmoryPage() {
               equipment={soldier.equipment}
               activeChest={activeChest}
               activeChestCells={activeChestCells}
-              selectedItemId={null}
+              selectedItemId={selectedItemId}
               draggingItemId={dragged?.itemId ?? null}
               isOverBackpack={dropTarget === "backpack"}
               onChestChange={(idx) => {
                 playPageSound();
                 setActiveChest(idx);
               }}
-              onSelectItem={handleSell}
+              onSelectItem={(id) => {
+                playPageSound();
+                setSelectedItemId(id);
+              }}
+              onDoubleClickItem={handleSell}
               onDragStart={(itemId, event) => {
                 event.dataTransfer.setData("text/plain", itemId);
                 setDragged({ source: "backpack", itemId });

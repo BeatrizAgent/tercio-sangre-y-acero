@@ -1,4 +1,5 @@
 #!/usr/bin/env node
+// check.mjs — sanity checks for the unified catalog.
 import fs from "node:fs";
 import path from "node:path";
 import { fileURLToPath } from "node:url";
@@ -6,32 +7,38 @@ import { fileURLToPath } from "node:url";
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const root = path.resolve(__dirname, "..");
 
-const itemsPath = path.join(root, "data", "items.json");
-const items = JSON.parse(fs.readFileSync(itemsPath, "utf8"));
-const ids = new Set(items.map((i) => i.id));
+const catalogPath = path.join(root, "data", "catalog.json");
+const catalog = JSON.parse(fs.readFileSync(catalogPath, "utf8"));
+const itemIds = new Set(catalog.items.map((i) => i.id));
 
-const initialItemIds = ["common_pike_001", "armadura_003", "objeto_002", "objeto_004"];
+// The starting inventory for the bisoño (Diego de Arce).
+const initialItemIds = [
+  "weapon_pica_gastada_001",
+  "chest_cuirass_001",
+  "consumable_pan_duro_001",
+  "consumable_vendas_001",
+];
 
 let failures = 0;
 
 console.log("[check] Items with invalid footprint:");
-for (const item of items) {
+for (const item of catalog.items) {
   const fp = item.footprint;
   const valid =
     fp &&
-    Number.isInteger(fp.cols) &&
-    Number.isInteger(fp.rows) &&
-    fp.cols > 0 &&
-    fp.rows > 0;
+    Number.isInteger(fp.w) &&
+    Number.isInteger(fp.h) &&
+    fp.w > 0 &&
+    fp.h > 0;
   if (!valid) {
     console.log(" -", item.id, JSON.stringify(fp));
     failures++;
   }
 }
 
-console.log("[check] Initial inventory items present in data/items.json:");
+console.log("[check] Starting inventory items present in catalog:");
 for (const id of initialItemIds) {
-  if (!ids.has(id)) {
+  if (!itemIds.has(id)) {
     console.log(" - MISSING:", id);
     failures++;
   } else {
@@ -44,4 +51,4 @@ if (failures > 0) {
   process.exit(1);
 }
 
-console.log("[check] OK - all footprints valid and initial items present");
+console.log("[check] OK - all footprints valid and starting items present");

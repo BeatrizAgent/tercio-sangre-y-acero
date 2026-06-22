@@ -8,7 +8,18 @@ import { fail, ok, type ActionResult } from "./result";
 import type { GameState } from "../types";
 
 export function buyItemInState(state: GameState, itemId: string): { next: GameState; result: ActionResult } {
-  const row = shopInventory.find((item) => item.itemId === itemId);
+  let row = shopInventory.find((item) => item.itemId === itemId);
+  if (!row) {
+    const item = getItem(itemId);
+    if (item) {
+      row = {
+        itemId,
+        buyPrice: item.value,
+        sellPrice: Math.max(1, Math.floor(item.value / 2)),
+        stock: 5,
+      };
+    }
+  }
   if (!row) return { next: state, result: fail("El objeto no está en venta.") };
   if (state.soldier.coins < row.buyPrice) {
     return { next: state, result: fail("Monedas insuficientes.") };
@@ -67,7 +78,18 @@ export function sellItemInState(state: GameState, itemId: string): { next: GameS
 }
 
 export function buyChurchItemInState(state: GameState, itemId: string): { next: GameState; result: ActionResult } {
-  const row = churchInventory.find((item) => item.itemId === itemId);
+  let row = churchInventory.find((item) => item.itemId === itemId);
+  if (!row) {
+    const item = getItem(itemId);
+    if (item) {
+      row = {
+        itemId,
+        buyPrice: item.value,
+        sellPrice: Math.max(1, Math.floor(item.value / 2)),
+        stock: 5,
+      };
+    }
+  }
   if (!row) return { next: state, result: fail("El relicario no vende ese objeto.") };
   if (state.soldier.coins < row.buyPrice) {
     return { next: state, result: fail("Doblones insuficientes para el relicario.") };

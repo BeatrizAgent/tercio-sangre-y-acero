@@ -113,13 +113,13 @@ export default function CityPage() {
                 key={spot.href}
                 href={spot.href}
                 style={{ left: spot.x, top: spot.y }}
-                className="group absolute z-10 hidden -translate-x-1/2 -translate-y-1/2 flex-col items-center gap-1 text-center outline-hidden md:flex"
+                className="group absolute z-10 hidden -translate-x-1/2 -translate-y-1/2 flex-col items-center gap-1.5 text-center outline-hidden md:flex"
               >
-                <span className="relative flex h-16 w-16 items-center justify-center rounded-full border border-gold/45 bg-background/90 shadow-[0_12px_24px_rgba(0,0,0,0.55)] transition group-hover:-translate-y-1 group-hover:border-gold group-hover:bg-panel-raised group-focus-visible:border-gold md:h-20 md:w-20">
-                  <span className="absolute -inset-2 rounded-full border border-gold/15 bg-black/10 opacity-0 transition group-hover:opacity-100 group-focus-visible:opacity-100" />
-                  <UiAssetIcon id={spot.icon} label={spot.label} className="h-11 w-11 md:h-14 md:w-14" />
+                <span className="relative flex h-16 w-16 items-center justify-center rounded-full border-2 border-gold/60 bg-gradient-to-b from-stone-900/95 to-stone-950/98 shadow-[0_0_12px_rgba(201,162,79,0.25),_inset_0_1px_2px_rgba(255,255,255,0.1),_0_6px_14px_rgba(0,0,0,0.7)] transition-all duration-200 group-hover:-translate-y-1 group-hover:border-gold group-hover:shadow-[0_0_18px_rgba(201,162,79,0.45),_0_8px_18px_rgba(0,0,0,0.8)] md:h-20 md:w-20">
+                  <span className="absolute inset-0.5 rounded-full border border-gold/15 bg-black/10 opacity-0 transition group-hover:opacity-100" />
+                  <UiAssetIcon id={spot.icon} label={spot.label} className="h-10 w-10 md:h-12 md:w-12 transition-transform duration-200 group-hover:scale-105" />
                 </span>
-                <span className="max-w-[9.5rem] border border-iron/70 bg-stone-950/88 px-2 py-1 font-cinzel text-[13px] font-bold uppercase leading-tight text-gold-soft shadow-lg transition group-hover:border-gold/60 group-hover:text-gold">
+                <span className="max-w-[9.5rem] border border-gold/30 bg-stone-950/90 rounded-xs px-2 py-1 font-cinzel text-[11px] font-bold uppercase leading-tight text-gold-soft shadow-lg transition-all duration-200 group-hover:border-gold/60 group-hover:text-gold group-hover:bg-panel">
                   {spot.label}
                 </span>
               </Link>

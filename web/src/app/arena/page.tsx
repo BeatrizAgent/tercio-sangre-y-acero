@@ -7,11 +7,15 @@ import { CharacterPortrait } from "@/components/ui/character-portrait";
 import { PageTransition } from "@/components/game/page-transition";
 import { UiAssetIcon } from "@/components/ui/ui-asset-icon";
 import { VisualOfferGrid } from "@/components/game/visual-offers";
+import { ArenaSkeleton } from "@/components/skeletons/arena-skeleton";
 import { featuredAssetPaths, listArenaOpponents } from "@/lib/game-data";
 import { useGameStore } from "@/lib/game-store";
+import { useGameData } from "@/lib/hooks/use-game-data";
 import type { ArenaOpponent } from "@/lib/types";
+import { getEquipmentBonuses } from "@/lib/domain/equipment";
 
 export default function ArenaPage() {
+  const { status } = useGameData();
   const soldier = useGameStore((state) => state.soldier);
   const arenaResults = useGameStore((state) => state.arenaResults ?? []);
   const fightArenaOpponent = useGameStore((state) => state.fightArenaOpponent);
@@ -34,6 +38,29 @@ export default function ArenaPage() {
     const result = fightArenaOpponent(opponentId);
     setNotice({ text: result.message, ok: result.ok });
   };
+
+  if (status !== "ready") {
+    return (
+      <PageTransition>
+        <ArenaSkeleton />
+      </PageTransition>
+    );
+  }
+
+  const equipmentBonuses = getEquipmentBonuses(soldier.equipment);
+  const untreatedWounds = soldier.wounds.filter((w) => !w.treated).length;
+  const playerPower =
+    soldier.stats.sword +
+    soldier.stats.pike +
+    soldier.stats.vigor +
+    soldier.stats.discipline +
+    soldier.stats.command +
+    Number(equipmentBonuses.sword ?? 0) +
+    Number(equipmentBonuses.pike ?? 0) +
+    Number(equipmentBonuses.vigor ?? 0) +
+    Number(equipmentBonuses.discipline ?? 0) -
+    untreatedWounds * 2 -
+    Math.floor(soldier.fatigue / 12);
 
   return (
     <PageTransition>
@@ -84,6 +111,7 @@ export default function ArenaPage() {
                     opponent={opponent}
                     disabled={!canFight}
                     fatigueWarning={isTooTired}
+                    playerPower={playerPower}
                     onFight={() => handleFight(opponent.id)}
                   />
                 );
@@ -95,7 +123,14 @@ export default function ArenaPage() {
             <Card title="Ranking Local" iconId="rank">
               <div className="space-y-3">
                 {leaderboardRows.map((row, index) => (
-                  <div key={row.name} className={`flex items-center justify-between gap-3 border px-3 py-2 font-mono text-sm ${row.active ? "border-gold/45 bg-gold/10 text-gold-soft" : "border-iron bg-background/45 text-text-muted"}`}>
+                  <div
+                    key={row.name}
+                    className={`flex items-center justify-between gap-3 border px-3 py-2 font-mono text-sm ${
+                      row.active
+                        ? "border-gold bg-gradient-to-r from-gold/20 via-gold/10 to-transparent shadow-[0_0_12px_rgba(201,162,79,0.15)] text-gold-soft"
+                        : "border-iron bg-background/45 text-text-muted"
+                    }`}
+                  >
                     <div className="flex min-w-0 items-center gap-2">
                       <CharacterPortrait
                         assetId={row.portraitAssetId}
@@ -104,9 +139,16 @@ export default function ArenaPage() {
                         rounded="xs"
                         withPlayerBadge={row.active}
                       />
-                      <span className="truncate">{index + 1}. {row.name}</span>
+                      <span className="truncate flex items-center gap-1.5">
+                        {index === 0 ? (
+                          <span className="text-amber-400">🏆 1.</span>
+                        ) : (
+                          <span className="text-text-muted">{index + 1}.</span>
+                        )}
+                        <span className={row.active ? "text-gold font-bold" : ""}>{row.name}</span>
+                      </span>
                     </div>
-                    <span>{row.score}</span>
+                    <span className={row.active ? "text-gold font-bold" : ""}>{row.score}</span>
                   </div>
                 ))}
               </div>
@@ -126,20 +168,36 @@ export default function ArenaPage() {
                   {arenaResults.slice(0, 5).map((result) => {
                     const opponent = opponents.find((entry) => entry.id === result.opponentId);
                     return (
-                      <div key={result.id} className="border border-iron bg-background/45 p-3">
+                      <div
+                        key={result.id}
+                        className="parchment-card p-3 shadow-md border-parchment-dark text-stone-900 transition-all hover:scale-[1.01]"
+                      >
                         <div className="flex items-start gap-3">
                           <CharacterPortrait
                             assetId={opponent?.portraitAssetId}
                             name={opponent?.name ?? result.opponentId}
                             size="sm"
                             rounded="xs"
+                            className="border-stone-400"
                           />
                           <div className="min-w-0 flex-1">
                             <div className="flex items-center justify-between gap-2">
-                              <span className="truncate font-cinzel text-sm font-bold uppercase text-gold">{opponent?.name ?? result.opponentId}</span>
-                              <Badge variant={result.success ? "success" : "danger"}>{result.success ? "Victoria" : "Derrota"}</Badge>
+                              <span className="truncate font-cinzel text-sm font-bold uppercase text-red-950">
+                                {opponent?.name ?? result.opponentId}
+                              </span>
+                              <span
+                                className={`rounded-xs border px-2 py-0.5 font-mono text-[9px] font-bold uppercase tracking-wider ${
+                                  result.success
+                                    ? "border-green-800/30 bg-green-100 text-green-850"
+                                    : "border-red-800/30 bg-red-100 text-red-850"
+                                }`}
+                              >
+                                {result.success ? "Victoria" : "Derrota"}
+                              </span>
                             </div>
-                            <p className="mt-2 text-sm text-text-muted">{result.report}</p>
+                            <p className="mt-1 font-serif text-xs italic text-stone-850 leading-relaxed">
+                              {result.report}
+                            </p>
                           </div>
                         </div>
                       </div>
@@ -159,13 +217,26 @@ function ArenaOpponentCard({
   opponent,
   disabled,
   fatigueWarning,
+  playerPower,
   onFight,
 }: {
   opponent: ArenaOpponent;
   disabled: boolean;
   fatigueWarning: boolean;
+  playerPower: number;
   onFight: () => void;
 }) {
+  const diff = opponent.power - playerPower;
+  let threatLabel = "Fácil";
+  let threatColor = "text-success border-success/30 bg-success/10";
+  if (diff >= 5) {
+    threatLabel = "Peligroso";
+    threatColor = "text-danger border-danger/30 bg-danger/10";
+  } else if (diff >= 3) {
+    threatLabel = "Equilibrado";
+    threatColor = "text-warning border-warning/30 bg-warning/10";
+  }
+
   return (
     <section className="arena-opponent-row game-panel overflow-hidden p-0">
       <div className="relative bg-stone-950">
@@ -192,9 +263,14 @@ function ArenaOpponentCard({
 
           <div className="flex min-w-0 flex-col justify-end gap-3">
             <div className="max-w-xl">
-              <h2 className="font-cinzel text-xl font-extrabold uppercase tracking-wider text-gold md:text-2xl">
-                {opponent.name}
-              </h2>
+              <div className="flex flex-wrap items-center gap-2">
+                <h2 className="font-cinzel text-xl font-extrabold uppercase tracking-wider text-gold md:text-2xl">
+                  {opponent.name}
+                </h2>
+                <span className={`inline-block rounded-xs border px-2 py-0.5 font-mono text-[9px] uppercase tracking-wider ${threatColor}`}>
+                  {threatLabel}
+                </span>
+              </div>
               <p className="mt-1 text-sm text-text-muted">{opponent.description}</p>
               <p className="mt-2 font-mono text-[11px] uppercase tracking-wider text-gold-soft/80">{opponent.style}</p>
             </div>

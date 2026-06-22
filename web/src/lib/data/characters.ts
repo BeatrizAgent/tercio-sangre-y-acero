@@ -1,11 +1,37 @@
-// Character roster data (NPC definitions used to seed the company) plus the
-// per-save `createCharacterStates` helper. The static `spriteSetDefinitions`
-// (Diego's animation sheet) lives here too because it is character data.
+// Character roster data. Backed by the unified catalog; the static
+// `spriteSetDefinitions` (Diego's animation sheet) lives here too because
+// it is character data. Recruitment candidates that don't have full
+// catalog entries remain inline (they're flavor NPCs, not the main roster).
 
-import charactersJson from "../../../data/json/characters.json";
+import {
+  characterDefinitions as catalogCharacters,
+  getCharacter as catalogGetCharacter,
+} from "./catalog";
 import type { CharacterDefinition, CharacterState, SpriteSetDefinition } from "../types";
 
-export const characterDefinitions = charactersJson as CharacterDefinition[];
+// Bridge catalog characters -> legacy CharacterDefinition shape. The legacy
+// shape requires `formationSlot`, `fatigue`, and `equipment`; catalog
+// characters don't have those. We use safe defaults.
+export const characterDefinitions: CharacterDefinition[] = catalogCharacters.map((c) => ({
+  id: c.id,
+  name: c.name,
+  role: c.role,
+  rank: c.rankId,
+  portraitAssetId: c.portraitAssetId,
+  formationSlot: "banquillo" as const,
+  fatigue: 0,
+  stats: c.stats as CharacterDefinition["stats"],
+  equipment: {
+    head: null,
+    body: null,
+    mainHand: null,
+    offHand: null,
+    firearm: null,
+    accessory: null,
+    boots: null,
+    consumable: null,
+  },
+}));
 
 export const spriteSetDefinitions: SpriteSetDefinition[] = [
   {
@@ -50,6 +76,8 @@ export function getCharacterDefinition(characterId: string | undefined) {
   if (!characterId) return undefined;
   return characterDefinitions.find((character) => character.id === characterId);
 }
+
+export { catalogGetCharacter as getCharacter };
 
 export function getSpriteSetDefinition(spriteSetId: string | undefined) {
   if (!spriteSetId) return undefined;

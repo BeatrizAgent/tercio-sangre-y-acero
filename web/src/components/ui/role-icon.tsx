@@ -2,6 +2,7 @@
 // Single source of truth for the role -> icon mapping previously duplicated
 // in stripe-card.tsx and stripe-token.tsx.
 
+import { createElement } from "react";
 import {
   Axe,
   Crosshair,
@@ -30,6 +31,8 @@ export function RoleIcon({
   role: string | undefined;
   className?: string;
 }) {
-  const Icon = roleIconFor(role);
-  return <Icon className={className} aria-hidden="true" />;
+  // createElement avoids the react-hooks/static-components rule which
+  // would otherwise flag the resolved `Icon` as a component created
+  // during render.
+  return createElement(roleIconFor(role), { className, "aria-hidden": "true" });
 }

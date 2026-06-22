@@ -1,13 +1,19 @@
 "use client";
 
 import React, { useEffect, useState } from "react";
+import Image from "next/image";
 import { Coins, TrendingUp } from "lucide-react";
 import { PageTransition } from "@/components/game/page-transition";
 import { UiAssetIcon } from "@/components/ui/ui-asset-icon";
 import { Card, Badge } from "@/components/ui/card";
 import { Tooltip } from "@/components/ui/tooltip";
+import { TrainingSkeleton } from "@/components/skeletons/training-skeleton";
 import { featuredAssetPaths, getAssetPathById, trainingAssetPaths, trainingOptions } from "@/lib/game-data";
 import { useGameStore } from "@/lib/game-store";
+import { useGameData } from "@/lib/hooks/use-game-data";
+import { useOptimisticAction } from "@/lib/hooks/use-optimistic-action";
+import { trainCharacterStatInState } from "@/lib/domain/training";
+import { trainStatAction } from "@/lib/actions/training";
 import { getCharacterLevel } from "@/lib/domain/character-level";
 import { playCoinSound, playDefeatSound, playDrumSound } from "@/lib/sounds";
 import type { StatId } from "@/lib/types";
@@ -38,17 +44,41 @@ function formatCost(coins: number, xp: number) {
 }
 
 export default function TrainingPage() {
-  const { soldier, characters, activeCharacterId, trainCharacterStat, setActiveCharacter, payTownBribe } = useGameStore();
+  const { status } = useGameData();
+  const { soldier, characters, activeCharacterId, setActiveCharacter, payTownBribe } = useGameStore();
   const [mounted, setMounted] = useState(false);
   const [message, setMessage] = useState<{ text: string; isError: boolean } | null>(null);
+
+  const { run: runTrain, pending: trainPending } = useOptimisticAction(
+    trainStatAction,
+    (state, args: { stat: StatId; characterId: string }) =>
+      trainCharacterStatInState(state, args.characterId, args.stat).next,
+    {
+      successMessage: (result) => result.message,
+      onSuccess: (result) => {
+        playDrumSound();
+        setMessage({ text: `Exito: ${result.message}`, isError: false });
+        window.setTimeout(() => setMessage(null), 4000);
+      },
+      onError: (message) => {
+        playDefeatSound();
+        setMessage({ text: `Error: ${message}`, isError: true });
+        window.setTimeout(() => setMessage(null), 4000);
+      },
+    },
+  );
 
   useEffect(() => {
     const timer = window.setTimeout(() => setMounted(true), 0);
     return () => window.clearTimeout(timer);
   }, []);
 
-  if (!mounted) {
-    return <div className="py-12 text-center font-cinzel text-gold animate-pulse">Cargando zona de entrenamiento...</div>;
+  if (!mounted || status !== "ready") {
+    return (
+      <PageTransition>
+        <TrainingSkeleton />
+      </PageTransition>
+    );
   }
 
   if (soldier.banMissionsLeft > 0) {
@@ -93,15 +123,7 @@ export default function TrainingPage() {
   const activeCharacter = characters.find((character) => character.id === activeCharacterId) ?? characters[0];
 
   const handleTrain = (stat: StatId) => {
-    const res = trainCharacterStat(activeCharacter.id, stat);
-    if (res.ok) {
-      playDrumSound();
-      setMessage({ text: `Exito: ${res.message}`, isError: false });
-    } else {
-      playDefeatSound();
-      setMessage({ text: `Error: ${res.message}`, isError: true });
-    }
-    setTimeout(() => setMessage(null), 4000);
+    runTrain({ stat, characterId: activeCharacter.id });
   };
 
   const isFatigued = activeCharacter.fatigue >= 100;
@@ -179,10 +201,13 @@ export default function TrainingPage() {
 
           <div className="game-panel overflow-hidden rounded-xs border border-iron bg-linear-to-b from-stone-900/85 to-stone-950/90 shadow-inner">
             <div className="relative min-h-40 border-b border-iron bg-stone-950">
-              <img
+              <Image
                 src={featuredAssetPaths.training}
                 alt=""
-                className="absolute inset-0 h-full w-full object-cover opacity-45 saturate-75"
+                fill
+                fetchPriority="high"
+                sizes="100vw"
+                className="object-cover opacity-45 saturate-75"
               />
               <div className="absolute inset-0 bg-linear-to-r from-stone-950 via-stone-950/72 to-stone-950/20" />
               <div className="relative flex min-h-40 flex-col justify-end gap-2 p-5">

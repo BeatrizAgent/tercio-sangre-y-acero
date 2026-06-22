@@ -7,6 +7,7 @@ import { UiAssetIcon } from "@/components/ui/ui-asset-icon";
 import { NpcOfferFrame } from "@/components/game/visual-offers";
 import { PlayerChestPanel } from "@/components/soldier/player-chest-panel";
 import { ChaplainChestPanel } from "@/components/soldier/chaplain-chest-panel";
+import { ChurchSkeleton } from "@/components/skeletons/church-skeleton";
 import { BACKPACK_CHESTS, BACKPACK_COLS, BACKPACK_ROWS, inventoryWithAutoLayout } from "@/lib/domain/inventory-grid";
 import {
   assetPath,
@@ -17,6 +18,7 @@ import {
   getItemFootprint,
 } from "@/lib/game-data";
 import { useGameStore } from "@/lib/game-store";
+import { useGameData } from "@/lib/hooks/use-game-data";
 import { playCoinSound, playDefeatSound, playPageSound } from "@/lib/sounds";
 import { getCharacterLevel } from "@/lib/domain/character-level";
 import type { InventoryItem } from "@/lib/types";
@@ -24,6 +26,7 @@ import type { InventoryItem } from "@/lib/types";
 type DragSource = "merchant" | "backpack";
 
 export default function ChurchPage() {
+  const { status } = useGameData();
   const {
     soldier,
     characters,
@@ -49,6 +52,15 @@ export default function ChurchPage() {
     () => inventoryWithAutoLayout(soldier.inventory, BACKPACK_COLS, BACKPACK_ROWS, BACKPACK_CHESTS),
     [soldier.inventory],
   );
+
+  if (!mounted || status !== "ready") {
+    return (
+      <PageTransition>
+        <ChurchSkeleton />
+      </PageTransition>
+    );
+  }
+
   const activeChestInventory = laidOutInventory.filter((entry) => (entry.chest ?? 0) === activeChest);
   const activeChestCells = activeChestInventory.reduce((sum, invItem) => {
     const item = getItem(invItem.itemId);
@@ -128,10 +140,6 @@ export default function ChurchPage() {
     setDragged(null);
     setDropTarget(null);
   };
-
-  if (!mounted) {
-    return <div className="py-12 text-center font-cinzel text-xl text-gold animate-pulse">Encendiendo cirios...</div>;
-  }
 
   return (
     <PageTransition>

@@ -45,14 +45,13 @@ for (const token of requiredSchemaTokens) {
 }
 
 const requiredSeedTokens = [
-  "assetDefinitions",
-  "enemies",
-  "ranks",
-  "events",
-  "characterDefinitions",
+  "catalogAssets",
+  "catalogEnemies",
+  "catalogRanks",
+  "catalogEvents",
+  "catalogCharacters",
   "recruitmentCandidates",
-  "training",
-  "deleteMany",
+  "catalogTraining",
   "upsert",
 ];
 

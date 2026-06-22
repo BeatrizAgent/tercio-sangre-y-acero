@@ -7,6 +7,7 @@ import { ArrowLeft, Compass } from "lucide-react";
 import { UiAssetIcon } from "@/components/ui/ui-asset-icon";
 import { PageTransition } from "@/components/game/page-transition";
 import { NpcOfferFrame } from "@/components/game/visual-offers";
+import { MissionsSkeleton } from "@/components/skeletons/missions-skeleton";
 import {
   campaignNodeIconPaths,
   featuredAssetPaths,
@@ -16,6 +17,7 @@ import {
   getMission,
   getMissionSceneImagePath,
 } from "@/lib/game-data";
+import { useGameData } from "@/lib/hooks/use-game-data";
 import { regions } from "@/lib/regions";
 import type { BossEntry, Region, RegionId } from "@/lib/regions";
 import type { MissionDefinition } from "@/lib/types";
@@ -72,15 +74,16 @@ export default function MissionsPage() {
 
 function MissionsFallback() {
   return (
-    <div className="py-12 text-center font-cinzel text-xl text-gold animate-pulse">
-      Cargando mapa de campaña...
-    </div>
+    <PageTransition>
+      <MissionsSkeleton />
+    </PageTransition>
   );
 }
 
 function MissionsContent() {
   const router = useRouter();
   const searchParams = useSearchParams();
+  const { status } = useGameData();
   const urlRegion = parseRegionId(searchParams.get("region"));
   const urlBossId = searchParams.get("boss");
 
@@ -133,6 +136,10 @@ function MissionsContent() {
     },
     [writeParams],
   );
+
+  if (status !== "ready") {
+    return <MissionsSkeleton />;
+  }
 
   return (
     <PageTransition>
@@ -286,7 +293,7 @@ function RegionPanel({
           return (
             <li
               key={boss.id}
-              className={`game-panel rounded-xs border bg-stone-950/80 transition-colors ${
+              className={`deferred-section--boss-row game-panel rounded-xs border bg-stone-950/80 transition-colors ${
                 pending
                   ? "border-iron/40 opacity-60"
                   : isOpen
@@ -307,6 +314,8 @@ function RegionPanel({
                       src={bossPortrait}
                       alt=""
                       aria-hidden="true"
+                      loading="lazy"
+                      decoding="async"
                       className="h-full w-full object-cover"
                     />
                   ) : (
@@ -314,6 +323,8 @@ function RegionPanel({
                       src={getBossIcon(boss.type)}
                       alt=""
                       aria-hidden="true"
+                      loading="lazy"
+                      decoding="async"
                       className="h-full w-full object-contain p-1"
                     />
                   )}

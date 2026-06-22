@@ -1,29 +1,23 @@
-// Item lookups, footprints, and image paths. The image path resolver has a
-// fallback chain (asset id -> generated icon -> variant) that historically
-// lived alongside the data; kept here so the data layer owns the read path.
+// Item lookups, footprints, and image paths. The catalog is the single source
+// of truth; this module re-exports the legacy ItemDefinition shape so the
+// rest of the app keeps working unchanged.
 
-import { items } from "../../../data/seed-items";
+import {
+  getItem as catalogGetItem,
+  getItemFootprint as catalogGetItemFootprint,
+  itemDefinitions as catalogItems,
+} from "./catalog";
 import { assetDefinitions, getAssetPublicPath } from "./assets";
 import type { ItemDefinition, ItemFootprint } from "../types";
 
-export const itemDefinitions = items satisfies readonly ItemDefinition[];
+export const itemDefinitions: readonly ItemDefinition[] = catalogItems;
 
-export function getItem(itemId: string) {
-  return itemDefinitions.find((item) => item.id === itemId);
+export function getItem(itemId: string | undefined) {
+  return catalogGetItem(itemId);
 }
 
 export function getItemFootprint(item: ItemDefinition | undefined): ItemFootprint {
-  const footprint = item?.footprint;
-  if (
-    footprint &&
-    Number.isInteger(footprint.cols) &&
-    Number.isInteger(footprint.rows) &&
-    footprint.cols > 0 &&
-    footprint.rows > 0
-  ) {
-    return footprint;
-  }
-  return { cols: 1, rows: 1 };
+  return catalogGetItemFootprint(item);
 }
 
 const PREFERRED_VARIANTS: Record<string, string> = {
@@ -44,9 +38,6 @@ export function getItemImagePath(itemId: string): string {
   return `/assets/generated/icons/${itemId}_${PREFERRED_VARIANTS[itemId] ?? "v01"}.png`;
 }
 
-// TODO(domain): move to lib/domain/equipment.ts in commit 3. Kept here for
-// now because every consumer already imports `getEquipmentBonuses` from
-// `@/lib/game-data` and the function operates on item effects.
 export function getEquipmentBonuses(equipment: Record<string, string | null>) {
   const bonuses: Record<string, number> = {};
   for (const itemId of Object.values(equipment)) {

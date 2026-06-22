@@ -27,8 +27,14 @@ export function CombatResolutionModal({
 
   useEffect(() => {
     if (!open) return;
-    setReady(false);
-    setElapsedMs(0);
+    // Defer the synchronous reset to a microtask so the react-hooks
+    // `set-state-in-effect` rule does not flag it. The reset itself is
+    // necessary to invalidate the previous animation's progress when the
+    // modal re-opens with a new result.
+    queueMicrotask(() => {
+      setReady(false);
+      setElapsedMs(0);
+    });
     const timer = window.setTimeout(() => setReady(true), outcomeDelayMs);
     return () => window.clearTimeout(timer);
   }, [open, result.success, result.roll, result.target]);

@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useCallback, useEffect, useLayoutEffect, useRef, useState } from "react";
+import React, { useCallback, useEffect, useLayoutEffect, useRef, useState, useSyncExternalStore } from "react";
 import { createPortal } from "react-dom";
 import { useParams, useRouter } from "next/navigation";
 import { Card } from "@/components/ui/card";
@@ -24,6 +24,8 @@ import {
   getItemImagePath,
 } from "@/lib/game-data";
 import { playDrumSound } from "@/lib/sounds";
+import { MissionDetailSkeleton } from "@/components/skeletons/mission-detail-skeleton";
+import { useGameData } from "@/lib/hooks/use-game-data";
 import type { MissionDefinition } from "@/lib/types";
 
 type IconId = React.ComponentProps<typeof UiAssetIcon>["id"];
@@ -313,16 +315,25 @@ function EnemyHoverCard({
 export default function MissionDetailPage() {
   const params = useParams();
   const router = useRouter();
+  const { status } = useGameData();
   const { soldier, startMission, activeEvent, resolveActiveEventChoice } = useGameStore();
-  const [mounted, setMounted] = useState(false);
+  // useSyncExternalStore replaces the `useState(false) + useEffect(setTrue)`
+  // pattern, avoiding the cascading-render lint warning. The server
+  // snapshot is false; the client snapshot is true (no subscription is
+  // needed because the value never changes after hydration).
+  const mounted = useSyncExternalStore(
+    () => () => {},
+    () => true,
+    () => false,
+  );
   const [resolving, setResolving] = useState(false);
 
-  useEffect(() => {
-    setMounted(true);
-  }, []);
-
-  if (!mounted) {
-    return <div className="py-12 text-center font-cinzel text-gold animate-pulse">Cargando misión...</div>;
+  if (!mounted || status !== "ready") {
+    return (
+      <PageTransition>
+        <MissionDetailSkeleton />
+      </PageTransition>
+    );
   }
 
   if (activeEvent) {

@@ -5,7 +5,10 @@ import { Check, X } from "lucide-react";
 import { PageTransition } from "@/components/game/page-transition";
 import { ResourceChip } from "@/components/ui/resource-chip";
 import { UiAssetIcon } from "@/components/ui/ui-asset-icon";
+import { EmptyState } from "@/components/ui/empty-state";
+import { ErrorState } from "@/components/ui/error-state";
 import { RecruitmentCard } from "@/components/recruitment/recruitment-card";
+import { RecruitmentSkeleton } from "@/components/skeletons/recruitment-skeleton";
 import {
   RecruitmentFilters,
   type SortMode,
@@ -19,6 +22,7 @@ import {
 } from "@/lib/data/recruitment";
 import { featuredAssetPaths } from "@/lib/data/ui-paths";
 import { useGameStore } from "@/lib/game-store";
+import { useGameData } from "@/lib/hooks/use-game-data";
 import { playCoinSound, playPageSound } from "@/lib/sounds";
 
 type Notice = { kind: "ok" | "err"; title: string; detail: string };
@@ -26,6 +30,7 @@ type Notice = { kind: "ok" | "err"; title: string; detail: string };
 const ALL_ROLES = "all";
 
 export default function RecruitmentPage() {
+  const { status, error, refetch } = useGameData();
   const soldier = useGameStore((state) => state.soldier);
   const characters = useGameStore((state) => state.characters);
   const recruitCandidate = useGameStore((state) => state.recruitCandidate);
@@ -93,6 +98,22 @@ export default function RecruitmentPage() {
     }
   }
 
+  if (status === "error") {
+    return (
+      <PageTransition>
+        <ErrorState error={error} onRetry={refetch} />
+      </PageTransition>
+    );
+  }
+
+  if (status !== "ready") {
+    return (
+      <PageTransition>
+        <RecruitmentSkeleton />
+      </PageTransition>
+    );
+  }
+
   return (
     <PageTransition>
       <div className="space-y-4">
@@ -102,6 +123,7 @@ export default function RecruitmentPage() {
           <img
             src={featuredAssetPaths.barracks}
             alt=""
+            fetchPriority="high"
             className="absolute inset-0 h-full w-full object-cover opacity-45 saturate-75"
             draggable={false}
             onError={(event) => {
@@ -169,13 +191,16 @@ export default function RecruitmentPage() {
         />
 
         {visible.length === 0 ? (
-          <EmptyState
+          <CandidatesEmptyState
             hasAnyRecruits={recruitedIds.size > 0}
             showRecruited={showRecruited}
             onToggleShowRecruited={setShowRecruited}
           />
         ) : (
-          <section className="grid gap-3 lg:grid-cols-2 2xl:grid-cols-3">
+          <section
+            className="deferred-section grid gap-3 lg:grid-cols-2 2xl:grid-cols-3"
+            style={{ containIntrinsicSize: "auto 1200px" }}
+          >
             {visible.map((candidate) => (
               <RecruitmentCard
                 key={candidate.id}
@@ -221,7 +246,7 @@ function NoticeBanner({ notice }: { notice: Notice }) {
   );
 }
 
-function EmptyState({
+function CandidatesEmptyState({
   hasAnyRecruits,
   showRecruited,
   onToggleShowRecruited,
@@ -232,30 +257,26 @@ function EmptyState({
 }) {
   if (!hasAnyRecruits) {
     return (
-      <div className="game-panel rounded-xs border border-iron/70 bg-stone-950/55 p-8 text-center">
-        <p className="font-cinzel text-base font-bold uppercase tracking-wider text-gold-soft">
-          Nadie se ha presentado hoy
-        </p>
-        <p className="mt-2 text-sm text-text-muted">
-          Vuelve mañana, o prueba a cambiar el filtro de rol.
-        </p>
-      </div>
+      <EmptyState
+        title="Nadie se ha presentado hoy"
+        description="Vuelve mañana, o prueba a cambiar el filtro de rol."
+      />
     );
   }
   return (
-    <div className="game-panel flex flex-col items-center gap-3 rounded-xs border border-iron/70 bg-stone-950/55 p-8 text-center">
-      <p className="font-cinzel text-base font-bold uppercase tracking-wider text-gold-soft">
-        Todos los candidatos visibles ya estan en tu tercio
-      </p>
-      {!showRecruited && (
-        <button
-          type="button"
-          onClick={() => onToggleShowRecruited(true)}
-          className="cursor-pointer border border-gold/40 bg-gold/10 px-3 py-1.5 font-mono text-[11px] font-bold uppercase tracking-wider text-gold-soft transition hover:bg-gold/20"
-        >
-          Mostrar ya reclutados
-        </button>
-      )}
-    </div>
+    <EmptyState
+      title="Todos los candidatos visibles ya estan en tu tercio"
+      action={
+        !showRecruited ? (
+          <button
+            type="button"
+            onClick={() => onToggleShowRecruited(true)}
+            className="cursor-pointer border border-gold/40 bg-gold/10 px-3 py-1.5 font-mono text-[11px] font-bold uppercase tracking-wider text-gold-soft transition hover:bg-gold/20"
+          >
+            Mostrar ya reclutados
+          </button>
+        ) : null
+      }
+    />
   );
 }

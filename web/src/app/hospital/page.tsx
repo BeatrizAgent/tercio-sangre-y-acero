@@ -5,10 +5,13 @@ import { useGameStore } from "@/lib/game-store";
 import { Card, Badge } from "@/components/ui/card";
 import { getWound } from "@/lib/game-data";
 import { UiAssetIcon } from "@/components/ui/ui-asset-icon";
+import { HospitalSkeleton } from "@/components/skeletons/hospital-skeleton";
 import { playCoinSound, playDefeatSound, playDrumSound, playPageSound } from "@/lib/sounds";
 import { PageTransition } from "@/components/game/page-transition";
+import { useGameData } from "@/lib/hooks/use-game-data";
 
 export default function HospitalPage() {
+  const { status } = useGameData();
   const { soldier, treatWound, payTownBribe } = useGameStore();
   const [notification, setNotification] = useState<{ text: string; isError: boolean } | null>(null);
   const [mounted, setMounted] = useState(false);
@@ -18,8 +21,12 @@ export default function HospitalPage() {
     return () => window.clearTimeout(timer);
   }, []);
 
-  if (!mounted) {
-    return <div className="text-center font-cinzel py-12 text-gold animate-pulse">Cargando hospital de campana...</div>;
+  if (!mounted || status !== "ready") {
+    return (
+      <PageTransition>
+        <HospitalSkeleton />
+      </PageTransition>
+    );
   }
 
   const showNotification = (text: string, isError: boolean) => {

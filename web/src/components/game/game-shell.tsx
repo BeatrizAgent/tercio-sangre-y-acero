@@ -65,7 +65,8 @@ export function GameShell({ children }: { children: React.ReactNode }) {
                   alt="Tercio: Sangre y Acero"
                   width={2048}
                   height={875}
-                  priority
+                  fetchPriority="high"
+                  loading="eager"
                   className="tercio-brand-logo h-full w-full max-h-[84px] object-contain drop-shadow-[0_10px_18px_rgba(0,0,0,0.55)]"
                 />
               </div>
@@ -81,6 +82,8 @@ export function GameShell({ children }: { children: React.ReactNode }) {
                       alt={soldier.name}
                       width={1086}
                       height={1448}
+                      fetchPriority="high"
+                      loading="eager"
                       className="absolute inset-0 h-full w-full object-cover object-top"
                     />
                   </div>

@@ -7,7 +7,7 @@ export function generateReport(
   soldier: Soldier,
 ) {
   const opening = findFragment("opening", mission.reportTags);
-  const outcome = findFragment(result.success ? "success" : "failure", mission.reportTags).replace("{power}", result.bestPower);
+  const outcome = findFragment(result.success ? "victory" : "defeat", mission.reportTags).replace("{power}", result.bestPower);
   
   const wounds = result.wounds.length 
     ? `Nuevas heridas sufridas: ${result.wounds.map((wId) => getWound(wId)?.name ?? wId).join(", ")}.` 

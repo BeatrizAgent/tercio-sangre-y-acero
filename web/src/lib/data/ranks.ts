@@ -1,13 +1,24 @@
-// Rank definitions, name lookup, and the "next rank" computation.
-//
-// `getNextRank` is technically a derivation from xp + honor, but it lives
-// here because its only inputs are the rank table and two numbers. When
-// the rank table moves to Django, this file moves with it.
+// Rank definitions, name lookup, and the "next rank" computation. Backed by
+// the unified catalog.
 
-import { ranks } from "../../../data/seed-ranks";
+import {
+  rankDefinitions as catalogRanks,
+  getRank as catalogGetRank,
+} from "./catalog";
 import type { Rank } from "../types";
 
-export const rankDefinitions = ranks as readonly Rank[];
+// Bridge catalog ranks -> legacy Rank shape (minXp/minHonor instead of
+// requiredXp/requiredHonor).
+export const rankDefinitions: readonly Rank[] = catalogRanks.map((r) => ({
+  id: r.id,
+  name: r.name,
+  minXp: r.requiredXp,
+  minHonor: r.requiredHonor,
+}));
+
+export function getRank(rankId: string | undefined) {
+  return catalogGetRank(rankId);
+}
 
 export function getRankName(rankId: string) {
   return rankDefinitions.find((rank) => rank.id === rankId)?.name ?? rankId;

@@ -7,11 +7,14 @@ import { CharacterPortrait } from "@/components/ui/character-portrait";
 import { PageTransition } from "@/components/game/page-transition";
 import { UiAssetIcon } from "@/components/ui/ui-asset-icon";
 import { VisualOfferGrid } from "@/components/game/visual-offers";
+import { ArenaSkeleton } from "@/components/skeletons/arena-skeleton";
 import { featuredAssetPaths, listArenaOpponents } from "@/lib/game-data";
 import { useGameStore } from "@/lib/game-store";
+import { useGameData } from "@/lib/hooks/use-game-data";
 import type { ArenaOpponent } from "@/lib/types";
 
 export default function ArenaPage() {
+  const { status } = useGameData();
   const soldier = useGameStore((state) => state.soldier);
   const arenaResults = useGameStore((state) => state.arenaResults ?? []);
   const fightArenaOpponent = useGameStore((state) => state.fightArenaOpponent);
@@ -34,6 +37,14 @@ export default function ArenaPage() {
     const result = fightArenaOpponent(opponentId);
     setNotice({ text: result.message, ok: result.ok });
   };
+
+  if (status !== "ready") {
+    return (
+      <PageTransition>
+        <ArenaSkeleton />
+      </PageTransition>
+    );
+  }
 
   return (
     <PageTransition>

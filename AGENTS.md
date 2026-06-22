@@ -196,3 +196,48 @@ Stats:
 The game should feel like mud, steel, powder smoke, wet boots, delayed pay, harsh discipline, wounds, hunger, honor, pikes, arquebuses, morions, cuirasses, camp disease, sieges, patrols, tavern duels, and company banners.
 
 Avoid magic, high fantasy, chosen-one tropes, shiny heroic tone, modern slang in game text, and generic MMO fantasy item names.
+
+## Browser Support
+
+The target audience plays on a modern desktop browser. We can adopt **Baseline Newly Available** web platform features natively when they provide a clear benefit (perf, accessibility, code reduction), with at most a short custom fallback if the feature carries UX risk.
+
+Currently adopted without fallbacks:
+
+- `content-visibility: auto` + `contain-intrinsic-size: auto` (deferred sections, e.g. recruitment cards, boss list rows) — see `.deferred-section*` in `web/src/app/globals.css`.
+- `fetchPriority="high"` (LCP image: `/recruitment` hero, topbar character portrait, topbar logo).
+- `loading="lazy"` + `decoding="async"` on off-screen `<img>` (mission list, popup icons).
+- `:user-invalid` / `:user-valid` form feedback (`.field:has(...)` rule in `globals.css`).
+- `field-sizing: content` for text inputs (preventive; no text inputs in the app today).
+- Native `<dialog>` for modals (recruitment stats popup — see `recruitment-card.tsx`). The `::backdrop` pseudo is styled in `globals.css`; the dialog itself uses `showModal()` on mount, `onClose` for Esc handling, and `event.target === event.currentTarget` for backdrop-click dismiss.
+- `<link rel="preload" as="image" fetchpriority="high">` for resources hidden in CSS (e.g. the camp background) — emitted from `web/src/components/game/critical-preloads.tsx` via `ReactDOM.preload()`.
+- `next/image` with `fill` + `sizes` for LCP-candidate images (training hero, soldier portrait). Smaller thumbnails and decorative patterns stay as raw `<img>` — `next/image` adds no value below ~64px or for already-pixel-perfect assets.
+
+Future `next/image` changes: do not use the deprecated `priority` prop in Next 16 — use `fetchPriority="high"` with `loading="eager"` instead, or `preload={true}` if a real `<link rel="preload">` is wanted. The pre-existing logo in `game-shell.tsx` still uses `priority` and should be migrated in a follow-up.
+
+When adding a new modern web primitive, prefer the `npx -y modern-web-guidance@latest search <query>` skill in `~/.config/opencode/skills/modern-web-guidance/` to retrieve the canonical pattern before improvising.
+
+## Loading & Async States
+
+The client is moving from a synchronous localStorage-backed store to a real backend (Prisma + Django, per `docs/implementation_notes.md`). Every page that reads server data must therefore show a layout-mirroring skeleton while that data is in flight, so the swap to `lib/api/*` is invisible to the user.
+
+**Primitives** (`web/src/components/ui/`):
+- `skeleton.tsx` → `<Skeleton>`, `<SkeletonText>`, `<SkeletonCircle>`. Backed by `.skeleton-shimmer` in `globals.css`; degrades to a static block under `prefers-reduced-motion`. Decorative by default; pass `decorative={false}` to opt into an `aria-live="polite"` "Cargando..." announcement.
+- `empty-state.tsx` → `<EmptyState title description icon action>` for the "no data here" branch. Promoted from the old inline version in `/recruitment`.
+- `error-state.tsx` → `<ErrorState title description onRetry error>` for the `useGameData().status === "error"` branch. Includes a `Reintentar` button when `onRetry` is provided.
+
+**Per-page skeletons** live in `web/src/components/skeletons/<page>-skeleton.tsx` and mirror the real page's chrome (panels, grid shape, portrait slot) using the primitives above. No layout shift on data arrival.
+
+**Async state hook** (`web/src/lib/hooks/use-game-data.ts`):
+- Wraps `useGameStore` and exposes `status: "idle" | "loading" | "ready" | "error"`, `error`, `refetch()`.
+- Pages render the skeleton when `status !== "ready"` and the real content when `status === "ready"`.
+- Today `status` is `ready` immediately (the demo store is sync-ish). When `lib/actions/_demo.ts` is swapped for a real `lib/api/*` client, the same hook gives every page a `loading` window for free.
+
+**Action hook** (`web/src/lib/hooks/use-server-action.ts` + `use-optimistic-action.ts`):
+- `useServerAction(action)` wraps a `lib/actions/*` server action with `useTransition` + `sonner` toast on success/failure.
+- `useOptimisticAction(action, apply)` does snapshot + rollback on failure, so the store mutates immediately and reverts if the server rejects. Used for the top three flows (train, buy, equip) today; same shape is reusable for any future action.
+
+**Rules:**
+1. Never use the bare `animate-pulse` one-liner ("Cargando X...") — that pattern is being phased out. Use the skeleton system instead.
+2. Every page that reads from `useGameStore` must be wrapped in a `useGameData()` consumer and render its skeleton during loading.
+3. Every action that mutates server state must go through `useServerAction` (or `useOptimisticAction` for instant-feel flows), not be called directly.
+4. New loading primitives should be added to `components/ui/skeleton.tsx`, not inlined in a page file.

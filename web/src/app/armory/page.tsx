@@ -7,8 +7,13 @@ import { UiAssetIcon } from "@/components/ui/ui-asset-icon";
 import { NpcOfferFrame } from "@/components/game/visual-offers";
 import { PlayerChestPanel } from "@/components/soldier/player-chest-panel";
 import { ArmorerChestPanel } from "@/components/soldier/armorer-chest-panel";
+import { ArmorySkeleton } from "@/components/skeletons/armory-skeleton";
 import { featuredAssetPaths, getItem, getItemFootprint } from "@/lib/game-data";
 import { useGameStore } from "@/lib/game-store";
+import { useGameData } from "@/lib/hooks/use-game-data";
+import { useOptimisticAction } from "@/lib/hooks/use-optimistic-action";
+import { buyItemInState, sellItemInState } from "@/lib/domain/shop";
+import { buyItemAction, sellItemAction } from "@/lib/actions/shop";
 import { playCoinSound, playDefeatSound, playPageSound } from "@/lib/sounds";
 import { getCharacterLevel } from "@/lib/domain/character-level";
 import { BACKPACK_CHESTS, BACKPACK_COLS, BACKPACK_ROWS, inventoryWithAutoLayout } from "@/lib/domain/inventory-grid";
@@ -18,11 +23,49 @@ type DragSource = "merchant" | "backpack";
 
 // Legacy MVP validator tokens: armory-slot-grid ARMORY_CELL_SIZE armory-dropzone draggable Arrastra
 export default function ArmoryPage() {
-  const { soldier, characters, activeCharacterId, setActiveCharacter, buyItem, sellItem, payTownBribe } = useGameStore();
+  const { status } = useGameData();
+  const { soldier, characters, activeCharacterId, setActiveCharacter, payTownBribe } = useGameStore();
   const [notice, setNotice] = useState<{ text: string; isError: boolean } | null>(null);
   const [dragged, setDragged] = useState<{ source: DragSource; itemId: string } | null>(null);
   const [dropTarget, setDropTarget] = useState<DragSource | null>(null);
   const [activeChest, setActiveChest] = useState(0);
+
+  const showNotice = (text: string, isError: boolean) => {
+    setNotice({ text, isError });
+    window.setTimeout(() => setNotice(null), 2600);
+  };
+
+  const { run: runBuy } = useOptimisticAction(
+    buyItemAction,
+    (state, args: { itemId: string }) => buyItemInState(state, args.itemId).next,
+    {
+      successMessage: (result) => result.message,
+      onSuccess: (result) => {
+        playCoinSound();
+        showNotice(result.message, false);
+      },
+      onError: (message) => {
+        playDefeatSound();
+        showNotice(message, true);
+      },
+    },
+  );
+
+  const { run: runSell } = useOptimisticAction(
+    sellItemAction,
+    (state, args: { itemId: string }) => sellItemInState(state, args.itemId).next,
+    {
+      successMessage: (result) => result.message,
+      onSuccess: (result) => {
+        playCoinSound();
+        showNotice(result.message, false);
+      },
+      onError: (message) => {
+        playDefeatSound();
+        showNotice(message, true);
+      },
+    },
+  );
 
   const laidOutInventory = useMemo<InventoryItem[]>(
     () => inventoryWithAutoLayout(soldier.inventory, BACKPACK_COLS, BACKPACK_ROWS, BACKPACK_CHESTS),
@@ -43,31 +86,12 @@ export default function ArmoryPage() {
     level: getCharacterLevel(character.stats),
   }));
 
-  const showNotice = (text: string, isError: boolean) => {
-    setNotice({ text, isError });
-    window.setTimeout(() => setNotice(null), 2600);
-  };
-
   const handleBuy = (itemId: string) => {
-    const result = buyItem(itemId);
-    if (result.ok) {
-      playCoinSound();
-      showNotice(result.message, false);
-    } else {
-      playDefeatSound();
-      showNotice(result.message, true);
-    }
+    runBuy({ itemId });
   };
 
   const handleSell = (itemId: string) => {
-    const result = sellItem(itemId);
-    if (result.ok) {
-      playCoinSound();
-      showNotice(result.message, false);
-    } else {
-      playDefeatSound();
-      showNotice(result.message, true);
-    }
+    runSell({ itemId });
   };
 
   const handleDrop = (target: DragSource) => {
@@ -87,6 +111,14 @@ export default function ArmoryPage() {
   const handleBackpackCellDrop = (_x: number, _y: number, event: React.DragEvent) => {
     handleBackpackDrop(event);
   };
+
+  if (status !== "ready") {
+    return (
+      <PageTransition>
+        <ArmorySkeleton />
+      </PageTransition>
+    );
+  }
 
   if (soldier.banMissionsLeft > 0) {
     return (

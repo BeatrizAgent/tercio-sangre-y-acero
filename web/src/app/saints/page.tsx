@@ -5,8 +5,10 @@ import type { ComponentProps } from "react";
 import { ArrowRight, Clock, RotateCw } from "lucide-react";
 import { PageTransition } from "@/components/game/page-transition";
 import { UiAssetIcon } from "@/components/ui/ui-asset-icon";
+import { SaintsSkeleton } from "@/components/skeletons/saints-skeleton";
 import { featuredAssetPaths } from "@/lib/game-data";
 import { useGameStore } from "@/lib/game-store";
+import { useGameData } from "@/lib/hooks/use-game-data";
 import { playCoinSound, playPageSound } from "@/lib/sounds";
 
 type SaintsTab = "misiones" | "objetivos" | "panteon" | "camara";
@@ -267,6 +269,7 @@ const treasureDrops: Array<{ label: string; iconId: UiIconId | null; quantity?: 
 ];
 
 export default function SaintsPage() {
+  const { status } = useGameData();
   const { soldier } = useGameStore();
   const [mounted, setMounted] = useState(false);
   const [activeTab, setActiveTab] = useState<SaintsTab>("misiones");
@@ -276,8 +279,12 @@ export default function SaintsPage() {
     return () => window.clearTimeout(timer);
   }, []);
 
-  if (!mounted) {
-    return <div className="py-12 text-center font-cinzel text-xl text-gold animate-pulse">Encendiendo cirios...</div>;
+  if (!mounted || status !== "ready") {
+    return (
+      <PageTransition>
+        <SaintsSkeleton />
+      </PageTransition>
+    );
   }
 
   return (

@@ -1,0 +1,21 @@
+"use client";
+
+import ReactDOM from "react-dom";
+
+/**
+ * CriticalPreloads: emits <link rel="preload"> for resources that are
+ * referenced from CSS (and therefore discovered late by the browser)
+ * but are essential for first paint.
+ *
+ * The camp background lives in `body { background-image: ... }` so the
+ * browser only sees the URL after parsing the stylesheet. Preloading it
+ * with `fetchpriority="high"` lets it race the stylesheet instead of
+ * trailing it. See modern-web-guidance `optimize-preload-priority`.
+ */
+export function CriticalPreloads() {
+  ReactDOM.preload("/assets/generated/backgrounds/tercio-camp-background-v1.png", {
+    as: "image",
+    fetchPriority: "high",
+  });
+  return null;
+}

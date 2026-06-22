@@ -1,7 +1,12 @@
 // Report fragment library: opening lines, success/failure variants, lore
-// snippets. Picked at mission resolution time by tag intersection.
+// snippets. Backed by the unified catalog.
 
-import { reportFragments } from "../../../data/seed-report-fragments";
+import {
+  reportFragmentDefinitions as catalogFragments,
+  getReportFragmentsByType,
+} from "./catalog";
 import type { ReportFragment } from "../types";
 
-export const reportFragmentDefinitions = reportFragments as readonly ReportFragment[];
+export const reportFragmentDefinitions: readonly ReportFragment[] = catalogFragments;
+
+export { getReportFragmentsByType };

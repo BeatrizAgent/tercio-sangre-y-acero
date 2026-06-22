@@ -4,9 +4,12 @@ import { useEffect, useState } from "react";
 import { Card } from "@/components/ui/card";
 import { PageTransition } from "@/components/game/page-transition";
 import { UiAssetIcon } from "@/components/ui/ui-asset-icon";
+import { DispatchSkeleton } from "@/components/skeletons/dispatch-skeleton";
 import { useGameStore } from "@/lib/game-store";
+import { useGameData } from "@/lib/hooks/use-game-data";
 
 export default function MailboxPage() {
+  const { status } = useGameData();
   const { soldier } = useGameStore();
   const [mounted, setMounted] = useState(false);
 
@@ -15,8 +18,12 @@ export default function MailboxPage() {
     return () => window.clearTimeout(timer);
   }, []);
 
-  if (!mounted) {
-    return <div className="py-12 text-center font-cinzel text-xl text-gold animate-pulse">Abriendo buzon...</div>;
+  if (!mounted || status !== "ready") {
+    return (
+      <PageTransition>
+        <DispatchSkeleton title="Buzon" rowCount={1} />
+      </PageTransition>
+    );
   }
 
   const letters = soldier.unpaidWages > 0

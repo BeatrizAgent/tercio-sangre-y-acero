@@ -1,6 +1,7 @@
 "use client";
 
 import React, { useEffect, useMemo, useState } from "react";
+import Image from "next/image";
 import { useGameStore } from "@/lib/game-store";
 import {
   BACKPACK_COLS,
@@ -21,9 +22,15 @@ import { playPageSound, playSwordSound, playCoinSound } from "@/lib/sounds";
 import { PageTransition } from "@/components/game/page-transition";
 import { EquipmentMannequin } from "@/components/soldier/equipment-mannequin";
 import { PlayerChestPanel } from "@/components/soldier/player-chest-panel";
+import { SoldierSkeleton } from "@/components/skeletons/soldier-skeleton";
+import { ErrorState } from "@/components/ui/error-state";
 import { passiveShortLine, rarityStyle, TRIGGER_LABEL } from "@/lib/item-format";
 import { STAT_LABELS } from "@/lib/stats";
 import { getCharacterLevel } from "@/lib/domain/character-level";
+import { useGameData } from "@/lib/hooks/use-game-data";
+import { useOptimisticAction } from "@/lib/hooks/use-optimistic-action";
+import { equipItemInState, unequipItemInState } from "@/lib/domain/equipment";
+import { equipItemAction } from "@/lib/actions/equipment";
 import type { CharacterState, Equipment, EquipmentSlot, FormationSlot, Passive, Stats, StatId } from "@/lib/types";
 
 type Tab = "vision_general" | "estadisticas" | "logros" | "familia";
@@ -60,18 +67,29 @@ function profileFromCharacter(character: CharacterState, soldier: { name: string
 }
 
 export default function SoldierPage() {
+  const { status, error, refetch } = useGameData();
   const {
     soldier,
     characters,
     activeCharacterId,
     reports,
     arenaResults,
-    equipItem,
-    unequipItem,
     sellItem,
     moveInventoryItem,
     setActiveCharacter,
   } = useGameStore();
+
+  const { run: runEquip } = useOptimisticAction(
+    equipItemAction,
+    (state, args: { itemId: string }) => equipItemInState(state, args.itemId).next,
+    {
+      onSuccess: () => playSwordSound(),
+      onError: (message) => {
+        setNotification(message);
+        window.setTimeout(() => setNotification(null), 2400);
+      },
+    },
+  );
   const [activeTab, setActiveTab] = useState<Tab>("vision_general");
   const [selectedItemId, setSelectedItemId] = useState<string | null>(null);
   const [activeChest, setActiveChest] = useState(0);
@@ -94,6 +112,27 @@ export default function SoldierPage() {
     () => characters.map((character) => profileFromCharacter(character, soldier)),
     [characters, soldier],
   );
+
+  const laidOutInventory = useMemo(
+    () => inventoryWithAutoLayout(soldier.inventory, BACKPACK_COLS, BACKPACK_ROWS, BACKPACK_CHESTS),
+    [soldier.inventory],
+  );
+
+  if (status === "error") {
+    return (
+      <PageTransition>
+        <ErrorState error={error} onRetry={refetch} />
+      </PageTransition>
+    );
+  }
+
+  if (status !== "ready") {
+    return (
+      <PageTransition>
+        <SoldierSkeleton />
+      </PageTransition>
+    );
+  }
   const activeProfile = profilePresets.find((profile) => profile.id === activeCharacterId) ?? profilePresets[0];
   const isPlayerProfile = activeProfile.id === "diego_de_arce";
   const activeEquipment = activeProfile.equipment;
@@ -101,10 +140,6 @@ export default function SoldierPage() {
   const activeLevel = getCharacterLevel(activeStats);
   const activePortraitPath = getAssetPathById(activeProfile.portraitAssetId);
   const equipmentBonuses = getEquipmentBonuses(activeEquipment);
-  const laidOutInventory = useMemo(
-    () => inventoryWithAutoLayout(soldier.inventory, BACKPACK_COLS, BACKPACK_ROWS, BACKPACK_CHESTS),
-    [soldier.inventory],
-  );
 
   const currentRankIdx = rankDefinitions.findIndex((r) => r.id === activeProfile.rank);
   const currentRank = currentRankIdx >= 0 ? rankDefinitions[currentRankIdx] : null;
@@ -142,13 +177,11 @@ export default function SoldierPage() {
   };
 
   const handleEquip = (itemId: string) => {
-    const res = equipItem(itemId);
-    if (res.ok) playSwordSound();
-    showNotification(res.message);
+    runEquip({ itemId });
   };
 
   const handleUnequip = (slot: EquipmentSlot) => {
-    const res = unequipItem(slot);
+    const res = useGameStore.getState().unequipItem(slot);
     if (res.ok) playSwordSound();
     showNotification(res.message);
   };
@@ -275,11 +308,13 @@ export default function SoldierPage() {
               <section className="overflow-hidden rounded-xs border border-iron bg-panel shadow-md">
                 <div className="relative aspect-[4/5] bg-stone-950">
                   {activePortraitPath ? (
-                    <img
+                    <Image
                       src={activePortraitPath}
                       alt={activeProfile.name}
-                      className="h-full w-full object-cover object-top"
-                      draggable={false}
+                      fill
+                      fetchPriority="high"
+                      sizes="(min-width: 1024px) 33vw, 100vw"
+                      className="object-cover object-top"
                     />
                   ) : (
                     <div className="flex h-full items-center justify-center font-mono text-[10px] uppercase text-muted">

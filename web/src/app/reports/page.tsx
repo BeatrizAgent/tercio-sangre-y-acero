@@ -5,9 +5,12 @@ import Link from "next/link";
 import { Badge, Card } from "@/components/ui/card";
 import { PageTransition } from "@/components/game/page-transition";
 import { UiAssetIcon } from "@/components/ui/ui-asset-icon";
+import { ReportsSkeleton } from "@/components/skeletons/reports-skeleton";
 import { useGameStore } from "@/lib/game-store";
+import { useGameData } from "@/lib/hooks/use-game-data";
 
 export default function ReportsPage() {
+  const { status } = useGameData();
   const { reports } = useGameStore();
   const [mounted, setMounted] = useState(false);
 
@@ -16,8 +19,12 @@ export default function ReportsPage() {
     return () => window.clearTimeout(timer);
   }, []);
 
-  if (!mounted) {
-    return <div className="py-12 text-center font-cinzel text-xl text-gold animate-pulse">Archivando reportes...</div>;
+  if (!mounted || status !== "ready") {
+    return (
+      <PageTransition>
+        <ReportsSkeleton />
+      </PageTransition>
+    );
   }
 
   return (

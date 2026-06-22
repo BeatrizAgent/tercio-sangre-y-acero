@@ -75,12 +75,13 @@ for (const token of ["characterDefinitions", "spriteSetDefinitions", "getCharact
   if (!data.includes(token)) failures.push(`character roster data missing ${token}`);
 }
 
-const syncedCharactersPath = path.join(root, "data/json/characters.json");
-if (!fs.existsSync(syncedCharactersPath)) failures.push("synced characters.json missing");
+const syncedCatalogPath = path.join(root, "data/json/catalog.json");
+if (!fs.existsSync(syncedCatalogPath)) failures.push("synced catalog.json missing");
 else {
-  const characters = JSON.parse(fs.readFileSync(syncedCharactersPath, "utf8"));
-  for (const id of ["diego_de_arce", "lope_de_saavedra", "martin_de_cuenca", "alonso_de_valdes", "sancho_de_leiva"]) {
-    if (!characters.some((entry) => entry.id === id)) failures.push(`characters.json missing ${id}`);
+  const catalog = JSON.parse(fs.readFileSync(syncedCatalogPath, "utf8"));
+  const characters = catalog.characters ?? [];
+  for (const id of ["recruit_diego_arce_001", "soldier_lope_saavedra_001", "soldier_martin_cuenca_001", "soldier_alonso_valdes_001", "soldier_sancho_leiva_001"]) {
+    if (!characters.some((entry) => entry.id === id)) failures.push(`catalog characters missing ${id}`);
   }
 }
 

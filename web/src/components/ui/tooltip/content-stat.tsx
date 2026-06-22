@@ -9,13 +9,15 @@ import { STAT_INFO } from "@/lib/stats";
 import type { StatId } from "@/lib/types";
 
 export function StatTooltipContent({ statId }: { statId?: StatId }) {
+  // Hooks must run before any early return.
+  const { soldier } = useGameStore();
+
   if (!statId) return null;
   const details = STAT_INFO[statId];
   if (!details) {
     return <div className="text-danger">Atributo desconocido ({statId})</div>;
   }
 
-  const { soldier } = useGameStore();
   const baseVal = soldier.stats[statId] ?? 0;
   const bonuses = getEquipmentBonuses(soldier.equipment);
   const equipVal = bonuses[statId] ?? 0;

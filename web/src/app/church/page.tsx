@@ -42,6 +42,7 @@ export default function ChurchPage() {
   const [dragged, setDragged] = useState<{ source: DragSource; itemId: string } | null>(null);
   const [dropTarget, setDropTarget] = useState<DragSource | null>(null);
   const [activeChest, setActiveChest] = useState(0);
+  const [selectedItemId, setSelectedItemId] = useState<string | null>(null);
 
   useEffect(() => {
     const timer = window.setTimeout(() => setMounted(true), 0);
@@ -186,8 +187,36 @@ export default function ChurchPage() {
           }}
         />
 
-        <div className="grid min-w-0 max-w-full gap-4 overflow-hidden xl:grid-cols-2">
-          <section className="game-panel min-w-0 w-full max-w-full overflow-hidden space-y-2 p-3">
+        <div className="grid min-w-0 max-w-full gap-4 overflow-hidden xl:grid-cols-[1fr_auto_1fr]">
+          <section
+            className={`game-panel min-w-0 w-full max-w-full overflow-hidden space-y-2 p-3 transition-all ${
+              dropTarget === "merchant" ? "ring-2 ring-gold/40" : ""
+            }`}
+            onDragEnter={(event) => {
+              if (dragged?.source === "backpack") {
+                event.preventDefault();
+                setDropTarget("merchant");
+              }
+            }}
+            onDragOver={(event) => {
+              if (dragged?.source === "backpack") {
+                event.preventDefault();
+                setDropTarget("merchant");
+              }
+            }}
+            onDragLeave={(event) => {
+              const next = event.relatedTarget as Node | null;
+              if (next && event.currentTarget.contains(next)) return;
+              setDropTarget(null);
+            }}
+            onDrop={(event) => {
+              if (dragged?.source === "backpack") {
+                event.preventDefault();
+                event.stopPropagation();
+                handleDrop("merchant");
+              }
+            }}
+          >
             <div className="flex min-w-0 flex-wrap items-center justify-between gap-2 border-b border-iron/45 pb-2">
               <h2 className="font-cinzel text-sm font-bold uppercase tracking-[0.16em] text-gold">Baul del capellan</h2>
               <span className="font-mono text-[10px] uppercase tracking-wider text-text-muted">4 pestañas</span>
@@ -203,6 +232,11 @@ export default function ChurchPage() {
               playPageSound={playPageSound}
             />
           </section>
+
+          {/* Vertical Divider */}
+          <div className="hidden xl:flex items-center justify-center px-1 py-4">
+            <div className="h-full w-[2px] bg-gradient-to-b from-transparent via-gold/30 to-transparent" />
+          </div>
 
           <div
             className="min-w-0 w-full max-w-full overflow-hidden"
@@ -224,14 +258,18 @@ export default function ChurchPage() {
               equipment={soldier.equipment}
               activeChest={activeChest}
               activeChestCells={activeChestCells}
-              selectedItemId={null}
+              selectedItemId={selectedItemId}
               draggingItemId={dragged?.itemId ?? null}
               isOverBackpack={dropTarget === "backpack"}
               onChestChange={(idx) => {
                 playPageSound();
                 setActiveChest(idx);
               }}
-              onSelectItem={handleDonate}
+              onSelectItem={(id) => {
+                playPageSound();
+                setSelectedItemId(id);
+              }}
+              onDoubleClickItem={handleDonate}
               onDragStart={(itemId, event) => {
                 event.dataTransfer.setData("text/plain", itemId);
                 setDragged({ source: "backpack", itemId });

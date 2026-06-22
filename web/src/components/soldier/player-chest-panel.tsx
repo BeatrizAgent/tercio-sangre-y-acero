@@ -20,6 +20,7 @@ interface PlayerChestPanelProps {
   title?: string;
   onChestChange: (chest: number) => void;
   onSelectItem: (itemId: string) => void;
+  onDoubleClickItem?: (itemId: string) => void;
   onDragStart: (itemId: string, event: React.DragEvent) => void;
   onDragEnd: () => void;
   onDragOverBackpack: (event: React.DragEvent) => void;

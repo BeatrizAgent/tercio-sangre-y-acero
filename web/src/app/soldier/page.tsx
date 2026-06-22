@@ -21,6 +21,7 @@ import {
 import { playPageSound, playSwordSound, playCoinSound } from "@/lib/sounds";
 import { PageTransition } from "@/components/game/page-transition";
 import { EquipmentMannequin } from "@/components/soldier/equipment-mannequin";
+import { GladiatusBar } from "@/components/ui/gladiatus-bar";
 import { PlayerChestPanel } from "@/components/soldier/player-chest-panel";
 import { SoldierSkeleton } from "@/components/skeletons/soldier-skeleton";
 import { ErrorState } from "@/components/ui/error-state";
@@ -279,20 +280,18 @@ export default function SoldierPage() {
         )}
 
         {/* Tabs */}
-        <div className="flex border border-iron/70 bg-panel-soft/20 rounded-xs overflow-hidden">
+        <div className="gladiatus-tab-bar">
           {([
             { key: "vision_general" as const, label: "Perfil" },
-            { key: "estadisticas" as const, label: "Estadisticas" },
+            { key: "estadisticas" as const, label: "Estadísticas" },
             { key: "logros" as const, label: "Logros" },
             { key: "familia" as const, label: "Familia" },
           ]).map((t) => (
             <button
               key={t.key}
               onClick={() => { playPageSound(); setActiveTab(t.key); }}
-              className={`flex-1 py-1.5 text-[11px] font-sans uppercase tracking-wider transition-all border-r border-iron/60 last:border-r-0 ${
-                activeTab === t.key
-                  ? "bg-blood/15 text-gold font-bold"
-                  : "text-text-muted hover:text-text hover:bg-panel-soft/30"
+              className={`gladiatus-tab-button ${
+                activeTab === t.key ? "active" : ""
               }`}
             >
               {t.label}
@@ -303,7 +302,72 @@ export default function SoldierPage() {
         {/* TAB: VISION GENERAL */}
         {activeTab === "vision_general" && (
           <div className="grid grid-cols-1 lg:grid-cols-12 gap-3">
-            {/* LEFT: Portrait + Stats */}
+            {/* COLUMN 1 (Izquierda): Stats (3 cols) */}
+            <div className="lg:col-span-3 space-y-3">
+              {/* Stats list */}
+              <div className="bg-panel border border-iron rounded-xs p-2.5 shadow-md space-y-2 text-[11px] font-mono">
+                <div className="text-center font-cinzel text-xs font-bold text-gold border-b border-iron/40 pb-1 mb-2 uppercase tracking-wide">
+                  Atributos
+                </div>
+                <StatLine label="Nivel" value={activeLevel} />
+                <StatBar
+                  label="Salud"
+                  value={`${lifeRatio}%`}
+                  ratio={lifeRatio}
+                  barClass="bg-red-600"
+                />
+                <StatBar
+                  label="Experiencia"
+                  value={`${xpProgress.toFixed(2)}%`}
+                  ratio={xpProgress}
+                  barClass="bg-amber-500"
+                />
+
+                <div className="text-[10px] font-sans font-bold text-gold/75 mt-3 mb-1 uppercase tracking-wider border-b border-iron/20 pb-0.5">
+                  Combate
+                </div>
+                {["pike", "sword", "arquebus"].map((statKey) => {
+                  const stat = statKey as StatId;
+                  const base = activeStats[stat];
+                  const bonus = equipmentBonuses[stat] ?? 0;
+                  return (
+                    <StatLine
+                      key={stat}
+                      label={STAT_LABELS[stat]}
+                      value={base + bonus}
+                      bonus={bonus}
+                    />
+                  );
+                })}
+
+                <div className="text-[10px] font-sans font-bold text-gold/75 mt-3 mb-1 uppercase tracking-wider border-b border-iron/20 pb-0.5">
+                  Físico y Mente
+                </div>
+                {["discipline", "vigor", "cunning", "command"].map((statKey) => {
+                  const stat = statKey as StatId;
+                  const base = activeStats[stat];
+                  const bonus = equipmentBonuses[stat] ?? 0;
+                  return (
+                    <StatLine
+                      key={stat}
+                      label={STAT_LABELS[stat]}
+                      value={base + bonus}
+                      bonus={bonus}
+                    />
+                  );
+                })}
+
+                <div className="text-[10px] font-sans font-bold text-gold/75 mt-3 mb-1 uppercase tracking-wider border-b border-iron/20 pb-0.5">
+                  Combate General
+                </div>
+                <div className="space-y-0.5">
+                  <StatLine label="Armadura" value={armor} />
+                  <StatLine label="Daño" value={damageStr} />
+                </div>
+              </div>
+            </div>
+
+            {/* COLUMN 2 (Centro): Character Doll + Mannequin (4 cols) */}
             <div className="lg:col-span-4 space-y-3">
               <section className="overflow-hidden rounded-xs border border-iron bg-panel shadow-md">
                 <div className="relative aspect-[4/5] bg-stone-950">
@@ -345,47 +409,11 @@ export default function SoldierPage() {
                     Rango <span className="float-right text-gold">{activeProfile.rank}</span>
                   </div>
                   <div className="rounded-xs border border-iron/60 bg-stone-900/50 px-2 py-1 text-text-muted">
-                    Vida <span className="float-right text-gold">{lifeRatio}%</span>
+                    Salud <span className="float-right text-gold">{lifeRatio}%</span>
                   </div>
                 </div>
               </section>
 
-              {/* Stats list */}
-              <div className="bg-panel border border-iron rounded-xs p-2.5 shadow-md space-y-1 text-[11px] font-mono">
-                <StatLine label="Nivel" value={activeLevel} />
-                <StatBar
-                  label="Puntos de vida"
-                  value={`${lifeRatio}%`}
-                  ratio={lifeRatio}
-                  barClass="bg-red-600"
-                />
-                <StatBar
-                  label="Experiencia"
-                  value={`${xpProgress.toFixed(2)}%`}
-                  ratio={xpProgress}
-                  barClass="bg-amber-500"
-                />
-                {STAT_ORDER.map((stat) => {
-                  const base = activeStats[stat];
-                  const bonus = equipmentBonuses[stat] ?? 0;
-                  return (
-                    <StatLine
-                      key={stat}
-                      label={STAT_LABELS[stat]}
-                      value={base + bonus}
-                      bonus={bonus}
-                    />
-                  );
-                })}
-                <div className="border-t border-iron/40 pt-1 mt-1 space-y-1">
-                  <StatLine label="Armadura" value={armor} />
-                  <StatLine label="Dano" value={damageStr} />
-                </div>
-              </div>
-            </div>
-
-            {/* RIGHT: Mannequin + Backpack */}
-            <div className="min-w-0 lg:col-span-8 space-y-3">
               <EquipmentMannequin
                 equipment={activeEquipment}
                 draggingItemId={isPlayerProfile ? draggingItemId : null}
@@ -398,7 +426,10 @@ export default function SoldierPage() {
                 onSelect={(id) => { playPageSound(); setSelectedItemId(id); }}
                 readOnly={!isPlayerProfile}
               />
+            </div>
 
+            {/* COLUMN 3 (Derecha): Backpack & Item details (5 cols) */}
+            <div className="min-w-0 lg:col-span-5 space-y-3">
               <PlayerChestPanel
                 profiles={profilePresets}
                 activeProfileId={activeProfile.id}
@@ -419,6 +450,7 @@ export default function SoldierPage() {
                 readOnly={!isPlayerProfile}
                 onChestChange={(idx) => { playPageSound(); setActiveChest(idx); }}
                 onSelectItem={(id) => { playPageSound(); setSelectedItemId(id); }}
+                onDoubleClickItem={handleEquip}
                 onDragStart={handleDragStart}
                 onDragEnd={handleDragEnd}
                 onDragOverBackpack={(event) => {
@@ -589,12 +621,13 @@ export default function SoldierPage() {
 
 function StatLine({ label, value, bonus }: { label: string; value: string | number; bonus?: number }) {
   return (
-    <div className="flex justify-between items-center">
-      <span className="text-text-muted uppercase tracking-wider text-[10px]">{label}</span>
-      <span className="text-gold font-bold">
+    <div className="flex items-baseline w-full text-[11px] py-0.5">
+      <span className="text-text-muted uppercase tracking-wider text-[10px] shrink-0">{label}</span>
+      <div className="flex-1 border-b border-dotted border-iron/40 mx-1 min-w-[8px] relative top-[-3px]" />
+      <span className="text-gold font-bold shrink-0 font-mono">
         {value}
         {bonus !== undefined && bonus > 0 && (
-          <span className="text-success text-[9px] ml-0.5">+{bonus}</span>
+          <span className="text-success text-[9px] ml-0.5 font-sans">+{bonus}</span>
         )}
       </span>
     </div>
@@ -612,15 +645,18 @@ function StatBar({
   ratio: number;
   barClass: string;
 }) {
+  const barType = barClass.includes("red") ? "hp" : barClass.includes("amber") ? "xp" : "fatigue";
   return (
     <div className="flex items-center gap-2">
       <span className="w-24 shrink-0 text-text-muted uppercase tracking-wider text-[10px]">
         {label}
       </span>
-      <div className="flex-1 h-1.5 rounded-full bg-stone-900 border border-stone-850 overflow-hidden">
-        <div
-          className={`h-full ${barClass} transition-all`}
-          style={{ width: `${Math.max(0, Math.min(100, ratio))}%` }}
+      <div className="flex-1">
+        <GladiatusBar
+          type={barType}
+          value={Math.round(ratio)}
+          max={100}
+          className="h-3.5"
         />
       </div>
       <span className="w-14 text-right text-gold-soft font-bold text-[10px]">{value}</span>

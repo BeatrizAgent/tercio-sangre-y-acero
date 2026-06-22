@@ -68,7 +68,7 @@ function ChestPanel({ title, subtitle, cells }: { title: string; subtitle: strin
         <Skeleton className="h-2.5 w-20" />
       </div>
       <div className="flex flex-wrap gap-1 border-b border-iron/40 pb-2">
-        {Array.from({ length: 3 }, (_, index) => (
+        {Array.from({ length: 4 }, (_, index) => (
           <Skeleton key={index} className="h-6 w-20" />
         ))}
       </div>
@@ -83,7 +83,7 @@ export function ArmorySkeleton() {
       <Header />
       <NpcOfferFrame />
       <div className="grid min-w-0 max-w-full gap-4 overflow-hidden xl:grid-cols-2">
-        <ChestPanel title="Baul del armero" subtitle="3 pestanas" cells={32} />
+        <ChestPanel title="Baul del armero" subtitle="4 pestanas" cells={40} />
         <ChestPanel title="Baul del soldado" subtitle="macuto" cells={40} />
       </div>
     </div>

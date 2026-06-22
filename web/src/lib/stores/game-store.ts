@@ -58,6 +58,20 @@ function rosterWithSoldier(state: GameState): GameState {
   };
 }
 
+export function normalizeGameState(state: GameState): GameState {
+  const soldier = {
+    ...state.soldier,
+    inventory: inventoryWithAutoLayout(
+      state.soldier.inventory ?? [],
+      BACKPACK_COLS,
+      BACKPACK_ROWS,
+      BACKPACK_CHESTS,
+    ),
+  };
+
+  return rosterWithSoldier({ ...state, soldier });
+}
+
 export function createInitialState(): GameState {
   const state: GameState = {
     soldier: {
@@ -100,7 +114,7 @@ export function createInitialState(): GameState {
     // Multiplayer fields stay undefined in single-player state; lib/realtime/*
     // will populate them when Django Channels is wired up.
   };
-  return rosterWithSoldier(state);
+  return normalizeGameState(state);
 }
 
 export interface GameStore extends GameState {
@@ -130,6 +144,7 @@ export interface GameStore extends GameState {
    * React. Each variant of the ServerEvent union is handled explicitly.
    */
   applyServerEvent: (event: import("../types").ServerEvent) => void;
+  hydrateState: (state: GameState) => void;
   resetState: () => void;
 }
 
@@ -456,6 +471,10 @@ export const useGameStore = create<GameStore>()(
         set({ ...createInitialState() });
       },
 
+      hydrateState: (state) => {
+        set({ ...normalizeGameState(state) });
+      },
+
       applyServerEvent: (event) => {
         switch (event.type) {
           case "leaderboard.updated":
@@ -503,11 +522,8 @@ export const useGameStore = create<GameStore>()(
       name: "tercio-game-state",
       onRehydrateStorage: () => (rehydrated) => {
         if (!rehydrated) return;
-        const soldier = rehydrated.soldier;
-        if (!soldier) return;
-        const laid = inventoryWithAutoLayout(soldier.inventory ?? [], BACKPACK_COLS, BACKPACK_ROWS, BACKPACK_CHESTS);
-        soldier.inventory = laid;
-        const healed = rosterWithSoldier(rehydrated);
+        const healed = normalizeGameState(rehydrated);
+        rehydrated.soldier = healed.soldier;
         rehydrated.characters = healed.characters;
         rehydrated.activeCharacterId = healed.activeCharacterId;
       },

@@ -94,11 +94,7 @@ export default function HospitalPage() {
               <button
                 onClick={handleBribe}
                 disabled={soldier.coins < 50}
-                className={`px-6 py-2.5 text-xs font-mono font-bold uppercase tracking-wider border rounded-xs transition-all cursor-pointer ${
-                  soldier.coins >= 50
-                    ? "bg-gold/15 border-gold text-gold hover:bg-gold/25"
-                    : "bg-stone-900 border-iron text-muted cursor-not-allowed"
-                }`}
+                className="iron-button px-6 py-2.5 text-xs font-mono font-bold uppercase tracking-wider"
               >
                 Sobornar al alguacil (50)
               </button>
@@ -163,9 +159,28 @@ export default function HospitalPage() {
                         <Badge variant={active.treated ? "success" : "danger"}>
                           {active.treated ? "Vendado" : "Abierto"}
                         </Badge>
+                        {woundDef && (
+                          <span
+                            className={`rounded-xs border px-1.5 py-0.5 font-mono text-[9px] font-bold uppercase tracking-wider ${
+                              woundDef.severity === 1
+                                ? "border-green-800/30 bg-green-500/10 text-success"
+                                : woundDef.severity === 2
+                                ? "border-warning/30 bg-warning/10 text-warning"
+                                : "border-danger/30 bg-danger/10 text-danger animate-pulse"
+                            }`}
+                          >
+                            {woundDef.severity === 1
+                              ? "Leve"
+                              : woundDef.severity === 2
+                              ? "Moderada"
+                              : woundDef.severity === 3
+                              ? "Grave"
+                              : "Infectada"}
+                          </span>
+                        )}
                       </div>
                       <p className="mt-1 text-[10px] font-mono uppercase text-muted">
-                        Gravedad {woundDef?.severity ?? "-"} | {active.treated ? "Sin penalizacion" : "-2 combate"}
+                        Penalización: {active.treated ? "Sin penalización (Cicatriza)" : "-2 en combate"}
                       </p>
                     </div>
 
@@ -173,11 +188,7 @@ export default function HospitalPage() {
                       <button
                         onClick={() => handleTreat(active.id)}
                         disabled={!canTreat}
-                        className={`px-4 py-2 text-xs font-mono font-bold uppercase rounded-xs border transition-all cursor-pointer ${
-                          canTreat
-                            ? "bg-blood border-blood-bright text-text hover:bg-blood-bright"
-                            : "bg-stone-900 border-iron text-muted cursor-not-allowed"
-                        }`}
+                        className="blood-button px-4 py-2 text-xs font-mono font-bold uppercase"
                       >
                         {bandageCount === 0 ? "Falta venda" : "Vendar"}
                       </button>
@@ -189,21 +200,25 @@ export default function HospitalPage() {
           )}
         </Card>
 
-        <Card title="Reposo">
-          <div className="flex flex-col gap-3 text-xs font-mono sm:flex-row sm:items-center sm:justify-between">
-            <div className="text-muted">
-              <span className="text-success">-25 fatiga</span>
-              <span className="mx-2 text-iron">|</span>
-              <span className="text-gold">5 doblones</span>
+        <Card title="Reposo en Campaña">
+          <div className="flex flex-col gap-4 p-1 sm:flex-row sm:items-center sm:justify-between">
+            <div className="flex items-center gap-3">
+              <UiAssetIcon id="barracks" label="Catre de campaña" className="h-12 w-12 rounded-xs border border-gold/25 bg-stone-950/80 p-2 shrink-0" />
+              <div>
+                <p className="font-serif text-sm italic text-text-muted">
+                  Descanso en catre de campaña. Reposo necesario para recuperar las fuerzas tras el barro de Flandes.
+                </p>
+                <div className="mt-1 flex items-center gap-2 font-mono text-[11px] uppercase">
+                  <span className="text-success font-bold">-25 fatiga</span>
+                  <span className="text-iron">|</span>
+                  <span className="text-gold font-bold">Coste: 5 doblones</span>
+                </div>
+              </div>
             </div>
             <button
               onClick={handleRest}
               disabled={soldier.coins < 5 || soldier.fatigue === 0}
-              className={`px-5 py-2.5 text-xs font-mono font-bold uppercase tracking-wider border rounded-xs transition-all cursor-pointer ${
-                soldier.coins >= 5 && soldier.fatigue > 0
-                  ? "bg-yellow-800/80 border-yellow-600/40 text-text hover:bg-yellow-750"
-                  : "bg-stone-900 border-iron text-muted cursor-not-allowed"
-              }`}
+              className="iron-button px-6 py-3 text-xs font-mono font-bold uppercase tracking-wider shrink-0 w-full sm:w-auto"
             >
               Descansar
             </button>

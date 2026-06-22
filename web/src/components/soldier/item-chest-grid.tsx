@@ -21,8 +21,8 @@ export const PLAYER_CHEST_GRID: ChestGridMetrics = {
 
 export const VENDOR_CHEST_GRID: ChestGridMetrics = {
   cols: 8,
-  rows: 4,
-  cellSize: 40,
+  rows: 5,
+  cellSize: 56,
   gap: 4,
   padding: 4,
 };
@@ -63,6 +63,7 @@ export function ItemChestGrid({
         backgroundImage:
           "linear-gradient(to right, rgba(187, 163, 106, 0.1) 1px, transparent 1px), linear-gradient(to bottom, rgba(187, 163, 106, 0.1) 1px, transparent 1px)",
         backgroundSize: `${metrics.cellSize + metrics.gap}px ${metrics.cellSize + metrics.gap}px`,
+        backgroundPosition: `${metrics.padding}px ${metrics.padding}px`,
       }}
     >
       {Array.from({ length: metrics.rows }).map((_, y) =>

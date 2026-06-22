@@ -2,6 +2,7 @@ import { Prisma, PrismaClient } from "../src/generated/prisma/client";
 import { PrismaPg } from "@prisma/adapter-pg";
 import { createInitialState } from "../src/lib/demo-store";
 import { recruitmentCandidates } from "../src/lib/data/recruitment";
+import { churchInventory, shopInventory } from "../src/lib/data/shop";
 import { spriteSetDefinitions } from "../src/lib/data/characters";
 import {
   catalogAssets,
@@ -228,6 +229,25 @@ async function seedCatalog() {
     });
   }
 
+  for (const [shopId, rows] of [
+    ["company_armory", shopInventory],
+    ["field_church", churchInventory],
+  ] as const) {
+    for (const row of rows) {
+      await prisma.shopItem.upsert({
+        where: { shopId_itemId: { shopId, itemId: row.itemId } },
+        update: { buyPrice: row.buyPrice, sellPrice: row.sellPrice, stock: row.stock },
+        create: {
+          shopId,
+          itemId: row.itemId,
+          buyPrice: row.buyPrice,
+          sellPrice: row.sellPrice,
+          stock: row.stock,
+        },
+      });
+    }
+  }
+
   for (const wound of catalogWounds) {
     const severityMap: Record<string, number> = { minor: 1, moderate: 2, serious: 3, grave: 4 };
     await prisma.woundDefinition.upsert({
@@ -306,6 +326,53 @@ async function seedCatalog() {
       create: { id: fragment.id, type: fragment.type, text: fragment.text, tags: [...fragment.tags] },
     });
   }
+
+  await pruneObsoleteCatalogRows();
+}
+
+async function pruneObsoleteCatalogRows() {
+  const assetIds = catalogAssets.map((asset) => asset.id);
+  const enemyIds = catalogEnemies.map((enemy) => enemy.id);
+  const rankIds = catalogRanks.map((rank) => rank.id);
+  const eventIds = catalogEvents.map((event) => event.id);
+  const characterIds = catalogCharacters.map((character) => character.id);
+  const trainingStats = catalogTraining.map((option) => option.stat);
+  const itemIds = itemDefinitions.map((item) => item.id);
+  const woundIds = catalogWounds.map((wound) => wound.id);
+  const missionIds = catalogMissions.map((mission) => mission.id);
+  const lootTableIds = catalogLootTables.map((table) => table.id);
+  const fragmentIds = reportFragmentDefinitions.map((fragment) => fragment.id);
+  const shopKeys = new Set([
+    ...shopInventory.map((row) => `company_armory:${row.itemId}`),
+    ...churchInventory.map((row) => `field_church:${row.itemId}`),
+  ]);
+
+  const shopRows = await prisma.shopItem.findMany({ select: { id: true, shopId: true, itemId: true } });
+  const staleShopIds = shopRows
+    .filter((row) => !shopKeys.has(`${row.shopId}:${row.itemId}`))
+    .map((row) => row.id);
+
+  if (staleShopIds.length > 0) {
+    await prisma.shopItem.deleteMany({ where: { id: { in: staleShopIds } } });
+  }
+
+  await prisma.assetDefinition.deleteMany({ where: { id: { notIn: assetIds } } });
+  await prisma.enemyDefinition.deleteMany({ where: { id: { notIn: enemyIds } } });
+  await prisma.rankDefinition.deleteMany({ where: { id: { notIn: rankIds } } });
+  await prisma.gameEventDefinition.deleteMany({ where: { id: { notIn: eventIds } } });
+  await prisma.characterDefinition.deleteMany({ where: { id: { notIn: characterIds } } });
+  await prisma.trainingDefinition.deleteMany({ where: { stat: { notIn: trainingStats } } });
+  await prisma.lootTable.deleteMany({ where: { id: { notIn: lootTableIds } } });
+  await prisma.reportFragment.deleteMany({ where: { id: { notIn: fragmentIds } } });
+  await prisma.woundDefinition.deleteMany({
+    where: { id: { notIn: woundIds }, active: { none: {} } },
+  });
+  await prisma.missionDefinition.deleteMany({
+    where: { id: { notIn: missionIds }, results: { none: {} } },
+  });
+  await prisma.itemDefinition.deleteMany({
+    where: { id: { notIn: itemIds }, inventory: { none: {} }, shopItems: { none: {} } },
+  });
 }
 
 async function seedDemoSave() {

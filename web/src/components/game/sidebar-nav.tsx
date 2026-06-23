@@ -22,9 +22,7 @@ function NavLink({ href, label, icon, isActive }: NavLinkProps) {
       title={label}
       className={`gladiatus-location-button ${isActive ? "active" : ""} gap-2`}
     >
-      <span className="relative flex h-5 w-5 shrink-0 items-center justify-center overflow-hidden rounded-xs border border-iron/60 bg-black/40 group-hover:border-gold/30 transition-all duration-200">
-        <UiAssetIcon id={icon} label={label} className="h-3.5 w-3.5" />
-      </span>
+      <UiAssetIcon id={icon} label={label} className="h-4 w-4 shrink-0" />
       <span className="truncate">{label}</span>
     </Link>
   );

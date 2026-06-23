@@ -91,6 +91,10 @@ function MiniIcon({ iconId, label }: { iconId: IconId; label: string }) {
   return <UiAssetIcon id={iconId} label={label} className="h-10 w-10 rounded-xs border border-iron bg-stone-950/75 p-1" />;
 }
 
+function campaignIconFor(locationType: string) {
+  return campaignNodeIconPaths[locationType as keyof typeof campaignNodeIconPaths] ?? campaignNodeIconPaths.skirmish;
+}
+
 function EnemyHoverCard({
   enemy,
   enemySprite,
@@ -471,7 +475,7 @@ export default function MissionDetailPage() {
 
   return (
     <PageTransition>
-      <div className="relative space-y-5">
+        <div className="relative space-y-4">
         {resolving && (
           <MissionCanvasResolver
             mission={mission}
@@ -488,25 +492,26 @@ export default function MissionDetailPage() {
           />
         )}
 
-        <div className="flex items-center justify-between gap-3 border-b border-iron pb-3">
+        <header className="page-header">
           <div className="flex min-w-0 items-center gap-3">
-            <img src={campaignNodeIconPaths[mission.locationType]} alt="" className="h-12 w-12 object-contain" />
+            <img src={campaignIconFor(mission.locationType)} alt="" className="h-10 w-10 object-contain" />
             <div className="min-w-0">
-              <h1 className="truncate font-cinzel text-2xl font-bold uppercase tracking-wider text-gold">{mission.title}</h1>
-              <div className="mt-1 flex flex-wrap gap-2">
+              <p className="page-header__eyebrow">{locationLabel(mission.locationType)}</p>
+              <h1 className="page-header__title truncate">{mission.title}</h1>
+              <div className="mt-1 flex flex-wrap gap-1.5">
                 <span className="rounded-xs border border-gold/40 px-2 py-0.5 font-mono text-[10px] uppercase tracking-wider text-gold-soft">
-                  {locationLabel(mission.locationType)}
-                </span>
-                <span className="rounded-xs border border-danger/40 px-2 py-0.5 font-mono text-[10px] uppercase tracking-wider text-danger">
                   Riesgo {mission.difficulty}
+                </span>
+                <span className="rounded-xs border border-iron/60 px-2 py-0.5 font-mono text-[10px] uppercase tracking-wider text-text-muted">
+                  {mission.locationType}
                 </span>
               </div>
             </div>
           </div>
-          <UiAssetIcon id="order" label="Orden" className="h-11 w-11" />
-        </div>
+          <UiAssetIcon id="order" label="Orden" className="hidden h-10 w-10 sm:block" />
+        </header>
 
-        <div className="grid gap-5 md:grid-cols-[1.55fr_1fr]">
+        <div className="grid gap-4 md:grid-cols-[1.55fr_1fr]">
           <div className="space-y-4">
             <div className="scene-frame relative h-[360px] overflow-hidden rounded-xs border border-iron bg-stone-950">
               <img
@@ -526,12 +531,12 @@ export default function MissionDetailPage() {
               </div>
             </div>
 
-            <div className="grid gap-3 sm:grid-cols-4">
-              <StatTile iconId="shield" value={totalPower} tone={totalPower >= targetPower ? "text-success" : "text-danger"} tooltip="Tu poder efectivo" />
-              <StatTile iconId="risk" value={enemyPower} tone="text-danger" tooltip="Poder del enemigo" />
-              <StatTile iconId="confirm" value={`${chance}%`} tone={chance >= 80 ? "text-success" : chance >= 50 ? "text-warning" : "text-danger"} tooltip="Probabilidad de éxito" />
-              <StatTile iconId="mud" value={`-${woundPenalty + fatiguePenalty}`} tone="text-danger" tooltip="Malus por heridas y fatiga" />
-            </div>
+                <div className="grid gap-2 sm:grid-cols-4">
+                  <StatTile iconId="shield" value={totalPower} tone={totalPower >= targetPower ? "text-success" : "text-danger"} tooltip="Tu poder efectivo" />
+                  <StatTile iconId="risk" value={enemyPower} tone="text-danger" tooltip="Poder del enemigo" />
+                  <StatTile iconId="confirm" value={`${chance}%`} tone={chance >= 80 ? "text-success" : chance >= 50 ? "text-warning" : "text-danger"} tooltip="Probabilidad de exito" />
+                  <StatTile iconId="mud" value={`-${woundPenalty + fatiguePenalty}`} tone="text-danger" tooltip="Malus por heridas y fatiga" />
+                </div>
           </div>
 
           <div className="space-y-4">
@@ -541,7 +546,7 @@ export default function MissionDetailPage() {
                   <div className="grid grid-cols-2 gap-2">
                     <StatTile iconId="coins" value={`+${mission.rewards.coins}`} tone="text-gold" tooltip="Doblones" />
                     <StatTile iconId="xp" value={`+${mission.rewards.xp}`} tooltip="Experiencia" />
-                    <StatTile iconId="honor" value={`+${mission.rewards.honor}`} tone="text-amber" tooltip="Honor" />
+                    <StatTile iconId="honor" value={`+${mission.rewards.honor}`} tone="text-gold-soft" tooltip="Honor" />
                     <StatTile iconId="missions" value={locationLabel(mission.locationType)} tone="text-gold-soft" tooltip="Tipo" />
                   </div>
 
@@ -566,14 +571,12 @@ export default function MissionDetailPage() {
                 <button
                   onClick={handleStart}
                   disabled={isAgotado || resolving}
-                  className={`flex w-full cursor-pointer items-center justify-center gap-2 rounded-xs border py-3 font-mono text-sm font-bold uppercase tracking-wider transition-all ${
-                    isAgotado || resolving
-                      ? "border-iron bg-stone-900 text-muted cursor-not-allowed"
-                      : "border-blood-bright bg-blood text-text hover:bg-blood-bright hover:text-white"
+                  className={`blood-button flex w-full items-center justify-center gap-2 py-3 text-sm ${
+                    isAgotado || resolving ? "cursor-not-allowed opacity-60" : ""
                   }`}
                 >
-                  <UiAssetIcon id="confirm" label="" className="h-6 w-6" />
-                  {resolving ? "Resolviendo..." : isAgotado ? "Agotado" : "Iniciar misión"}
+                  <UiAssetIcon id="confirm" label="" className="h-5 w-5" />
+                  {resolving ? "Resolviendo..." : isAgotado ? "Agotado" : "Iniciar mision"}
                 </button>
 
                 {isAgotado && (
@@ -586,7 +589,7 @@ export default function MissionDetailPage() {
             </Card>
 
             {lootTable && (
-              <Card title="Botín" iconId="inventory">
+              <Card title="Botin" iconId="inventory">
                 <div className="grid grid-cols-4 gap-2">
                   {lootTable.drops.map((drop) => (
                     <DropTile key={drop.itemId} itemId={drop.itemId} weight={drop.weight} />

@@ -143,20 +143,17 @@ function MissionsContent() {
 
   return (
     <PageTransition>
-      <div className="space-y-5">
-        <header className="flex items-center justify-between gap-3 border-b border-iron pb-3">
+      <div className="space-y-4">
+        <header className="page-header">
           <div className="flex items-center gap-3">
-            <UiAssetIcon id="missions" label="Campaña" className="h-12 w-12" />
+            <UiAssetIcon id="missions" label="Campana" className="h-10 w-10" />
             <div>
-              <h1 className="font-cinzel text-2xl font-extrabold tracking-wider text-gold md:text-3xl">
-                MAPA DE CAMPAÑA
-              </h1>
-              <p className="mt-1 font-mono text-[10px] uppercase tracking-widest text-text-muted">
-                Cinco frentes · Veinte generales enemigos
-              </p>
+              <p className="page-header__eyebrow">Cartografia militar</p>
+              <h1 className="page-header__title">Mapa de campana</h1>
+              <p className="page-header__subtitle">Cinco frentes · Veinte generales enemigos.</p>
             </div>
           </div>
-          <Compass className="h-8 w-8 text-gold/70" />
+          <Compass className="hidden h-8 w-8 text-gold/70 sm:block" aria-hidden="true" />
         </header>
 
         {!region && <WorldMap onSelect={setRegion} />}
@@ -185,7 +182,7 @@ function WorldMap({ onSelect }: { onSelect: (id: RegionId) => void }) {
           alt="Mapa de los frentes de campaña del Tercio"
           className="pointer-events-none h-full w-full select-none object-cover opacity-70"
         />
-        <div className="pointer-events-none absolute inset-0 bg-radial-[circle_at_center,_rgba(0,0,0,0)_50%,_rgba(0,0,0,0.55)_100%)] mix-blend-multiply" />
+        <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_center,_rgba(0,0,0,0)_50%,_rgba(0,0,0,0.55)_100%)] mix-blend-multiply" />
 
         {regions.map((region) => {
           const readyCount = region.bosses.filter((boss) => !isPending(boss)).length;
@@ -258,8 +255,8 @@ function RegionPanel({
     );
 
   return (
-    <div className="space-y-4">
-      <div className="flex flex-wrap items-end justify-between gap-3 border-b border-iron/50 pb-3">
+    <div className="space-y-3">
+      <div className="page-header">
         <div>
           <button
             type="button"
@@ -269,16 +266,16 @@ function RegionPanel({
             <ArrowLeft className="h-3.5 w-3.5" />
             Volver al mapa
           </button>
-          <h2 className="font-cinzel text-2xl font-extrabold uppercase text-gold md:text-3xl">{region.name}</h2>
-          <p className="mt-1 font-mono text-[10px] uppercase tracking-widest text-text-muted">{region.description}</p>
+          <h2 className="page-header__title">{region.name}</h2>
+          <p className="page-header__subtitle">{region.description}</p>
         </div>
-        <div className="flex gap-2 font-mono text-[10px] uppercase tracking-widest text-text-muted">
+        <div className="flex flex-wrap gap-2 font-mono text-[10px] uppercase tracking-widest text-text-muted">
           <span className="rounded-xs border border-iron px-2 py-1">
             Operaciones: <span className="text-gold">{readyCount}/{region.bosses.length}</span>
           </span>
           {readyCount > 0 && (
             <span className="rounded-xs border border-iron px-2 py-1">
-              Botín total: <span className="text-gold">+{totalRewards.coins} doblones</span>
+              Botin total: <span className="text-gold">+{totalRewards.coins} doblones</span>
             </span>
           )}
         </div>

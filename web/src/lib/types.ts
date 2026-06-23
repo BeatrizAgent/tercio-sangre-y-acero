@@ -160,6 +160,10 @@ export interface Soldier {
   reputation: number;
   corruption: number;
   banMissionsLeft: number;
+  /// Optional. Set when the player picks a portrait at /login
+  /// (data/player-portraits.json). Falls back to the legacy
+  /// "diego de arce" portrait in the UI when missing.
+  portraitAssetId?: string;
   stats: Stats;
   inventory: InventoryItem[];
   equipment: Equipment;

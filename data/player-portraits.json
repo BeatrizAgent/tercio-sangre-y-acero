@@ -1,0 +1,150 @@
+{
+  "version": 1,
+  "description": "Lista curada de retratos seleccionables en el creador de personaje de /login. Derivada de data/catalog.json (assets con usage 'player_portrait_selection'). Mantener sincronizada con el catalog: regenerar via scripts/build_player_portraits.mjs cuando se anadan retratos nuevos.",
+  "options": [
+    {
+      "id": "player_portrait_option_01_bisono_recruit",
+      "displayName": "Bisono",
+      "role": "recruit",
+      "roleLabel": "Recluta",
+      "publicPath": "/assets/gpt-bank/portraits/player-options/roles/recruits/player_portrait_option_01_bisono_recruit.png",
+      "width": 768,
+      "height": 768
+    },
+    {
+      "id": "player_portrait_option_02_pike_veteran",
+      "displayName": "Piquero veterano",
+      "role": "pikeman",
+      "roleLabel": "Piquero",
+      "publicPath": "/assets/gpt-bank/portraits/player-options/roles/pikemen/player_portrait_option_02_pike_veteran.png",
+      "width": 768,
+      "height": 768
+    },
+    {
+      "id": "player_portrait_option_03_sword_buckler_soldier",
+      "displayName": "Espadachin con broquel",
+      "role": "swordsman",
+      "roleLabel": "Espadachin",
+      "publicPath": "/assets/gpt-bank/portraits/player-options/roles/swordsmen/player_portrait_option_03_sword_buckler_soldier.png",
+      "width": 768,
+      "height": 768
+    },
+    {
+      "id": "player_portrait_option_04_arquebusier",
+      "displayName": "Arcabucero",
+      "role": "arquebusier",
+      "roleLabel": "Arcabucero",
+      "publicPath": "/assets/gpt-bank/portraits/player-options/roles/arquebusiers/player_portrait_option_04_arquebusier.png",
+      "width": 768,
+      "height": 768
+    },
+    {
+      "id": "player_portrait_option_05_old_sergeant",
+      "displayName": "Sargento viejo",
+      "role": "officer",
+      "roleLabel": "Oficial",
+      "publicPath": "/assets/gpt-bank/portraits/player-options/roles/officers/player_portrait_option_05_old_sergeant.png",
+      "width": 768,
+      "height": 768
+    },
+    {
+      "id": "player_portrait_option_06_noble_alferez",
+      "displayName": "Alferez noble",
+      "role": "officer",
+      "roleLabel": "Oficial",
+      "publicPath": "/assets/gpt-bank/portraits/player-options/roles/officers/player_portrait_option_06_noble_alferez.png",
+      "width": 768,
+      "height": 768
+    },
+    {
+      "id": "player_portrait_option_07_camp_guard",
+      "displayName": "Guardia del campo",
+      "role": "guard",
+      "roleLabel": "Guardia",
+      "publicPath": "/assets/gpt-bank/portraits/player-options/roles/guards/player_portrait_option_07_camp_guard.png",
+      "width": 768,
+      "height": 768
+    },
+    {
+      "id": "player_portrait_option_08_siege_survivor",
+      "displayName": "Superviviente del asedio",
+      "role": "veteran",
+      "roleLabel": "Veterano",
+      "publicPath": "/assets/gpt-bank/portraits/player-options/roles/veterans/player_portrait_option_08_siege_survivor.png",
+      "width": 768,
+      "height": 768
+    },
+    {
+      "id": "player_portrait_option_09_surgeon_soldier",
+      "displayName": "Cirujano soldado",
+      "role": "specialist",
+      "roleLabel": "Especialista",
+      "publicPath": "/assets/gpt-bank/portraits/player-options/roles/specialists/player_portrait_option_09_surgeon_soldier.png",
+      "width": 768,
+      "height": 768
+    },
+    {
+      "id": "player_portrait_option_10_farmhand_pikeman",
+      "displayName": "Piquero labriego",
+      "role": "pikeman",
+      "roleLabel": "Piquero",
+      "publicPath": "/assets/gpt-bank/portraits/player-options/roles/pikemen/player_portrait_option_10_farmhand_pikeman.png",
+      "width": 768,
+      "height": 768
+    },
+    {
+      "id": "player_portrait_option_11_artillery_assistant",
+      "displayName": "Ayudante de artilleria",
+      "role": "specialist",
+      "roleLabel": "Especialista",
+      "publicPath": "/assets/gpt-bank/portraits/player-options/roles/specialists/player_portrait_option_11_artillery_assistant.png",
+      "width": 768,
+      "height": 768
+    },
+    {
+      "id": "player_portrait_option_12_standard_guard",
+      "displayName": "Guardia del estandarte",
+      "role": "guard",
+      "roleLabel": "Guardia",
+      "publicPath": "/assets/gpt-bank/portraits/player-options/roles/guards/player_portrait_option_12_standard_guard.png",
+      "width": 768,
+      "height": 768
+    },
+    {
+      "id": "player_portrait_option_13_hooded_scout",
+      "displayName": "Explorador encapuchado",
+      "role": "scout",
+      "roleLabel": "Explorador",
+      "publicPath": "/assets/gpt-bank/portraits/player-options/roles/scouts/player_portrait_option_13_hooded_scout.png",
+      "width": 768,
+      "height": 768
+    },
+    {
+      "id": "player_portrait_option_14_red_haired_recruit",
+      "displayName": "Recluta pelirrojo",
+      "role": "recruit",
+      "roleLabel": "Recluta",
+      "publicPath": "/assets/gpt-bank/portraits/player-options/roles/recruits/player_portrait_option_14_red_haired_recruit.png",
+      "width": 768,
+      "height": 768
+    },
+    {
+      "id": "player_portrait_option_15_sailor_soldier",
+      "displayName": "Soldado marinero",
+      "role": "sailor",
+      "roleLabel": "Marinero",
+      "publicPath": "/assets/gpt-bank/portraits/player-options/roles/sailors/player_portrait_option_15_sailor_soldier.png",
+      "width": 768,
+      "height": 768
+    },
+    {
+      "id": "player_portrait_option_16_eyepatch_veteran",
+      "displayName": "Veterano del parche",
+      "role": "veteran",
+      "roleLabel": "Veterano",
+      "publicPath": "/assets/gpt-bank/portraits/player-options/roles/veterans/player_portrait_option_16_eyepatch_veteran.png",
+      "width": 768,
+      "height": 768
+    }
+  ]
+}

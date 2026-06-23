@@ -13,7 +13,10 @@ async function main() {
     await fs.mkdir(targetDataDir, { recursive: true });
 
     // Primary data file — the unified catalog. The web app reads this directly.
-    const files = ["catalog.json", "shops.json"];
+    // character-names.json + player-portraits.json are the static seeds for
+    // the /login character creator (portrait picker + name generator); they
+    // also back GET /api/character-names.
+    const files = ["catalog.json", "shops.json", "character-names.json", "player-portraits.json"];
 
     console.log(`Syncing data from ${rootDataDir} to ${targetDataDir}...`);
 

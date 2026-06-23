@@ -9,6 +9,7 @@ import { LayeredSoldierSprite } from "./LayeredSoldierSprite";
 import { SpriteEffectLayer, type RuntimeParticle } from "./SpriteEffectLayer";
 import { CombatTimeline, createCombatTimelineState } from "./CombatTimeline";
 import { buildCombatScenePlan, getActorStateAt, type CombatSceneActor } from "@/lib/domain/combat/combat-scene-plan";
+import { DIEGO_SPRITE_SHEETS, getDiegoFrameWidth, getLinearFrameIndex } from "@/lib/domain/combat/diego-sprite-sheets";
 
 import {
   getMission,
@@ -189,9 +190,9 @@ export function CombatStage({ missionTitle, missionId, result, onSequenceComplet
           pixi.Assets.load(playerPath).catch(() => null),
           pixi.Assets.load(result.enemy.spritePath ?? enemyFallbackPath).catch(() => pixi.Assets.load(enemyFallbackPath).catch(() => null)),
           pixi.Assets.load(bgPath).catch(() => pixi.Assets.load("/assets/gpt-bank/scenes/events/night_watch_rain_bg.png").catch(() => null)),
-          pixi.Assets.load("/assets/gpt-bank/characters/diego/sprites/diego_sprite_caminar.png").catch(() => null),
-          pixi.Assets.load("/assets/gpt-bank/characters/diego/sprites/diego_sprite_ataque_pica.png").catch(() => null),
-          pixi.Assets.load("/assets/gpt-bank/characters/diego/sprites/diego_sprite_golpe_espada.png").catch(() => null),
+          pixi.Assets.load(DIEGO_SPRITE_SHEETS.walk.path).catch(() => null),
+          pixi.Assets.load(DIEGO_SPRITE_SHEETS.pikeAttack.path).catch(() => null),
+          pixi.Assets.load(DIEGO_SPRITE_SHEETS.swordAttack.path).catch(() => null),
         ]);
 
         await Promise.all(
@@ -253,10 +254,10 @@ export function CombatStage({ missionTitle, missionId, result, onSequenceComplet
       }
 
       // Slice sheet helper function
-      const sliceSheet = (sheetTexture: Texture, frameWidth: number, frameHeight: number): Texture[] => {
+      const sliceSheet = (sheetTexture: Texture, frameWidth: number, frameHeight: number, frameCount: number): Texture[] => {
         if (!sheetTexture) return [];
         const frames: Texture[] = [];
-        for (let i = 0; i < 3; i++) {
+        for (let i = 0; i < frameCount; i++) {
           const rect = new pixi.Rectangle(i * frameWidth, 0, frameWidth, frameHeight);
           const tex = new pixi.Texture({
             source: sheetTexture.source,
@@ -333,9 +334,15 @@ export function CombatStage({ missionTitle, missionId, result, onSequenceComplet
       const pikeScale = targetHeight / 570;
       const swordScale = targetHeight / 642;
 
-      const walkFrames = walkSheetTexture ? sliceSheet(walkSheetTexture, 2031 / 3, 714) : [];
-      const pikeFrames = pikeAttackSheetTexture ? sliceSheet(pikeAttackSheetTexture, 2076 / 3, 570) : [];
-      const swordFrames = swordAttackSheetTexture ? sliceSheet(swordAttackSheetTexture, 2141 / 3, 642) : [];
+      const walkFrames = walkSheetTexture
+        ? sliceSheet(walkSheetTexture, getDiegoFrameWidth("walk"), DIEGO_SPRITE_SHEETS.walk.height, DIEGO_SPRITE_SHEETS.walk.frames)
+        : [];
+      const pikeFrames = pikeAttackSheetTexture
+        ? sliceSheet(pikeAttackSheetTexture, getDiegoFrameWidth("pikeAttack"), DIEGO_SPRITE_SHEETS.pikeAttack.height, DIEGO_SPRITE_SHEETS.pikeAttack.frames)
+        : [];
+      const swordFrames = swordAttackSheetTexture
+        ? sliceSheet(swordAttackSheetTexture, getDiegoFrameWidth("swordAttack"), DIEGO_SPRITE_SHEETS.swordAttack.height, DIEGO_SPRITE_SHEETS.swordAttack.frames)
+        : [];
 
       const canAnimate = walkFrames.length > 0 &&
                          (relevantStat === "pike" || relevantStat === "discipline" || relevantStat === "sword");
@@ -471,8 +478,8 @@ export function CombatStage({ missionTitle, missionId, result, onSequenceComplet
             animatedPlayerSprite.scale.set(walkScale);
           } else if (elapsed >= 900 && elapsed < 2200) {
             // walking loop during deployment
-            const walkSpeed = 120;
-            const frameIndex = Math.floor((elapsed - 900) / walkSpeed) % 3;
+            const walkSpeed = 1000 / DIEGO_SPRITE_SHEETS.walk.fps;
+            const frameIndex = Math.floor((elapsed - 900) / walkSpeed) % walkFrames.length;
             animatedPlayerSprite.texture = walkFrames[frameIndex];
             animatedPlayerSprite.scale.set(walkScale);
           } else if (elapsed >= 2200 && elapsed < 2550) {
@@ -483,16 +490,12 @@ export function CombatStage({ missionTitle, missionId, result, onSequenceComplet
             // attack lunges and hits
             if ((relevantStat === "pike" || relevantStat === "discipline") && pikeFrames.length > 0) {
               const attackElapsed = elapsed - 2550;
-              let frameIdx = 0;
-              if (attackElapsed > 550) frameIdx = 2; // recovery
-              else if (attackElapsed > 150) frameIdx = 1; // thrust forward
+              const frameIdx = getLinearFrameIndex(attackElapsed, pikeFrames.length, 800 / pikeFrames.length);
               animatedPlayerSprite.texture = pikeFrames[frameIdx];
               animatedPlayerSprite.scale.set(pikeScale);
             } else if (relevantStat === "sword" && swordFrames.length > 0) {
               const attackElapsed = elapsed - 2550;
-              let frameIdx = 0;
-              if (attackElapsed > 550) frameIdx = 2; // recovery
-              else if (attackElapsed > 150) frameIdx = 1; // slash hit
+              const frameIdx = getLinearFrameIndex(attackElapsed, swordFrames.length, 800 / swordFrames.length);
               animatedPlayerSprite.texture = swordFrames[frameIdx];
               animatedPlayerSprite.scale.set(swordScale);
             } else {

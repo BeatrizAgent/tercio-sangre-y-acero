@@ -1,9 +1,13 @@
+import "dotenv/config";
 import { Prisma, PrismaClient } from "../src/generated/prisma/client";
 import { PrismaPg } from "@prisma/adapter-pg";
+import { createHash } from "node:crypto";
 import { createInitialState } from "../src/lib/demo-store";
+import { characterNames } from "../src/lib/data/character-names";
 import { recruitmentCandidates } from "../src/lib/data/recruitment";
 import { churchInventory, shopInventory } from "../src/lib/data/shop";
 import { spriteSetDefinitions } from "../src/lib/data/characters";
+import { normalizeCharacterName, validateCharacterNamePools } from "../src/lib/domain/names";
 import {
   catalogAssets,
   catalogCharacters,
@@ -21,12 +25,42 @@ import {
 const adapter = new PrismaPg({ connectionString: process.env.DATABASE_URL! });
 const prisma = new PrismaClient({ adapter });
 
+const DEMO_TOKEN_HASH = createHash("sha256").update("tercio_demo_seed_token", "utf8").digest("hex");
+
 function json(value: unknown): Prisma.InputJsonValue {
   return value as Prisma.InputJsonValue;
 }
 
 function assetPath(publicPath: string) {
   return `GPT-ASSETS/${publicPath.replace(/^\/assets\/gpt-bank\//, "")}`;
+}
+
+async function seedCharacterNames() {
+  validateCharacterNamePools(characterNames);
+
+  const groups = [
+    ["first", characterNames.firstNames],
+    ["surname", characterNames.surnames],
+  ] as const;
+
+  for (const [kind, values] of groups) {
+    const normalizedValues = values.map((value) => normalizeCharacterName(value));
+
+    for (const [sortOrder, value] of values.entries()) {
+      await prisma.characterName.upsert({
+        where: { kind_normalized: { kind, normalized: normalizeCharacterName(value) } },
+        update: { value, sortOrder },
+        create: { kind, value, normalized: normalizeCharacterName(value), sortOrder },
+      });
+    }
+
+    await prisma.characterName.deleteMany({
+      where: {
+        kind,
+        normalized: { notIn: normalizedValues },
+      },
+    });
+  }
 }
 
 async function seedCatalog() {
@@ -379,7 +413,7 @@ async function seedDemoSave() {
   const user = await prisma.user.upsert({
     where: { email: "demo@tercio.local" },
     update: {},
-    create: { email: "demo@tercio.local", name: "Demo User" },
+    create: { email: "demo@tercio.local", name: "Demo User", tokenHash: DEMO_TOKEN_HASH },
   });
 
   const initialState = createInitialState();
@@ -420,6 +454,7 @@ async function seedDemoSave() {
 }
 
 async function main() {
+  await seedCharacterNames();
   await seedCatalog();
   await seedDemoSave();
 }

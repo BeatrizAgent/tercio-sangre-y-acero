@@ -94,7 +94,7 @@ export default function HospitalPage() {
               <button
                 onClick={handleBribe}
                 disabled={soldier.coins < 50}
-                className="iron-button px-6 py-2.5 text-xs font-mono font-bold uppercase tracking-wider"
+                className="iron-button px-6 py-2.5 text-xs"
               >
                 Sobornar al alguacil (50)
               </button>
@@ -107,29 +107,30 @@ export default function HospitalPage() {
 
   return (
     <PageTransition>
-      <div className="mx-auto max-w-4xl space-y-5">
-        <div className="flex flex-col gap-3 border-b border-iron pb-3 sm:flex-row sm:items-end sm:justify-between">
-          <h1 className="font-cinzel text-3xl font-extrabold tracking-wider text-gold">HOSPITAL DE SANGRE</h1>
-          <div className="flex flex-wrap gap-2 text-[10px] font-mono uppercase">
+      <div className="mx-auto max-w-4xl space-y-4">
+        <header className="page-header">
+          <div>
+            <p className="page-header__eyebrow">Cirujano de campana</p>
+            <h1 className="page-header__title">Hospital de sangre</h1>
+            <p className="page-header__subtitle">Vendas, reposo y pagas. Sin cura no hay marchar.</p>
+          </div>
+          <div className="flex flex-wrap gap-2 font-mono text-[10px] uppercase">
             <span className="rounded-xs border border-iron bg-stone-900 px-2 py-1 text-muted">
               Fatiga {soldier.fatigue}
             </span>
             <span className="rounded-xs border border-iron bg-stone-900 px-2 py-1 text-muted">
               Vendas {bandageCount}
             </span>
-            <span className="rounded-xs border border-iron bg-stone-900 px-2 py-1 text-gold">
+            <span className="rounded-xs border border-gold/30 bg-stone-900 px-2 py-1 text-gold">
               {soldier.coins} doblones
             </span>
           </div>
-        </div>
+        </header>
 
         {notification && (
           <div
-            className={`p-3 text-xs font-mono border rounded-xs transition-all ${
-              notification.isError
-                ? "bg-danger/20 border-danger text-danger"
-                : "bg-success/20 border-success text-success"
-            }`}
+            role="status"
+            className={`notice ${notification.isError ? "notice--err" : "notice--ok"}`}
           >
             {notification.text}
           </div>
@@ -163,10 +164,10 @@ export default function HospitalPage() {
                           <span
                             className={`rounded-xs border px-1.5 py-0.5 font-mono text-[9px] font-bold uppercase tracking-wider ${
                               woundDef.severity === 1
-                                ? "border-green-800/30 bg-green-500/10 text-success"
+                                ? "border-success/40 bg-success/10 text-success"
                                 : woundDef.severity === 2
-                                ? "border-warning/30 bg-warning/10 text-warning"
-                                : "border-danger/30 bg-danger/10 text-danger animate-pulse"
+                                ? "border-warning/40 bg-warning/10 text-warning"
+                                : "border-danger/40 bg-danger/10 text-danger animate-pulse"
                             }`}
                           >
                             {woundDef.severity === 1
@@ -174,13 +175,13 @@ export default function HospitalPage() {
                               : woundDef.severity === 2
                               ? "Moderada"
                               : woundDef.severity === 3
-                              ? "Grave"
-                              : "Infectada"}
+                                ? "Grave"
+                                : "Infectada"}
                           </span>
                         )}
                       </div>
                       <p className="mt-1 text-[10px] font-mono uppercase text-muted">
-                        Penalización: {active.treated ? "Sin penalización (Cicatriza)" : "-2 en combate"}
+                        Penalizacion: {active.treated ? "Sin penalizacion (cicatriza)" : "-2 en combate"}
                       </p>
                     </div>
 
@@ -188,7 +189,7 @@ export default function HospitalPage() {
                       <button
                         onClick={() => handleTreat(active.id)}
                         disabled={!canTreat}
-                        className="blood-button px-4 py-2 text-xs font-mono font-bold uppercase"
+                        className="blood-button px-4 py-2 text-xs"
                       >
                         {bandageCount === 0 ? "Falta venda" : "Vendar"}
                       </button>
@@ -200,13 +201,13 @@ export default function HospitalPage() {
           )}
         </Card>
 
-        <Card title="Reposo en Campaña">
+        <Card title="Reposo en campana">
           <div className="flex flex-col gap-4 p-1 sm:flex-row sm:items-center sm:justify-between">
             <div className="flex items-center gap-3">
-              <UiAssetIcon id="barracks" label="Catre de campaña" className="h-12 w-12 rounded-xs border border-gold/25 bg-stone-950/80 p-2 shrink-0" />
+              <UiAssetIcon id="barracks" label="Catre de campana" className="h-12 w-12 rounded-xs border border-gold/25 bg-stone-950/80 p-2 shrink-0" />
               <div>
                 <p className="font-serif text-sm italic text-text-muted">
-                  Descanso en catre de campaña. Reposo necesario para recuperar las fuerzas tras el barro de Flandes.
+                  Descanso en catre de campana. Reposo necesario para recuperar las fuerzas tras el barro de Flandes.
                 </p>
                 <div className="mt-1 flex items-center gap-2 font-mono text-[11px] uppercase">
                   <span className="text-success font-bold">-25 fatiga</span>
@@ -218,7 +219,7 @@ export default function HospitalPage() {
             <button
               onClick={handleRest}
               disabled={soldier.coins < 5 || soldier.fatigue === 0}
-              className="iron-button px-6 py-3 text-xs font-mono font-bold uppercase tracking-wider shrink-0 w-full sm:w-auto"
+              className="iron-button px-6 py-3 text-xs shrink-0 w-full sm:w-auto"
             >
               Descansar
             </button>

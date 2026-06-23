@@ -18,3 +18,5 @@ export * from "./regions";
 export * from "./recruitment";
 export * from "./shop";
 export * from "./arena";
+export * from "./character-names";
+export * from "./player-portraits";

@@ -53,15 +53,23 @@ export default function ReportPage() {
 
   return (
     <PageTransition>
-      <div className="relative">
-        <div className="mb-4 border-b border-iron pb-3">
-          <p className="font-mono text-[10px] uppercase tracking-[0.4em] text-text-muted">
-            Archivo del Tercio · Informe #{report.id.slice(0, 8)}
-          </p>
-          <h1 className="font-cinzel text-2xl font-bold uppercase text-gold-soft">
-            Diario de Campaña
-          </h1>
-        </div>
+      <div className="relative space-y-4">
+        <header className="page-header">
+          <div>
+            <p className="page-header__eyebrow">Archivo del Tercio · Informe #{report.id.slice(0, 8)}</p>
+            <h1 className="page-header__title">Diario de campana</h1>
+            <p className="page-header__subtitle">
+              {mission ? mission.title : report.missionId.replace(/_/g, " ")}
+            </p>
+          </div>
+          <span className={`inline-flex items-center gap-2 border px-3 py-1 font-mono text-[10px] font-bold uppercase tracking-wider ${
+            report.success
+              ? "border-success/45 bg-success/10 text-success"
+              : "border-danger/45 bg-danger/10 text-danger"
+          }`}>
+            {report.success ? "Exito" : "Fracaso"}
+          </span>
+        </header>
 
         <ReportStage report={report} mission={mission} />
       </div>

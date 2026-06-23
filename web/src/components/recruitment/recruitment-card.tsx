@@ -71,11 +71,13 @@ export function RecruitmentCard({
   candidate,
   soldier,
   recruited,
+  recruitmentBlockedReason,
   onRecruit,
 }: {
   candidate: RecruitmentCandidate;
   soldier: Soldier;
   recruited: boolean;
+  recruitmentBlockedReason?: string | null;
   onRecruit: () => void;
 }) {
   const { character, cost, hook } = candidate;
@@ -84,9 +86,10 @@ export function RecruitmentCard({
   const power = candidatePowerScore(candidate);
   const bestStats = topStats(candidate, 3);
   const canAfford = affordability.canAfford;
-  const blockedReason = !canAfford
+  const canRecruit = canAfford && !recruitmentBlockedReason;
+  const blockedReason = recruitmentBlockedReason ?? (!canAfford
     ? formatMissingCost(affordability.missing)
-    : null;
+    : null);
   const costLabel = formatCostShort(cost);
 
   const totalMissing =
@@ -98,7 +101,7 @@ export function RecruitmentCard({
       className={`game-panel flex min-w-0 flex-col gap-2 rounded-xs border p-2.5 transition ${
         recruited
           ? "border-success/40 bg-panel-soft/45 opacity-65"
-          : canAfford
+          : canRecruit
             ? "border-iron/70 bg-stone-950/70 hover:border-gold/45"
             : "border-iron/70 bg-stone-950/70"
       }`}
@@ -228,20 +231,20 @@ export function RecruitmentCard({
       ) : (
         <button
           type="button"
-          disabled={!canAfford}
+          disabled={!canRecruit}
           onClick={onRecruit}
           aria-label={
-            canAfford
+            canRecruit
               ? `Reclutar a ${character.name} por ${costLabel}`
               : `No puedes reclutar: ${blockedReason}`
           }
           className={`min-h-9 w-full cursor-pointer border px-3 py-1.5 font-mono text-[11px] font-bold uppercase tracking-wider transition ${
-            canAfford
+            canRecruit
               ? "blood-button"
               : "cursor-not-allowed border-iron bg-stone-950 text-muted"
           }`}
         >
-          {canAfford
+          {canRecruit
             ? `Reclutar · ${costLabel}`
             : (blockedReason ?? "Reclutar")}
         </button>

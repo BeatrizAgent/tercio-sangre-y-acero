@@ -89,6 +89,14 @@ for (const item of itemDefinitions) {
   if (!publicFileExists(imagePath)) {
     failures.push(`item ${item.id} image path missing on disk: ${imagePath}`);
   }
+  if (item.id.startsWith("weapon_pica_")) {
+    if (!imagePath.includes("/weapons/weapon_pike_")) {
+      failures.push(`pike item ${item.id} must use a weapon pike image, got: ${imagePath}`);
+    }
+    if (imagePath.includes("/missions/combat-sprites/")) {
+      failures.push(`pike item ${item.id} uses combat sprite instead of weapon icon: ${imagePath}`);
+    }
+  }
 }
 
 // Every asset public path must resolve under web/public.

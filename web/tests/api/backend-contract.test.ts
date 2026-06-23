@@ -23,16 +23,34 @@ async function main() {
   }
 
   const catalogRoute = await import("../../src/app/api/catalog/route");
+  const characterNamesRoute = await import("../../src/app/api/character-names/route");
+  const authCreateRoute = await import("../../src/app/api/auth/create/route");
+  const authResumeRoute = await import("../../src/app/api/auth/resume/route");
+  const authLogoutRoute = await import("../../src/app/api/auth/logout/route");
   const healthRoute = await import("../../src/app/api/health/route");
   const stateRoute = await import("../../src/app/api/demo/state/route");
 
   for (const [name, route] of [
     ["catalog", catalogRoute],
+    ["character names", characterNamesRoute],
+    ["auth create", authCreateRoute],
+    ["auth resume", authResumeRoute],
+    ["auth logout", authLogoutRoute],
     ["health", healthRoute],
     ["demo state", stateRoute],
   ] as const) {
-    if (typeof route.GET !== "function") failures.push(`${name} route missing GET`);
-    if (typeof route.OPTIONS !== "function") failures.push(`${name} route missing OPTIONS`);
+    const handlers = route as Record<string, unknown>;
+    if (!name.startsWith("auth") && typeof handlers.GET !== "function") failures.push(`${name} route missing GET`);
+    if (typeof handlers.OPTIONS !== "function") failures.push(`${name} route missing OPTIONS`);
+  }
+
+  for (const [name, route] of [
+    ["auth create", authCreateRoute],
+    ["auth resume", authResumeRoute],
+    ["auth logout", authLogoutRoute],
+  ] as const) {
+    const handlers = route as Record<string, unknown>;
+    if (typeof handlers.POST !== "function") failures.push(`${name} route missing POST`);
   }
 
   if (typeof stateRoute.PUT !== "function") failures.push("demo state route missing PUT");

@@ -3,11 +3,12 @@
 import React, { Suspense, useEffect, useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
+import { usePathname } from "next/navigation";
 import { SidebarNav } from "./sidebar-nav";
 import { QuickAction, ResourceChip } from "@/components/ui/resource-chip";
 import { UiAssetIcon } from "@/components/ui/ui-asset-icon";
 import { useGameStore } from "@/lib/game-store";
-import { getRankName, featuredAssetPaths, missionDefinitions, rankDefinitions } from "@/lib/game-data";
+import { getRankName, getAssetPathById, featuredAssetPaths, missionDefinitions, rankDefinitions } from "@/lib/game-data";
 import { playPageSound } from "@/lib/sounds";
 import { GladiatusBar } from "@/components/ui/gladiatus-bar";
 
@@ -21,6 +22,7 @@ const dispatchLinks = [
 ] as const;
 
 export function GameShell({ children }: { children: React.ReactNode }) {
+  const pathname = usePathname();
   const [mounted, setMounted] = useState(false);
 
   const { soldier, reports, arenaResults } = useGameStore();
@@ -29,6 +31,10 @@ export function GameShell({ children }: { children: React.ReactNode }) {
     const timer = window.setTimeout(() => setMounted(true), 0);
     return () => window.clearTimeout(timer);
   }, []);
+
+  if (pathname === "/login") {
+    return <>{children}</>;
+  }
 
   const ACTION_MAX = 15;
   const warVictories = reports.filter((report) => {
@@ -57,6 +63,9 @@ export function GameShell({ children }: { children: React.ReactNode }) {
   
   const hpValue = Math.max(0, 100 - soldier.fatigue);
   const hpMax = 100;
+
+  const playerPortraitSrc =
+    getAssetPathById(soldier.portraitAssetId) ?? featuredAssetPaths.diegoDeArcePortrait;
 
   return (
     <div className="min-h-screen bg-stone-950 text-text font-sans selection:bg-gold/30 selection:text-gold-soft overflow-x-hidden overflow-y-auto py-4 px-2 md:py-8">
@@ -87,7 +96,7 @@ export function GameShell({ children }: { children: React.ReactNode }) {
                 {/* Medallion */}
                 <div className="relative h-12 w-12 shrink-0 rounded-full border-2 border-gold bg-black shadow-[0_0_6px_rgba(201,162,79,0.3)] overflow-hidden">
                   <Image
-                    src={featuredAssetPaths.diegoDeArcePortrait}
+                    src={playerPortraitSrc}
                     alt={soldier.name}
                     width={100}
                     height={100}
@@ -99,8 +108,8 @@ export function GameShell({ children }: { children: React.ReactNode }) {
                 {/* Name & Bars */}
                 <div className="flex-1 min-w-0 flex flex-col gap-1 justify-center">
                   <div className="flex items-baseline justify-between gap-2">
-                    <span className="font-cinzel text-xs font-bold text-text truncate">{soldier.name}</span>
-                    <span className="font-mono text-[9px] uppercase tracking-wider text-gold-soft truncate">{getRankName(soldier.rank)}</span>
+                    <span className="font-cinzel text-sm font-bold text-text truncate">{soldier.name}</span>
+                    <span className="font-mono text-[10px] font-bold uppercase tracking-wider text-gold-soft truncate">{getRankName(soldier.rank)}</span>
                   </div>
                   <div className="flex flex-col gap-1 w-full">
                     <GladiatusBar
@@ -124,7 +133,7 @@ export function GameShell({ children }: { children: React.ReactNode }) {
               </div>
 
               {/* Resources */}
-              <div className="gladiatus-resource-rail flex items-center justify-between gap-1.5 p-2 shrink-0 w-full md:w-[320px]">
+              <div className="gladiatus-resource-rail flex items-stretch justify-between gap-1.5 p-2 shrink-0 w-full md:w-[420px]">
                 <ResourceChip
                   icon="honor"
                   label="Honor"
@@ -245,13 +254,13 @@ export function GameShell({ children }: { children: React.ReactNode }) {
             {(soldier.unpaidWages > 0 || soldier.banMissionsLeft > 0) && (
               <div className="flex flex-row items-center gap-2">
                 {soldier.unpaidWages > 0 && (
-                  <div className="flex-1 py-1 px-2 text-[10px] font-mono bg-orange-950/20 text-orange-400 border border-orange-800/30 rounded-xs text-center animate-pulse">
-                    ALERTA: {soldier.unpaidWages} doblones atrasados.
+                  <div className="flex-1 border border-ember/40 bg-ember/10 px-2 py-1 text-center font-mono text-[10px] font-bold uppercase tracking-wider text-ember animate-pulse">
+                    Alerta · {soldier.unpaidWages} doblones atrasados
                   </div>
                 )}
                 {soldier.banMissionsLeft > 0 && (
-                  <div className="flex-1 py-1 px-2 text-[10px] font-mono bg-red-950/20 text-red-400 border border-red-900/30 rounded-xs text-center animate-pulse">
-                    DESTIERRO: {soldier.banMissionsLeft} turnos.
+                  <div className="flex-1 border border-danger/45 bg-danger/10 px-2 py-1 text-center font-mono text-[10px] font-bold uppercase tracking-wider text-blood-bright animate-pulse">
+                    Destierro · {soldier.banMissionsLeft} turnos
                   </div>
                 )}
               </div>

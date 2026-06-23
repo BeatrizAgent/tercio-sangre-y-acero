@@ -274,7 +274,7 @@ export default function SoldierPage() {
       <div className="space-y-3">
         {/* Notification */}
         {notification && (
-          <div className="px-3 py-1.5 bg-success/15 border border-success/40 text-success text-[11px] font-mono rounded-xs">
+          <div className="notice notice--ok" role="status">
             {notification}
           </div>
         )}
@@ -283,7 +283,7 @@ export default function SoldierPage() {
         <div className="gladiatus-tab-bar">
           {([
             { key: "vision_general" as const, label: "Perfil" },
-            { key: "estadisticas" as const, label: "Estadísticas" },
+            { key: "estadisticas" as const, label: "Estadisticas" },
             { key: "logros" as const, label: "Logros" },
             { key: "familia" as const, label: "Familia" },
           ]).map((t) => (
@@ -305,27 +305,25 @@ export default function SoldierPage() {
             {/* COLUMN 1 (Izquierda): Stats (3 cols) */}
             <div className="lg:col-span-3 space-y-3">
               {/* Stats list */}
-              <div className="bg-panel border border-iron rounded-xs p-2.5 shadow-md space-y-2 text-[11px] font-mono">
-                <div className="text-center font-cinzel text-xs font-bold text-gold border-b border-iron/40 pb-1 mb-2 uppercase tracking-wide">
-                  Atributos
+              <div className="bg-panel border border-iron rounded-xs p-2.5 shadow-md space-y-1.5 text-[11px] font-mono">
+                <div className="panel-header">
+                  <span className="panel-header__title">Atributos</span>
+                  <span className="panel-header__meta">Nv {activeLevel}</span>
                 </div>
-                <StatLine label="Nivel" value={activeLevel} />
                 <StatBar
                   label="Salud"
-                  value={`${lifeRatio}%`}
+                  value={`${Math.round(lifeRatio)}%`}
                   ratio={lifeRatio}
                   barClass="bg-red-600"
                 />
                 <StatBar
                   label="Experiencia"
-                  value={`${xpProgress.toFixed(2)}%`}
+                  value={`${Math.round(xpProgress)}%`}
                   ratio={xpProgress}
                   barClass="bg-amber-500"
                 />
 
-                <div className="text-[10px] font-sans font-bold text-gold/75 mt-3 mb-1 uppercase tracking-wider border-b border-iron/20 pb-0.5">
-                  Combate
-                </div>
+                <div className="panel-subhead">Combate</div>
                 {["pike", "sword", "arquebus"].map((statKey) => {
                   const stat = statKey as StatId;
                   const base = activeStats[stat];
@@ -340,9 +338,7 @@ export default function SoldierPage() {
                   );
                 })}
 
-                <div className="text-[10px] font-sans font-bold text-gold/75 mt-3 mb-1 uppercase tracking-wider border-b border-iron/20 pb-0.5">
-                  Físico y Mente
-                </div>
+                <div className="panel-subhead">Fisico y mente</div>
                 {["discipline", "vigor", "cunning", "command"].map((statKey) => {
                   const stat = statKey as StatId;
                   const base = activeStats[stat];
@@ -357,9 +353,7 @@ export default function SoldierPage() {
                   );
                 })}
 
-                <div className="text-[10px] font-sans font-bold text-gold/75 mt-3 mb-1 uppercase tracking-wider border-b border-iron/20 pb-0.5">
-                  Combate General
-                </div>
+                <div className="panel-subhead">Combate general</div>
                 <div className="space-y-0.5">
                   <StatLine label="Armadura" value={armor} />
                   <StatLine label="Daño" value={damageStr} />
@@ -467,35 +461,37 @@ export default function SoldierPage() {
               {/* Item details */}
               {selectedItemDef && (
                 <div className="bg-panel border border-iron rounded-xs p-3 shadow-md space-y-2">
-                  <div className="flex items-center gap-3 pb-2 border-b border-iron">
-                    <div className="w-12 h-12 border border-iron bg-stone-950 p-1 flex items-center justify-center rounded-xs shrink-0">
-                      <img
-                        src={getItemImagePath(selectedItemDef.id)}
-                        alt=""
-                        className="w-full h-full object-contain"
-                      />
-                    </div>
-                    <div className="min-w-0 flex-1">
-                      <div className="flex items-center gap-2 flex-wrap">
-                        <h3 className="font-cinzel text-sm font-bold text-gold truncate">
-                          {selectedItemDef.name}
-                        </h3>
-                        {selectedItemDef.rarity && selectedItemDef.rarity !== "common" && (
-                          <span className={`text-[8px] font-mono font-bold uppercase tracking-wider border px-1 rounded-xs ${rarityStyle(selectedItemDef.rarity).ring} ${rarityStyle(selectedItemDef.rarity).color} ${rarityStyle(selectedItemDef.rarity).bg}`}>
-                            {rarityStyle(selectedItemDef.rarity).label}
-                          </span>
-                        )}
-                        <span className="text-[10px] font-mono text-text-muted">
-                          x{selectedInvQuantity}
-                        </span>
+                  <div className="panel-header">
+                    <div className="flex items-center gap-2.5 min-w-0">
+                      <div className="w-10 h-10 border border-iron bg-stone-950 p-1 flex items-center justify-center rounded-xs shrink-0">
+                        <img
+                          src={getItemImagePath(selectedItemDef.id)}
+                          alt=""
+                          className="w-full h-full object-contain"
+                        />
                       </div>
-                      <p className="text-[10px] text-muted italic mt-0.5">
-                        {selectedItemDef.description}
-                      </p>
+                      <div className="min-w-0 flex-1">
+                        <div className="flex items-center gap-2 flex-wrap">
+                          <h3 className="font-cinzel text-sm font-bold text-gold truncate">
+                            {selectedItemDef.name}
+                          </h3>
+                          {selectedItemDef.rarity && selectedItemDef.rarity !== "common" && (
+                            <span className={`text-[8px] font-mono font-bold uppercase tracking-wider border px-1 rounded-xs ${rarityStyle(selectedItemDef.rarity).ring} ${rarityStyle(selectedItemDef.rarity).color} ${rarityStyle(selectedItemDef.rarity).bg}`}>
+                              {rarityStyle(selectedItemDef.rarity).label}
+                            </span>
+                          )}
+                          <span className="text-[10px] font-mono text-text-muted">
+                            x{selectedInvQuantity}
+                          </span>
+                        </div>
+                        <p className="text-[10px] text-muted italic mt-0.5 line-clamp-2">
+                          {selectedItemDef.description}
+                        </p>
+                      </div>
                     </div>
                     <div className="flex gap-1.5 shrink-0">
                       {!isPlayerProfile ? (
-                        <span className="px-3 py-1 border border-iron text-[10px] font-mono font-bold uppercase tracking-wider text-text-muted rounded-xs">
+                        <span className="iron-button px-3 py-1 text-[10px]">
                           {isSelectedEquipped ? "Asignado" : "Mochila comun"}
                         </span>
                       ) : selectedItemDef.slot !== "consumable" ? (
@@ -507,14 +503,14 @@ export default function SoldierPage() {
                               );
                               if (slot) handleUnequip(slot as EquipmentSlot);
                             }}
-                            className="px-3 py-1 bg-stone-850 hover:bg-stone-800 border border-iron text-[10px] font-mono font-bold uppercase tracking-wider text-text rounded-xs transition-all"
+                            className="iron-button px-3 py-1 text-[10px]"
                           >
                             Desequipar
                           </button>
                         ) : (
                           <button
                             onClick={() => handleEquip(selectedItemDef.id)}
-                            className="px-3 py-1 bg-blood hover:bg-blood-bright border border-blood-bright text-[10px] font-mono font-bold uppercase tracking-wider text-text hover:text-white rounded-xs transition-all"
+                            className="blood-button px-3 py-1 text-[10px]"
                           >
                             Equipar
                           </button>
@@ -522,7 +518,7 @@ export default function SoldierPage() {
                       ) : (
                         <button
                           onClick={() => handleSell(selectedItemDef.id)}
-                          className="px-3 py-1 bg-stone-850 hover:bg-stone-800 border border-iron text-[10px] font-mono font-bold uppercase tracking-wider text-gold rounded-xs transition-all"
+                          className="iron-button px-3 py-1 text-[10px]"
                         >
                           Vender ({selectedItemDef.value} dob)
                         </button>
@@ -554,10 +550,11 @@ export default function SoldierPage() {
         {/* TAB: ESTADISTICAS */}
         {activeTab === "estadisticas" && (
           <div className="bg-panel border border-iron rounded-xs p-4 shadow-md">
-            <div className="text-[10px] font-sans font-bold uppercase tracking-[0.16em] text-gold-soft/80 mb-3 border-b border-iron/40 pb-1">
-              Estadisticas detalladas
+            <div className="panel-header">
+              <span className="panel-header__title">Estadisticas detalladas</span>
+              <span className="panel-header__meta">Base + bonus</span>
             </div>
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-3 text-[11px] font-mono">
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-2 text-[11px] font-mono">
               {STAT_ORDER.map((stat) => {
                 const base = activeStats[stat];
                 const bonus = equipmentBonuses[stat] ?? 0;
@@ -572,7 +569,7 @@ export default function SoldierPage() {
                         {bonus > 0 && <span className="text-success text-[9px] ml-1">+{bonus}</span>}
                       </span>
                     </div>
-                    <div className="h-1.5 rounded-full bg-stone-900 border border-stone-850 overflow-hidden">
+                    <div className="h-1.5 overflow-hidden rounded-full bg-stone-900 border border-iron">
                       <div
                         className="h-full bg-gold"
                         style={{ width: `${Math.min(100, ((base + bonus) / 15) * 100)}%` }}
@@ -621,13 +618,13 @@ export default function SoldierPage() {
 
 function StatLine({ label, value, bonus }: { label: string; value: string | number; bonus?: number }) {
   return (
-    <div className="flex items-baseline w-full text-[11px] py-0.5">
-      <span className="text-text-muted uppercase tracking-wider text-[10px] shrink-0">{label}</span>
-      <div className="flex-1 border-b border-dotted border-iron/40 mx-1 min-w-[8px] relative top-[-3px]" />
-      <span className="text-gold font-bold shrink-0 font-mono">
+    <div className="stat-line">
+      <span className="stat-line__label">{label}</span>
+      <span className="stat-line__dots" aria-hidden="true" />
+      <span className="stat-line__value">
         {value}
         {bonus !== undefined && bonus > 0 && (
-          <span className="text-success text-[9px] ml-0.5 font-sans">+{bonus}</span>
+          <span className="stat-line__bonus">+{bonus}</span>
         )}
       </span>
     </div>

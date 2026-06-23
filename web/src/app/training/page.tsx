@@ -105,10 +105,8 @@ export default function TrainingPage() {
                     else playDefeatSound();
                   }}
                   disabled={soldier.coins < 50}
-                  className={`cursor-pointer border px-6 py-2.5 font-mono text-xs font-bold uppercase tracking-wider transition-all ${
-                    soldier.coins >= 50
-                      ? "border-gold bg-gold/15 text-gold hover:bg-gold/25"
-                      : "cursor-not-allowed border-iron bg-stone-900 text-muted"
+                  className={`blood-button w-full px-6 py-2.5 text-xs ${
+                    soldier.coins < 50 ? "cursor-not-allowed opacity-60" : ""
                   }`}
                 >
                   Sobornar al alguacil (50 doblones)
@@ -132,15 +130,12 @@ export default function TrainingPage() {
 
   return (
     <PageTransition>
-      <div className="space-y-5">
-        <header className="flex flex-wrap items-end justify-between gap-3 border-b border-iron pb-3">
+      <div className="space-y-4">
+        <header className="page-header">
           <div>
-            <p className="font-mono text-[10px] uppercase tracking-[0.22em] text-blood-bright">
-              Maestro de armas del Tercio
-            </p>
-            <h1 className="font-cinzel text-2xl font-extrabold uppercase tracking-wider text-gold md:text-3xl">
-              Entrenamiento
-            </h1>
+            <p className="page-header__eyebrow">Maestro de armas del Tercio</p>
+            <h1 className="page-header__title">Entrenamiento</h1>
+            <p className="page-header__subtitle">Pagas y fatiga. Sin paga no hay progreso.</p>
           </div>
           <div className="flex flex-wrap gap-2">
             <Badge variant="gold">{soldier.coins} doblones</Badge>
@@ -150,63 +145,58 @@ export default function TrainingPage() {
 
         {message && (
           <div
-            className={`border p-3 font-mono text-xs transition-all ${
-              message.isError
-                ? "border-danger bg-danger/20 text-danger animate-bounce"
-                : "border-success bg-success/20 text-success"
-            }`}
+            role="status"
+            className={`notice ${message.isError ? "notice--err" : "notice--ok"}`}
           >
             {message.text}
           </div>
         )}
 
-        <section className="grid gap-5">
-          <div className="game-panel rounded-xs border border-iron bg-stone-950/70 p-3">
-            <div className="mb-2 flex items-center justify-between border-b border-iron/50 pb-2">
-              <span className="font-mono text-[10px] font-bold uppercase tracking-[0.18em] text-gold-soft">
-                Recluta activo
-              </span>
-              <span className="font-mono text-[10px] uppercase text-text-muted">{activeCharacter.role}</span>
-            </div>
-            <div className="grid gap-2 md:grid-cols-5">
-              {characters.map((character) => {
-                const portrait = getAssetPathById(character.portraitAssetId);
-                const isActive = character.id === activeCharacter.id;
-                const level = getCharacterLevel(character.stats);
-                return (
-                  <button
-                    key={character.id}
-                    onClick={() => setActiveCharacter(character.id)}
-                    className={`flex min-h-20 items-center gap-2 rounded-xs border-2 p-2 text-left transition-all relative overflow-hidden ${
-                      isActive
-                        ? "border-gold bg-gradient-to-b from-panel-raised to-panel shadow-[0_0_10px_rgba(201,162,79,0.25)] text-gold-soft"
-                        : "border-iron/80 bg-gradient-to-b from-stone-900/80 to-stone-950/90 text-text-muted hover:border-gold/45 hover:text-gold-soft"
-                    }`}
-                  >
-                    {isActive && (
-                      <div className="absolute top-0 right-0 w-2 h-2 bg-gold rotate-45 translate-x-1 -translate-y-1" />
-                    )}
-                    <span className="h-14 w-12 shrink-0 overflow-hidden rounded-xs border border-iron/60 bg-black/35">
-                      {portrait && <img src={portrait} alt="" className="h-full w-full object-cover object-top" />}
-                    </span>
-                    <span className="min-w-0">
-                      <span className="block truncate font-cinzel text-xs font-bold uppercase tracking-wide">
-                        {character.name}
-                      </span>
-                      <span className="block font-mono text-[9px] uppercase text-text-muted mt-0.5">
-                        Nv {level}
-                      </span>
-                      <span className="block font-mono text-[9px] uppercase text-ember mt-0.5">
-                        {character.fatigue}/100 fatiga
-                      </span>
-                    </span>
-                  </button>
-                );
-              })}
-            </div>
+        <section className="game-panel rounded-xs border border-iron bg-stone-950/70 p-3">
+          <div className="panel-header">
+            <span className="panel-header__title">Recluta activo</span>
+            <span className="panel-header__meta">{activeCharacter.role}</span>
           </div>
+          <div className="grid gap-2 md:grid-cols-5">
+            {characters.map((character) => {
+              const portrait = getAssetPathById(character.portraitAssetId);
+              const isActive = character.id === activeCharacter.id;
+              const level = getCharacterLevel(character.stats);
+              return (
+                <button
+                  key={character.id}
+                  onClick={() => setActiveCharacter(character.id)}
+                  className={`flex min-h-20 items-center gap-2 rounded-xs border-2 p-2 text-left transition-all relative overflow-hidden ${
+                    isActive
+                      ? "border-gold bg-gradient-to-b from-panel-raised to-panel shadow-[0_0_10px_rgba(201,162,79,0.25)] text-gold-soft"
+                      : "border-iron/80 bg-gradient-to-b from-stone-900/80 to-stone-950/90 text-text-muted hover:border-gold/45 hover:text-gold-soft"
+                  }`}
+                >
+                  {isActive && (
+                    <div className="absolute top-0 right-0 w-2 h-2 bg-gold rotate-45 translate-x-1 -translate-y-1" />
+                  )}
+                  <span className="h-14 w-12 shrink-0 overflow-hidden rounded-xs border border-iron/60 bg-black/35">
+                    {portrait && <img src={portrait} alt="" className="h-full w-full object-cover object-top" />}
+                  </span>
+                  <span className="min-w-0">
+                    <span className="block truncate font-cinzel text-xs font-bold uppercase tracking-wide">
+                      {character.name}
+                    </span>
+                    <span className="block font-mono text-[9px] uppercase text-text-muted mt-0.5">
+                      Nv {level}
+                    </span>
+                    <span className="block font-mono text-[9px] uppercase text-ember mt-0.5">
+                      {character.fatigue}/100 fatiga
+                    </span>
+                  </span>
+                </button>
+              );
+            })}
+          </div>
+        </section>
 
-          <div className="game-panel overflow-hidden rounded-xs border border-iron bg-linear-to-b from-stone-900/85 to-stone-950/90 shadow-inner">
+        <div className="grid gap-4 lg:grid-cols-[1fr_280px]">
+          <div className="game-panel overflow-hidden rounded-xs border border-iron bg-gradient-to-b from-stone-900/85 to-stone-950/90 shadow-inner">
             <div className="relative min-h-40 border-b border-iron bg-stone-950">
               <Image
                 src={featuredAssetPaths.training}
@@ -216,7 +206,7 @@ export default function TrainingPage() {
                 sizes="100vw"
                 className="object-cover opacity-45 saturate-75"
               />
-              <div className="absolute inset-0 bg-linear-to-r from-stone-950 via-stone-950/72 to-stone-950/20" />
+              <div className="absolute inset-0 bg-gradient-to-r from-stone-950 via-stone-950/72 to-stone-950/20" />
               <div className="relative flex min-h-40 flex-col justify-end gap-2 p-5">
                 <div className="flex items-center gap-3">
                   <UiAssetIcon id="training" label="Entrenamiento" className="h-14 w-14 rounded-xs border border-gold/25 bg-black/50 p-1" />
@@ -245,7 +235,6 @@ export default function TrainingPage() {
                 const costXp = option.cost.xp;
                 const canAfford = soldier.coins >= costCoins && soldier.xp >= costXp;
                 const disabled = !canAfford || isFatigued;
-                const progress = Math.min(100, (currentVal / 25) * 100);
 
                 return (
                   <article
@@ -308,7 +297,7 @@ export default function TrainingPage() {
                         {costXp > 0 && (
                           <div className="flex items-center gap-1 ml-1.5">
                             <UiAssetIcon id="xp" label="XP" className="h-3.5 w-3.5" />
-                            <span className={soldier.xp >= costXp ? "text-sky-400 font-bold" : "text-danger"}>
+                            <span className={soldier.xp >= costXp ? "text-success font-bold" : "text-danger"}>
                               {costXp} XP
                             </span>
                           </div>
@@ -326,7 +315,7 @@ export default function TrainingPage() {
                     <button
                       onClick={() => handleTrain(option.stat)}
                       disabled={disabled}
-                      className="blood-button min-h-10 w-full text-xs font-bold uppercase tracking-wider font-mono"
+                      className="blood-button min-h-10 w-full text-xs font-bold uppercase tracking-wider"
                     >
                       {isFatigued ? "Agotado" : !canAfford ? "Sin paga" : "Entrenar"}
                     </button>
@@ -336,9 +325,9 @@ export default function TrainingPage() {
             </div>
           </div>
 
-          <aside className="space-y-5">
+          <aside className="space-y-4">
             <Card title="Estado del recluta" iconId="fatigue">
-              <div className="space-y-4">
+              <div className="space-y-3">
                 <div className="grid grid-cols-2 gap-2">
                   <StatusTile icon={<Coins className="h-5 w-5" />} label="Bolsa" value={soldier.coins} tone="text-gold" />
                   <StatusTile icon={<TrendingUp className="h-5 w-5" />} label="Nivel" value={activeLevel} tone="text-gold-soft" />
@@ -358,11 +347,10 @@ export default function TrainingPage() {
                     />
                   </div>
                 </div>
-
               </div>
             </Card>
           </aside>
-        </section>
+        </div>
       </div>
     </PageTransition>
   );

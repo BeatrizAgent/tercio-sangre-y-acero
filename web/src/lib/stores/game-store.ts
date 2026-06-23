@@ -3,7 +3,7 @@
 import { create } from "zustand";
 import { persist } from "zustand/middleware";
 import type { GameState } from "../types";
-import { createCharacterStates } from "../data/characters";
+import { normalizeActiveCharacterId, normalizePlayableRoster, PLAYER_CHARACTER_ID } from "../domain/player-character";
 import {
   addInventoryItem,
   BACKPACK_CHESTS,
@@ -35,26 +35,12 @@ import type { ActionResult } from "../domain/result";
 import type { EquipmentSlot, InventoryItem, StatId } from "../types";
 import type { CharacterState, Soldier } from "../types";
 
-const PLAYER_CHARACTER_ID = "diego_de_arce";
-
 function rosterWithSoldier(state: GameState): GameState {
-  const baseRoster = state.characters?.length ? state.characters : createCharacterStates();
-  const characters = baseRoster.map((character) =>
-    character.id === PLAYER_CHARACTER_ID
-      ? {
-          ...character,
-          name: state.soldier.name,
-          rank: state.soldier.rank,
-          fatigue: state.soldier.fatigue,
-          stats: { ...state.soldier.stats },
-          equipment: { ...state.soldier.equipment },
-        }
-      : character,
-  );
+  const characters = normalizePlayableRoster(state);
   return {
     ...state,
     characters,
-    activeCharacterId: state.activeCharacterId ?? PLAYER_CHARACTER_ID,
+    activeCharacterId: normalizeActiveCharacterId(state, characters),
   };
 }
 
@@ -72,11 +58,14 @@ export function normalizeGameState(state: GameState): GameState {
   return rosterWithSoldier({ ...state, soldier });
 }
 
-export function createInitialState(): GameState {
+export function createInitialState(
+  soldierName = "Diego de Arce",
+  portraitAssetId?: string,
+): GameState {
   const state: GameState = {
     soldier: {
       id: "diego_de_arce",
-      name: "Diego de Arce",
+      name: soldierName,
       rank: "bisono",
       coins: 25,
       honor: 0,
@@ -86,6 +75,7 @@ export function createInitialState(): GameState {
       reputation: 0,
       corruption: 0,
       banMissionsLeft: 0,
+      portraitAssetId,
       stats: { pike: 2, sword: 1, arquebus: 1, discipline: 2, vigor: 2, cunning: 1, command: 0 },
       inventory: inventoryWithAutoLayout([
         { itemId: "weapon_pica_gastada_001", quantity: 1 },
@@ -105,7 +95,7 @@ export function createInitialState(): GameState {
       },
       wounds: [],
     },
-    characters: createCharacterStates(),
+    characters: [],
     activeCharacterId: PLAYER_CHARACTER_ID,
     reports: [],
     arenaResults: [],

@@ -8,12 +8,19 @@ datasource db {
 }
 
 model User {
-  id        String    @id @default(cuid())
-  email     String    @unique
-  name      String
-  createdAt DateTime  @default(now())
-  soldier   Soldier?
-  gameSave  GameSave?
+  id              String    @id @default(cuid())
+  email           String?   @unique
+  name            String
+  tokenHash       String    @unique
+  tokenIssuedAt   DateTime  @default(now())
+  lastLoginAt     DateTime?
+  createdAt       DateTime  @default(now())
+  /// Selected player portrait (id from data/player-portraits.json).
+  /// Null for legacy users: the client falls back to the hardcoded
+  /// "diego de arce" portrait.
+  portraitAssetId String?
+  soldier         Soldier?
+  gameSave        GameSave?
 }
 
 model Soldier {
@@ -29,6 +36,9 @@ model Soldier {
   reputation      Int
   corruption      Int             @default(0)
   banMissionsLeft Int             @default(0)
+  /// Mirrors User.portraitAssetId for fast reads; updated by
+  /// persistGameStateForUser in web/src/lib/actions/_demo.ts.
+  portraitAssetId String?
   saveState       Json?
   user            User            @relation(fields: [userId], references: [id])
   stats           SoldierStats?
@@ -46,6 +56,19 @@ model GameSave {
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
   user      User     @relation(fields: [userId], references: [id])
+}
+
+model CharacterName {
+  id         String   @id @default(cuid())
+  kind       String
+  value      String
+  normalized String
+  sortOrder  Int
+  createdAt  DateTime @default(now())
+  updatedAt  DateTime @updatedAt
+
+  @@unique([kind, normalized])
+  @@index([kind, sortOrder])
 }
 
 model SoldierStats {

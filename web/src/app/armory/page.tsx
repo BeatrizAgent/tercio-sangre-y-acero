@@ -125,20 +125,20 @@ export default function ArmoryPage() {
     return (
       <PageTransition>
         <div className="mx-auto max-w-xl py-12 text-center">
-          <div className="parchment-card border-danger/60 shadow-2xl p-6 text-stone-900 space-y-6">
-            <div className="mx-auto flex h-20 w-20 items-center justify-center rounded-full border border-danger/30 bg-danger/10 animate-pulse">
+          <div className="parchment-card border-danger/60 shadow-2xl p-6 text-stone-900 space-y-5">
+            <div className="mx-auto flex h-20 w-20 items-center justify-center rounded-full border border-danger/40 bg-danger/10 animate-pulse">
               <UiAssetIcon id="confirm" label="Acceso prohibido" className="h-12 w-12" />
             </div>
             <div className="space-y-2">
-              <h3 className="font-cinzel text-xl font-bold uppercase text-red-800">Expulsado del pueblo</h3>
+              <h3 className="font-cinzel text-xl font-bold uppercase text-red-900">Expulsado del pueblo</h3>
               <p className="font-serif text-sm italic text-stone-700">
                 Los mercaderes locales han cerrado sus puestos para ti por orden del alguacil.
               </p>
             </div>
-            <div className="border border-red-900/30 bg-stone-900/10 p-3 font-mono text-xs text-red-900">
+            <div className="border border-red-900/40 bg-stone-100/60 p-3 font-mono text-xs text-red-900">
               Quedan <strong className="text-red-700">{soldier.banMissionsLeft}</strong> misiones de destierro.
             </div>
-            <div className="space-y-3 border-t border-red-900/20 pt-4">
+            <div className="space-y-3 border-t border-red-900/30 pt-4">
               <button
                 onClick={() => {
                   const result = payTownBribe();
@@ -147,10 +147,8 @@ export default function ArmoryPage() {
                   else playDefeatSound();
                 }}
                 disabled={soldier.coins < 50}
-                className={`cursor-pointer border px-6 py-2.5 font-mono text-xs font-bold uppercase tracking-wider transition-all w-full md:w-auto ${
-                  soldier.coins >= 50
-                    ? "border-red-800 bg-red-800/15 text-red-900 hover:bg-red-800/25"
-                    : "cursor-not-allowed border-stone-400 bg-stone-200/50 text-stone-500"
+                className={`blood-button w-full px-6 py-2.5 text-xs md:w-auto ${
+                  soldier.coins < 50 ? "cursor-not-allowed opacity-60" : ""
                 }`}
               >
                 Sobornar al alguacil (50 doblones)
@@ -165,18 +163,23 @@ export default function ArmoryPage() {
   return (
     <PageTransition>
       <div className="space-y-4">
-        <header className="flex flex-wrap items-center justify-between gap-3 border-b border-iron pb-3">
+        <header className="page-header">
           <div className="flex items-center gap-3">
-            <UiAssetIcon id="armory" label="Armeria" className="h-9 w-9" />
+            <UiAssetIcon id="armory" label="Armeria" className="h-10 w-10" />
             <div>
-              <h1 className="font-cinzel text-2xl font-extrabold uppercase tracking-wider text-gold md:text-3xl">Armeria</h1>
+              <p className="page-header__eyebrow">Mercader de frontera</p>
+              <h1 className="page-header__title">Armeria</h1>
+              <p className="page-header__subtitle">Acero, plomo, vendas. Arrastra para equipar o vender.</p>
             </div>
           </div>
           <Badge variant="gold">{soldier.coins} doblones</Badge>
         </header>
 
         {notice && (
-          <div className={`border px-3 py-2 font-mono text-xs ${notice.isError ? "border-danger/40 bg-danger/10 text-danger" : "border-success/40 bg-success/10 text-success"}`}>
+          <div
+            role="status"
+            className={`notice ${notice.isError ? "notice--err" : "notice--ok"}`}
+          >
             {notice.text}
           </div>
         )}

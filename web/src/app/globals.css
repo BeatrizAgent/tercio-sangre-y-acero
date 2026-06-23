@@ -232,7 +232,7 @@ body::after {
 
 .game-panel {
   background-color: var(--panel);
-  background-image: 
+  background-image:
     url("/assets/gpt-bank/ui/icons/textura_madera_oscura.png"),
     linear-gradient(180deg, rgba(255, 255, 255, 0.035), rgba(255, 255, 255, 0) 34%),
     linear-gradient(90deg, rgba(255, 255, 255, 0.018) 1px, transparent 1px),
@@ -242,9 +242,26 @@ body::after {
   border: 1px solid rgba(141, 129, 112, 0.22);
   box-shadow: 0 10px 26px rgba(0, 0, 0, 0.42);
   position: relative;
-  border-radius: 4px;
+  border-radius: 2px;
   font-size: 16px;
   line-height: 1.5;
+}
+
+/* Panel-level focus ring (visible to keyboard, hidden to mouse) */
+.game-panel:focus-within,
+.game-panel:focus-visible {
+  outline: none;
+}
+
+.game-panel [tabindex]:focus-visible,
+.game-panel button:focus-visible,
+.game-panel a:focus-visible,
+.game-panel input:focus-visible,
+.game-panel select:focus-visible,
+.game-panel textarea:focus-visible {
+  outline: 2px solid rgba(235, 193, 106, 0.7);
+  outline-offset: 1px;
+  box-shadow: 0 0 0 1px rgba(7, 6, 4, 0.7), 0 0 0 3px rgba(201, 162, 79, 0.25);
 }
 
 .game-panel [class~="text-[8px]"],
@@ -381,11 +398,18 @@ body::after {
   background: linear-gradient(180deg, #5c5449 0%, #3a342c 100%);
   border-color: var(--gold);
   color: var(--gold-soft);
-  box-shadow: 
+  box-shadow:
     0 0 6px rgba(201, 162, 79, 0.2),
     0 2px 4px rgba(0, 0, 0, 0.3);
   cursor: pointer;
   transform: translateY(-1px);
+}
+
+.iron-button:focus-visible,
+.blood-button:focus-visible,
+.muted-button:focus-visible {
+  outline: 2px solid rgba(235, 193, 106, 0.85);
+  outline-offset: 1px;
 }
 
 .iron-button:active:not(:disabled) {
@@ -428,7 +452,7 @@ body::after {
 .blood-button:hover:not(:disabled) {
   background: linear-gradient(180deg, #b32525 0%, #701515 100%);
   border-color: var(--gold-soft);
-  box-shadow: 
+  box-shadow:
     0 0 8px rgba(184, 50, 50, 0.25),
     0 2px 4px rgba(0, 0, 0, 0.3);
   cursor: pointer;
@@ -671,6 +695,10 @@ body::after {
 }
 
 .gladiatus-titleplate:has(.tercio-brand-logo) {
+  justify-content: center !important;
+  background: transparent !important;
+  border-color: transparent !important;
+  box-shadow: none !important;
   overflow: hidden !important;
   padding: 0 4px !important;
 }
@@ -702,7 +730,7 @@ body::after {
 
 .gladiatus-resource-rail {
   display: grid;
-  grid-template-columns: repeat(3, minmax(0, 1fr));
+  grid-template-columns: repeat(4, minmax(0, 1fr));
   gap: 6px;
   padding: 8px;
 }
@@ -720,7 +748,7 @@ body::after {
   box-shadow:
     inset 0 1px 0 rgba(255, 255, 255, 0.045),
     inset 0 -8px 12px rgba(0, 0, 0, 0.32);
-  padding: 7px 8px;
+  padding: 6px 8px;
   border-radius: 2px;
 }
 
@@ -927,6 +955,268 @@ body::after {
   background-size: contain;
   background-position: left center;
   opacity: 0.62;
+}
+
+/* ============================================================
+   PANEL HEADER ROW
+   Small header inside a .game-panel: gold title, hairline rule,
+   optional right-side actions. No new card on top of a card.
+   ============================================================ */
+.panel-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+  padding-bottom: 6px;
+  margin-bottom: 10px;
+  border-bottom: 1px solid rgba(201, 162, 79, 0.16);
+}
+
+.panel-header__title {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  font-family: var(--font-cinzel), serif;
+  font-size: 13px;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--gold-soft);
+  line-height: 1.1;
+}
+
+.panel-header__title--lg {
+  font-size: 16px;
+  letter-spacing: 0.08em;
+}
+
+.panel-header__meta {
+  font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", monospace;
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--text-muted);
+}
+
+/* Hairline rule (replaces ad-hoc `h-[2px] bg-gradient-to-b` dividers) */
+.panel-divider {
+  height: 1px;
+  background: linear-gradient(90deg, transparent, rgba(201, 162, 79, 0.35), transparent);
+}
+
+.panel-divider--solid {
+  height: 1px;
+  background: rgba(141, 129, 112, 0.32);
+}
+
+/* Dense stat row used by /soldier (mimics Gladiatus table lines) */
+.stat-line {
+  display: flex;
+  align-items: baseline;
+  gap: 6px;
+  min-width: 0;
+  font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", monospace;
+  font-size: 11px;
+  line-height: 1.35;
+  padding: 1px 0;
+}
+
+.stat-line__label {
+  color: var(--text-muted);
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  font-size: 10px;
+  flex-shrink: 0;
+}
+
+.stat-line__dots {
+  flex: 1;
+  min-width: 6px;
+  border-bottom: 1px dotted rgba(141, 129, 112, 0.42);
+  position: relative;
+  top: -3px;
+}
+
+.stat-line__value {
+  color: var(--gold-soft);
+  font-weight: 700;
+  flex-shrink: 0;
+}
+
+.stat-line__bonus {
+  color: var(--success);
+  font-family: var(--font-inter), sans-serif;
+  font-size: 9px;
+  margin-left: 2px;
+}
+
+/* Section sub-header inside a panel (smaller, less weight than the title row) */
+.panel-subhead {
+  font-family: var(--font-cinzel), serif;
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: rgba(235, 193, 106, 0.78);
+  border-bottom: 1px solid rgba(141, 129, 112, 0.22);
+  padding-bottom: 3px;
+  margin-top: 10px;
+  margin-bottom: 6px;
+}
+
+/* Two-column form row used by login / city / mission setup */
+.form-field {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  min-width: 0;
+}
+
+.form-label {
+  font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", monospace;
+  font-size: 10px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  color: var(--text-muted);
+}
+
+.form-input {
+  width: 100%;
+  background-color: var(--panel);
+  border: 1px solid var(--iron);
+  padding: 8px 10px;
+  font-family: var(--font-cinzel), serif;
+  font-size: 14px;
+  color: var(--text);
+  outline: none;
+  transition: border-color 0.15s ease;
+  border-radius: 2px;
+}
+
+.form-input::placeholder {
+  color: var(--muted);
+  opacity: 0.75;
+}
+
+.form-input:hover {
+  border-color: var(--iron-light);
+}
+
+.form-input:focus,
+.form-input:focus-visible {
+  border-color: var(--gold);
+  box-shadow: inset 0 0 0 1px rgba(201, 162, 79, 0.35);
+  outline: none;
+}
+
+/* Inline banner used by /soldier, /training, /hospital, /armory */
+.notice {
+  display: flex;
+  align-items: flex-start;
+  gap: 8px;
+  padding: 8px 12px;
+  font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", monospace;
+  font-size: 11px;
+  line-height: 1.4;
+  border: 1px solid;
+  border-radius: 2px;
+}
+
+.notice--ok { border-color: rgba(95, 138, 85, 0.45); background-color: rgba(95, 138, 85, 0.12); color: #a4c89a; }
+.notice--err { border-color: rgba(147, 0, 10, 0.5); background-color: rgba(147, 0, 10, 0.12); color: var(--blood-bright); }
+.notice--info { border-color: rgba(201, 162, 79, 0.45); background-color: rgba(201, 162, 79, 0.12); color: var(--gold-soft); }
+
+/* Page header shared by /city, /soldier, /training, etc. */
+.page-header {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: 12px;
+  padding-bottom: 10px;
+  border-bottom: 1px solid rgba(141, 129, 112, 0.32);
+}
+
+.page-header__eyebrow {
+  font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", monospace;
+  font-size: 10px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.2em;
+  color: var(--blood-bright);
+}
+
+.page-header__title {
+  font-family: var(--font-cinzel), serif;
+  font-size: 24px;
+  font-weight: 800;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  color: var(--gold);
+  line-height: 1.1;
+}
+
+@media (min-width: 768px) {
+  .page-header__title { font-size: 28px; }
+}
+
+.page-header__subtitle {
+  margin-top: 4px;
+  font-size: 12px;
+  color: var(--text-muted);
+  line-height: 1.4;
+  max-width: 64ch;
+}
+
+/* Compact, dense table used by training, hospital, reports list */
+.dense-table {
+  width: 100%;
+  border-collapse: separate;
+  border-spacing: 0;
+  font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", monospace;
+  font-size: 11px;
+}
+
+.dense-table thead th {
+  text-align: left;
+  font-family: var(--font-cinzel), serif;
+  font-size: 10px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  color: var(--gold-soft);
+  padding: 6px 8px;
+  background-color: rgba(0, 0, 0, 0.4);
+  border-bottom: 1px solid rgba(201, 162, 79, 0.22);
+}
+
+.dense-table tbody td {
+  padding: 8px;
+  border-bottom: 1px solid rgba(141, 129, 112, 0.18);
+  vertical-align: middle;
+  color: var(--text);
+}
+
+.dense-table tbody tr:hover td {
+  background-color: rgba(201, 162, 79, 0.04);
+}
+
+.dense-table tbody tr:last-child td {
+  border-bottom: none;
+}
+
+/* Universal :focus-visible for any interactive control that doesn't have a
+   custom ring (links, plain buttons, role=button). */
+button:focus-visible,
+a:focus-visible,
+[role="button"]:focus-visible,
+input:focus-visible,
+select:focus-visible,
+textarea:focus-visible {
+  outline: 2px solid rgba(235, 193, 106, 0.75);
+  outline-offset: 1px;
 }
 
 .font-blackletter {
@@ -1787,27 +2077,29 @@ textarea:not([data-fixed]) {
   position: absolute;
   width: 100%;
   text-align: center;
-  font-family: var(--font-sans), sans-serif;
+  font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", monospace;
   font-size: 10px;
   font-weight: 700;
-  color: #fff;
-  text-shadow: 1px 1px 2px #000, -1px -1px 2px #000, 1px -1px 2px #000, -1px 1px 2px #000;
+  color: #f4ecd8;
+  text-shadow: 1px 1px 1px #000, -1px -1px 1px #000, 1px -1px 1px #000, -1px 1px 1px #000;
   pointer-events: none;
   z-index: 10;
+  letter-spacing: 0.02em;
 }
 
 .gladiatus-location-button {
   display: flex;
   align-items: center;
   width: 100%;
-  padding: 8px 12px;
+  padding: 7px 10px;
   background: linear-gradient(90deg, rgba(42, 29, 18, 0.7) 0%, rgba(20, 14, 9, 0.85) 100%);
   border: 1px solid rgba(201, 162, 79, 0.15);
-  border-radius: 3px;
+  border-radius: 2px;
   font-family: var(--font-cinzel), serif;
   font-size: 11px;
-  font-weight: bold;
+  font-weight: 700;
   text-transform: uppercase;
+  letter-spacing: 0.04em;
   color: var(--text-muted);
   transition: all 0.2s ease-in-out;
 }

@@ -8,6 +8,7 @@ import {
   getCharacter as catalogGetCharacter,
 } from "./catalog";
 import type { CharacterDefinition, CharacterState, SpriteSetDefinition } from "../types";
+import { DIEGO_SPRITE_SHEETS, getDiegoFrameWidth } from "../domain/combat/diego-sprite-sheets";
 
 // Bridge catalog characters -> legacy CharacterDefinition shape. The legacy
 // shape requires `formationSlot`, `fatigue`, and `equipment`; catalog
@@ -40,24 +41,24 @@ export const spriteSetDefinitions: SpriteSetDefinition[] = [
     frames: {
       walk: {
         assetId: "diego_sprite_caminar",
-        frameWidth: 2031 / 3,
-        frameHeight: 714,
-        frames: 3,
-        fps: 6,
+        frameWidth: getDiegoFrameWidth("walk"),
+        frameHeight: DIEGO_SPRITE_SHEETS.walk.height,
+        frames: DIEGO_SPRITE_SHEETS.walk.frames,
+        fps: DIEGO_SPRITE_SHEETS.walk.fps,
       },
       pikeAttack: {
         assetId: "diego_sprite_ataque_pica",
-        frameWidth: 2076 / 3,
-        frameHeight: 570,
-        frames: 3,
-        fps: 5,
+        frameWidth: getDiegoFrameWidth("pikeAttack"),
+        frameHeight: DIEGO_SPRITE_SHEETS.pikeAttack.height,
+        frames: DIEGO_SPRITE_SHEETS.pikeAttack.frames,
+        fps: DIEGO_SPRITE_SHEETS.pikeAttack.fps,
       },
       swordAttack: {
         assetId: "diego_sprite_golpe_espada",
-        frameWidth: 2141 / 3,
-        frameHeight: 642,
-        frames: 3,
-        fps: 5,
+        frameWidth: getDiegoFrameWidth("swordAttack"),
+        frameHeight: DIEGO_SPRITE_SHEETS.swordAttack.height,
+        frames: DIEGO_SPRITE_SHEETS.swordAttack.frames,
+        fps: DIEGO_SPRITE_SHEETS.swordAttack.fps,
       },
     },
   },

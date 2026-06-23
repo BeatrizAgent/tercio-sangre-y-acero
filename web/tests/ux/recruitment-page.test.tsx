@@ -21,6 +21,7 @@ function baseStore() {
       rank: "bisono",
       coins: 25,
       honor: 0,
+      xp: 0,
       reputation: 0,
     },
     characters: [],

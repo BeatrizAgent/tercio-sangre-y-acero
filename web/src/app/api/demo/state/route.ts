@@ -1,5 +1,6 @@
 import { loadGameState, persistGameState } from "@/lib/actions/_demo";
 import { jsonResponse, optionsResponse } from "@/lib/api/cors";
+import { UnauthorizedError } from "@/lib/auth/session";
 import type { GameState } from "@/lib/types";
 
 export async function OPTIONS() {
@@ -10,6 +11,9 @@ export async function GET() {
   try {
     return jsonResponse({ ok: true, state: await loadGameState() });
   } catch (error) {
+    if (error instanceof UnauthorizedError) {
+      return jsonResponse({ ok: false, error: error.message }, { status: 401 });
+    }
     return jsonResponse(
       { ok: false, error: error instanceof Error ? error.message : "Unknown error" },
       { status: 500 },
@@ -26,6 +30,9 @@ export async function PUT(request: Request) {
     await persistGameState(body.state);
     return jsonResponse({ ok: true });
   } catch (error) {
+    if (error instanceof UnauthorizedError) {
+      return jsonResponse({ ok: false, error: error.message }, { status: 401 });
+    }
     return jsonResponse(
       { ok: false, error: error instanceof Error ? error.message : "Unknown error" },
       { status: 500 },

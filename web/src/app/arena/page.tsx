@@ -141,9 +141,9 @@ export default function ArenaPage() {
                       />
                       <span className="truncate flex items-center gap-1.5">
                         {index === 0 ? (
-                          <span className="text-amber-400">🏆 1.</span>
+                          <span className="font-mono text-[10px] font-bold uppercase text-gold">#1</span>
                         ) : (
-                          <span className="text-text-muted">{index + 1}.</span>
+                          <span className="font-mono text-[10px] text-text-muted">#{index + 1}</span>
                         )}
                         <span className={row.active ? "text-gold font-bold" : ""}>{row.name}</span>
                       </span>

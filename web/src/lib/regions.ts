@@ -53,7 +53,7 @@ export const regions: readonly Region[] = [
         rewards: { coins: 12, xp: 10, honor: 2 },
         fatigue: 10,
         woundChance: 20,
-        missionId: "muddy_road_patrol",
+        missionId: "mission_patrulla_flandes_001",
       },
       {
         id: "flandes_boss_2",
@@ -65,7 +65,7 @@ export const regions: readonly Region[] = [
         rewards: { coins: 15, xp: 12, honor: 2 },
         fatigue: 12,
         woundChance: 26,
-        missionId: "powder_escort_front",
+        missionId: "mission_convoy_001",
       },
       {
         id: "flandes_boss_3",
@@ -77,7 +77,7 @@ export const regions: readonly Region[] = [
         rewards: { coins: 18, xp: 14, honor: 3 },
         fatigue: 14,
         woundChance: 32,
-        missionId: "crossroads_skirmish",
+        missionId: "mission_cruce_caminos_001",
       },
       {
         id: "flandes_boss_4",
@@ -89,7 +89,7 @@ export const regions: readonly Region[] = [
         rewards: { coins: 25, xp: 20, honor: 5 },
         fatigue: 22,
         woundChance: 42,
-        missionId: "bastion_assault",
+        missionId: "mission_escaramuza_flandes_001",
       },
     ],
   },

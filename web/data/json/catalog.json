@@ -10140,7 +10140,7 @@
       "tier": 1,
       "price": 14,
       "sellPrice": 4,
-      "assetId": "asset_pike_common_001",
+      "assetId": "weapon_pike_common_001",
       "footprint": {
         "w": 1,
         "h": 3
@@ -10178,7 +10178,7 @@
       "tier": 1,
       "price": 18,
       "sellPrice": 6,
-      "assetId": "asset_pike_common_002",
+      "assetId": "weapon_pike_common_002",
       "footprint": {
         "w": 1,
         "h": 3
@@ -10215,7 +10215,7 @@
       "tier": 2,
       "price": 70,
       "sellPrice": 24,
-      "assetId": "asset_pike_uncommon_001",
+      "assetId": "weapon_pike_uncommon_011",
       "footprint": {
         "w": 1,
         "h": 3
@@ -10252,7 +10252,7 @@
       "tier": 2,
       "price": 80,
       "sellPrice": 28,
-      "assetId": "asset_pike_uncommon_002",
+      "assetId": "weapon_pike_uncommon_012",
       "footprint": {
         "w": 1,
         "h": 3
@@ -10289,7 +10289,7 @@
       "tier": 3,
       "price": 220,
       "sellPrice": 77,
-      "assetId": "asset_pike_rare_001",
+      "assetId": "weapon_pike_rare_031",
       "footprint": {
         "w": 1,
         "h": 3
@@ -10332,7 +10332,7 @@
       "tier": 3,
       "price": 260,
       "sellPrice": 91,
-      "assetId": "asset_pike_rare_002",
+      "assetId": "weapon_pike_rare_032",
       "footprint": {
         "w": 1,
         "h": 3
@@ -10369,7 +10369,7 @@
       "tier": 4,
       "price": 540,
       "sellPrice": 189,
-      "assetId": "asset_pike_veteran_001",
+      "assetId": "weapon_pike_epic_051",
       "footprint": {
         "w": 1,
         "h": 3
@@ -10412,7 +10412,7 @@
       "tier": 4,
       "price": 620,
       "sellPrice": 217,
-      "assetId": "asset_pike_masterwork_001",
+      "assetId": "weapon_pike_legendary_066",
       "footprint": {
         "w": 1,
         "h": 3
@@ -13897,7 +13897,7 @@
       "tier": 1,
       "price": 12,
       "sellPrice": 4,
-      "assetId": "asset_pike_common_001",
+      "assetId": "weapon_pike_common_006",
       "footprint": {
         "w": 1,
         "h": 3

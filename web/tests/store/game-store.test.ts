@@ -60,12 +60,44 @@ async function main() {
     const store = useGameStore.getState();
     assert.equal(store.soldier.name, "Diego de Arce", "initial soldier name");
     assert.equal(store.soldier.coins, 25, "initial coins");
-    assert.ok(store.characters.length > 0, "characters loaded");
+    assert.equal(store.characters.length, 1, "only the player character is loaded initially");
+    assert.equal(store.characters[0].id, "diego_de_arce", "initial roster has Diego only");
     assert.equal(store.activeCharacterId, "diego_de_arce", "active character is Diego");
     assert.ok(typeof store.trainStat === "function", "trainStat action exists");
     assert.ok(typeof store.buyItem === "function", "buyItem action exists");
     assert.ok(typeof store.equipItem === "function", "equipItem action exists");
     assert.ok(typeof store.startMission === "function", "startMission action exists");
+  }
+
+  {
+    useGameStore.getState().resetState();
+    const { createCharacterStates } = await import("../../src/lib/data/characters");
+    const { recruitmentCandidates } = await import("../../src/lib/data/recruitment");
+    const catalogDump = createCharacterStates();
+    useGameStore.getState().hydrateState({
+      ...useGameStore.getState(),
+      characters: catalogDump,
+      activeCharacterId: catalogDump[1]?.id ?? "mock_character",
+    });
+    const store = useGameStore.getState();
+    assert.deepEqual(
+      store.characters.map((character) => character.id),
+      ["diego_de_arce"],
+      "catalog dump is pruned to the protagonist",
+    );
+    assert.equal(store.activeCharacterId, "diego_de_arce", "active character resets to protagonist after pruning");
+
+    const recruit = recruitmentCandidates[0];
+    useGameStore.getState().hydrateState({
+      ...store,
+      characters: [store.characters[0], { ...recruit.character, unlocked: true }, ...catalogDump],
+      activeCharacterId: recruit.character.id,
+    });
+    assert.deepEqual(
+      useGameStore.getState().characters.map((character) => character.id),
+      ["diego_de_arce", recruit.character.id],
+      "real recruited candidates survive roster pruning",
+    );
   }
 
   {

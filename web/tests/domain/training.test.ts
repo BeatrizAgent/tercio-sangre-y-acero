@@ -1,6 +1,7 @@
 import assert from "node:assert/strict";
 import { trainSoldierStatInState, trainCharacterStatInState } from "../../src/lib/domain/training";
 import { createTestState, withCoins, withXp, withFatigue } from "../helpers/state-fixtures";
+import { recruitmentCandidates } from "../../src/lib/data/recruitment";
 
 const BASE_COINS = 200;
 const BASE_XP = 50;
@@ -38,8 +39,13 @@ const BASE_XP = 50;
 
 {
   // Training a roster character updates only that character and spends coins.
-  const state = withCoins(withXp(createTestState(), BASE_XP), BASE_COINS);
-  const other = state.characters.find((c) => c.id !== "diego_de_arce");
+  const candidate = recruitmentCandidates.find((entry) => entry.id === "tomas_de_orduna");
+  assert.ok(candidate, "candidate exists");
+  const state = {
+    ...withCoins(withXp(createTestState(), BASE_XP), BASE_COINS),
+    characters: [...createTestState().characters, { ...candidate.character, unlocked: true }],
+  };
+  const other = state.characters.find((c) => c.id === candidate.character.id);
   assert.ok(other, "other character exists");
   const beforePike = state.soldier.stats.pike;
   const out = trainCharacterStatInState(state, other.id, "pike");

@@ -2,6 +2,10 @@ import assert from "node:assert/strict";
 import { createInitialState } from "../../src/lib/game-store";
 import {
   canRecruitCandidate,
+  countExternalRecruits,
+  getNextRecruitUnlockLevel,
+  getRecruitSlotLimit,
+  getSoldierLevel,
   recruitCandidateInState,
 } from "../../src/lib/domain/recruitment";
 import {
@@ -17,13 +21,35 @@ import {
 
 const base = createInitialState();
 
+assert.equal(base.characters.length, 1);
+assert.equal(base.characters[0].id, "diego_de_arce");
+assert.equal(getSoldierLevel(0), 1);
+assert.equal(getSoldierLevel(400), 5);
+assert.equal(getSoldierLevel(900), 10);
+assert.equal(getSoldierLevel(1900), 20);
+assert.equal(getSoldierLevel(2900), 30);
+assert.equal(getSoldierLevel(4900), 50);
+
+assert.equal(getRecruitSlotLimit(1), 0);
+assert.equal(getRecruitSlotLimit(5), 1);
+assert.equal(getRecruitSlotLimit(10), 2);
+assert.equal(getRecruitSlotLimit(20), 3);
+assert.equal(getRecruitSlotLimit(30), 4);
+assert.equal(getRecruitSlotLimit(50), 5);
+assert.equal(getNextRecruitUnlockLevel(1), 5);
+assert.equal(getNextRecruitUnlockLevel(5), 10);
+assert.equal(getNextRecruitUnlockLevel(50), null);
+
+assert.equal(countExternalRecruits(base), 0);
+
 const paid = recruitmentCandidates.find((candidate) => candidate.id === "tomas_de_orduna");
 assert.ok(paid, "paid candidate exists");
-assert.equal(canRecruitCandidate(base.soldier, paid).ok, true);
+assert.equal(canRecruitCandidate(base.soldier, paid).ok, false);
 
-const paidResult = recruitCandidateInState(base, paid.id);
+const paidBase = { ...base, soldier: { ...base.soldier, xp: 400 } };
+const paidResult = recruitCandidateInState(paidBase, paid.id);
 assert.equal(paidResult.result.ok, true);
-assert.equal(paidResult.next.soldier.coins, base.soldier.coins - (paid.cost.coins ?? 0));
+assert.equal(paidResult.next.soldier.coins, paidBase.soldier.coins - (paid.cost.coins ?? 0));
 assert.equal(paidResult.next.characters.some((character) => character.id === paid.character.id), true);
 assert.equal(
   paidResult.next.characters.find((character) => character.id === paid.character.id)?.formationSlot,
@@ -34,15 +60,31 @@ const duplicateResult = recruitCandidateInState(paidResult.next, paid.id);
 assert.equal(duplicateResult.result.ok, false);
 assert.equal(duplicateResult.result.message, "Ya está en tu tercio.");
 
+const noSlotResult = recruitCandidateInState(
+  { ...base, soldier: { ...base.soldier, xp: 0, coins: 999, honor: 999, reputation: 999 } },
+  paid.id,
+);
+assert.equal(noSlotResult.result.ok, false);
+assert.equal(noSlotResult.result.message, "Alcanza nivel 5 para desbloquear el primer recluta.");
+
+const oneSlotState = { ...base, soldier: { ...base.soldier, xp: 400, coins: 999, honor: 999, reputation: 999 } };
+const firstSlotResult = recruitCandidateInState(oneSlotState, paid.id);
+assert.equal(firstSlotResult.result.ok, true);
+const secondCandidate = recruitmentCandidates.find((candidate) => candidate.id !== paid.id);
+assert.ok(secondCandidate, "second candidate exists");
+const fullSlotResult = recruitCandidateInState(firstSlotResult.next, secondCandidate.id);
+assert.equal(fullSlotResult.result.ok, false);
+assert.equal(fullSlotResult.result.message, "Cupo de reclutas lleno hasta nivel 10.");
+
 const honor = recruitmentCandidates.find((candidate) => candidate.id === "hernan_de_ula");
 assert.ok(honor, "honor candidate exists");
 assert.equal(canRecruitCandidate(base.soldier, honor).ok, false);
-assert.equal(canRecruitCandidate({ ...base.soldier, honor: honor.cost.honor ?? 0 }, honor).ok, true);
+assert.equal(canRecruitCandidate({ ...base.soldier, xp: 400, honor: honor.cost.honor ?? 0 }, honor).ok, true);
 
 const fame = recruitmentCandidates.find((candidate) => candidate.id === "beltran_de_rojas");
 assert.ok(fame, "fame candidate exists");
 assert.equal(canRecruitCandidate(base.soldier, fame).ok, false);
-assert.equal(canRecruitCandidate({ ...base.soldier, reputation: fame.cost.reputation ?? 0 }, fame).ok, true);
+assert.equal(canRecruitCandidate({ ...base.soldier, xp: 400, reputation: fame.cost.reputation ?? 0 }, fame).ok, true);
 
 // candidatePowerScore: sum of all stats
 for (const candidate of recruitmentCandidates) {

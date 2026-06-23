@@ -2,7 +2,7 @@
 // Keeps tests independent of Zustand persistence and localStorage.
 
 import { inventoryWithAutoLayout } from "../../src/lib/domain/inventory-grid";
-import { createCharacterStates } from "../../src/lib/data/characters";
+import { createInitialRoster } from "../../src/lib/domain/player-character";
 import type { GameState, Soldier, StatId } from "../../src/lib/types";
 
 const PLAYER_CHARACTER_ID = "diego_de_arce";
@@ -50,18 +50,7 @@ type GameStateOverrides = Partial<Omit<GameState, "soldier">> & {
 export function createTestState(overrides: GameStateOverrides = {}): GameState {
   const { soldier: soldierOverride, ...gameOverrides } = overrides;
   const soldier = createBaseSoldier(soldierOverride);
-  const characters = createCharacterStates().map((character) =>
-    character.id === PLAYER_CHARACTER_ID
-      ? {
-          ...character,
-          name: soldier.name,
-          rank: soldier.rank,
-          fatigue: soldier.fatigue,
-          stats: { ...soldier.stats },
-          equipment: { ...soldier.equipment },
-        }
-      : character,
-  );
+  const characters = createInitialRoster(soldier);
   return {
     soldier,
     characters,

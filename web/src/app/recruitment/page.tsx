@@ -22,6 +22,12 @@ import {
 } from "@/lib/data/recruitment";
 import { featuredAssetPaths } from "@/lib/data/ui-paths";
 import { useGameStore } from "@/lib/game-store";
+import {
+  countExternalRecruits,
+  getNextRecruitUnlockLevel,
+  getRecruitSlotLimit,
+  getSoldierLevel,
+} from "@/lib/domain/recruitment";
 import { useGameData } from "@/lib/hooks/use-game-data";
 import { playCoinSound, playPageSound } from "@/lib/sounds";
 
@@ -44,6 +50,21 @@ export default function RecruitmentPage() {
     () => new Set(characters.map((character) => character.id)),
     [characters],
   );
+  const recruitSlots = useMemo(() => {
+    const level = getSoldierLevel(soldier.xp);
+    const used = countExternalRecruits({ soldier, characters, activeCharacterId: "diego_de_arce", reports: [], arenaResults: [], activeEvent: null, pendingMissionId: null });
+    const limit = getRecruitSlotLimit(level);
+    const nextUnlock = getNextRecruitUnlockLevel(level);
+    const blockedReason =
+      used >= limit
+        ? nextUnlock === 5
+          ? "Alcanza nivel 5 para desbloquear el primer recluta."
+          : nextUnlock
+            ? `Cupo lleno hasta nivel ${nextUnlock}.`
+            : "Cupo maximo de 5 reclutas alcanzado."
+        : null;
+    return { level, used, limit, nextUnlock, blockedReason };
+  }, [characters, soldier]);
 
   const available = useMemo(
     () => recruitmentCandidates.filter((candidate) => !recruitedIds.has(candidate.character.id)),
@@ -172,7 +193,8 @@ export default function RecruitmentPage() {
                 />
               </div>
               <div className="border border-gold/35 bg-background/75 px-3 py-1 text-center font-mono text-[10px] font-bold uppercase tracking-wider text-gold-soft">
-                {recruitedIds.size} / {recruitmentCandidates.length} en el tercio
+                Nivel {recruitSlots.level} · Reclutas {recruitSlots.used} / {recruitSlots.limit}
+                {recruitSlots.nextUnlock ? ` · proximo ${recruitSlots.nextUnlock}` : ""}
               </div>
             </div>
           </div>
@@ -207,6 +229,9 @@ export default function RecruitmentPage() {
                 candidate={candidate}
                 soldier={soldier}
                 recruited={recruitedIds.has(candidate.character.id)}
+                recruitmentBlockedReason={
+                  recruitedIds.has(candidate.character.id) ? null : recruitSlots.blockedReason
+                }
                 onRecruit={() => handleRecruit(candidate)}
               />
             ))}

@@ -1,8 +1,21 @@
-import { describe, expect, it, vi } from "vitest";
+import { beforeEach, describe, expect, it, vi } from "vitest";
 import { renderHook, act } from "@testing-library/react";
+import type { GameState } from "@/lib/types";
+
+const { mockStoreState } = vi.hoisted(() => ({
+  mockStoreState: {
+    soldier: null as GameState["soldier"] | null,
+    hydrateState: vi.fn(),
+  },
+}));
+
+vi.mock("@/lib/game-store", () => ({
+  useGameStore: (selector: (state: typeof mockStoreState) => unknown) => selector(mockStoreState),
+}));
+
 import { useGameData } from "@/lib/hooks/use-game-data";
 
-const mockSoldier = {
+const mockSoldier: GameState["soldier"] = {
   id: "diego_de_arce",
   name: "Diego de Arce",
   rank: "bisono",
@@ -17,20 +30,35 @@ const mockSoldier = {
   stats: { pike: 2, sword: 1, arquebus: 1, discipline: 2, vigor: 2, cunning: 1, command: 0 },
   inventory: [],
   equipment: {
-    head: null, body: null, mainHand: null, offHand: null,
-    firearm: null, accessory: null, boots: null, consumable: null,
+    head: null,
+    body: null,
+    mainHand: null,
+    offHand: null,
+    firearm: null,
+    accessory: null,
+    boots: null,
+    consumable: null,
   },
   wounds: [],
 };
 
-function mockStore(overrides: { hasSoldier?: boolean } = {}) {
-  const selector = vi.fn().mockReturnValue(overrides.hasSoldier ?? true);
-  return { useGameStore: Object.assign(selector, { getState: () => ({ soldier: mockSoldier }) }) };
-}
-
-vi.mock("@/lib/game-store", () => mockStore());
+const mockState = {
+  soldier: mockSoldier,
+} as GameState;
 
 describe("useGameData", () => {
+  beforeEach(() => {
+    mockStoreState.soldier = mockSoldier;
+    mockStoreState.hydrateState.mockReset();
+    vi.stubGlobal(
+      "fetch",
+      vi.fn().mockResolvedValue({
+        ok: true,
+        json: async () => ({ ok: true, state: mockState }),
+      }),
+    );
+  });
+
   it("returns 'loading' status before the mount effect fires", () => {
     const { result } = renderHook(() => useGameData());
     expect(result.current.status).toBe("loading");
@@ -45,18 +73,20 @@ describe("useGameData", () => {
     expect(result.current.error).toBeNull();
   });
 
-  it("returns 'idle' status when the store has no soldier", async () => {
-    vi.resetModules();
-    vi.doMock("@/lib/game-store", () => {
-      const selector = vi.fn().mockReturnValue(false);
-      return { useGameStore: Object.assign(selector, { getState: () => ({ soldier: null }) }) };
-    });
-    const { useGameData: useGameDataFresh } = await import("@/lib/hooks/use-game-data");
-    const { result } = renderHook(() => useGameDataFresh());
+  it("returns 'error' status when the backend returns no soldier", async () => {
+    mockStoreState.soldier = null;
+    vi.stubGlobal(
+      "fetch",
+      vi.fn().mockResolvedValue({
+        ok: true,
+        json: async () => ({ ok: true, state: { ...mockState, soldier: null } }),
+      }),
+    );
+    const { result } = renderHook(() => useGameData());
     await act(async () => {
       await new Promise((r) => setTimeout(r, 10));
     });
-    expect(result.current.status).toBe("idle");
+    expect(result.current.status).toBe("error");
   });
 
   it("returns 'error' status when setError is called", async () => {

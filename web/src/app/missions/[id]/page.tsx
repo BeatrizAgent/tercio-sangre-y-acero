@@ -8,6 +8,8 @@ import { UiAssetIcon } from "@/components/ui/ui-asset-icon";
 import { Tooltip } from "@/components/ui/tooltip";
 import { PageTransition } from "@/components/game/page-transition";
 import { MissionCanvasResolver } from "@/components/game/MissionCanvasResolver";
+import { resolveActiveEventChoiceAction, startMissionAction } from "@/lib/actions/combat";
+import { prepareActionGateAction } from "@/lib/actions/gate";
 import { rarityStyle } from "@/lib/item-format";
 import { useGameStore } from "@/lib/game-store";
 import {
@@ -320,7 +322,7 @@ export default function MissionDetailPage() {
   const params = useParams();
   const router = useRouter();
   const { status } = useGameData();
-  const { soldier, startMission, activeEvent, resolveActiveEventChoice } = useGameStore();
+  const { soldier, activeEvent, pendingMissionId, hydrateState } = useGameStore();
   // useSyncExternalStore replaces the `useState(false) + useEffect(setTrue)`
   // pattern, avoiding the cascading-render lint warning. The server
   // snapshot is false; the client snapshot is true (no subscription is
@@ -331,6 +333,17 @@ export default function MissionDetailPage() {
     () => false,
   );
   const [resolving, setResolving] = useState(false);
+  const [gateToken, setGateToken] = useState<string | null>(null);
+  const [countdown, setCountdown] = useState<number | null>(null);
+  const [actionError, setActionError] = useState<string | null>(null);
+  const mountedRef = useRef(true);
+
+  useEffect(() => {
+    mountedRef.current = true;
+    return () => {
+      mountedRef.current = false;
+    };
+  }, []);
 
   if (!mounted || status !== "ready") {
     return (
@@ -349,12 +362,14 @@ export default function MissionDetailPage() {
     return (
       <PageTransition>
         <div className="relative mx-auto max-w-3xl space-y-5">
-          {resolving && (
+          {(resolving || countdown !== null) && (
             <div className="fixed inset-0 z-50 flex items-center justify-center bg-background/90 p-4">
               <div className="game-panel flex items-center gap-4 border-2 border-iron p-5">
-                <UiAssetIcon id="missions" label="Resolviendo" className="h-12 w-12 animate-spin" />
+                <UiAssetIcon id="missions" label="Resolviendo" className={`h-12 w-12 ${resolving ? "animate-spin" : ""}`} />
                 <div>
-                  <h2 className="font-cinzel text-lg font-bold uppercase tracking-widest text-gold">Resolviendo</h2>
+                  <h2 className="font-cinzel text-lg font-bold uppercase tracking-widest text-gold">
+                    {countdown !== null ? `Preparando ${countdown}s` : "Resolviendo"}
+                  </h2>
                   <p className="font-mono text-[10px] uppercase tracking-wider text-blood-bright">Cruz de Borgoña · Tercio VIII</p>
                 </div>
               </div>
@@ -388,15 +403,7 @@ export default function MissionDetailPage() {
                     <button
                       key={choice.id}
                       disabled={!canSelect}
-                      onClick={() => {
-                        setResolving(true);
-                        playDrumSound();
-                        window.setTimeout(() => {
-                          const res = resolveActiveEventChoice(choice.id);
-                          if (res.ok && res.data?.reportId) router.push(`/reports/${res.data.reportId}`);
-                          else setResolving(false);
-                        }, 700);
-                      }}
+                      onClick={() => void handleEventChoice(choice.id)}
                       className={`flex items-center justify-between gap-3 rounded-xs border p-3 text-left transition ${
                         canSelect ? "border-iron bg-stone-900/60 hover:border-gold/40" : "border-iron/30 bg-stone-950/80 opacity-60"
                       }`}
@@ -422,6 +429,12 @@ export default function MissionDetailPage() {
                 })}
               </div>
             </div>
+
+            {actionError && (
+              <div className="border border-danger/40 bg-danger/10 px-3 py-2 font-mono text-[10px] uppercase tracking-wider text-danger">
+                {actionError}
+              </div>
+            )}
           </Card>
         </div>
       </PageTransition>
@@ -469,26 +482,114 @@ export default function MissionDetailPage() {
     discipline: "Disciplina",
   };
 
+  const startGateCountdown = async (waitMs: number) => {
+    const startedAt = Date.now();
+    setCountdown(Math.ceil(waitMs / 1000));
+    await new Promise<void>((resolve) => {
+      const tick = () => {
+        const remainingMs = Math.max(0, waitMs - (Date.now() - startedAt));
+        if (mountedRef.current) setCountdown(Math.ceil(remainingMs / 1000));
+        if (remainingMs <= 0) {
+          window.clearInterval(timer);
+          resolve();
+        }
+      };
+      const timer = window.setInterval(tick, 250);
+      tick();
+    });
+    if (mountedRef.current) setCountdown(null);
+  };
+
+  const handleMissionStart = async (missionId: string) => {
+    if (resolving || countdown !== null) return;
+    setActionError(null);
+    try {
+      const gate = await prepareActionGateAction({ kind: "mission", targetId: missionId });
+      setGateToken(gate.token);
+      await startGateCountdown(gate.waitMs);
+      if (!mountedRef.current) return;
+      setResolving(true);
+    } catch (error) {
+      setActionError(error instanceof Error ? error.message : "No se pudo preparar la orden.");
+      setCountdown(null);
+      setResolving(false);
+    }
+  };
+
+  const resolveMissionAfterCanvas = async (missionId: string) => {
+    try {
+      const result = await startMissionAction({ missionId, gateToken: gateToken ?? undefined });
+      if (result.ok && result.data?.state) {
+        hydrateState(result.data.state);
+        if (result.data.eventTriggered) {
+          setResolving(false);
+          setGateToken(null);
+          return;
+        }
+        if (result.data.reportId) {
+          router.push(`/reports/${result.data.reportId}`);
+          return;
+        }
+      }
+      setActionError(result.message);
+    } catch (error) {
+      setActionError(error instanceof Error ? error.message : "No se pudo resolver la misión.");
+    } finally {
+      if (mountedRef.current) {
+        setResolving(false);
+        setGateToken(null);
+      }
+    }
+  };
+
+  const handleEventChoice = async (choiceId: string) => {
+    if (!pendingMissionId || resolving || countdown !== null) return;
+    setActionError(null);
+    try {
+      const gate = await prepareActionGateAction({ kind: "event", targetId: `${pendingMissionId}:${choiceId}` });
+      await startGateCountdown(gate.waitMs);
+      if (!mountedRef.current) return;
+      setResolving(true);
+      playDrumSound();
+      const result = await resolveActiveEventChoiceAction({ choiceId, gateToken: gate.token });
+      if (result.ok && result.data?.state) {
+        hydrateState(result.data.state);
+        if (result.data.reportId) {
+          router.push(`/reports/${result.data.reportId}`);
+          return;
+        }
+      }
+      setActionError(result.message);
+    } catch (error) {
+      setActionError(error instanceof Error ? error.message : "No se pudo resolver el evento.");
+    } finally {
+      if (mountedRef.current) setResolving(false);
+    }
+  };
+
   const handleStart = () => {
-    setResolving(true);
+    void handleMissionStart(mission.id);
   };
 
   return (
     <PageTransition>
         <div className="relative space-y-4">
+        {countdown !== null && !resolving && (
+          <div className="fixed inset-0 z-50 flex items-center justify-center bg-background/90 p-4">
+            <div className="game-panel flex items-center gap-4 border-2 border-iron p-5">
+              <UiAssetIcon id="missions" label="Preparando" className="h-12 w-12" />
+              <div>
+                <h2 className="font-cinzel text-lg font-bold uppercase tracking-widest text-gold">Preparando {countdown}s</h2>
+                <p className="font-mono text-[10px] uppercase tracking-wider text-blood-bright">Cruz de Borgoña · Tercio VIII</p>
+              </div>
+            </div>
+          </div>
+        )}
         {resolving && (
           <MissionCanvasResolver
             mission={mission}
             soldier={soldier}
-            onComplete={() => {
-              const res = startMission(mission.id);
-              if (res.ok) {
-                if (res.data?.eventTriggered) setResolving(false);
-                else if (res.data?.reportId) router.push(`/reports/${res.data.reportId}`);
-              } else {
-                setResolving(false);
-              }
-            }}
+            onComplete={() => void resolveMissionAfterCanvas(mission.id)}
           />
         )}
 
@@ -570,14 +671,20 @@ export default function MissionDetailPage() {
 
                 <button
                   onClick={handleStart}
-                  disabled={isAgotado || resolving}
+                  disabled={isAgotado || resolving || countdown !== null}
                   className={`blood-button flex w-full items-center justify-center gap-2 py-3 text-sm ${
-                    isAgotado || resolving ? "cursor-not-allowed opacity-60" : ""
+                    isAgotado || resolving || countdown !== null ? "cursor-not-allowed opacity-60" : ""
                   }`}
                 >
                   <UiAssetIcon id="confirm" label="" className="h-5 w-5" />
-                  {resolving ? "Resolviendo..." : isAgotado ? "Agotado" : "Iniciar mision"}
+                  {countdown !== null ? `Preparando ${countdown}s` : resolving ? "Resolviendo..." : isAgotado ? "Agotado" : "Iniciar mision"}
                 </button>
+
+                {actionError && (
+                  <div className="border border-danger/40 bg-danger/10 px-3 py-2 font-mono text-[10px] uppercase tracking-wider text-danger">
+                    {actionError}
+                  </div>
+                )}
 
                 {isAgotado && (
                   <div className="flex items-center justify-center gap-2 font-mono text-[10px] uppercase text-danger">

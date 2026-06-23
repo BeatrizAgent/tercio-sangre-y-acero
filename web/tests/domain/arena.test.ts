@@ -1,8 +1,9 @@
 import assert from "node:assert/strict";
-import { fightArenaOpponentInState } from "../../src/lib/domain/arena";
+import { fightArenaOpponentInState, fightArenaOpponentInStateWithOpponent } from "../../src/lib/domain/arena";
 import { getArenaOpponent } from "../../src/lib/data/arena";
 import { freezeClock } from "../helpers/time-fixtures";
 import { createTestState, withFatigue, withStat } from "../helpers/state-fixtures";
+import type { ArenaOpponent } from "../../src/lib/types";
 
 const opponent = getArenaOpponent("jaime_el_cojo");
 assert.ok(opponent, "sample arena opponent exists");
@@ -38,5 +39,25 @@ freezeClock(() => {
   assert.ok(out.next.soldier.xp >= state.soldier.xp, "xp did not decrease");
   assert.ok(out.next.soldier.coins >= state.soldier.coins, "coins did not decrease");
 }
+
+freezeClock(() => {
+  const injectedOpponent: ArenaOpponent = {
+    id: "bot_sargento_test",
+    soldierId: "soldier_bot_sargento_test",
+    level: 8,
+    name: "Sargento Test",
+    rank: "sargento",
+    power: 9,
+    fatigue: 4,
+    woundChance: 5,
+    rewards: { coins: 8, xp: 7, honor: 2 },
+    style: "Guardia cerrada.",
+    description: "Bot persistido de prueba.",
+  };
+  const state = withStat(createTestState(), "sword", 20);
+  const out = fightArenaOpponentInStateWithOpponent(state, injectedOpponent);
+  assert.equal(out.result.ok, true, "injected DB opponent resolves");
+  assert.equal(out.next.arenaResults[0].opponentId, injectedOpponent.id, "result links injected opponent");
+});
 
 console.log(JSON.stringify({ ok: true, checked: "arena" }, null, 2));

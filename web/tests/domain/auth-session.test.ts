@@ -3,6 +3,7 @@ import {
   SESSION_COOKIE_NAME,
   buildSessionCookie,
   generateRecoveryToken,
+  getPublicIpFromRequest,
   hashRecoveryToken,
   isRecoveryTokenFormat,
 } from "../../src/lib/auth/session";
@@ -27,5 +28,20 @@ assert.equal(cookie.value, token);
 assert.equal(cookie.httpOnly, true);
 assert.equal(cookie.sameSite, "lax");
 assert.equal(cookie.path, "/");
+
+const forwardedRequest = new Request("https://tercios.test/login", {
+  headers: {
+    "x-forwarded-for": "10.0.0.3, 203.0.113.77",
+  },
+});
+assert.equal(getPublicIpFromRequest(forwardedRequest), "203.0.113.77");
+
+const privateRequest = new Request("https://tercios.test/login", {
+  headers: {
+    "x-forwarded-for": "10.0.0.3, 172.16.0.2",
+    "x-real-ip": "192.168.1.5",
+  },
+});
+assert.equal(getPublicIpFromRequest(privateRequest), null);
 
 console.log(JSON.stringify({ ok: true, checked: "auth-session" }, null, 2));

@@ -235,6 +235,8 @@ export interface MissionResult {
 
 export interface ArenaOpponent {
   id: string;
+  soldierId: string;
+  level: number;
   name: string;
   rank: string;
   portraitAssetId?: string;
@@ -256,6 +258,28 @@ export interface ArenaResult {
   wounds: string[];
   createdAt: string;
 }
+
+export interface PublicPlayerProfile {
+  id: string;
+  name: string;
+  rank: string;
+  rankName: string;
+  level: number;
+  honor: number;
+  xp: number;
+  fatigue: number;
+  reputation: number;
+  portraitAssetId?: string;
+  stats: Stats;
+  equipment: Partial<Equipment>;
+  openWounds: number;
+  missionCount: number;
+  arenaWins: number;
+  arenaLosses: number;
+  joinedAt: string;
+}
+
+export type PublicPlayerProfileSummary = Omit<PublicPlayerProfile, "stats" | "equipment">;
 
 export interface Rank {
   id: string;

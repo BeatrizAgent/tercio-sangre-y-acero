@@ -64,6 +64,54 @@ function RivalCard() {
   );
 }
 
+export function RivalCardSkeleton() {
+  return (
+    <section
+      aria-hidden="true"
+      className="game-panel overflow-hidden p-0"
+    >
+      <div className="grid gap-3 p-3 md:grid-cols-[220px_minmax(0,1fr)] md:p-4">
+        <div className="scene-frame relative h-64 w-full overflow-hidden rounded-xs border border-iron bg-stone-950 md:h-full">
+          <Skeleton className="absolute inset-0" />
+          <div className="absolute inset-x-0 bottom-0 h-12 bg-linear-to-t from-background/95 to-transparent" />
+        </div>
+        <div className="flex min-w-0 flex-col justify-end gap-3">
+          <div className="space-y-2">
+            <div className="flex flex-wrap items-center gap-2">
+              <Skeleton className="h-6 w-44" />
+              <Skeleton className="h-4 w-16" />
+            </div>
+            <Skeleton className="h-3 w-3/4" />
+            <Skeleton className="h-3 w-1/2" />
+          </div>
+          <div className="grid grid-cols-2 gap-2 sm:grid-cols-4">
+            {Array.from({ length: 4 }, (_, index) => (
+              <Skeleton key={index} className="h-12 w-full" />
+            ))}
+          </div>
+          <Skeleton className="h-12 w-36" />
+        </div>
+      </div>
+    </section>
+  );
+}
+
+export function RivalCardSkeletonList({ count = 3 }: { count?: number }) {
+  return (
+    <div
+      role="status"
+      aria-busy="true"
+      aria-live="polite"
+      className="space-y-3"
+    >
+      <span className="sr-only">Cargando rivales de la arena...</span>
+      {Array.from({ length: count }, (_, index) => (
+        <RivalCardSkeleton key={index} />
+      ))}
+    </div>
+  );
+}
+
 function SideCard() {
   return (
     <section

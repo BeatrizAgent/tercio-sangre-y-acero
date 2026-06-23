@@ -33,10 +33,10 @@ export default function LoginPage() {
   const [portraitId, setPortraitId] = useState<string>(defaultPortraitId);
   const [token, setToken] = useState("");
   const [recoveryName, setRecoveryName] = useState("");
-  const [recoveryRequested, setRecoveryRequested] = useState(false);
+  const [recoveredToken, setRecoveredToken] = useState<string | null>(null);
   const [missingSession, setMissingSession] = useState(false);
   const [created, setCreated] = useState<CreatedSession | null>(null);
-  const [busy, setBusy] = useState<"create" | "resume" | null>(null);
+  const [busy, setBusy] = useState<"create" | "resume" | "recover" | null>(null);
   const [error, setError] = useState<string | null>(null);
   const [copied, setCopied] = useState(false);
 
@@ -104,9 +104,27 @@ export default function LoginPage() {
     }
   }
 
-  function requestRecovery() {
+  async function recoverByIp() {
+    setBusy("recover");
     setError(null);
-    setRecoveryRequested(true);
+    setRecoveredToken(null);
+    try {
+      const trimmedName = recoveryName.trim().replace(/\s+/g, " ");
+      const response = await fetch("/api/auth/recover-ip", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ name: trimmedName }),
+      });
+      const payload = (await response.json()) as { ok?: boolean; token?: string; error?: string };
+      if (!response.ok || !payload.ok || !payload.token) {
+        throw new Error(payload.error ?? "No se pudo recuperar la cuenta por IP.");
+      }
+      setRecoveredToken(payload.token);
+    } catch (err) {
+      setError(err instanceof Error ? err.message : "No se pudo recuperar la cuenta por IP.");
+    } finally {
+      setBusy(null);
+    }
   }
 
   async function copyToken() {
@@ -322,7 +340,7 @@ export default function LoginPage() {
             className="game-panel flex flex-col gap-3 p-4"
             onSubmit={(event) => {
               event.preventDefault();
-              requestRecovery();
+              void recoverByIp();
             }}
           >
             <div className="panel-header">
@@ -339,10 +357,7 @@ export default function LoginPage() {
               <input
                 id="recovery-name"
                 value={recoveryName}
-                onChange={(event) => {
-                  setRecoveryName(event.target.value);
-                  setRecoveryRequested(false);
-                }}
+                onChange={(event) => setRecoveryName(event.target.value)}
                 minLength={2}
                 maxLength={40}
                 className="form-input"
@@ -355,11 +370,12 @@ export default function LoginPage() {
               className="iron-button mt-1 inline-flex w-full items-center justify-center gap-2 px-3 py-2 text-[11px]"
             >
               <LifeBuoy className="h-4 w-4" />
-              Solicitar ayuda
+              Recuperar por IP
             </button>
-            {recoveryRequested && (
+            {recoveredToken && (
               <p className="font-mono text-[10px] uppercase leading-5 tracking-wider text-text-muted">
-                Busca el token guardado de <strong className="text-gold-soft">{recoveryName.trim()}</strong>. Sin token no se entrega acceso automatico.
+                Token nuevo de <strong className="text-gold-soft">{recoveryName.trim()}</strong>:{" "}
+                <span className="break-all text-text">{recoveredToken}</span>
               </p>
             )}
           </form>

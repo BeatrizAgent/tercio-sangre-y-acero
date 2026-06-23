@@ -1,6 +1,8 @@
 import { describe, expect, it, vi, beforeEach } from "vitest";
-import { render, screen } from "@testing-library/react";
+import { useEffect } from "react";
+import { render, screen, waitFor } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
+import type React from "react";
 
 const { useGameDataMock, useGameStoreMock } = vi.hoisted(() => {
   const useGameDataMock = vi.fn();
@@ -10,6 +12,22 @@ const { useGameDataMock, useGameStoreMock } = vi.hoisted(() => {
 
 vi.mock("@/lib/hooks/use-game-data", () => ({ useGameData: useGameDataMock }));
 vi.mock("@/lib/game-store", () => ({ useGameStore: useGameStoreMock }));
+
+// next/image fires onLoad in a useEffect so jsdom resolves the
+// CharacterPortrait image-skeleton (added with the rival-card UX work)
+// without triggering a setState-during-render warning.
+vi.mock("next/image", () => {
+  return {
+    default: ({ onLoad, ...rest }: React.ImgHTMLAttributes<HTMLImageElement>) => {
+      useEffect(() => {
+        if (typeof onLoad === "function") {
+          onLoad({ target: rest } as unknown as React.SyntheticEvent<HTMLImageElement>);
+        }
+      }, []);
+      return <img {...rest} alt={rest.alt ?? ""} />;
+    },
+  };
+});
 
 import RecruitmentPage from "@/app/recruitment/page";
 
@@ -81,7 +99,7 @@ describe("RecruitmentPage", () => {
     expect(refetch).toHaveBeenCalledOnce();
   });
 
-  it("renders the page content when the game data is ready", () => {
+  it("renders the page content when the game data is ready", async () => {
     useGameDataMock.mockReturnValue({
       status: "ready",
       error: null,
@@ -90,11 +108,13 @@ describe("RecruitmentPage", () => {
       clearError: vi.fn(),
     });
     const { container } = render(<RecruitmentPage />);
-    // No skeleton shimmer blocks and no alert.
-    expect(container.querySelector(".skeleton-shimmer")).toBeNull();
-    expect(screen.queryByRole("alert")).toBeNull();
     // The page renders the role filter for "all" and at least one candidate
     // from the recruitment catalog (Tomas de Orduna, the Piquero).
-    expect(screen.getByRole("button", { name: /Todos/ })).toBeInTheDocument();
+    expect(await screen.findByRole("button", { name: /Todos/ })).toBeInTheDocument();
+    // No skeleton shimmer blocks and no alert.
+    await waitFor(() => {
+      expect(container.querySelector(".skeleton-shimmer")).toBeNull();
+    });
+    expect(screen.queryByRole("alert")).toBeNull();
   });
 });

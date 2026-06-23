@@ -137,6 +137,12 @@ export function SidebarNav() {
               isActive={isRouteActive("/rankings")}
             />
             <NavLink
+              href="/players"
+              label="Soldados"
+              icon="rank"
+              isActive={isRouteActive("/players")}
+            />
+            <NavLink
               href="/recruitment"
               label="Reclutamiento"
               icon="cityHouseOfTrade"

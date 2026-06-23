@@ -8,6 +8,7 @@ import {
   canUseFilesystemSessionFallback,
   createFilesystemSession,
   generateRecoveryToken,
+  getPublicIpFromRequest,
   hashRecoveryToken,
   sessionCookieHeader,
 } from "@/lib/auth/session";
@@ -40,6 +41,7 @@ export async function POST(request: Request) {
     const token = generateRecoveryToken();
     const tokenHash = hashRecoveryToken(token);
     const state = createInitialState(name, portraitAssetId);
+    const publicIp = getPublicIpFromRequest(request);
     try {
       const db = getDb();
       const user = await db.user.create({
@@ -49,6 +51,7 @@ export async function POST(request: Request) {
           tokenHash,
           tokenIssuedAt: new Date(),
           lastLoginAt: new Date(),
+          lastLoginIp: publicIp,
           portraitAssetId: portraitAssetId ?? null,
         },
         select: { id: true },
@@ -56,7 +59,7 @@ export async function POST(request: Request) {
       await persistGameStateForUser(user.id, state);
     } catch (error) {
       if (!canUseFilesystemSessionFallback()) throw error;
-      await createFilesystemSession(name, token);
+      await createFilesystemSession(name, token, publicIp);
       await saveState(state);
     }
 

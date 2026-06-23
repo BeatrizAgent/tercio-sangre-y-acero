@@ -29,6 +29,9 @@ async function main() {
   const authLogoutRoute = await import("../../src/app/api/auth/logout/route");
   const healthRoute = await import("../../src/app/api/health/route");
   const stateRoute = await import("../../src/app/api/demo/state/route");
+  const arenaOpponentsRoute = await import("../../src/app/api/arena/opponents/route");
+  const playersRoute = await import("../../src/app/api/players/route");
+  const playerProfileRoute = await import("../../src/app/api/players/[id]/route");
 
   for (const [name, route] of [
     ["catalog", catalogRoute],
@@ -38,6 +41,9 @@ async function main() {
     ["auth logout", authLogoutRoute],
     ["health", healthRoute],
     ["demo state", stateRoute],
+    ["arena opponents", arenaOpponentsRoute],
+    ["players", playersRoute],
+    ["player profile", playerProfileRoute],
   ] as const) {
     const handlers = route as Record<string, unknown>;
     if (!name.startsWith("auth") && typeof handlers.GET !== "function") failures.push(`${name} route missing GET`);
@@ -54,6 +60,11 @@ async function main() {
   }
 
   if (typeof stateRoute.PUT !== "function") failures.push("demo state route missing PUT");
+
+  const schema = await import("node:fs").then((fs) => fs.readFileSync("prisma/schema.prisma", "utf8"));
+  for (const token of ["isBot", "model ArenaBotProfile", "arenaBotProfile"]) {
+    if (!schema.includes(token)) failures.push(`schema missing ${token}`);
+  }
 
   if (failures.length) {
     console.error(JSON.stringify({ ok: false, failures }, null, 2));

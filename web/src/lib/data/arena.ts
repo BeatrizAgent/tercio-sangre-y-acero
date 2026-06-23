@@ -6,6 +6,8 @@ import type { ArenaOpponent } from "../types";
 export const arenaOpponents: ArenaOpponent[] = [
   {
     id: "jaime_el_cojo",
+    soldierId: "jaime_el_cojo",
+    level: 1,
     name: "Jaime el Cojo",
     rank: "maton de taberna",
     portraitAssetId: "asset_enemy_bandolero_001",
@@ -18,6 +20,8 @@ export const arenaOpponents: ArenaOpponent[] = [
   },
   {
     id: "bruno_de_namur",
+    soldierId: "bruno_de_namur",
+    level: 2,
     name: "Bruno de Namur",
     rank: "piquero despedido",
     portraitAssetId: "asset_enemy_oficial_001",
@@ -30,6 +34,8 @@ export const arenaOpponents: ArenaOpponent[] = [
   },
   {
     id: "capitan_rojas",
+    soldierId: "capitan_rojas",
+    level: 4,
     name: "Capitan Rojas",
     rank: "oficial retirado",
     portraitAssetId: "asset_enemy_desertor_001",

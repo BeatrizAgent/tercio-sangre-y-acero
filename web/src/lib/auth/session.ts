@@ -18,6 +18,7 @@ interface FilesystemSessionRecord {
   tokenHash: string;
   tokenIssuedAt: string;
   lastLoginAt: string;
+  lastLoginIp?: string | null;
 }
 
 const filesystemSessionPath = path.join(process.cwd(), ".demo", "session.json");
@@ -79,6 +80,50 @@ export function clearSessionCookieHeader() {
   return `${SESSION_COOKIE_NAME}=; Max-Age=0; Path=/; HttpOnly; SameSite=Lax`;
 }
 
+function normalizeIpCandidate(value: string) {
+  const trimmed = value.trim();
+  if (!trimmed) return null;
+  const withoutBrackets = trimmed.replace(/^\[|\]$/g, "");
+  if (withoutBrackets.includes(":")) return withoutBrackets.toLowerCase();
+  return withoutBrackets.replace(/:\d+$/, "");
+}
+
+function isPrivateIp(ip: string) {
+  const ipv4 = ip.match(/^(\d{1,3})\.(\d{1,3})\.(\d{1,3})\.(\d{1,3})$/);
+  if (ipv4) {
+    const octets = ipv4.slice(1).map(Number);
+    if (octets.some((octet) => octet < 0 || octet > 255)) return true;
+    const [a, b] = octets;
+    return (
+      a === 0 ||
+      a === 10 ||
+      a === 127 ||
+      (a === 169 && b === 254) ||
+      (a === 172 && b >= 16 && b <= 31) ||
+      (a === 192 && b === 168)
+    );
+  }
+
+  const lower = ip.toLowerCase();
+  return lower === "::1" || lower.startsWith("fc") || lower.startsWith("fd") || lower.startsWith("fe80:");
+}
+
+export function getPublicIpFromRequest(request: Request) {
+  const candidates = [
+    request.headers.get("cf-connecting-ip"),
+    request.headers.get("x-real-ip"),
+    request.headers.get("x-forwarded-for"),
+    request.headers.get("forwarded"),
+  ]
+    .filter(Boolean)
+    .flatMap((value) => value!.split(","))
+    .map((value) => value.replace(/^for=/i, ""))
+    .map(normalizeIpCandidate)
+    .filter((value): value is string => Boolean(value));
+
+  return candidates.find((candidate) => !isPrivateIp(candidate)) ?? null;
+}
+
 function hashEquals(a: string, b: string) {
   const left = Buffer.from(a, "hex");
   const right = Buffer.from(b, "hex");
@@ -103,7 +148,11 @@ async function writeFilesystemSession(record: FilesystemSessionRecord) {
   await writeFile(filesystemSessionPath, JSON.stringify(record, null, 2));
 }
 
-export async function createFilesystemSession(name: string, token: string): Promise<Session> {
+function namesMatch(left: string, right: string) {
+  return left.trim().toLocaleLowerCase("es") === right.trim().toLocaleLowerCase("es");
+}
+
+export async function createFilesystemSession(name: string, token: string, publicIp?: string | null): Promise<Session> {
   const now = new Date().toISOString();
   const session = {
     userId: "local_demo_user",
@@ -111,6 +160,7 @@ export async function createFilesystemSession(name: string, token: string): Prom
     tokenHash: hashRecoveryToken(token),
     tokenIssuedAt: now,
     lastLoginAt: now,
+    lastLoginIp: publicIp ?? null,
   };
   await writeFilesystemSession(session);
   return { userId: session.userId, userName: session.userName };
@@ -124,6 +174,26 @@ export async function getFilesystemSessionFromToken(token: string | undefined): 
   if (!record || !hashEquals(record.tokenHash, tokenHash)) return null;
 
   await writeFilesystemSession({ ...record, lastLoginAt: new Date().toISOString() });
+  return { userId: record.userId, userName: record.userName };
+}
+
+export async function recoverFilesystemSessionByIp(
+  name: string | undefined,
+  publicIp: string,
+  token: string,
+): Promise<Session | null> {
+  const record = await readFilesystemSession();
+  if (!record || record.lastLoginIp !== publicIp) return null;
+  if (name?.trim() && !namesMatch(record.userName, name)) return null;
+
+  const now = new Date().toISOString();
+  await writeFilesystemSession({
+    ...record,
+    tokenHash: hashRecoveryToken(token),
+    tokenIssuedAt: now,
+    lastLoginAt: now,
+    lastLoginIp: publicIp,
+  });
   return { userId: record.userId, userName: record.userName };
 }
 

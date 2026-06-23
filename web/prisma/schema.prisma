@@ -14,6 +14,10 @@ model User {
   tokenHash       String    @unique
   tokenIssuedAt   DateTime  @default(now())
   lastLoginAt     DateTime?
+  isBot           Boolean   @default(false)
+  /// Last public IP observed by the server during create/resume/recovery.
+  /// Used only as a coarse recovery hint; tokens are still rotated and hashed.
+  lastLoginIp     String?
   createdAt       DateTime  @default(now())
   /// Selected player portrait (id from data/player-portraits.json).
   /// Null for legacy users: the client falls back to the hardcoded
@@ -21,6 +25,8 @@ model User {
   portraitAssetId String?
   soldier         Soldier?
   gameSave        GameSave?
+
+  @@index([lastLoginIp, lastLoginAt])
 }
 
 model Soldier {
@@ -47,6 +53,22 @@ model Soldier {
   wounds          ActiveWound[]
   results         MissionResult[]
   trainingLog     TrainingLog[]
+  arenaBotProfile ArenaBotProfile?
+}
+
+model ArenaBotProfile {
+  id               String   @id @default(cuid())
+  soldierId        String   @unique
+  style            String
+  description      String
+  active           Boolean  @default(true)
+  seedOffset       Int
+  lastProgressedAt DateTime @default(now())
+  createdAt        DateTime @default(now())
+  updatedAt        DateTime @updatedAt
+  soldier          Soldier  @relation(fields: [soldierId], references: [id])
+
+  @@index([active, seedOffset])
 }
 
 model GameSave {

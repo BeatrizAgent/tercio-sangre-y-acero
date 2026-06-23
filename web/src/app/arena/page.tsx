@@ -1,14 +1,18 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
+import Image from "next/image";
 import Link from "next/link";
 import { Badge, Card } from "@/components/ui/card";
 import { CharacterPortrait } from "@/components/ui/character-portrait";
 import { PageTransition } from "@/components/game/page-transition";
+import { Skeleton } from "@/components/ui/skeleton";
 import { UiAssetIcon } from "@/components/ui/ui-asset-icon";
 import { VisualOfferGrid } from "@/components/game/visual-offers";
-import { ArenaSkeleton } from "@/components/skeletons/arena-skeleton";
-import { featuredAssetPaths, listArenaOpponents } from "@/lib/game-data";
+import { ArenaSkeleton, RivalCardSkeletonList } from "@/components/skeletons/arena-skeleton";
+import { fightArenaOpponentAction } from "@/lib/actions/combat";
+import { prepareActionGateAction } from "@/lib/actions/gate";
+import { featuredAssetPaths, getAssetPathById } from "@/lib/game-data";
 import { useGameStore } from "@/lib/game-store";
 import { useGameData } from "@/lib/hooks/use-game-data";
 import type { ArenaOpponent } from "@/lib/types";
@@ -18,9 +22,12 @@ export default function ArenaPage() {
   const { status } = useGameData();
   const soldier = useGameStore((state) => state.soldier);
   const arenaResults = useGameStore((state) => state.arenaResults ?? []);
-  const fightArenaOpponent = useGameStore((state) => state.fightArenaOpponent);
+  const hydrateState = useGameStore((state) => state.hydrateState);
   const [notice, setNotice] = useState<{ text: string; ok: boolean } | null>(null);
-  const opponents = listArenaOpponents();
+  const [opponents, setOpponents] = useState<ArenaOpponent[]>([]);
+  const [opponentsLoading, setOpponentsLoading] = useState(true);
+  const [activeDuel, setActiveDuel] = useState<{ opponentId: string; seconds: number; resolving: boolean } | null>(null);
+  const mountedRef = useRef(true);
   const wins = arenaResults.filter((result) => result.success).length;
   const losses = arenaResults.length - wins;
   const canFight = soldier.fatigue < 100;
@@ -34,9 +41,57 @@ export default function ArenaPage() {
     })),
   ].sort((a, b) => b.score - a.score);
 
-  const handleFight = (opponentId: string) => {
-    const result = fightArenaOpponent(opponentId);
-    setNotice({ text: result.message, ok: result.ok });
+  useEffect(() => {
+    mountedRef.current = true;
+    return () => {
+      mountedRef.current = false;
+    };
+  }, []);
+
+  useEffect(() => {
+    if (status !== "ready") return;
+    const controller = new AbortController();
+    async function loadOpponents() {
+      setOpponentsLoading(true);
+      try {
+        const response = await fetch("/api/arena/opponents", { cache: "no-store", signal: controller.signal });
+        const payload = (await response.json()) as { ok?: boolean; opponents?: ArenaOpponent[]; error?: string };
+        if (!response.ok || !payload.ok || !payload.opponents) {
+          throw new Error(payload.error ?? "No se pudo cargar la arena.");
+        }
+        setOpponents(payload.opponents);
+      } catch (error) {
+        if (controller.signal.aborted) return;
+        setNotice({ text: error instanceof Error ? error.message : "No se pudo cargar la arena.", ok: false });
+      } finally {
+        if (!controller.signal.aborted) setOpponentsLoading(false);
+      }
+    }
+    void loadOpponents();
+    return () => controller.abort();
+  }, [status]);
+
+  const handleFight = async (opponentId: string) => {
+    if (activeDuel) return;
+    setNotice(null);
+    try {
+      const gate = await prepareActionGateAction({ kind: "arena", targetId: opponentId });
+      setActiveDuel({ opponentId, seconds: Math.ceil(gate.waitMs / 1000), resolving: false });
+      await runCountdown(gate.waitMs, (seconds) => {
+        if (mountedRef.current) setActiveDuel({ opponentId, seconds, resolving: false });
+      });
+      if (!mountedRef.current) return;
+      setActiveDuel({ opponentId, seconds: 0, resolving: true });
+      const result = await fightArenaOpponentAction({ opponentId, gateToken: gate.token });
+      if (result.ok && result.data?.state) {
+        hydrateState(result.data.state);
+      }
+      setNotice({ text: result.message, ok: result.ok });
+    } catch (error) {
+      setNotice({ text: error instanceof Error ? error.message : "La arena ha rechazado la orden.", ok: false });
+    } finally {
+      if (mountedRef.current) setActiveDuel(null);
+    }
   };
 
   if (status !== "ready") {
@@ -73,7 +128,7 @@ export default function ArenaPage() {
               <p className="text-sm text-text-muted">Duelos locales contra rivales NPC. Sin espera real; solo fatiga, heridas y paga.</p>
             </div>
           </div>
-          <Badge variant={canFight ? "gold" : "danger"}>{canFight ? "Lista para duelo" : "Agotado"}</Badge>
+          <Badge variant={canFight ? "gold" : "danger"}>{activeDuel ? "Preparando duelo" : canFight ? "Lista para duelo" : "Agotado"}</Badge>
         </div>
 
         {notice && (
@@ -103,15 +158,19 @@ export default function ArenaPage() {
         <div className="grid gap-5 xl:grid-cols-[1.35fr_0.65fr]">
           <Card title="Cartel de Rivales" iconId="arena">
             <div className="grid gap-3">
-              {opponents.map((opponent) => {
+              {opponentsLoading && <RivalCardSkeletonList count={3} />}
+              {!opponentsLoading && opponents.map((opponent) => {
                 const isTooTired = soldier.fatigue + opponent.fatigue > 115;
+                const duelState = activeDuel?.opponentId === opponent.id ? activeDuel : null;
                 return (
                   <ArenaOpponentCard
                     key={opponent.id}
                     opponent={opponent}
-                    disabled={!canFight}
+                    disabled={!canFight || Boolean(activeDuel)}
                     fatigueWarning={isTooTired}
                     playerPower={playerPower}
+                    countdown={duelState?.seconds}
+                    resolving={duelState?.resolving ?? false}
                     onFight={() => handleFight(opponent.id)}
                   />
                 );
@@ -218,45 +277,83 @@ function ArenaOpponentCard({
   disabled,
   fatigueWarning,
   playerPower,
+  countdown,
+  resolving,
   onFight,
 }: {
   opponent: ArenaOpponent;
   disabled: boolean;
   fatigueWarning: boolean;
   playerPower: number;
+  countdown?: number;
+  resolving: boolean;
   onFight: () => void;
 }) {
   const diff = opponent.power - playerPower;
   let threatLabel = "Fácil";
   let threatColor = "text-success border-success/30 bg-success/10";
+  let threatIcon: React.ComponentProps<typeof UiAssetIcon>["id"] = "rank";
   if (diff >= 5) {
     threatLabel = "Peligroso";
     threatColor = "text-danger border-danger/30 bg-danger/10";
+    threatIcon = "risk";
   } else if (diff >= 3) {
     threatLabel = "Equilibrado";
     threatColor = "text-warning border-warning/30 bg-warning/10";
+    threatIcon = "shield";
   }
 
+  const portraitSrc = getAssetPathById(opponent.portraitAssetId);
+  const portraitInitials = opponent.name
+    .split(" ")
+    .map((part) => part[0])
+    .join("")
+    .slice(0, 2)
+    .toUpperCase();
+  const [portraitLoaded, setPortraitLoaded] = useState(false);
+
   return (
-    <section className="arena-opponent-row game-panel overflow-hidden p-0">
+    <section
+      className={`game-panel overflow-hidden p-0 transition-colors ${
+        disabled
+          ? "opacity-90"
+          : "hover:border-gold/45 focus-within:border-gold/55"
+      }`}
+    >
       <div className="relative bg-stone-950">
+        <div
+          className="absolute inset-0 bg-[radial-gradient(circle_at_30%_20%,rgba(201,162,79,0.08),transparent_55%),linear-gradient(135deg,#1a1612_0%,#0c0a08_100%)]"
+          aria-hidden="true"
+        />
         <img
           src={featuredAssetPaths.tavernTable}
           alt=""
           className="absolute inset-0 h-full w-full object-cover opacity-35 scene-image-realism"
+          loading="lazy"
+          decoding="async"
           draggable={false}
         />
         <div className="absolute inset-0 bg-linear-to-r from-background/95 via-background/80 to-background/45" />
         <div className="relative z-10 grid gap-3 p-3 md:grid-cols-[220px_minmax(0,1fr)] md:p-4">
-          <div className="scene-frame relative flex min-h-56 justify-center overflow-hidden rounded-xs border border-iron bg-stone-950">
-            <CharacterPortrait
-              assetId={opponent.portraitAssetId}
-              name={opponent.name}
-              size="xl"
-              rounded="xs"
-              className="border-0 shadow-none"
-            />
-            <div className="pointer-events-none absolute inset-x-0 bottom-0 bg-linear-to-t from-background/95 to-transparent p-2">
+          <div className="scene-frame relative h-64 w-full overflow-hidden rounded-xs border border-iron bg-stone-950 md:h-full">
+            {!portraitLoaded && <Skeleton className="absolute inset-0" decorative />}
+            {portraitSrc ? (
+              <Image
+                src={portraitSrc}
+                alt={opponent.name}
+                fill
+                sizes="(min-width: 768px) 220px, 100vw"
+                className={`object-cover object-top transition-opacity duration-300 ${portraitLoaded ? "opacity-100" : "opacity-0"}`}
+                onLoad={() => setPortraitLoaded(true)}
+                onError={() => setPortraitLoaded(true)}
+                priority={false}
+              />
+            ) : (
+              <div className="flex h-full w-full items-center justify-center font-mono text-2xl font-bold text-text-muted">
+                {portraitInitials}
+              </div>
+            )}
+            <div className="pointer-events-none absolute inset-x-0 bottom-0 bg-linear-to-t from-background/95 via-background/70 to-transparent p-2 pt-6">
               <p className="font-mono text-[10px] font-bold uppercase tracking-[0.18em] text-gold-soft/85">{opponent.rank}</p>
             </div>
           </div>
@@ -267,9 +364,21 @@ function ArenaOpponentCard({
                 <h2 className="font-cinzel text-xl font-extrabold uppercase tracking-wider text-gold md:text-2xl">
                   {opponent.name}
                 </h2>
-                <span className={`inline-block rounded-xs border px-2 py-0.5 font-mono text-[9px] uppercase tracking-wider ${threatColor}`}>
+                <span
+                  className={`inline-flex items-center gap-1 rounded-xs border px-2 py-0.5 font-mono text-[9px] font-bold uppercase tracking-wider ${threatColor}`}
+                  aria-label={`Amenaza: ${threatLabel}`}
+                >
+                  <UiAssetIcon id={threatIcon} label="" className="h-3 w-3" />
                   {threatLabel}
                 </span>
+                {fatigueWarning && (
+                  <span
+                    className="inline-flex items-center gap-1 rounded-xs border border-warning/45 bg-warning/12 px-2 py-0.5 font-mono text-[9px] font-bold uppercase tracking-wider text-warning"
+                    title={`Duelo costoso: este rival suma +${opponent.fatigue} de fatiga`}
+                  >
+                    Cansancio alto
+                  </span>
+                )}
               </div>
               <p className="mt-1 text-sm text-text-muted">{opponent.description}</p>
               <p className="mt-2 font-mono text-[11px] uppercase tracking-wider text-gold-soft/80">{opponent.style}</p>
@@ -277,10 +386,10 @@ function ArenaOpponentCard({
 
             <VisualOfferGrid
               offers={[
+                { id: "level", iconId: "rank", label: "Nivel", value: opponent.level, tooltip: "Nivel estimado del rival" },
                 { id: "power", iconId: "risk", label: "Poder", value: opponent.power, tooltip: "Poder del rival" },
                 { id: "fatigue", iconId: "fatigue", label: "Fatiga", value: `+${opponent.fatigue}`, tooltip: fatigueWarning ? "Fatiga alta tras el duelo" : "Coste de fatiga" },
                 { id: "coins", iconId: "coins", label: "Botin", value: `+${opponent.rewards.coins}`, tooltip: "Paga posible" },
-                { id: "honor", iconId: "honor", label: "Honor", value: `+${opponent.rewards.honor}`, tooltip: "Honor posible" },
               ]}
             />
 
@@ -289,15 +398,39 @@ function ArenaOpponentCard({
               disabled={disabled}
               onClick={onFight}
               className="blood-button inline-flex min-h-12 items-center justify-center gap-2 px-4 py-2 text-xs disabled:opacity-40"
+              aria-busy={resolving || Boolean(countdown)}
             >
-              <UiAssetIcon id="arena" label="" className="h-5 w-5" />
-              Batirse
+              {resolving || countdown ? (
+                <span
+                  className="h-3 w-3 animate-spin rounded-full border-2 border-current border-t-transparent"
+                  aria-hidden="true"
+                />
+              ) : (
+                <UiAssetIcon id="arena" label="" className="h-5 w-5" />
+              )}
+              {resolving ? "Resolviendo..." : countdown ? `Preparando ${countdown}s` : "Batirse"}
             </button>
           </div>
         </div>
       </div>
     </section>
   );
+}
+
+function runCountdown(waitMs: number, onTick: (seconds: number) => void) {
+  return new Promise<void>((resolve) => {
+    const startedAt = Date.now();
+    const tick = () => {
+      const remainingMs = Math.max(0, waitMs - (Date.now() - startedAt));
+      onTick(Math.ceil(remainingMs / 1000));
+      if (remainingMs <= 0) {
+        window.clearInterval(timer);
+        resolve();
+      }
+    };
+    const timer = window.setInterval(tick, 250);
+    tick();
+  });
 }
 
 function ArenaStat({ icon, label, value, danger = false }: { icon: React.ComponentProps<typeof UiAssetIcon>["id"]; label: string; value: string; danger?: boolean }) {

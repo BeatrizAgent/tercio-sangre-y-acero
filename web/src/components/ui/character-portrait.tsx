@@ -8,8 +8,9 @@
 
 "use client";
 
-import React from "react";
+import React, { useState } from "react";
 import Image from "next/image";
+import { Skeleton } from "@/components/ui/skeleton";
 import { getAssetPathById } from "@/lib/game-data";
 
 export type PortraitSize = "xs" | "sm" | "md" | "lg" | "xl";
@@ -54,6 +55,8 @@ export function CharacterPortrait({
   const src = getAssetPathById(assetId);
   const radiusClass = rounded === "full" ? "rounded-full" : `rounded-${rounded}`;
   const playerBadgeText = size === "xs" || size === "sm" ? "text-[7px]" : "text-[8px]";
+  const [loaded, setLoaded] = useState(false);
+  const showSkeleton = Boolean(src) && !loaded;
 
   return (
     <div
@@ -61,24 +64,30 @@ export function CharacterPortrait({
       style={{ width: px, height: px }}
     >
       {src ? (
-        <Image
-          src={src}
-          alt={name}
-          width={px}
-          height={px}
-          className="absolute inset-0 h-full w-full object-cover object-top transition-transform duration-300 hover:scale-[1.02]"
-          draggable={false}
-          onError={
-            onErrorHide
-              ? (event) => {
+        <>
+          {showSkeleton && <Skeleton className="absolute inset-0" decorative />}
+          <Image
+            src={src}
+            alt={name}
+            width={px}
+            height={px}
+            loading="eager"
+            className={`absolute inset-0 h-full w-full object-cover object-top transition-[transform,opacity] duration-300 hover:scale-[1.02] ${loaded ? "opacity-100" : "opacity-0"}`}
+            draggable={false}
+            onLoad={() => setLoaded(true)}
+            onError={
+              (event) => {
+                if (onErrorHide) {
                   event.currentTarget.style.display = "none";
                 }
-              : undefined
-          }
-        />
+                setLoaded(true);
+              }
+            }
+          />
+        </>
       ) : (
         <div
-          className="flex h-full w-full items-center justify-center font-mono text-[10px] text-stone-500"
+          className="flex h-full w-full items-center justify-center font-mono text-[10px] text-text-muted"
           aria-label={name}
         >
           {initialsFor(name)}

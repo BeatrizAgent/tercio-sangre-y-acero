@@ -4,10 +4,13 @@ import { PrismaPg } from "@prisma/adapter-pg";
 import { createHash } from "node:crypto";
 import { createInitialState } from "../src/lib/demo-store";
 import { characterNames } from "../src/lib/data/character-names";
+import { getNextRank } from "../src/lib/data/ranks";
 import { recruitmentCandidates } from "../src/lib/data/recruitment";
 import { churchInventory, shopInventory } from "../src/lib/data/shop";
 import { spriteSetDefinitions } from "../src/lib/data/characters";
 import { normalizeCharacterName, validateCharacterNamePools } from "../src/lib/domain/names";
+import { buildArenaBotStats, getArenaBotTargetLevel, xpForArenaBotLevel } from "../src/lib/domain/arena-bots";
+import { getSoldierLevel } from "../src/lib/domain/recruitment";
 import {
   catalogAssets,
   catalogCharacters,
@@ -27,12 +30,35 @@ const prisma = new PrismaClient({ adapter });
 
 const DEMO_TOKEN_HASH = createHash("sha256").update("tercio_demo_seed_token", "utf8").digest("hex");
 
+const ARENA_BOT_TEMPLATES = [
+  ["bot_alonso_barro", "Alonso del Barro", -3, "Pica corta, botas pesadas.", "Aprendió a ganar cansando al rival.", "asset_enemy_bandolero_001"],
+  ["bot_mateo_cuerda", "Mateo Cuerda", -2, "Guardia baja y cuchillada breve.", "Viejo mozo de cuerda con más cicatrices que dientes.", "asset_enemy_desertor_001"],
+  ["bot_rodrigo_sombra", "Rodrigo Sombra", -2, "Ropera paciente.", "Nunca entra primero; espera el error.", "asset_enemy_oficial_001"],
+  ["bot_iñigo_tizon", "Iñigo Tizón", -1, "Arcabuz descargado y golpe de culata.", "Huele a pólvora vieja y vino agrio.", "asset_enemy_bandolero_001"],
+  ["bot_garcia_pardo", "García Pardo", -1, "Pica al pecho, paso corto.", "Soldado sin paga que pelea por cena.", "asset_enemy_oficial_001"],
+  ["bot_lope_fierro", "Lope Fierro", 0, "Espada recta, hombro firme.", "No presume; cobra y vuelve al banco.", "asset_enemy_desertor_001"],
+  ["bot_martin_seco", "Martín Seco", 0, "Tajo seco al antebrazo.", "Pelea como quien parte leña mojada.", "asset_enemy_bandolero_001"],
+  ["bot_sancho_niebla", "Sancho Niebla", 1, "Finta lenta, remate rápido.", "Veterano de guardias nocturnas.", "asset_enemy_oficial_001"],
+  ["bot_baltasar_rojo", "Baltasar Rojo", 1, "Carga frontal.", "Rompe nariz antes de saludar.", "asset_enemy_desertor_001"],
+  ["bot_diego_picas", "Diego Picas", 2, "Pica larga y disciplina.", "Tiene manos de instructor y humor de verdugo.", "asset_enemy_oficial_001"],
+  ["bot_hernan_cal", "Hernán Cal", 2, "Rodela alta.", "Aguanta más golpes de los que conviene.", "asset_enemy_bandolero_001"],
+  ["bot_capitan_mudo", "Capitán Mudo", 3, "Sin prisa, sin palabra.", "Oficial arruinado, peligro entero.", "asset_enemy_desertor_001"],
+] as const;
+
 function json(value: unknown): Prisma.InputJsonValue {
   return value as Prisma.InputJsonValue;
 }
 
 function assetPath(publicPath: string) {
   return `GPT-ASSETS/${publicPath.replace(/^\/assets\/gpt-bank\//, "")}`;
+}
+
+function botTokenHash(id: string) {
+  return createHash("sha256").update(`arena_bot:${id}`, "utf8").digest("hex");
+}
+
+function botRankId(xp: number) {
+  return getNextRank(xp, 0)?.id ?? "bisono";
 }
 
 async function seedCharacterNames() {
@@ -453,10 +479,75 @@ async function seedDemoSave() {
   });
 }
 
+async function seedArenaBots() {
+  const realSoldiers = await prisma.soldier.findMany({
+    where: { user: { isBot: false } },
+    select: { xp: true },
+  });
+  const averageRealLevel = realSoldiers.length > 0
+    ? Math.round(realSoldiers.reduce((sum, soldier) => sum + getSoldierLevel(soldier.xp), 0) / realSoldiers.length)
+    : 1;
+
+  for (const [id, name, seedOffset, style, description, portraitAssetId] of ARENA_BOT_TEMPLATES) {
+    const targetLevel = getArenaBotTargetLevel({ averageRealLevel, seedOffset });
+    const xp = xpForArenaBotLevel(targetLevel);
+    const stats = buildArenaBotStats({ targetLevel, seedOffset });
+    const user = await prisma.user.upsert({
+      where: { email: `${id}@arena.tercio.local` },
+      update: { name, isBot: true, portraitAssetId },
+      create: {
+        email: `${id}@arena.tercio.local`,
+        name,
+        tokenHash: botTokenHash(id),
+        isBot: true,
+        portraitAssetId,
+      },
+    });
+
+    const soldier = await prisma.soldier.upsert({
+      where: { userId: user.id },
+      update: { name, rank: botRankId(xp), xp, fatigue: 0, portraitAssetId },
+      create: {
+        userId: user.id,
+        name,
+        rank: botRankId(xp),
+        coins: 0,
+        honor: 0,
+        xp,
+        fatigue: 0,
+        unpaidWages: 0,
+        reputation: 0,
+        corruption: 0,
+        banMissionsLeft: 0,
+        portraitAssetId,
+      },
+    });
+
+    await prisma.soldierStats.upsert({
+      where: { soldierId: soldier.id },
+      update: stats,
+      create: { soldierId: soldier.id, ...stats },
+    });
+
+    await prisma.equipment.upsert({
+      where: { soldierId: soldier.id },
+      update: {},
+      create: { soldierId: soldier.id },
+    });
+
+    await prisma.arenaBotProfile.upsert({
+      where: { soldierId: soldier.id },
+      update: { style, description, active: true, seedOffset, lastProgressedAt: new Date() },
+      create: { soldierId: soldier.id, style, description, active: true, seedOffset },
+    });
+  }
+}
+
 async function main() {
   await seedCharacterNames();
   await seedCatalog();
   await seedDemoSave();
+  await seedArenaBots();
 }
 
 main()

@@ -5,7 +5,7 @@ import { getArenaOpponent } from "../data/arena";
 import { getNextRank } from "../data/ranks";
 import { getEquipmentBonuses } from "./equipment";
 import { fail, ok, type ActionResult } from "./result";
-import type { ArenaResult, GameState } from "../types";
+import type { ArenaOpponent, ArenaResult, GameState } from "../types";
 
 export function fightArenaOpponentInState(
   state: GameState,
@@ -13,6 +13,13 @@ export function fightArenaOpponentInState(
 ): { next: GameState; result: ActionResult<{ resultId?: string }> } {
   const opponent = getArenaOpponent(opponentId);
   if (!opponent) return { next: state, result: fail("Rival de arena desconocido.") };
+  return fightArenaOpponentInStateWithOpponent(state, opponent);
+}
+
+export function fightArenaOpponentInStateWithOpponent(
+  state: GameState,
+  opponent: ArenaOpponent,
+): { next: GameState; result: ActionResult<{ resultId?: string }> } {
   if (state.soldier.fatigue >= 100) {
     return { next: state, result: fail("Diego está demasiado agotado para batirse en la arena.") };
   }

@@ -3,6 +3,7 @@ import {
   buildSessionCookie,
   canUseFilesystemSessionFallback,
   getFilesystemSessionFromToken,
+  getPublicIpFromRequest,
   getSessionFromToken,
   hashRecoveryToken,
   isRecoveryTokenFormat,
@@ -27,10 +28,11 @@ export async function POST(request: Request) {
       return jsonResponse({ ok: false, error: "Token invalido." }, { status: 401 });
     }
 
+    const publicIp = getPublicIpFromRequest(request);
     try {
       await getDb().user.update({
         where: { tokenHash: hashRecoveryToken(token) },
-        data: { lastLoginAt: new Date() },
+        data: { lastLoginAt: new Date(), lastLoginIp: publicIp },
       });
     } catch (error) {
       if (!canUseFilesystemSessionFallback()) throw error;

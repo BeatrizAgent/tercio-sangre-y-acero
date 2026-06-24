@@ -25,4 +25,4 @@ RUN pnpm build
 
 EXPOSE 3000
 
-CMD ["sh", "-c", "pnpm exec prisma migrate deploy && pnpm db:seed && pnpm start"]
+CMD ["sh", "-c", "pnpm exec prisma migrate deploy && (pnpm db:seed || echo 'Seed failed; continuing startup') && pnpm start"]

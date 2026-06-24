@@ -1,0 +1,3 @@
+ALTER TABLE "User" ADD COLUMN IF NOT EXISTS "portraitAssetId" TEXT;
+
+ALTER TABLE "Soldier" ADD COLUMN IF NOT EXISTS "portraitAssetId" TEXT;

@@ -270,6 +270,8 @@ export type ItemDefinitionWhereInput = {
   assetId?: Prisma.StringNullableFilter<"ItemDefinition"> | string | null
   inventory?: Prisma.InventoryItemListRelationFilter
   shopItems?: Prisma.ShopItemListRelationFilter
+  shopRotations?: Prisma.ShopRotationListRelationFilter
+  auctionListings?: Prisma.AuctionListingListRelationFilter
 }
 
 export type ItemDefinitionOrderByWithRelationInput = {
@@ -288,6 +290,8 @@ export type ItemDefinitionOrderByWithRelationInput = {
   assetId?: Prisma.SortOrderInput | Prisma.SortOrder
   inventory?: Prisma.InventoryItemOrderByRelationAggregateInput
   shopItems?: Prisma.ShopItemOrderByRelationAggregateInput
+  shopRotations?: Prisma.ShopRotationOrderByRelationAggregateInput
+  auctionListings?: Prisma.AuctionListingOrderByRelationAggregateInput
 }
 
 export type ItemDefinitionWhereUniqueInput = Prisma.AtLeast<{
@@ -309,6 +313,8 @@ export type ItemDefinitionWhereUniqueInput = Prisma.AtLeast<{
   assetId?: Prisma.StringNullableFilter<"ItemDefinition"> | string | null
   inventory?: Prisma.InventoryItemListRelationFilter
   shopItems?: Prisma.ShopItemListRelationFilter
+  shopRotations?: Prisma.ShopRotationListRelationFilter
+  auctionListings?: Prisma.AuctionListingListRelationFilter
 }, "id">
 
 export type ItemDefinitionOrderByWithAggregationInput = {
@@ -367,6 +373,8 @@ export type ItemDefinitionCreateInput = {
   assetId?: string | null
   inventory?: Prisma.InventoryItemCreateNestedManyWithoutItemInput
   shopItems?: Prisma.ShopItemCreateNestedManyWithoutItemInput
+  shopRotations?: Prisma.ShopRotationCreateNestedManyWithoutItemInput
+  auctionListings?: Prisma.AuctionListingCreateNestedManyWithoutItemInput
 }
 
 export type ItemDefinitionUncheckedCreateInput = {
@@ -385,6 +393,8 @@ export type ItemDefinitionUncheckedCreateInput = {
   assetId?: string | null
   inventory?: Prisma.InventoryItemUncheckedCreateNestedManyWithoutItemInput
   shopItems?: Prisma.ShopItemUncheckedCreateNestedManyWithoutItemInput
+  shopRotations?: Prisma.ShopRotationUncheckedCreateNestedManyWithoutItemInput
+  auctionListings?: Prisma.AuctionListingUncheckedCreateNestedManyWithoutItemInput
 }
 
 export type ItemDefinitionUpdateInput = {
@@ -403,6 +413,8 @@ export type ItemDefinitionUpdateInput = {
   assetId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   inventory?: Prisma.InventoryItemUpdateManyWithoutItemNestedInput
   shopItems?: Prisma.ShopItemUpdateManyWithoutItemNestedInput
+  shopRotations?: Prisma.ShopRotationUpdateManyWithoutItemNestedInput
+  auctionListings?: Prisma.AuctionListingUpdateManyWithoutItemNestedInput
 }
 
 export type ItemDefinitionUncheckedUpdateInput = {
@@ -421,6 +433,8 @@ export type ItemDefinitionUncheckedUpdateInput = {
   assetId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   inventory?: Prisma.InventoryItemUncheckedUpdateManyWithoutItemNestedInput
   shopItems?: Prisma.ShopItemUncheckedUpdateManyWithoutItemNestedInput
+  shopRotations?: Prisma.ShopRotationUncheckedUpdateManyWithoutItemNestedInput
+  auctionListings?: Prisma.AuctionListingUncheckedUpdateManyWithoutItemNestedInput
 }
 
 export type ItemDefinitionCreateManyInput = {
@@ -562,6 +576,34 @@ export type ItemDefinitionUpdateOneRequiredWithoutShopItemsNestedInput = {
   update?: Prisma.XOR<Prisma.XOR<Prisma.ItemDefinitionUpdateToOneWithWhereWithoutShopItemsInput, Prisma.ItemDefinitionUpdateWithoutShopItemsInput>, Prisma.ItemDefinitionUncheckedUpdateWithoutShopItemsInput>
 }
 
+export type ItemDefinitionCreateNestedOneWithoutShopRotationsInput = {
+  create?: Prisma.XOR<Prisma.ItemDefinitionCreateWithoutShopRotationsInput, Prisma.ItemDefinitionUncheckedCreateWithoutShopRotationsInput>
+  connectOrCreate?: Prisma.ItemDefinitionCreateOrConnectWithoutShopRotationsInput
+  connect?: Prisma.ItemDefinitionWhereUniqueInput
+}
+
+export type ItemDefinitionUpdateOneRequiredWithoutShopRotationsNestedInput = {
+  create?: Prisma.XOR<Prisma.ItemDefinitionCreateWithoutShopRotationsInput, Prisma.ItemDefinitionUncheckedCreateWithoutShopRotationsInput>
+  connectOrCreate?: Prisma.ItemDefinitionCreateOrConnectWithoutShopRotationsInput
+  upsert?: Prisma.ItemDefinitionUpsertWithoutShopRotationsInput
+  connect?: Prisma.ItemDefinitionWhereUniqueInput
+  update?: Prisma.XOR<Prisma.XOR<Prisma.ItemDefinitionUpdateToOneWithWhereWithoutShopRotationsInput, Prisma.ItemDefinitionUpdateWithoutShopRotationsInput>, Prisma.ItemDefinitionUncheckedUpdateWithoutShopRotationsInput>
+}
+
+export type ItemDefinitionCreateNestedOneWithoutAuctionListingsInput = {
+  create?: Prisma.XOR<Prisma.ItemDefinitionCreateWithoutAuctionListingsInput, Prisma.ItemDefinitionUncheckedCreateWithoutAuctionListingsInput>
+  connectOrCreate?: Prisma.ItemDefinitionCreateOrConnectWithoutAuctionListingsInput
+  connect?: Prisma.ItemDefinitionWhereUniqueInput
+}
+
+export type ItemDefinitionUpdateOneRequiredWithoutAuctionListingsNestedInput = {
+  create?: Prisma.XOR<Prisma.ItemDefinitionCreateWithoutAuctionListingsInput, Prisma.ItemDefinitionUncheckedCreateWithoutAuctionListingsInput>
+  connectOrCreate?: Prisma.ItemDefinitionCreateOrConnectWithoutAuctionListingsInput
+  upsert?: Prisma.ItemDefinitionUpsertWithoutAuctionListingsInput
+  connect?: Prisma.ItemDefinitionWhereUniqueInput
+  update?: Prisma.XOR<Prisma.XOR<Prisma.ItemDefinitionUpdateToOneWithWhereWithoutAuctionListingsInput, Prisma.ItemDefinitionUpdateWithoutAuctionListingsInput>, Prisma.ItemDefinitionUncheckedUpdateWithoutAuctionListingsInput>
+}
+
 export type ItemDefinitionCreateWithoutInventoryInput = {
   id: string
   name: string
@@ -577,6 +619,8 @@ export type ItemDefinitionCreateWithoutInventoryInput = {
   requirements?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   assetId?: string | null
   shopItems?: Prisma.ShopItemCreateNestedManyWithoutItemInput
+  shopRotations?: Prisma.ShopRotationCreateNestedManyWithoutItemInput
+  auctionListings?: Prisma.AuctionListingCreateNestedManyWithoutItemInput
 }
 
 export type ItemDefinitionUncheckedCreateWithoutInventoryInput = {
@@ -594,6 +638,8 @@ export type ItemDefinitionUncheckedCreateWithoutInventoryInput = {
   requirements?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   assetId?: string | null
   shopItems?: Prisma.ShopItemUncheckedCreateNestedManyWithoutItemInput
+  shopRotations?: Prisma.ShopRotationUncheckedCreateNestedManyWithoutItemInput
+  auctionListings?: Prisma.AuctionListingUncheckedCreateNestedManyWithoutItemInput
 }
 
 export type ItemDefinitionCreateOrConnectWithoutInventoryInput = {
@@ -627,6 +673,8 @@ export type ItemDefinitionUpdateWithoutInventoryInput = {
   requirements?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   assetId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   shopItems?: Prisma.ShopItemUpdateManyWithoutItemNestedInput
+  shopRotations?: Prisma.ShopRotationUpdateManyWithoutItemNestedInput
+  auctionListings?: Prisma.AuctionListingUpdateManyWithoutItemNestedInput
 }
 
 export type ItemDefinitionUncheckedUpdateWithoutInventoryInput = {
@@ -644,6 +692,8 @@ export type ItemDefinitionUncheckedUpdateWithoutInventoryInput = {
   requirements?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   assetId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   shopItems?: Prisma.ShopItemUncheckedUpdateManyWithoutItemNestedInput
+  shopRotations?: Prisma.ShopRotationUncheckedUpdateManyWithoutItemNestedInput
+  auctionListings?: Prisma.AuctionListingUncheckedUpdateManyWithoutItemNestedInput
 }
 
 export type ItemDefinitionCreateWithoutShopItemsInput = {
@@ -661,6 +711,8 @@ export type ItemDefinitionCreateWithoutShopItemsInput = {
   requirements?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   assetId?: string | null
   inventory?: Prisma.InventoryItemCreateNestedManyWithoutItemInput
+  shopRotations?: Prisma.ShopRotationCreateNestedManyWithoutItemInput
+  auctionListings?: Prisma.AuctionListingCreateNestedManyWithoutItemInput
 }
 
 export type ItemDefinitionUncheckedCreateWithoutShopItemsInput = {
@@ -678,6 +730,8 @@ export type ItemDefinitionUncheckedCreateWithoutShopItemsInput = {
   requirements?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   assetId?: string | null
   inventory?: Prisma.InventoryItemUncheckedCreateNestedManyWithoutItemInput
+  shopRotations?: Prisma.ShopRotationUncheckedCreateNestedManyWithoutItemInput
+  auctionListings?: Prisma.AuctionListingUncheckedCreateNestedManyWithoutItemInput
 }
 
 export type ItemDefinitionCreateOrConnectWithoutShopItemsInput = {
@@ -711,6 +765,8 @@ export type ItemDefinitionUpdateWithoutShopItemsInput = {
   requirements?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   assetId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   inventory?: Prisma.InventoryItemUpdateManyWithoutItemNestedInput
+  shopRotations?: Prisma.ShopRotationUpdateManyWithoutItemNestedInput
+  auctionListings?: Prisma.AuctionListingUpdateManyWithoutItemNestedInput
 }
 
 export type ItemDefinitionUncheckedUpdateWithoutShopItemsInput = {
@@ -728,6 +784,192 @@ export type ItemDefinitionUncheckedUpdateWithoutShopItemsInput = {
   requirements?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   assetId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   inventory?: Prisma.InventoryItemUncheckedUpdateManyWithoutItemNestedInput
+  shopRotations?: Prisma.ShopRotationUncheckedUpdateManyWithoutItemNestedInput
+  auctionListings?: Prisma.AuctionListingUncheckedUpdateManyWithoutItemNestedInput
+}
+
+export type ItemDefinitionCreateWithoutShopRotationsInput = {
+  id: string
+  name: string
+  category: string
+  slot: string
+  footprint: Prisma.JsonNullValueInput | runtime.InputJsonValue
+  value: number
+  effects: Prisma.JsonNullValueInput | runtime.InputJsonValue
+  description: string
+  rarity?: string | null
+  tier?: number | null
+  passives?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  requirements?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  assetId?: string | null
+  inventory?: Prisma.InventoryItemCreateNestedManyWithoutItemInput
+  shopItems?: Prisma.ShopItemCreateNestedManyWithoutItemInput
+  auctionListings?: Prisma.AuctionListingCreateNestedManyWithoutItemInput
+}
+
+export type ItemDefinitionUncheckedCreateWithoutShopRotationsInput = {
+  id: string
+  name: string
+  category: string
+  slot: string
+  footprint: Prisma.JsonNullValueInput | runtime.InputJsonValue
+  value: number
+  effects: Prisma.JsonNullValueInput | runtime.InputJsonValue
+  description: string
+  rarity?: string | null
+  tier?: number | null
+  passives?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  requirements?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  assetId?: string | null
+  inventory?: Prisma.InventoryItemUncheckedCreateNestedManyWithoutItemInput
+  shopItems?: Prisma.ShopItemUncheckedCreateNestedManyWithoutItemInput
+  auctionListings?: Prisma.AuctionListingUncheckedCreateNestedManyWithoutItemInput
+}
+
+export type ItemDefinitionCreateOrConnectWithoutShopRotationsInput = {
+  where: Prisma.ItemDefinitionWhereUniqueInput
+  create: Prisma.XOR<Prisma.ItemDefinitionCreateWithoutShopRotationsInput, Prisma.ItemDefinitionUncheckedCreateWithoutShopRotationsInput>
+}
+
+export type ItemDefinitionUpsertWithoutShopRotationsInput = {
+  update: Prisma.XOR<Prisma.ItemDefinitionUpdateWithoutShopRotationsInput, Prisma.ItemDefinitionUncheckedUpdateWithoutShopRotationsInput>
+  create: Prisma.XOR<Prisma.ItemDefinitionCreateWithoutShopRotationsInput, Prisma.ItemDefinitionUncheckedCreateWithoutShopRotationsInput>
+  where?: Prisma.ItemDefinitionWhereInput
+}
+
+export type ItemDefinitionUpdateToOneWithWhereWithoutShopRotationsInput = {
+  where?: Prisma.ItemDefinitionWhereInput
+  data: Prisma.XOR<Prisma.ItemDefinitionUpdateWithoutShopRotationsInput, Prisma.ItemDefinitionUncheckedUpdateWithoutShopRotationsInput>
+}
+
+export type ItemDefinitionUpdateWithoutShopRotationsInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  name?: Prisma.StringFieldUpdateOperationsInput | string
+  category?: Prisma.StringFieldUpdateOperationsInput | string
+  slot?: Prisma.StringFieldUpdateOperationsInput | string
+  footprint?: Prisma.JsonNullValueInput | runtime.InputJsonValue
+  value?: Prisma.IntFieldUpdateOperationsInput | number
+  effects?: Prisma.JsonNullValueInput | runtime.InputJsonValue
+  description?: Prisma.StringFieldUpdateOperationsInput | string
+  rarity?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  tier?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  passives?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  requirements?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  assetId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  inventory?: Prisma.InventoryItemUpdateManyWithoutItemNestedInput
+  shopItems?: Prisma.ShopItemUpdateManyWithoutItemNestedInput
+  auctionListings?: Prisma.AuctionListingUpdateManyWithoutItemNestedInput
+}
+
+export type ItemDefinitionUncheckedUpdateWithoutShopRotationsInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  name?: Prisma.StringFieldUpdateOperationsInput | string
+  category?: Prisma.StringFieldUpdateOperationsInput | string
+  slot?: Prisma.StringFieldUpdateOperationsInput | string
+  footprint?: Prisma.JsonNullValueInput | runtime.InputJsonValue
+  value?: Prisma.IntFieldUpdateOperationsInput | number
+  effects?: Prisma.JsonNullValueInput | runtime.InputJsonValue
+  description?: Prisma.StringFieldUpdateOperationsInput | string
+  rarity?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  tier?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  passives?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  requirements?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  assetId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  inventory?: Prisma.InventoryItemUncheckedUpdateManyWithoutItemNestedInput
+  shopItems?: Prisma.ShopItemUncheckedUpdateManyWithoutItemNestedInput
+  auctionListings?: Prisma.AuctionListingUncheckedUpdateManyWithoutItemNestedInput
+}
+
+export type ItemDefinitionCreateWithoutAuctionListingsInput = {
+  id: string
+  name: string
+  category: string
+  slot: string
+  footprint: Prisma.JsonNullValueInput | runtime.InputJsonValue
+  value: number
+  effects: Prisma.JsonNullValueInput | runtime.InputJsonValue
+  description: string
+  rarity?: string | null
+  tier?: number | null
+  passives?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  requirements?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  assetId?: string | null
+  inventory?: Prisma.InventoryItemCreateNestedManyWithoutItemInput
+  shopItems?: Prisma.ShopItemCreateNestedManyWithoutItemInput
+  shopRotations?: Prisma.ShopRotationCreateNestedManyWithoutItemInput
+}
+
+export type ItemDefinitionUncheckedCreateWithoutAuctionListingsInput = {
+  id: string
+  name: string
+  category: string
+  slot: string
+  footprint: Prisma.JsonNullValueInput | runtime.InputJsonValue
+  value: number
+  effects: Prisma.JsonNullValueInput | runtime.InputJsonValue
+  description: string
+  rarity?: string | null
+  tier?: number | null
+  passives?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  requirements?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  assetId?: string | null
+  inventory?: Prisma.InventoryItemUncheckedCreateNestedManyWithoutItemInput
+  shopItems?: Prisma.ShopItemUncheckedCreateNestedManyWithoutItemInput
+  shopRotations?: Prisma.ShopRotationUncheckedCreateNestedManyWithoutItemInput
+}
+
+export type ItemDefinitionCreateOrConnectWithoutAuctionListingsInput = {
+  where: Prisma.ItemDefinitionWhereUniqueInput
+  create: Prisma.XOR<Prisma.ItemDefinitionCreateWithoutAuctionListingsInput, Prisma.ItemDefinitionUncheckedCreateWithoutAuctionListingsInput>
+}
+
+export type ItemDefinitionUpsertWithoutAuctionListingsInput = {
+  update: Prisma.XOR<Prisma.ItemDefinitionUpdateWithoutAuctionListingsInput, Prisma.ItemDefinitionUncheckedUpdateWithoutAuctionListingsInput>
+  create: Prisma.XOR<Prisma.ItemDefinitionCreateWithoutAuctionListingsInput, Prisma.ItemDefinitionUncheckedCreateWithoutAuctionListingsInput>
+  where?: Prisma.ItemDefinitionWhereInput
+}
+
+export type ItemDefinitionUpdateToOneWithWhereWithoutAuctionListingsInput = {
+  where?: Prisma.ItemDefinitionWhereInput
+  data: Prisma.XOR<Prisma.ItemDefinitionUpdateWithoutAuctionListingsInput, Prisma.ItemDefinitionUncheckedUpdateWithoutAuctionListingsInput>
+}
+
+export type ItemDefinitionUpdateWithoutAuctionListingsInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  name?: Prisma.StringFieldUpdateOperationsInput | string
+  category?: Prisma.StringFieldUpdateOperationsInput | string
+  slot?: Prisma.StringFieldUpdateOperationsInput | string
+  footprint?: Prisma.JsonNullValueInput | runtime.InputJsonValue
+  value?: Prisma.IntFieldUpdateOperationsInput | number
+  effects?: Prisma.JsonNullValueInput | runtime.InputJsonValue
+  description?: Prisma.StringFieldUpdateOperationsInput | string
+  rarity?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  tier?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  passives?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  requirements?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  assetId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  inventory?: Prisma.InventoryItemUpdateManyWithoutItemNestedInput
+  shopItems?: Prisma.ShopItemUpdateManyWithoutItemNestedInput
+  shopRotations?: Prisma.ShopRotationUpdateManyWithoutItemNestedInput
+}
+
+export type ItemDefinitionUncheckedUpdateWithoutAuctionListingsInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  name?: Prisma.StringFieldUpdateOperationsInput | string
+  category?: Prisma.StringFieldUpdateOperationsInput | string
+  slot?: Prisma.StringFieldUpdateOperationsInput | string
+  footprint?: Prisma.JsonNullValueInput | runtime.InputJsonValue
+  value?: Prisma.IntFieldUpdateOperationsInput | number
+  effects?: Prisma.JsonNullValueInput | runtime.InputJsonValue
+  description?: Prisma.StringFieldUpdateOperationsInput | string
+  rarity?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  tier?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  passives?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  requirements?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  assetId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  inventory?: Prisma.InventoryItemUncheckedUpdateManyWithoutItemNestedInput
+  shopItems?: Prisma.ShopItemUncheckedUpdateManyWithoutItemNestedInput
+  shopRotations?: Prisma.ShopRotationUncheckedUpdateManyWithoutItemNestedInput
 }
 
 
@@ -738,11 +980,15 @@ export type ItemDefinitionUncheckedUpdateWithoutShopItemsInput = {
 export type ItemDefinitionCountOutputType = {
   inventory: number
   shopItems: number
+  shopRotations: number
+  auctionListings: number
 }
 
 export type ItemDefinitionCountOutputTypeSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   inventory?: boolean | ItemDefinitionCountOutputTypeCountInventoryArgs
   shopItems?: boolean | ItemDefinitionCountOutputTypeCountShopItemsArgs
+  shopRotations?: boolean | ItemDefinitionCountOutputTypeCountShopRotationsArgs
+  auctionListings?: boolean | ItemDefinitionCountOutputTypeCountAuctionListingsArgs
 }
 
 /**
@@ -769,6 +1015,20 @@ export type ItemDefinitionCountOutputTypeCountShopItemsArgs<ExtArgs extends runt
   where?: Prisma.ShopItemWhereInput
 }
 
+/**
+ * ItemDefinitionCountOutputType without action
+ */
+export type ItemDefinitionCountOutputTypeCountShopRotationsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  where?: Prisma.ShopRotationWhereInput
+}
+
+/**
+ * ItemDefinitionCountOutputType without action
+ */
+export type ItemDefinitionCountOutputTypeCountAuctionListingsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  where?: Prisma.AuctionListingWhereInput
+}
+
 
 export type ItemDefinitionSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
   id?: boolean
@@ -786,6 +1046,8 @@ export type ItemDefinitionSelect<ExtArgs extends runtime.Types.Extensions.Intern
   assetId?: boolean
   inventory?: boolean | Prisma.ItemDefinition$inventoryArgs<ExtArgs>
   shopItems?: boolean | Prisma.ItemDefinition$shopItemsArgs<ExtArgs>
+  shopRotations?: boolean | Prisma.ItemDefinition$shopRotationsArgs<ExtArgs>
+  auctionListings?: boolean | Prisma.ItemDefinition$auctionListingsArgs<ExtArgs>
   _count?: boolean | Prisma.ItemDefinitionCountOutputTypeDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["itemDefinition"]>
 
@@ -841,6 +1103,8 @@ export type ItemDefinitionOmit<ExtArgs extends runtime.Types.Extensions.Internal
 export type ItemDefinitionInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   inventory?: boolean | Prisma.ItemDefinition$inventoryArgs<ExtArgs>
   shopItems?: boolean | Prisma.ItemDefinition$shopItemsArgs<ExtArgs>
+  shopRotations?: boolean | Prisma.ItemDefinition$shopRotationsArgs<ExtArgs>
+  auctionListings?: boolean | Prisma.ItemDefinition$auctionListingsArgs<ExtArgs>
   _count?: boolean | Prisma.ItemDefinitionCountOutputTypeDefaultArgs<ExtArgs>
 }
 export type ItemDefinitionIncludeCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {}
@@ -851,6 +1115,8 @@ export type $ItemDefinitionPayload<ExtArgs extends runtime.Types.Extensions.Inte
   objects: {
     inventory: Prisma.$InventoryItemPayload<ExtArgs>[]
     shopItems: Prisma.$ShopItemPayload<ExtArgs>[]
+    shopRotations: Prisma.$ShopRotationPayload<ExtArgs>[]
+    auctionListings: Prisma.$AuctionListingPayload<ExtArgs>[]
   }
   scalars: runtime.Types.Extensions.GetPayloadResult<{
     id: string
@@ -1262,6 +1528,8 @@ export interface Prisma__ItemDefinitionClient<T, Null = never, ExtArgs extends r
   readonly [Symbol.toStringTag]: "PrismaPromise"
   inventory<T extends Prisma.ItemDefinition$inventoryArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.ItemDefinition$inventoryArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$InventoryItemPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   shopItems<T extends Prisma.ItemDefinition$shopItemsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.ItemDefinition$shopItemsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$ShopItemPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+  shopRotations<T extends Prisma.ItemDefinition$shopRotationsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.ItemDefinition$shopRotationsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$ShopRotationPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+  auctionListings<T extends Prisma.ItemDefinition$auctionListingsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.ItemDefinition$auctionListingsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$AuctionListingPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   /**
    * Attaches callbacks for the resolution and/or rejection of the Promise.
    * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -1742,6 +2010,54 @@ export type ItemDefinition$shopItemsArgs<ExtArgs extends runtime.Types.Extension
   take?: number
   skip?: number
   distinct?: Prisma.ShopItemScalarFieldEnum | Prisma.ShopItemScalarFieldEnum[]
+}
+
+/**
+ * ItemDefinition.shopRotations
+ */
+export type ItemDefinition$shopRotationsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the ShopRotation
+   */
+  select?: Prisma.ShopRotationSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the ShopRotation
+   */
+  omit?: Prisma.ShopRotationOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.ShopRotationInclude<ExtArgs> | null
+  where?: Prisma.ShopRotationWhereInput
+  orderBy?: Prisma.ShopRotationOrderByWithRelationInput | Prisma.ShopRotationOrderByWithRelationInput[]
+  cursor?: Prisma.ShopRotationWhereUniqueInput
+  take?: number
+  skip?: number
+  distinct?: Prisma.ShopRotationScalarFieldEnum | Prisma.ShopRotationScalarFieldEnum[]
+}
+
+/**
+ * ItemDefinition.auctionListings
+ */
+export type ItemDefinition$auctionListingsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the AuctionListing
+   */
+  select?: Prisma.AuctionListingSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the AuctionListing
+   */
+  omit?: Prisma.AuctionListingOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.AuctionListingInclude<ExtArgs> | null
+  where?: Prisma.AuctionListingWhereInput
+  orderBy?: Prisma.AuctionListingOrderByWithRelationInput | Prisma.AuctionListingOrderByWithRelationInput[]
+  cursor?: Prisma.AuctionListingWhereUniqueInput
+  take?: number
+  skip?: number
+  distinct?: Prisma.AuctionListingScalarFieldEnum | Prisma.AuctionListingScalarFieldEnum[]
 }
 
 /**

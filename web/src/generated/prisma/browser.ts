@@ -73,6 +73,11 @@ export type MissionDefinition = Prisma.MissionDefinitionModel
  */
 export type MissionResult = Prisma.MissionResultModel
 /**
+ * Model ActiveMission
+ *
+ */
+export type ActiveMission = Prisma.ActiveMissionModel
+/**
  * Model WoundDefinition
  *
  */
@@ -87,6 +92,26 @@ export type ActiveWound = Prisma.ActiveWoundModel
  *
  */
 export type ShopItem = Prisma.ShopItemModel
+/**
+ * Model ShopRotation
+ *
+ */
+export type ShopRotation = Prisma.ShopRotationModel
+/**
+ * Model AuctionListing
+ *
+ */
+export type AuctionListing = Prisma.AuctionListingModel
+/**
+ * Model AuctionBid
+ *
+ */
+export type AuctionBid = Prisma.AuctionBidModel
+/**
+ * Model WorldJobRun
+ *
+ */
+export type WorldJobRun = Prisma.WorldJobRunModel
 /**
  * Model TrainingLog
  *

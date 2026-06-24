@@ -24,7 +24,7 @@ type DragSource = "merchant" | "backpack";
 // Legacy MVP validator tokens: armory-slot-grid ARMORY_CELL_SIZE armory-dropzone draggable Arrastra
 export default function ArmoryPage() {
   const { status } = useGameData();
-  const { soldier, characters, activeCharacterId, setActiveCharacter, payTownBribe } = useGameStore();
+  const { soldier, characters, activeCharacterId, shop, setActiveCharacter, payTownBribe } = useGameStore();
   const [notice, setNotice] = useState<{ text: string; isError: boolean } | null>(null);
   const [dragged, setDragged] = useState<{ source: DragSource; itemId: string } | null>(null);
   const [dropTarget, setDropTarget] = useState<DragSource | null>(null);
@@ -242,6 +242,8 @@ export default function ArmoryPage() {
               handleDrop={handleDrop}
               soldierCoins={soldier.coins}
               playPageSound={playPageSound}
+              stockByItem={shop?.stock}
+              nextRefreshAt={shop?.armoryNextRefreshAt}
             />
           </section>
 

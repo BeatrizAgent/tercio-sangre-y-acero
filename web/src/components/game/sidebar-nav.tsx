@@ -84,6 +84,12 @@ export function SidebarNav() {
               isActive={isRouteActive("/armory")}
             />
             <NavLink
+              href="/market"
+              label="Subasta"
+              icon="cityHouseOfTrade"
+              isActive={isRouteActive("/market")}
+            />
+            <NavLink
               href="/arena"
               label="Arena"
               icon="arena"

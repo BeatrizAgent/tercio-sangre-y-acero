@@ -62,9 +62,14 @@ export const ModelName = {
   Equipment: 'Equipment',
   MissionDefinition: 'MissionDefinition',
   MissionResult: 'MissionResult',
+  ActiveMission: 'ActiveMission',
   WoundDefinition: 'WoundDefinition',
   ActiveWound: 'ActiveWound',
   ShopItem: 'ShopItem',
+  ShopRotation: 'ShopRotation',
+  AuctionListing: 'AuctionListing',
+  AuctionBid: 'AuctionBid',
+  WorldJobRun: 'WorldJobRun',
   TrainingLog: 'TrainingLog',
   LootTable: 'LootTable',
   ReportFragment: 'ReportFragment',
@@ -266,6 +271,20 @@ export const MissionResultScalarFieldEnum = {
 export type MissionResultScalarFieldEnum = (typeof MissionResultScalarFieldEnum)[keyof typeof MissionResultScalarFieldEnum]
 
 
+export const ActiveMissionScalarFieldEnum = {
+  id: 'id',
+  soldierId: 'soldierId',
+  missionId: 'missionId',
+  startedAt: 'startedAt',
+  completesAt: 'completesAt',
+  claimedAt: 'claimedAt',
+  status: 'status',
+  resultId: 'resultId'
+} as const
+
+export type ActiveMissionScalarFieldEnum = (typeof ActiveMissionScalarFieldEnum)[keyof typeof ActiveMissionScalarFieldEnum]
+
+
 export const WoundDefinitionScalarFieldEnum = {
   id: 'id',
   name: 'name',
@@ -298,6 +317,64 @@ export const ShopItemScalarFieldEnum = {
 } as const
 
 export type ShopItemScalarFieldEnum = (typeof ShopItemScalarFieldEnum)[keyof typeof ShopItemScalarFieldEnum]
+
+
+export const ShopRotationScalarFieldEnum = {
+  id: 'id',
+  shopId: 'shopId',
+  itemId: 'itemId',
+  buyPrice: 'buyPrice',
+  sellPrice: 'sellPrice',
+  stock: 'stock',
+  maxStock: 'maxStock',
+  refreshedAt: 'refreshedAt',
+  nextRefreshAt: 'nextRefreshAt'
+} as const
+
+export type ShopRotationScalarFieldEnum = (typeof ShopRotationScalarFieldEnum)[keyof typeof ShopRotationScalarFieldEnum]
+
+
+export const AuctionListingScalarFieldEnum = {
+  id: 'id',
+  sellerId: 'sellerId',
+  itemId: 'itemId',
+  quantity: 'quantity',
+  startingBid: 'startingBid',
+  currentBid: 'currentBid',
+  currentBidderId: 'currentBidderId',
+  buyoutPrice: 'buyoutPrice',
+  status: 'status',
+  endsAt: 'endsAt',
+  claimedAt: 'claimedAt',
+  sellerClaimedAt: 'sellerClaimedAt',
+  winnerClaimedAt: 'winnerClaimedAt',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+} as const
+
+export type AuctionListingScalarFieldEnum = (typeof AuctionListingScalarFieldEnum)[keyof typeof AuctionListingScalarFieldEnum]
+
+
+export const AuctionBidScalarFieldEnum = {
+  id: 'id',
+  listingId: 'listingId',
+  bidderId: 'bidderId',
+  amount: 'amount',
+  createdAt: 'createdAt'
+} as const
+
+export type AuctionBidScalarFieldEnum = (typeof AuctionBidScalarFieldEnum)[keyof typeof AuctionBidScalarFieldEnum]
+
+
+export const WorldJobRunScalarFieldEnum = {
+  id: 'id',
+  job: 'job',
+  ranAt: 'ranAt',
+  status: 'status',
+  details: 'details'
+} as const
+
+export type WorldJobRunScalarFieldEnum = (typeof WorldJobRunScalarFieldEnum)[keyof typeof WorldJobRunScalarFieldEnum]
 
 
 export const TrainingLogScalarFieldEnum = {

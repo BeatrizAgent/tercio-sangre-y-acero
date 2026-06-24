@@ -325,6 +325,8 @@ export interface ArmorerChestPanelProps {
   handleDrop: (target: DragSource) => void;
   soldierCoins: number;
   playPageSound: () => void;
+  stockByItem?: Record<string, number>;
+  nextRefreshAt?: string;
 }
 
 export function ArmorerChestPanel({
@@ -335,10 +337,22 @@ export function ArmorerChestPanel({
   handleDrop,
   soldierCoins,
   playPageSound,
+  stockByItem,
+  nextRefreshAt,
 }: ArmorerChestPanelProps) {
   const [activeTab, setActiveTab] = useState<ArmorerTab>("armas");
   const [dailySeed] = useState(() => getDailySeed());
-  const shopStock = useMemo(() => generateShopStock(dailySeed), [dailySeed]);
+  const shopStock = useMemo(() => {
+    const generated = generateShopStock(dailySeed);
+    if (!stockByItem) return generated;
+    const applyStock = (rows: LaidOutShopItem[]) =>
+      rows.map((row) => ({ ...row, stock: stockByItem[row.itemId] ?? row.stock }));
+    return {
+      weapons: applyStock(generated.weapons),
+      armors: applyStock(generated.armors),
+      others: applyStock(generated.others),
+    };
+  }, [dailySeed, stockByItem]);
 
   const onSwitchTab = (tab: ArmorerTab) => {
     if (tab === activeTab) return;
@@ -373,6 +387,11 @@ export function ArmorerChestPanel({
             </button>
           );
         })}
+        {nextRefreshAt && (
+          <span className="ml-auto self-center font-mono text-[10px] uppercase tracking-wider text-text-muted">
+            Refresco {new Date(nextRefreshAt).toLocaleTimeString("es-ES", { hour: "2-digit", minute: "2-digit" })}
+          </span>
+        )}
       </div>
 
       {activeTab === "armas" && (

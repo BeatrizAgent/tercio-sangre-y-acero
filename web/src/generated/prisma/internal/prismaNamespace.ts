@@ -395,9 +395,14 @@ export const ModelName = {
   Equipment: 'Equipment',
   MissionDefinition: 'MissionDefinition',
   MissionResult: 'MissionResult',
+  ActiveMission: 'ActiveMission',
   WoundDefinition: 'WoundDefinition',
   ActiveWound: 'ActiveWound',
   ShopItem: 'ShopItem',
+  ShopRotation: 'ShopRotation',
+  AuctionListing: 'AuctionListing',
+  AuctionBid: 'AuctionBid',
+  WorldJobRun: 'WorldJobRun',
   TrainingLog: 'TrainingLog',
   LootTable: 'LootTable',
   ReportFragment: 'ReportFragment',
@@ -424,7 +429,7 @@ export type TypeMap<ExtArgs extends runtime.Types.Extensions.InternalArgs = runt
     omit: GlobalOmitOptions
   }
   meta: {
-    modelProps: "user" | "soldier" | "arenaBotProfile" | "gameSave" | "characterName" | "soldierStats" | "itemDefinition" | "inventoryItem" | "equipment" | "missionDefinition" | "missionResult" | "woundDefinition" | "activeWound" | "shopItem" | "trainingLog" | "lootTable" | "reportFragment" | "assetDefinition" | "enemyDefinition" | "rankDefinition" | "gameEventDefinition" | "characterDefinition" | "spriteSetDefinition" | "recruitmentCandidateDefinition" | "trainingDefinition"
+    modelProps: "user" | "soldier" | "arenaBotProfile" | "gameSave" | "characterName" | "soldierStats" | "itemDefinition" | "inventoryItem" | "equipment" | "missionDefinition" | "missionResult" | "activeMission" | "woundDefinition" | "activeWound" | "shopItem" | "shopRotation" | "auctionListing" | "auctionBid" | "worldJobRun" | "trainingLog" | "lootTable" | "reportFragment" | "assetDefinition" | "enemyDefinition" | "rankDefinition" | "gameEventDefinition" | "characterDefinition" | "spriteSetDefinition" | "recruitmentCandidateDefinition" | "trainingDefinition"
     txIsolationLevel: TransactionIsolationLevel
   }
   model: {
@@ -1242,6 +1247,80 @@ export type TypeMap<ExtArgs extends runtime.Types.Extensions.InternalArgs = runt
         }
       }
     }
+    ActiveMission: {
+      payload: Prisma.$ActiveMissionPayload<ExtArgs>
+      fields: Prisma.ActiveMissionFieldRefs
+      operations: {
+        findUnique: {
+          args: Prisma.ActiveMissionFindUniqueArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ActiveMissionPayload> | null
+        }
+        findUniqueOrThrow: {
+          args: Prisma.ActiveMissionFindUniqueOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ActiveMissionPayload>
+        }
+        findFirst: {
+          args: Prisma.ActiveMissionFindFirstArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ActiveMissionPayload> | null
+        }
+        findFirstOrThrow: {
+          args: Prisma.ActiveMissionFindFirstOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ActiveMissionPayload>
+        }
+        findMany: {
+          args: Prisma.ActiveMissionFindManyArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ActiveMissionPayload>[]
+        }
+        create: {
+          args: Prisma.ActiveMissionCreateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ActiveMissionPayload>
+        }
+        createMany: {
+          args: Prisma.ActiveMissionCreateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        createManyAndReturn: {
+          args: Prisma.ActiveMissionCreateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ActiveMissionPayload>[]
+        }
+        delete: {
+          args: Prisma.ActiveMissionDeleteArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ActiveMissionPayload>
+        }
+        update: {
+          args: Prisma.ActiveMissionUpdateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ActiveMissionPayload>
+        }
+        deleteMany: {
+          args: Prisma.ActiveMissionDeleteManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateMany: {
+          args: Prisma.ActiveMissionUpdateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateManyAndReturn: {
+          args: Prisma.ActiveMissionUpdateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ActiveMissionPayload>[]
+        }
+        upsert: {
+          args: Prisma.ActiveMissionUpsertArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ActiveMissionPayload>
+        }
+        aggregate: {
+          args: Prisma.ActiveMissionAggregateArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.AggregateActiveMission>
+        }
+        groupBy: {
+          args: Prisma.ActiveMissionGroupByArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.ActiveMissionGroupByOutputType>[]
+        }
+        count: {
+          args: Prisma.ActiveMissionCountArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.ActiveMissionCountAggregateOutputType> | number
+        }
+      }
+    }
     WoundDefinition: {
       payload: Prisma.$WoundDefinitionPayload<ExtArgs>
       fields: Prisma.WoundDefinitionFieldRefs
@@ -1461,6 +1540,302 @@ export type TypeMap<ExtArgs extends runtime.Types.Extensions.InternalArgs = runt
         count: {
           args: Prisma.ShopItemCountArgs<ExtArgs>
           result: runtime.Types.Utils.Optional<Prisma.ShopItemCountAggregateOutputType> | number
+        }
+      }
+    }
+    ShopRotation: {
+      payload: Prisma.$ShopRotationPayload<ExtArgs>
+      fields: Prisma.ShopRotationFieldRefs
+      operations: {
+        findUnique: {
+          args: Prisma.ShopRotationFindUniqueArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ShopRotationPayload> | null
+        }
+        findUniqueOrThrow: {
+          args: Prisma.ShopRotationFindUniqueOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ShopRotationPayload>
+        }
+        findFirst: {
+          args: Prisma.ShopRotationFindFirstArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ShopRotationPayload> | null
+        }
+        findFirstOrThrow: {
+          args: Prisma.ShopRotationFindFirstOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ShopRotationPayload>
+        }
+        findMany: {
+          args: Prisma.ShopRotationFindManyArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ShopRotationPayload>[]
+        }
+        create: {
+          args: Prisma.ShopRotationCreateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ShopRotationPayload>
+        }
+        createMany: {
+          args: Prisma.ShopRotationCreateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        createManyAndReturn: {
+          args: Prisma.ShopRotationCreateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ShopRotationPayload>[]
+        }
+        delete: {
+          args: Prisma.ShopRotationDeleteArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ShopRotationPayload>
+        }
+        update: {
+          args: Prisma.ShopRotationUpdateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ShopRotationPayload>
+        }
+        deleteMany: {
+          args: Prisma.ShopRotationDeleteManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateMany: {
+          args: Prisma.ShopRotationUpdateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateManyAndReturn: {
+          args: Prisma.ShopRotationUpdateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ShopRotationPayload>[]
+        }
+        upsert: {
+          args: Prisma.ShopRotationUpsertArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ShopRotationPayload>
+        }
+        aggregate: {
+          args: Prisma.ShopRotationAggregateArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.AggregateShopRotation>
+        }
+        groupBy: {
+          args: Prisma.ShopRotationGroupByArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.ShopRotationGroupByOutputType>[]
+        }
+        count: {
+          args: Prisma.ShopRotationCountArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.ShopRotationCountAggregateOutputType> | number
+        }
+      }
+    }
+    AuctionListing: {
+      payload: Prisma.$AuctionListingPayload<ExtArgs>
+      fields: Prisma.AuctionListingFieldRefs
+      operations: {
+        findUnique: {
+          args: Prisma.AuctionListingFindUniqueArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$AuctionListingPayload> | null
+        }
+        findUniqueOrThrow: {
+          args: Prisma.AuctionListingFindUniqueOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$AuctionListingPayload>
+        }
+        findFirst: {
+          args: Prisma.AuctionListingFindFirstArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$AuctionListingPayload> | null
+        }
+        findFirstOrThrow: {
+          args: Prisma.AuctionListingFindFirstOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$AuctionListingPayload>
+        }
+        findMany: {
+          args: Prisma.AuctionListingFindManyArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$AuctionListingPayload>[]
+        }
+        create: {
+          args: Prisma.AuctionListingCreateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$AuctionListingPayload>
+        }
+        createMany: {
+          args: Prisma.AuctionListingCreateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        createManyAndReturn: {
+          args: Prisma.AuctionListingCreateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$AuctionListingPayload>[]
+        }
+        delete: {
+          args: Prisma.AuctionListingDeleteArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$AuctionListingPayload>
+        }
+        update: {
+          args: Prisma.AuctionListingUpdateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$AuctionListingPayload>
+        }
+        deleteMany: {
+          args: Prisma.AuctionListingDeleteManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateMany: {
+          args: Prisma.AuctionListingUpdateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateManyAndReturn: {
+          args: Prisma.AuctionListingUpdateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$AuctionListingPayload>[]
+        }
+        upsert: {
+          args: Prisma.AuctionListingUpsertArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$AuctionListingPayload>
+        }
+        aggregate: {
+          args: Prisma.AuctionListingAggregateArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.AggregateAuctionListing>
+        }
+        groupBy: {
+          args: Prisma.AuctionListingGroupByArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.AuctionListingGroupByOutputType>[]
+        }
+        count: {
+          args: Prisma.AuctionListingCountArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.AuctionListingCountAggregateOutputType> | number
+        }
+      }
+    }
+    AuctionBid: {
+      payload: Prisma.$AuctionBidPayload<ExtArgs>
+      fields: Prisma.AuctionBidFieldRefs
+      operations: {
+        findUnique: {
+          args: Prisma.AuctionBidFindUniqueArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$AuctionBidPayload> | null
+        }
+        findUniqueOrThrow: {
+          args: Prisma.AuctionBidFindUniqueOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$AuctionBidPayload>
+        }
+        findFirst: {
+          args: Prisma.AuctionBidFindFirstArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$AuctionBidPayload> | null
+        }
+        findFirstOrThrow: {
+          args: Prisma.AuctionBidFindFirstOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$AuctionBidPayload>
+        }
+        findMany: {
+          args: Prisma.AuctionBidFindManyArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$AuctionBidPayload>[]
+        }
+        create: {
+          args: Prisma.AuctionBidCreateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$AuctionBidPayload>
+        }
+        createMany: {
+          args: Prisma.AuctionBidCreateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        createManyAndReturn: {
+          args: Prisma.AuctionBidCreateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$AuctionBidPayload>[]
+        }
+        delete: {
+          args: Prisma.AuctionBidDeleteArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$AuctionBidPayload>
+        }
+        update: {
+          args: Prisma.AuctionBidUpdateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$AuctionBidPayload>
+        }
+        deleteMany: {
+          args: Prisma.AuctionBidDeleteManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateMany: {
+          args: Prisma.AuctionBidUpdateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateManyAndReturn: {
+          args: Prisma.AuctionBidUpdateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$AuctionBidPayload>[]
+        }
+        upsert: {
+          args: Prisma.AuctionBidUpsertArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$AuctionBidPayload>
+        }
+        aggregate: {
+          args: Prisma.AuctionBidAggregateArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.AggregateAuctionBid>
+        }
+        groupBy: {
+          args: Prisma.AuctionBidGroupByArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.AuctionBidGroupByOutputType>[]
+        }
+        count: {
+          args: Prisma.AuctionBidCountArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.AuctionBidCountAggregateOutputType> | number
+        }
+      }
+    }
+    WorldJobRun: {
+      payload: Prisma.$WorldJobRunPayload<ExtArgs>
+      fields: Prisma.WorldJobRunFieldRefs
+      operations: {
+        findUnique: {
+          args: Prisma.WorldJobRunFindUniqueArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$WorldJobRunPayload> | null
+        }
+        findUniqueOrThrow: {
+          args: Prisma.WorldJobRunFindUniqueOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$WorldJobRunPayload>
+        }
+        findFirst: {
+          args: Prisma.WorldJobRunFindFirstArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$WorldJobRunPayload> | null
+        }
+        findFirstOrThrow: {
+          args: Prisma.WorldJobRunFindFirstOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$WorldJobRunPayload>
+        }
+        findMany: {
+          args: Prisma.WorldJobRunFindManyArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$WorldJobRunPayload>[]
+        }
+        create: {
+          args: Prisma.WorldJobRunCreateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$WorldJobRunPayload>
+        }
+        createMany: {
+          args: Prisma.WorldJobRunCreateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        createManyAndReturn: {
+          args: Prisma.WorldJobRunCreateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$WorldJobRunPayload>[]
+        }
+        delete: {
+          args: Prisma.WorldJobRunDeleteArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$WorldJobRunPayload>
+        }
+        update: {
+          args: Prisma.WorldJobRunUpdateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$WorldJobRunPayload>
+        }
+        deleteMany: {
+          args: Prisma.WorldJobRunDeleteManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateMany: {
+          args: Prisma.WorldJobRunUpdateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateManyAndReturn: {
+          args: Prisma.WorldJobRunUpdateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$WorldJobRunPayload>[]
+        }
+        upsert: {
+          args: Prisma.WorldJobRunUpsertArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$WorldJobRunPayload>
+        }
+        aggregate: {
+          args: Prisma.WorldJobRunAggregateArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.AggregateWorldJobRun>
+        }
+        groupBy: {
+          args: Prisma.WorldJobRunGroupByArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.WorldJobRunGroupByOutputType>[]
+        }
+        count: {
+          args: Prisma.WorldJobRunCountArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.WorldJobRunCountAggregateOutputType> | number
         }
       }
     }
@@ -2489,6 +2864,20 @@ export const MissionResultScalarFieldEnum = {
 export type MissionResultScalarFieldEnum = (typeof MissionResultScalarFieldEnum)[keyof typeof MissionResultScalarFieldEnum]
 
 
+export const ActiveMissionScalarFieldEnum = {
+  id: 'id',
+  soldierId: 'soldierId',
+  missionId: 'missionId',
+  startedAt: 'startedAt',
+  completesAt: 'completesAt',
+  claimedAt: 'claimedAt',
+  status: 'status',
+  resultId: 'resultId'
+} as const
+
+export type ActiveMissionScalarFieldEnum = (typeof ActiveMissionScalarFieldEnum)[keyof typeof ActiveMissionScalarFieldEnum]
+
+
 export const WoundDefinitionScalarFieldEnum = {
   id: 'id',
   name: 'name',
@@ -2521,6 +2910,64 @@ export const ShopItemScalarFieldEnum = {
 } as const
 
 export type ShopItemScalarFieldEnum = (typeof ShopItemScalarFieldEnum)[keyof typeof ShopItemScalarFieldEnum]
+
+
+export const ShopRotationScalarFieldEnum = {
+  id: 'id',
+  shopId: 'shopId',
+  itemId: 'itemId',
+  buyPrice: 'buyPrice',
+  sellPrice: 'sellPrice',
+  stock: 'stock',
+  maxStock: 'maxStock',
+  refreshedAt: 'refreshedAt',
+  nextRefreshAt: 'nextRefreshAt'
+} as const
+
+export type ShopRotationScalarFieldEnum = (typeof ShopRotationScalarFieldEnum)[keyof typeof ShopRotationScalarFieldEnum]
+
+
+export const AuctionListingScalarFieldEnum = {
+  id: 'id',
+  sellerId: 'sellerId',
+  itemId: 'itemId',
+  quantity: 'quantity',
+  startingBid: 'startingBid',
+  currentBid: 'currentBid',
+  currentBidderId: 'currentBidderId',
+  buyoutPrice: 'buyoutPrice',
+  status: 'status',
+  endsAt: 'endsAt',
+  claimedAt: 'claimedAt',
+  sellerClaimedAt: 'sellerClaimedAt',
+  winnerClaimedAt: 'winnerClaimedAt',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+} as const
+
+export type AuctionListingScalarFieldEnum = (typeof AuctionListingScalarFieldEnum)[keyof typeof AuctionListingScalarFieldEnum]
+
+
+export const AuctionBidScalarFieldEnum = {
+  id: 'id',
+  listingId: 'listingId',
+  bidderId: 'bidderId',
+  amount: 'amount',
+  createdAt: 'createdAt'
+} as const
+
+export type AuctionBidScalarFieldEnum = (typeof AuctionBidScalarFieldEnum)[keyof typeof AuctionBidScalarFieldEnum]
+
+
+export const WorldJobRunScalarFieldEnum = {
+  id: 'id',
+  job: 'job',
+  ranAt: 'ranAt',
+  status: 'status',
+  details: 'details'
+} as const
+
+export type WorldJobRunScalarFieldEnum = (typeof WorldJobRunScalarFieldEnum)[keyof typeof WorldJobRunScalarFieldEnum]
 
 
 export const TrainingLogScalarFieldEnum = {
@@ -2901,9 +3348,14 @@ export type GlobalOmitConfig = {
   equipment?: Prisma.EquipmentOmit
   missionDefinition?: Prisma.MissionDefinitionOmit
   missionResult?: Prisma.MissionResultOmit
+  activeMission?: Prisma.ActiveMissionOmit
   woundDefinition?: Prisma.WoundDefinitionOmit
   activeWound?: Prisma.ActiveWoundOmit
   shopItem?: Prisma.ShopItemOmit
+  shopRotation?: Prisma.ShopRotationOmit
+  auctionListing?: Prisma.AuctionListingOmit
+  auctionBid?: Prisma.AuctionBidOmit
+  worldJobRun?: Prisma.WorldJobRunOmit
   trainingLog?: Prisma.TrainingLogOmit
   lootTable?: Prisma.LootTableOmit
   reportFragment?: Prisma.ReportFragmentOmit

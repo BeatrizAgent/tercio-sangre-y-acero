@@ -54,6 +54,7 @@ model Soldier {
   results         MissionResult[]
   trainingLog     TrainingLog[]
   arenaBotProfile ArenaBotProfile?
+  activeMission   ActiveMission?
 }
 
 model ArenaBotProfile {
@@ -122,6 +123,8 @@ model ItemDefinition {
   assetId      String?
   inventory    InventoryItem[]
   shopItems    ShopItem[]
+  shopRotations ShopRotation[]
+  auctionListings AuctionListing[]
 }
 
 model InventoryItem {
@@ -167,6 +170,7 @@ model MissionDefinition {
   locationType String
   region       String?
   results      MissionResult[]
+  activeMissions ActiveMission[]
 }
 
 model MissionResult {
@@ -181,6 +185,21 @@ model MissionResult {
   createdAt DateTime          @default(now())
   soldier   Soldier           @relation(fields: [soldierId], references: [id])
   mission   MissionDefinition @relation(fields: [missionId], references: [id])
+}
+
+model ActiveMission {
+  id          String    @id @default(cuid())
+  soldierId   String    @unique
+  missionId   String
+  startedAt   DateTime  @default(now())
+  completesAt DateTime
+  claimedAt   DateTime?
+  status      String    @default("active")
+  resultId    String?
+  soldier     Soldier   @relation(fields: [soldierId], references: [id])
+  mission     MissionDefinition @relation(fields: [missionId], references: [id])
+
+  @@index([status, completesAt])
 }
 
 model WoundDefinition {
@@ -212,6 +231,68 @@ model ShopItem {
   item      ItemDefinition @relation(fields: [itemId], references: [id])
 
   @@unique([shopId, itemId])
+}
+
+model ShopRotation {
+  id             String   @id @default(cuid())
+  shopId         String
+  itemId         String
+  buyPrice       Int
+  sellPrice      Int
+  stock          Int
+  maxStock       Int
+  refreshedAt    DateTime @default(now())
+  nextRefreshAt  DateTime
+  item           ItemDefinition @relation(fields: [itemId], references: [id])
+
+  @@unique([shopId, itemId])
+  @@index([shopId, nextRefreshAt])
+}
+
+model AuctionListing {
+  id              String       @id @default(cuid())
+  sellerId        String
+  itemId          String
+  quantity        Int          @default(1)
+  startingBid     Int
+  currentBid      Int?
+  currentBidderId String?
+  buyoutPrice     Int?
+  status          String       @default("active")
+  endsAt          DateTime
+  claimedAt       DateTime?
+  sellerClaimedAt DateTime?
+  winnerClaimedAt DateTime?
+  createdAt       DateTime     @default(now())
+  updatedAt       DateTime     @updatedAt
+  item            ItemDefinition @relation(fields: [itemId], references: [id])
+  bids            AuctionBid[]
+
+  @@index([status, endsAt])
+  @@index([sellerId, status])
+  @@index([currentBidderId, status])
+}
+
+model AuctionBid {
+  id         String         @id @default(cuid())
+  listingId  String
+  bidderId   String
+  amount     Int
+  createdAt  DateTime       @default(now())
+  listing    AuctionListing @relation(fields: [listingId], references: [id])
+
+  @@index([listingId, amount])
+  @@index([bidderId, createdAt])
+}
+
+model WorldJobRun {
+  id         String   @id @default(cuid())
+  job        String
+  ranAt      DateTime @default(now())
+  status     String
+  details    Json?
+
+  @@index([job, ranAt])
 }
 
 model TrainingLog {

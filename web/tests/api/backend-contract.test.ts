@@ -29,6 +29,8 @@ async function main() {
   const authLogoutRoute = await import("../../src/app/api/auth/logout/route");
   const healthRoute = await import("../../src/app/api/health/route");
   const stateRoute = await import("../../src/app/api/demo/state/route");
+  const gameStateRoute = await import("../../src/app/api/game/state/route");
+  const worldTickRoute = await import("../../src/app/api/cron/world-tick/route");
   const arenaOpponentsRoute = await import("../../src/app/api/arena/opponents/route");
   const playersRoute = await import("../../src/app/api/players/route");
   const playerProfileRoute = await import("../../src/app/api/players/[id]/route");
@@ -41,6 +43,7 @@ async function main() {
     ["auth logout", authLogoutRoute],
     ["health", healthRoute],
     ["demo state", stateRoute],
+    ["game state", gameStateRoute],
     ["arena opponents", arenaOpponentsRoute],
     ["players", playersRoute],
     ["player profile", playerProfileRoute],
@@ -60,11 +63,15 @@ async function main() {
   }
 
   if (typeof stateRoute.PUT !== "function") failures.push("demo state route missing PUT");
+  if (typeof gameStateRoute.PUT !== "function") failures.push("game state route missing PUT");
+  if (typeof worldTickRoute.POST !== "function") failures.push("world tick route missing POST");
 
   const schema = await import("node:fs").then((fs) => fs.readFileSync("prisma/schema.prisma", "utf8"));
-  for (const token of ["isBot", "model ArenaBotProfile", "arenaBotProfile"]) {
+  for (const token of ["isBot", "model ArenaBotProfile", "arenaBotProfile", "model ActiveMission", "model AuctionListing", "model ShopRotation", "model WorldJobRun"]) {
     if (!schema.includes(token)) failures.push(`schema missing ${token}`);
   }
+
+  if (typeof worldTickRoute.OPTIONS !== "function") failures.push("world tick route missing OPTIONS");
 
   if (failures.length) {
     console.error(JSON.stringify({ ok: false, failures }, null, 2));

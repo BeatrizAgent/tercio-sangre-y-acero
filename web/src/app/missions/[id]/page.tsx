@@ -10,6 +10,7 @@ import { PageTransition } from "@/components/game/page-transition";
 import { MissionCanvasResolver } from "@/components/game/MissionCanvasResolver";
 import { resolveActiveEventChoiceAction, startMissionAction } from "@/lib/actions/combat";
 import { prepareActionGateAction } from "@/lib/actions/gate";
+import { claimMissionAction, startTimedMissionAction } from "@/lib/actions/timed-missions";
 import { rarityStyle } from "@/lib/item-format";
 import { useGameStore } from "@/lib/game-store";
 import {
@@ -322,7 +323,7 @@ export default function MissionDetailPage() {
   const params = useParams();
   const router = useRouter();
   const { status } = useGameData();
-  const { soldier, activeEvent, pendingMissionId, hydrateState } = useGameStore();
+  const { soldier, activeEvent, pendingMissionId, activeMission, hydrateState } = useGameStore();
   // useSyncExternalStore replaces the `useState(false) + useEffect(setTrue)`
   // pattern, avoiding the cascading-render lint warning. The server
   // snapshot is false; the client snapshot is true (no subscription is
@@ -336,6 +337,7 @@ export default function MissionDetailPage() {
   const [gateToken, setGateToken] = useState<string | null>(null);
   const [countdown, setCountdown] = useState<number | null>(null);
   const [actionError, setActionError] = useState<string | null>(null);
+  const [clockTick, setClockTick] = useState(() => Date.now());
   const mountedRef = useRef(true);
 
   useEffect(() => {
@@ -344,6 +346,12 @@ export default function MissionDetailPage() {
       mountedRef.current = false;
     };
   }, []);
+
+  useEffect(() => {
+    if (!activeMission || activeMission.status !== "active") return;
+    const timer = window.setInterval(() => setClockTick(Date.now()), 1000);
+    return () => window.clearInterval(timer);
+  }, [activeMission]);
 
   if (!mounted || status !== "ready") {
     return (
@@ -508,11 +516,36 @@ export default function MissionDetailPage() {
       setGateToken(gate.token);
       await startGateCountdown(gate.waitMs);
       if (!mountedRef.current) return;
-      setResolving(true);
+      const result = await startTimedMissionAction({ missionId });
+      if (result.ok && result.data?.state) {
+        hydrateState(result.data.state);
+        setGateToken(null);
+        return;
+      }
+      setActionError(result.message);
     } catch (error) {
       setActionError(error instanceof Error ? error.message : "No se pudo preparar la orden.");
       setCountdown(null);
       setResolving(false);
+    }
+  };
+
+  const handleClaimMission = async () => {
+    if (resolving) return;
+    setActionError(null);
+    setResolving(true);
+    try {
+      const result = await claimMissionAction();
+      if (result.ok && result.data?.state) {
+        hydrateState(result.data.state);
+        if (result.data.reportId) router.push(`/reports/${result.data.reportId}`);
+        return;
+      }
+      setActionError(result.message);
+    } catch (error) {
+      setActionError(error instanceof Error ? error.message : "No se pudo reclamar la mision.");
+    } finally {
+      if (mountedRef.current) setResolving(false);
     }
   };
 
@@ -570,6 +603,14 @@ export default function MissionDetailPage() {
   const handleStart = () => {
     void handleMissionStart(mission.id);
   };
+
+  const activeForThisMission = activeMission?.status === "active" && activeMission.missionId === mission.id;
+  const activeElsewhere = activeMission?.status === "active" && activeMission.missionId !== mission.id;
+  const remainingMs = activeMission?.status === "active"
+    ? Math.max(0, new Date(activeMission.completesAt).getTime() - clockTick)
+    : 0;
+  const remainingSeconds = Math.ceil(remainingMs / 1000);
+  const remainingLabel = `${Math.floor(remainingSeconds / 60)}:${String(remainingSeconds % 60).padStart(2, "0")}`;
 
   return (
     <PageTransition>
@@ -669,15 +710,31 @@ export default function MissionDetailPage() {
                   <MiniIcon iconId="honor" label="Honor" />
                 </div>
 
+                {activeForThisMission && (
+                  <div className="rounded-xs border border-gold/30 bg-stone-950/70 p-3 text-center font-mono text-[11px] uppercase tracking-wider text-gold-soft">
+                    {remainingMs > 0 ? `Mision en marcha ${remainingLabel}` : "Orden completada. Reclama reporte."}
+                  </div>
+                )}
+
                 <button
-                  onClick={handleStart}
-                  disabled={isAgotado || resolving || countdown !== null}
+                  onClick={activeForThisMission && remainingMs <= 0 ? () => void handleClaimMission() : handleStart}
+                  disabled={isAgotado || resolving || countdown !== null || activeElsewhere || (activeForThisMission && remainingMs > 0)}
                   className={`blood-button flex w-full items-center justify-center gap-2 py-3 text-sm ${
-                    isAgotado || resolving || countdown !== null ? "cursor-not-allowed opacity-60" : ""
+                    isAgotado || resolving || countdown !== null || activeElsewhere || (activeForThisMission && remainingMs > 0) ? "cursor-not-allowed opacity-60" : ""
                   }`}
                 >
                   <UiAssetIcon id="confirm" label="" className="h-5 w-5" />
-                  {countdown !== null ? `Preparando ${countdown}s` : resolving ? "Resolviendo..." : isAgotado ? "Agotado" : "Iniciar mision"}
+                  {countdown !== null
+                    ? `Preparando ${countdown}s`
+                    : resolving
+                      ? "Resolviendo..."
+                      : isAgotado
+                        ? "Agotado"
+                        : activeElsewhere
+                          ? "Otra mision en marcha"
+                          : activeForThisMission
+                            ? remainingMs > 0 ? `Regresa en ${remainingLabel}` : "Reclamar reporte"
+                            : "Iniciar mision"}
                 </button>
 
                 {actionError && (

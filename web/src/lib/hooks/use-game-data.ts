@@ -41,7 +41,7 @@ export function useGameData(): UseGameDataResult {
       setErrorState(null);
 
       try {
-        const response = await fetch("/api/demo/state", {
+        const response = await fetch("/api/game/state", {
           cache: "no-store",
           signal: controller.signal,
         });

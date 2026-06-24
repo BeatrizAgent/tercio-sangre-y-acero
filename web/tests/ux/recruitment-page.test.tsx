@@ -17,15 +17,17 @@ vi.mock("@/lib/game-store", () => ({ useGameStore: useGameStoreMock }));
 // CharacterPortrait image-skeleton (added with the rival-card UX work)
 // without triggering a setState-during-render warning.
 vi.mock("next/image", () => {
+  function MockImage({ onLoad, ...rest }: React.ImgHTMLAttributes<HTMLImageElement>) {
+    useEffect(() => {
+      if (typeof onLoad === "function") {
+        onLoad({} as React.SyntheticEvent<HTMLImageElement>);
+      }
+    }, [onLoad]);
+    return <img {...rest} alt={rest.alt ?? ""} />;
+  }
+
   return {
-    default: ({ onLoad, ...rest }: React.ImgHTMLAttributes<HTMLImageElement>) => {
-      useEffect(() => {
-        if (typeof onLoad === "function") {
-          onLoad({ target: rest } as unknown as React.SyntheticEvent<HTMLImageElement>);
-        }
-      }, []);
-      return <img {...rest} alt={rest.alt ?? ""} />;
-    },
+    default: MockImage,
   };
 });
 

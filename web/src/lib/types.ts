@@ -367,6 +367,24 @@ export interface GameState {
   arenaResults: ArenaResult[];
   activeEvent: GameEvent | null;
   pendingMissionId: string | null;
+  activeMission?: {
+    id: string;
+    missionId: string;
+    startedAt: string;
+    completesAt: string;
+    status: "active" | "claimed" | "cancelled";
+    resultId?: string | null;
+  } | null;
+  shop?: {
+    armoryNextRefreshAt?: string;
+    churchNextRefreshAt?: string;
+    stock?: Record<string, number>;
+  };
+  auctions?: {
+    activeCount: number;
+    playerListingCount: number;
+    playerBidCount: number;
+  };
   // Multiplayer fields: all optional so single-player state shape keeps
   // working. They are populated by lib/realtime/* when Django Channels
   // pushes updates; today they are simply undefined.

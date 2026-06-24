@@ -313,6 +313,7 @@ export type MissionDefinitionWhereInput = {
   locationType?: Prisma.StringFilter<"MissionDefinition"> | string
   region?: Prisma.StringNullableFilter<"MissionDefinition"> | string | null
   results?: Prisma.MissionResultListRelationFilter
+  activeMissions?: Prisma.ActiveMissionListRelationFilter
 }
 
 export type MissionDefinitionOrderByWithRelationInput = {
@@ -333,6 +334,7 @@ export type MissionDefinitionOrderByWithRelationInput = {
   locationType?: Prisma.SortOrder
   region?: Prisma.SortOrderInput | Prisma.SortOrder
   results?: Prisma.MissionResultOrderByRelationAggregateInput
+  activeMissions?: Prisma.ActiveMissionOrderByRelationAggregateInput
 }
 
 export type MissionDefinitionWhereUniqueInput = Prisma.AtLeast<{
@@ -356,6 +358,7 @@ export type MissionDefinitionWhereUniqueInput = Prisma.AtLeast<{
   locationType?: Prisma.StringFilter<"MissionDefinition"> | string
   region?: Prisma.StringNullableFilter<"MissionDefinition"> | string | null
   results?: Prisma.MissionResultListRelationFilter
+  activeMissions?: Prisma.ActiveMissionListRelationFilter
 }, "id">
 
 export type MissionDefinitionOrderByWithAggregationInput = {
@@ -422,6 +425,7 @@ export type MissionDefinitionCreateInput = {
   locationType: string
   region?: string | null
   results?: Prisma.MissionResultCreateNestedManyWithoutMissionInput
+  activeMissions?: Prisma.ActiveMissionCreateNestedManyWithoutMissionInput
 }
 
 export type MissionDefinitionUncheckedCreateInput = {
@@ -442,6 +446,7 @@ export type MissionDefinitionUncheckedCreateInput = {
   locationType: string
   region?: string | null
   results?: Prisma.MissionResultUncheckedCreateNestedManyWithoutMissionInput
+  activeMissions?: Prisma.ActiveMissionUncheckedCreateNestedManyWithoutMissionInput
 }
 
 export type MissionDefinitionUpdateInput = {
@@ -462,6 +467,7 @@ export type MissionDefinitionUpdateInput = {
   locationType?: Prisma.StringFieldUpdateOperationsInput | string
   region?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   results?: Prisma.MissionResultUpdateManyWithoutMissionNestedInput
+  activeMissions?: Prisma.ActiveMissionUpdateManyWithoutMissionNestedInput
 }
 
 export type MissionDefinitionUncheckedUpdateInput = {
@@ -482,6 +488,7 @@ export type MissionDefinitionUncheckedUpdateInput = {
   locationType?: Prisma.StringFieldUpdateOperationsInput | string
   region?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   results?: Prisma.MissionResultUncheckedUpdateManyWithoutMissionNestedInput
+  activeMissions?: Prisma.ActiveMissionUncheckedUpdateManyWithoutMissionNestedInput
 }
 
 export type MissionDefinitionCreateManyInput = {
@@ -646,6 +653,20 @@ export type MissionDefinitionUpdateOneRequiredWithoutResultsNestedInput = {
   update?: Prisma.XOR<Prisma.XOR<Prisma.MissionDefinitionUpdateToOneWithWhereWithoutResultsInput, Prisma.MissionDefinitionUpdateWithoutResultsInput>, Prisma.MissionDefinitionUncheckedUpdateWithoutResultsInput>
 }
 
+export type MissionDefinitionCreateNestedOneWithoutActiveMissionsInput = {
+  create?: Prisma.XOR<Prisma.MissionDefinitionCreateWithoutActiveMissionsInput, Prisma.MissionDefinitionUncheckedCreateWithoutActiveMissionsInput>
+  connectOrCreate?: Prisma.MissionDefinitionCreateOrConnectWithoutActiveMissionsInput
+  connect?: Prisma.MissionDefinitionWhereUniqueInput
+}
+
+export type MissionDefinitionUpdateOneRequiredWithoutActiveMissionsNestedInput = {
+  create?: Prisma.XOR<Prisma.MissionDefinitionCreateWithoutActiveMissionsInput, Prisma.MissionDefinitionUncheckedCreateWithoutActiveMissionsInput>
+  connectOrCreate?: Prisma.MissionDefinitionCreateOrConnectWithoutActiveMissionsInput
+  upsert?: Prisma.MissionDefinitionUpsertWithoutActiveMissionsInput
+  connect?: Prisma.MissionDefinitionWhereUniqueInput
+  update?: Prisma.XOR<Prisma.XOR<Prisma.MissionDefinitionUpdateToOneWithWhereWithoutActiveMissionsInput, Prisma.MissionDefinitionUpdateWithoutActiveMissionsInput>, Prisma.MissionDefinitionUncheckedUpdateWithoutActiveMissionsInput>
+}
+
 export type MissionDefinitionCreateWithoutResultsInput = {
   id: string
   title: string
@@ -663,6 +684,7 @@ export type MissionDefinitionCreateWithoutResultsInput = {
   y: number
   locationType: string
   region?: string | null
+  activeMissions?: Prisma.ActiveMissionCreateNestedManyWithoutMissionInput
 }
 
 export type MissionDefinitionUncheckedCreateWithoutResultsInput = {
@@ -682,6 +704,7 @@ export type MissionDefinitionUncheckedCreateWithoutResultsInput = {
   y: number
   locationType: string
   region?: string | null
+  activeMissions?: Prisma.ActiveMissionUncheckedCreateNestedManyWithoutMissionInput
 }
 
 export type MissionDefinitionCreateOrConnectWithoutResultsInput = {
@@ -717,6 +740,7 @@ export type MissionDefinitionUpdateWithoutResultsInput = {
   y?: Prisma.IntFieldUpdateOperationsInput | number
   locationType?: Prisma.StringFieldUpdateOperationsInput | string
   region?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  activeMissions?: Prisma.ActiveMissionUpdateManyWithoutMissionNestedInput
 }
 
 export type MissionDefinitionUncheckedUpdateWithoutResultsInput = {
@@ -736,6 +760,103 @@ export type MissionDefinitionUncheckedUpdateWithoutResultsInput = {
   y?: Prisma.IntFieldUpdateOperationsInput | number
   locationType?: Prisma.StringFieldUpdateOperationsInput | string
   region?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  activeMissions?: Prisma.ActiveMissionUncheckedUpdateManyWithoutMissionNestedInput
+}
+
+export type MissionDefinitionCreateWithoutActiveMissionsInput = {
+  id: string
+  title: string
+  type: string
+  difficulty: number
+  enemyId: string
+  sceneAssetId?: string | null
+  rewards: Prisma.JsonNullValueInput | runtime.InputJsonValue
+  fatigue: number
+  woundChance: number
+  woundId?: string | null
+  lootTableId?: string | null
+  reportTags?: Prisma.MissionDefinitionCreatereportTagsInput | string[]
+  x: number
+  y: number
+  locationType: string
+  region?: string | null
+  results?: Prisma.MissionResultCreateNestedManyWithoutMissionInput
+}
+
+export type MissionDefinitionUncheckedCreateWithoutActiveMissionsInput = {
+  id: string
+  title: string
+  type: string
+  difficulty: number
+  enemyId: string
+  sceneAssetId?: string | null
+  rewards: Prisma.JsonNullValueInput | runtime.InputJsonValue
+  fatigue: number
+  woundChance: number
+  woundId?: string | null
+  lootTableId?: string | null
+  reportTags?: Prisma.MissionDefinitionCreatereportTagsInput | string[]
+  x: number
+  y: number
+  locationType: string
+  region?: string | null
+  results?: Prisma.MissionResultUncheckedCreateNestedManyWithoutMissionInput
+}
+
+export type MissionDefinitionCreateOrConnectWithoutActiveMissionsInput = {
+  where: Prisma.MissionDefinitionWhereUniqueInput
+  create: Prisma.XOR<Prisma.MissionDefinitionCreateWithoutActiveMissionsInput, Prisma.MissionDefinitionUncheckedCreateWithoutActiveMissionsInput>
+}
+
+export type MissionDefinitionUpsertWithoutActiveMissionsInput = {
+  update: Prisma.XOR<Prisma.MissionDefinitionUpdateWithoutActiveMissionsInput, Prisma.MissionDefinitionUncheckedUpdateWithoutActiveMissionsInput>
+  create: Prisma.XOR<Prisma.MissionDefinitionCreateWithoutActiveMissionsInput, Prisma.MissionDefinitionUncheckedCreateWithoutActiveMissionsInput>
+  where?: Prisma.MissionDefinitionWhereInput
+}
+
+export type MissionDefinitionUpdateToOneWithWhereWithoutActiveMissionsInput = {
+  where?: Prisma.MissionDefinitionWhereInput
+  data: Prisma.XOR<Prisma.MissionDefinitionUpdateWithoutActiveMissionsInput, Prisma.MissionDefinitionUncheckedUpdateWithoutActiveMissionsInput>
+}
+
+export type MissionDefinitionUpdateWithoutActiveMissionsInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  title?: Prisma.StringFieldUpdateOperationsInput | string
+  type?: Prisma.StringFieldUpdateOperationsInput | string
+  difficulty?: Prisma.IntFieldUpdateOperationsInput | number
+  enemyId?: Prisma.StringFieldUpdateOperationsInput | string
+  sceneAssetId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  rewards?: Prisma.JsonNullValueInput | runtime.InputJsonValue
+  fatigue?: Prisma.IntFieldUpdateOperationsInput | number
+  woundChance?: Prisma.IntFieldUpdateOperationsInput | number
+  woundId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  lootTableId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  reportTags?: Prisma.MissionDefinitionUpdatereportTagsInput | string[]
+  x?: Prisma.IntFieldUpdateOperationsInput | number
+  y?: Prisma.IntFieldUpdateOperationsInput | number
+  locationType?: Prisma.StringFieldUpdateOperationsInput | string
+  region?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  results?: Prisma.MissionResultUpdateManyWithoutMissionNestedInput
+}
+
+export type MissionDefinitionUncheckedUpdateWithoutActiveMissionsInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  title?: Prisma.StringFieldUpdateOperationsInput | string
+  type?: Prisma.StringFieldUpdateOperationsInput | string
+  difficulty?: Prisma.IntFieldUpdateOperationsInput | number
+  enemyId?: Prisma.StringFieldUpdateOperationsInput | string
+  sceneAssetId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  rewards?: Prisma.JsonNullValueInput | runtime.InputJsonValue
+  fatigue?: Prisma.IntFieldUpdateOperationsInput | number
+  woundChance?: Prisma.IntFieldUpdateOperationsInput | number
+  woundId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  lootTableId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  reportTags?: Prisma.MissionDefinitionUpdatereportTagsInput | string[]
+  x?: Prisma.IntFieldUpdateOperationsInput | number
+  y?: Prisma.IntFieldUpdateOperationsInput | number
+  locationType?: Prisma.StringFieldUpdateOperationsInput | string
+  region?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  results?: Prisma.MissionResultUncheckedUpdateManyWithoutMissionNestedInput
 }
 
 
@@ -745,10 +866,12 @@ export type MissionDefinitionUncheckedUpdateWithoutResultsInput = {
 
 export type MissionDefinitionCountOutputType = {
   results: number
+  activeMissions: number
 }
 
 export type MissionDefinitionCountOutputTypeSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   results?: boolean | MissionDefinitionCountOutputTypeCountResultsArgs
+  activeMissions?: boolean | MissionDefinitionCountOutputTypeCountActiveMissionsArgs
 }
 
 /**
@@ -766,6 +889,13 @@ export type MissionDefinitionCountOutputTypeDefaultArgs<ExtArgs extends runtime.
  */
 export type MissionDefinitionCountOutputTypeCountResultsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   where?: Prisma.MissionResultWhereInput
+}
+
+/**
+ * MissionDefinitionCountOutputType without action
+ */
+export type MissionDefinitionCountOutputTypeCountActiveMissionsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  where?: Prisma.ActiveMissionWhereInput
 }
 
 
@@ -787,6 +917,7 @@ export type MissionDefinitionSelect<ExtArgs extends runtime.Types.Extensions.Int
   locationType?: boolean
   region?: boolean
   results?: boolean | Prisma.MissionDefinition$resultsArgs<ExtArgs>
+  activeMissions?: boolean | Prisma.MissionDefinition$activeMissionsArgs<ExtArgs>
   _count?: boolean | Prisma.MissionDefinitionCountOutputTypeDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["missionDefinition"]>
 
@@ -850,6 +981,7 @@ export type MissionDefinitionSelectScalar = {
 export type MissionDefinitionOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "title" | "type" | "difficulty" | "enemyId" | "sceneAssetId" | "rewards" | "fatigue" | "woundChance" | "woundId" | "lootTableId" | "reportTags" | "x" | "y" | "locationType" | "region", ExtArgs["result"]["missionDefinition"]>
 export type MissionDefinitionInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   results?: boolean | Prisma.MissionDefinition$resultsArgs<ExtArgs>
+  activeMissions?: boolean | Prisma.MissionDefinition$activeMissionsArgs<ExtArgs>
   _count?: boolean | Prisma.MissionDefinitionCountOutputTypeDefaultArgs<ExtArgs>
 }
 export type MissionDefinitionIncludeCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {}
@@ -859,6 +991,7 @@ export type $MissionDefinitionPayload<ExtArgs extends runtime.Types.Extensions.I
   name: "MissionDefinition"
   objects: {
     results: Prisma.$MissionResultPayload<ExtArgs>[]
+    activeMissions: Prisma.$ActiveMissionPayload<ExtArgs>[]
   }
   scalars: runtime.Types.Extensions.GetPayloadResult<{
     id: string
@@ -1272,6 +1405,7 @@ readonly fields: MissionDefinitionFieldRefs;
 export interface Prisma__MissionDefinitionClient<T, Null = never, ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
   readonly [Symbol.toStringTag]: "PrismaPromise"
   results<T extends Prisma.MissionDefinition$resultsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.MissionDefinition$resultsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$MissionResultPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+  activeMissions<T extends Prisma.MissionDefinition$activeMissionsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.MissionDefinition$activeMissionsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$ActiveMissionPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   /**
    * Attaches callbacks for the resolution and/or rejection of the Promise.
    * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -1731,6 +1865,30 @@ export type MissionDefinition$resultsArgs<ExtArgs extends runtime.Types.Extensio
   take?: number
   skip?: number
   distinct?: Prisma.MissionResultScalarFieldEnum | Prisma.MissionResultScalarFieldEnum[]
+}
+
+/**
+ * MissionDefinition.activeMissions
+ */
+export type MissionDefinition$activeMissionsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the ActiveMission
+   */
+  select?: Prisma.ActiveMissionSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the ActiveMission
+   */
+  omit?: Prisma.ActiveMissionOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.ActiveMissionInclude<ExtArgs> | null
+  where?: Prisma.ActiveMissionWhereInput
+  orderBy?: Prisma.ActiveMissionOrderByWithRelationInput | Prisma.ActiveMissionOrderByWithRelationInput[]
+  cursor?: Prisma.ActiveMissionWhereUniqueInput
+  take?: number
+  skip?: number
+  distinct?: Prisma.ActiveMissionScalarFieldEnum | Prisma.ActiveMissionScalarFieldEnum[]
 }
 
 /**

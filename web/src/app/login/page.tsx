@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useMemo, useState } from "react";
+import { useMemo, useState } from "react";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
 import { Check, Clipboard, Dices, KeyRound, LifeBuoy, LogIn, UserPlus } from "lucide-react";
@@ -34,7 +34,9 @@ export default function LoginPage() {
   const [token, setToken] = useState("");
   const [recoveryName, setRecoveryName] = useState("");
   const [recoveredToken, setRecoveredToken] = useState<string | null>(null);
-  const [missingSession, setMissingSession] = useState(false);
+  const [missingSession] = useState(
+    () => typeof window !== "undefined" && new URLSearchParams(window.location.search).get("reason") === "missing-session",
+  );
   const [created, setCreated] = useState<CreatedSession | null>(null);
   const [busy, setBusy] = useState<"create" | "resume" | "recover" | null>(null);
   const [error, setError] = useState<string | null>(null);
@@ -44,10 +46,6 @@ export default function LoginPage() {
     getPlayerPortraitById(portraitId) ?? portraitOptions[0] ?? null;
   const canCreate =
     busy === null && name.trim().length >= 2 && name.trim().length <= 40 && portraitId.length > 0;
-
-  useEffect(() => {
-    setMissingSession(new URLSearchParams(window.location.search).get("reason") === "missing-session");
-  }, []);
 
   async function createCharacter() {
     if (!selectedPortrait) {

@@ -55,6 +55,7 @@ model Soldier {
   trainingLog     TrainingLog[]
   arenaBotProfile ArenaBotProfile?
   activeMission   ActiveMission?
+  messages        GameMessage[]
 }
 
 model ArenaBotProfile {
@@ -293,6 +294,24 @@ model WorldJobRun {
   details    Json?
 
   @@index([job, ranAt])
+}
+
+model GameMessage {
+  id               String    @id @default(cuid())
+  recipientId      String
+  kind             String
+  title            String
+  body             String
+  payload          Json?
+  auctionListingId String?
+  readAt           DateTime?
+  claimedAt        DateTime?
+  createdAt        DateTime  @default(now())
+  recipient        Soldier   @relation(fields: [recipientId], references: [id])
+
+  @@unique([recipientId, kind, auctionListingId])
+  @@index([recipientId, createdAt])
+  @@index([auctionListingId])
 }
 
 model TrainingLog {

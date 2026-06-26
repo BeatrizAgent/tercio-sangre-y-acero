@@ -10,7 +10,6 @@ import { PageTransition } from "@/components/game/page-transition";
 import { MissionCanvasResolver } from "@/components/game/MissionCanvasResolver";
 import { resolveActiveEventChoiceAction, startMissionAction } from "@/lib/actions/combat";
 import { prepareActionGateAction } from "@/lib/actions/gate";
-import { claimMissionAction, startTimedMissionAction } from "@/lib/actions/timed-missions";
 import { rarityStyle } from "@/lib/item-format";
 import { useGameStore } from "@/lib/game-store";
 import {
@@ -337,6 +336,41 @@ export default function MissionDetailPage() {
   const [gateToken, setGateToken] = useState<string | null>(null);
   const [countdown, setCountdown] = useState<number | null>(null);
   const [actionError, setActionError] = useState<string | null>(null);
+  const [localRegenTimer, setLocalRegenTimer] = useState<string>("");
+
+  useEffect(() => {
+    const currentPoints = soldier.actionPoints !== undefined ? soldier.actionPoints : 12;
+    if (currentPoints >= 12 || !soldier.lastRegenAt) {
+      setLocalRegenTimer("");
+      return;
+    }
+
+    const tick = () => {
+      const s = useGameStore.getState().soldier;
+      const pts = s.actionPoints !== undefined ? s.actionPoints : 12;
+      if (pts >= 12 || !s.lastRegenAt) {
+        setLocalRegenTimer("");
+        return;
+      }
+
+      const nextRegenTime = new Date(s.lastRegenAt).getTime() + 30 * 60 * 1000;
+      const now = Date.now();
+      const remainingMs = nextRegenTime - now;
+
+      if (remainingMs <= 0) {
+        useGameStore.getState().hydrateState({ ...useGameStore.getState() });
+        return;
+      }
+
+      const minutes = Math.floor(remainingMs / 60000);
+      const seconds = Math.floor((remainingMs % 60000) / 1000);
+      setLocalRegenTimer(`${minutes}:${String(seconds).padStart(2, "0")}`);
+    };
+
+    tick();
+    const interval = window.setInterval(tick, 1000);
+    return () => window.clearInterval(interval);
+  }, [soldier.actionPoints, soldier.lastRegenAt]);
   const [clockTick, setClockTick] = useState(() => Date.now());
   const mountedRef = useRef(true);
 
@@ -481,6 +515,7 @@ export default function MissionDetailPage() {
   const requiredRoll = targetPower - totalPower;
   const chance = requiredRoll <= 1 ? 100 : requiredRoll > 5 ? 0 : ((6 - requiredRoll) / 5) * 100;
   const isAgotado = soldier.fatigue >= 100;
+  const noActionPoints = (soldier.actionPoints !== undefined ? soldier.actionPoints : 12) <= 0;
   const lootTable = mission ? lootTableDefinitions.find((tbl) => tbl.id === mission.lootTableId) : undefined;
 
   const relevantStatLabel: Record<string, string> = {
@@ -516,36 +551,23 @@ export default function MissionDetailPage() {
       setGateToken(gate.token);
       await startGateCountdown(gate.waitMs);
       if (!mountedRef.current) return;
-      const result = await startTimedMissionAction({ missionId });
+      const result = await startMissionAction({ missionId, gateToken: gate.token });
       if (result.ok && result.data?.state) {
         hydrateState(result.data.state);
         setGateToken(null);
-        return;
+        if (result.data.eventTriggered) {
+          return;
+        }
+        if (result.data.reportId) {
+          router.push(`/reports/${result.data.reportId}`);
+          return;
+        }
       }
       setActionError(result.message);
     } catch (error) {
       setActionError(error instanceof Error ? error.message : "No se pudo preparar la orden.");
       setCountdown(null);
       setResolving(false);
-    }
-  };
-
-  const handleClaimMission = async () => {
-    if (resolving) return;
-    setActionError(null);
-    setResolving(true);
-    try {
-      const result = await claimMissionAction();
-      if (result.ok && result.data?.state) {
-        hydrateState(result.data.state);
-        if (result.data.reportId) router.push(`/reports/${result.data.reportId}`);
-        return;
-      }
-      setActionError(result.message);
-    } catch (error) {
-      setActionError(error instanceof Error ? error.message : "No se pudo reclamar la mision.");
-    } finally {
-      if (mountedRef.current) setResolving(false);
     }
   };
 
@@ -710,17 +732,23 @@ export default function MissionDetailPage() {
                   <MiniIcon iconId="honor" label="Honor" />
                 </div>
 
-                {activeForThisMission && (
-                  <div className="rounded-xs border border-gold/30 bg-stone-950/70 p-3 text-center font-mono text-[11px] uppercase tracking-wider text-gold-soft">
-                    {remainingMs > 0 ? `Mision en marcha ${remainingLabel}` : "Orden completada. Reclama reporte."}
+                <div className="rounded-xs border border-iron/40 bg-stone-950/40 p-2.5 space-y-1">
+                  <div className="flex items-center justify-between font-mono text-[10px] uppercase">
+                    <span className="text-text-muted">Puntos de Acción:</span>
+                    <span className="font-bold text-gold">{soldier.actionPoints !== undefined ? soldier.actionPoints : 12} / 12</span>
                   </div>
-                )}
+                  {soldier.actionPoints !== undefined && soldier.actionPoints < 12 && (
+                    <div className="font-mono text-[9px] text-right text-text-muted uppercase">
+                      Próximo punto en: <span className="text-gold-soft">{localRegenTimer || "--:--"}</span>
+                    </div>
+                  )}
+                </div>
 
                 <button
-                  onClick={activeForThisMission && remainingMs <= 0 ? () => void handleClaimMission() : handleStart}
-                  disabled={isAgotado || resolving || countdown !== null || activeElsewhere || (activeForThisMission && remainingMs > 0)}
+                  onClick={handleStart}
+                  disabled={isAgotado || resolving || countdown !== null || noActionPoints}
                   className={`blood-button flex w-full items-center justify-center gap-2 py-3 text-sm ${
-                    isAgotado || resolving || countdown !== null || activeElsewhere || (activeForThisMission && remainingMs > 0) ? "cursor-not-allowed opacity-60" : ""
+                    isAgotado || resolving || countdown !== null || noActionPoints ? "cursor-not-allowed opacity-60" : ""
                   }`}
                 >
                   <UiAssetIcon id="confirm" label="" className="h-5 w-5" />
@@ -730,11 +758,9 @@ export default function MissionDetailPage() {
                       ? "Resolviendo..."
                       : isAgotado
                         ? "Agotado"
-                        : activeElsewhere
-                          ? "Otra mision en marcha"
-                          : activeForThisMission
-                            ? remainingMs > 0 ? `Regresa en ${remainingLabel}` : "Reclamar reporte"
-                            : "Iniciar mision"}
+                        : noActionPoints
+                          ? "Sin Puntos de Acción"
+                          : "Iniciar mision"}
                 </button>
 
                 {actionError && (

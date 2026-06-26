@@ -1,29 +1,11 @@
 // RecruitmentCard: dense per-candidate card used by /recruitment.
-//
-// Layout designed for three card widths produced by the page grid:
-//   - 1 col (~332px content): comfortable
-//   - 2 col at lg (~314px):  comfortable
-//   - 3 col at 2xl (~224px): tight but readable
-//
-// To stay readable at all three widths the card uses a fixed 4-col stat
-// grid (wraps to 4+3) instead of a 7-col row, compact cost chips that fit
-// in 70px cells, and native `title` tooltips instead of the custom
-// Tooltip component (whose `w-full h-full` wrapper breaks flex/grid
-// layouts and was the root cause of the previous unreadable render).
-//
-// Below ~256px of available width (e.g. inside a narrow sidebar) the
-// card collapses to a "compact" view that only shows the portrait with
-// a name ribbon — see the `.recruit-card` container-query rules in
-// `globals.css`. The dense body content is already mirrored in the
-// stats popup, so we never repeat it inline; in compact mode the whole
-// card becomes a button that opens that popup, which also exposes the
-// "Reclutar" action so the player can still close the deal.
+// Displays all details (stats, costs, hook, fatigue, role) directly on a single card.
+// No modals are used.
 
 "use client";
 
-import { useEffect, useRef, useState } from "react";
 import Link from "next/link";
-import { BarChart3, Check, X } from "lucide-react";
+import { Check } from "lucide-react";
 import { CharacterPortrait } from "@/components/ui/character-portrait";
 import { RoleIcon } from "@/components/ui/role-icon";
 import { FatigueBar, type StatTone } from "@/components/ui/stat-chip";
@@ -37,8 +19,6 @@ import { getRankName } from "@/lib/data/ranks";
 import { formationRoleIconPaths } from "@/lib/data/ui-paths";
 import { STAT_INFO } from "@/lib/stats";
 import type { Soldier, StatId } from "@/lib/types";
-
-const COMPACT_WIDTH_PX = 256;
 
 const STAT_ORDER: readonly StatId[] = [
   "pike",
@@ -91,12 +71,8 @@ export function RecruitmentCard({
   onRecruit: () => void;
 }) {
   const { character, cost, hook } = candidate;
-  const [statsOpen, setStatsOpen] = useState(false);
-  const [isCompact, setIsCompact] = useState(false);
-  const sectionRef = useRef<HTMLElement>(null);
   const affordability = candidateAffordability(soldier, candidate);
   const power = candidatePowerScore(candidate);
-  const bestStats = topStats(candidate, 3);
   const canAfford = affordability.canAfford;
   const canRecruit = canAfford && !recruitmentBlockedReason;
   const blockedReason = recruitmentBlockedReason ?? (!canAfford
@@ -107,100 +83,42 @@ export function RecruitmentCard({
   const totalMissing =
     affordability.missing.coins + affordability.missing.honor + affordability.missing.reputation;
 
-  useEffect(() => {
-    const el = sectionRef.current;
-    if (!el || typeof ResizeObserver === "undefined") return;
-    const observer = new ResizeObserver((entries) => {
-      const width = entries[0]?.contentRect.width ?? el.clientWidth;
-      setIsCompact(width <= COMPACT_WIDTH_PX);
-    });
-    observer.observe(el);
-    return () => observer.disconnect();
-  }, []);
-
-  function openStats() {
-    setStatsOpen(true);
-  }
-
-  function handleCompactKeyDown(event: React.KeyboardEvent<HTMLElement>) {
-    if (event.key === "Enter" || event.key === " ") {
-      event.preventDefault();
-      openStats();
-    }
-  }
-
-  const compactInteractionProps = isCompact
-    ? ({
-        onClick: openStats,
-        onKeyDown: handleCompactKeyDown,
-        role: "button",
-        tabIndex: 0,
-        "aria-label": `Ver detalles y reclutar a ${character.name}`,
-      } as const)
-    : ({} as const);
-
   return (
-    <section
-      ref={sectionRef}
+    <article
       data-testid={`recruit-card-${candidate.id}`}
-      data-compact={isCompact ? "true" : "false"}
       className={`recruit-card game-panel flex min-w-0 flex-col gap-2 rounded-xs border p-2.5 transition ${
         recruited
-          ? "border-success/40 bg-panel-soft/45 opacity-65"
+          ? "border-success/40 bg-black/25 opacity-70"
           : canRecruit
-            ? "border-iron/70 bg-stone-950/70 hover:border-gold/45"
-            : "border-iron/70 bg-stone-950/70"
-      } ${isCompact ? "cursor-pointer focus-visible:outline-2 focus-visible:outline-gold/70" : ""}`}
-      {...compactInteractionProps}
+            ? "border-iron/70 hover:border-gold/45 hover:shadow-[0_4px_12px_rgba(0,0,0,0.35)]"
+            : "border-iron/60 bg-black/15 opacity-90"
+      }`}
     >
-      <div className="recruit-card__compact">
-        <CharacterPortrait
-          assetId={character.portraitAssetId}
-          name={character.name}
-          size="md"
-          rounded="xs"
-          className="recruit-card__portrait border-gold/30"
-        >
-          {recruited && (
-            <span className="absolute inset-x-0 bottom-0 bg-success/90 py-1 text-center font-mono text-[9px] font-extrabold uppercase tracking-wider text-stone-950">
-              En el tercio
-            </span>
-          )}
-        </CharacterPortrait>
-        <div className="recruit-card__name-ribbon">
-          <span>{character.name}</span>
-          <small className="recruit-card__role-line">
-            {getRankName(character.rank)} · {character.role}
-          </small>
-        </div>
-      </div>
-
-      <div className="recruit-card__body flex min-w-0 flex-col gap-2">
       <header className="flex min-w-0 items-start gap-2.5">
         <CharacterPortrait
           assetId={character.portraitAssetId}
           name={character.name}
-          size="md"
+          size="sm"
           rounded="xs"
           className="border-gold/30"
         />
         <div className="min-w-0 flex-1">
           <div className="flex min-w-0 items-center gap-1 text-gold-soft">
             <RoleIcon role={character.role} className="h-3 w-3 shrink-0" />
-            <h3 className="min-w-0 flex-1 truncate font-cinzel text-sm font-extrabold uppercase tracking-wider text-gold">
+            <h3 className="min-w-0 flex-1 truncate font-cinzel text-xs font-extrabold uppercase tracking-wide text-gold">
               {character.name}
             </h3>
           </div>
           <div className="mt-0.5 flex min-w-0 flex-wrap items-center gap-1">
-            <span className="rounded-xs border border-iron/70 bg-stone-900/55 px-1.5 py-px font-mono text-[8px] font-bold uppercase tracking-wider text-text-muted">
+            <span className="rounded-xs border border-iron/70 bg-stone-900/55 px-1 py-0.5 font-mono text-[8px] font-bold uppercase tracking-wider text-text-muted">
               {character.role}
             </span>
-            <span className="rounded-xs border border-gold/35 bg-gold/10 px-1.5 py-px font-mono text-[8px] font-bold uppercase tracking-wider text-gold-soft">
+            <span className="rounded-xs border border-gold/35 bg-gold/10 px-1 py-0.5 font-mono text-[8px] font-bold uppercase tracking-wider text-gold-soft">
               {getRankName(character.rank)}
             </span>
             {recruited && (
-              <span className="inline-flex items-center gap-0.5 rounded-xs border border-success/40 bg-success/12 px-1.5 py-px font-mono text-[8px] font-bold uppercase tracking-wider text-success">
-                <Check className="h-2 w-2" />
+              <span className="inline-flex items-center gap-0.5 rounded-xs border border-success/40 bg-success/12 px-1 py-0.5 font-mono text-[8px] font-bold uppercase tracking-wider text-success">
+                <Check className="h-2.5 w-2.5" />
                 En el tercio
               </span>
             )}
@@ -208,16 +126,16 @@ export function RecruitmentCard({
         </div>
       </header>
 
-      <p className="text-[11px] leading-snug italic text-text-muted">
+      <p className="text-[10px] leading-snug italic text-text-muted min-h-[32px] line-clamp-2">
         &ldquo;{hook}&rdquo;
       </p>
 
       <div
-        className="grid min-w-0 grid-cols-[repeat(3,minmax(0,1fr))_auto] gap-1"
+        className="grid min-w-0 grid-cols-4 gap-1"
         role="group"
-        aria-label="Resumen de atributos del recluta"
+        aria-label="Atributos del recluta"
       >
-        {bestStats.map((stat) => (
+        {STAT_ORDER.map((stat) => (
           <StatPill
             key={stat}
             statId={stat}
@@ -227,20 +145,11 @@ export function RecruitmentCard({
         ))}
         <span
           className="inline-flex w-full items-center justify-center gap-0.5 rounded-xs border border-gold/45 bg-gold/10 px-1 py-0.5 font-mono text-[10px] font-extrabold text-gold-soft"
-          title={`Suma de los 7 atributos: ${power}`}
+          title={`Poder total: ${power} (Suma de los 7 atributos)`}
         >
-          <span className="text-[8px]">Σ</span>
+          <span className="text-[8px] uppercase text-text-muted">Σ</span>
           <span>{power}</span>
         </span>
-        <button
-          type="button"
-          onClick={openStats}
-          className="inline-flex h-full min-h-7 w-8 cursor-pointer items-center justify-center rounded-xs border border-iron/70 bg-stone-950/70 text-text-muted transition hover:border-gold/45 hover:text-gold-soft"
-          aria-label={`Ver estadisticas de ${character.name}`}
-          title={`Ver estadisticas de ${character.name}`}
-        >
-          <BarChart3 className="h-3.5 w-3.5" />
-        </button>
       </div>
 
       <div
@@ -302,7 +211,10 @@ export function RecruitmentCard({
         <button
           type="button"
           disabled={!canRecruit}
-          onClick={onRecruit}
+          onClick={(e) => {
+            e.stopPropagation();
+            onRecruit();
+          }}
           aria-label={
             canRecruit
               ? `Reclutar a ${character.name} por ${costLabel}`
@@ -325,154 +237,7 @@ export function RecruitmentCard({
           Te faltan {totalMissing === 1 ? "1 recurso" : `${totalMissing} recursos`} para cerrar el trato
         </p>
       )}
-      </div>
-
-      {statsOpen && (
-        <RecruitStatsPopup
-          candidate={candidate}
-          power={power}
-          recruited={recruited}
-          canRecruit={canRecruit}
-          blockedReason={blockedReason}
-          costLabel={costLabel}
-          onRecruit={onRecruit}
-          onClose={() => setStatsOpen(false)}
-        />
-      )}
-    </section>
-  );
-}
-
-function RecruitStatsPopup({
-  candidate,
-  power,
-  recruited,
-  canRecruit,
-  blockedReason,
-  costLabel,
-  onRecruit,
-  onClose,
-}: {
-  candidate: RecruitmentCandidate;
-  power: number;
-  recruited: boolean;
-  canRecruit: boolean;
-  blockedReason: string | null;
-  costLabel: string;
-  onRecruit: () => void;
-  onClose: () => void;
-}) {
-  const { character, hook } = candidate;
-  const dialogRef = useRef<HTMLDialogElement>(null);
-
-  useEffect(() => {
-    dialogRef.current?.showModal();
-  }, []);
-
-  function handleBackdropClick(event: React.MouseEvent<HTMLDialogElement>) {
-    if (event.target === event.currentTarget) onClose();
-  }
-
-  return (
-    <dialog
-      ref={dialogRef}
-      onClose={onClose}
-      onClick={handleBackdropClick}
-      aria-labelledby={`recruit-stats-${candidate.id}`}
-      className="recruit-stats-dialog mx-auto mt-[10vh] w-full max-w-md overflow-hidden rounded-xs border border-iron bg-panel p-0 text-text shadow-2xl"
-    >
-      <header className="flex items-start justify-between gap-3 border-b border-iron bg-stone-950/90 px-3 py-2.5">
-        <div className="min-w-0">
-          <p className="font-mono text-[9px] font-bold uppercase tracking-[0.2em] text-gold-soft/80">
-            Estadisticas
-          </p>
-          <h2
-            id={`recruit-stats-${candidate.id}`}
-            className="truncate font-cinzel text-base font-extrabold uppercase tracking-wider text-gold"
-          >
-            {character.name}
-          </h2>
-        </div>
-        <button
-          type="button"
-          onClick={onClose}
-          className="flex h-8 w-8 cursor-pointer items-center justify-center border border-blood/60 bg-blood/15 text-blood-bright transition hover:bg-blood hover:text-text"
-          aria-label="Cerrar estadisticas"
-        >
-          <X className="h-4 w-4" />
-        </button>
-      </header>
-
-      <div className="grid gap-3 p-3 sm:grid-cols-[128px_minmax(0,1fr)]">
-        <CharacterPortrait
-          assetId={character.portraitAssetId}
-          name={character.name}
-          size="lg"
-          rounded="xs"
-          className="mx-auto border-gold/35 sm:mx-0"
-        >
-          {recruited && (
-            <span className="absolute inset-x-0 bottom-0 bg-success/90 py-1 text-center font-mono text-[9px] font-extrabold uppercase tracking-wider text-stone-950">
-              En el tercio
-            </span>
-          )}
-        </CharacterPortrait>
-
-        <div className="min-w-0 space-y-3">
-          <p className="text-xs leading-snug italic text-text-muted">&ldquo;{hook}&rdquo;</p>
-          <div className="flex flex-wrap gap-1">
-            <span className="rounded-xs border border-iron/70 bg-stone-900/55 px-2 py-1 font-mono text-[9px] font-bold uppercase tracking-wider text-text-muted">
-              {character.role}
-            </span>
-            <span className="rounded-xs border border-gold/35 bg-gold/10 px-2 py-1 font-mono text-[9px] font-bold uppercase tracking-wider text-gold-soft">
-              {getRankName(character.rank)}
-            </span>
-            <span className="rounded-xs border border-gold/45 bg-gold/10 px-2 py-1 font-mono text-[9px] font-extrabold uppercase tracking-wider text-gold-soft">
-              Poder {power}
-            </span>
-          </div>
-          <div className="grid grid-cols-2 gap-1.5" aria-label="Atributos completos">
-            {STAT_ORDER.map((stat) => (
-              <StatRow
-                key={stat}
-                statId={stat}
-                value={character.stats[stat] ?? 0}
-              />
-            ))}
-          </div>
-        </div>
-      </div>
-
-      <footer className="flex items-center gap-2 border-t border-iron bg-stone-950/90 px-3 py-2.5">
-        {recruited ? (
-          <Link
-            href="/company"
-            onClick={onClose}
-            className="iron-button inline-flex min-h-9 w-full items-center justify-center gap-1.5 px-3 py-1.5 font-mono text-[10px] font-bold uppercase tracking-wider"
-          >
-            En la formación →
-          </Link>
-        ) : (
-          <button
-            type="button"
-            disabled={!canRecruit}
-            onClick={onRecruit}
-            aria-label={
-              canRecruit
-                ? `Reclutar a ${character.name} por ${costLabel}`
-                : `No puedes reclutar: ${blockedReason}`
-            }
-            className={`min-h-9 w-full cursor-pointer border px-3 py-1.5 font-mono text-[11px] font-bold uppercase tracking-wider transition ${
-              canRecruit
-                ? "blood-button"
-                : "cursor-not-allowed border-iron bg-stone-950 text-muted"
-            }`}
-          >
-            {canRecruit ? `Reclutar · ${costLabel}` : (blockedReason ?? "Reclutar")}
-          </button>
-        )}
-      </footer>
-    </dialog>
+    </article>
   );
 }
 
@@ -497,31 +262,6 @@ function StatPill({
       <span>{value}</span>
     </span>
   );
-}
-
-function StatRow({ statId, value }: { statId: StatId; value: number }) {
-  const info = STAT_INFO[statId];
-  const tone = statTone(value);
-  return (
-    <div
-      className={`flex min-w-0 items-center justify-between gap-2 rounded-xs border px-2 py-1.5 font-mono ${TONE_CLASS[tone]}`}
-      title={info.description}
-    >
-      <span className="truncate text-[10px] font-bold uppercase tracking-wider">
-        {info.name}
-      </span>
-      <span className="text-sm font-extrabold">{value}</span>
-    </div>
-  );
-}
-
-function topStats(candidate: RecruitmentCandidate, count: number): StatId[] {
-  return [...STAT_ORDER]
-    .sort((a, b) => {
-      const diff = (candidate.character.stats[b] ?? 0) - (candidate.character.stats[a] ?? 0);
-      return diff !== 0 ? diff : STAT_ORDER.indexOf(a) - STAT_ORDER.indexOf(b);
-    })
-    .slice(0, count);
 }
 
 function CostChip({

@@ -137,6 +137,11 @@ export type AuctionBid = Prisma.AuctionBidModel
  */
 export type WorldJobRun = Prisma.WorldJobRunModel
 /**
+ * Model GameMessage
+ *
+ */
+export type GameMessage = Prisma.GameMessageModel
+/**
  * Model TrainingLog
  *
  */

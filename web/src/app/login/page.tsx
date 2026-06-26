@@ -62,7 +62,9 @@ export default function LoginPage() {
     busy === null && name.trim().length >= 2 && name.trim().length <= 40 && portraitId.length > 0;
 
   useEffect(() => {
-    setMissingSession(new URLSearchParams(window.location.search).get("reason") === "missing-session");
+    const missingSessionTimer = window.setTimeout(() => {
+      setMissingSession(new URLSearchParams(window.location.search).get("reason") === "missing-session");
+    }, 0);
     fetch("/api/auth/recover-ip", { cache: "no-store" })
       .then((response) => response.json() as Promise<{ publicIp?: string | null }>)
       .then(async (payload) => {
@@ -79,6 +81,7 @@ export default function LoginPage() {
       })
       .catch(() => setPublicIp(null))
       .finally(() => setPublicIpChecked(true));
+    return () => window.clearTimeout(missingSessionTimer);
   }, []);
 
   async function createCharacter() {

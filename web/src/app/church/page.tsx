@@ -19,6 +19,8 @@ import {
 } from "@/lib/game-data";
 import { useGameStore } from "@/lib/game-store";
 import { useGameData } from "@/lib/hooks/use-game-data";
+import { useServerAction } from "@/lib/hooks/use-server-action";
+import { forceRefreshShopAction } from "@/lib/actions/shop";
 import { playCoinSound, playDefeatSound, playPageSound } from "@/lib/sounds";
 import { getCharacterLevel } from "@/lib/domain/character-level";
 import type { InventoryItem } from "@/lib/types";
@@ -36,6 +38,8 @@ export default function ChurchPage() {
     buyChurchItem,
     donateItem,
     payChurchErrand,
+    shop,
+    hydrateState,
   } = useGameStore();
   const [mounted, setMounted] = useState(false);
   const [notice, setNotice] = useState<{ text: string; isError: boolean } | null>(null);
@@ -43,6 +47,23 @@ export default function ChurchPage() {
   const [dropTarget, setDropTarget] = useState<DragSource | null>(null);
   const [activeChest, setActiveChest] = useState(0);
   const [selectedItemId, setSelectedItemId] = useState<string | null>(null);
+
+  const { run: runRefresh, pending: isRefreshing } = useServerAction(
+    forceRefreshShopAction,
+    {
+      onSuccess: (data) => {
+        playCoinSound();
+        if (data?.state) hydrateState(data.state);
+        setNotice({ text: "Inventario renovado con éxito.", isError: false });
+        window.setTimeout(() => setNotice(null), 2600);
+      },
+      onError: (message) => {
+        playDefeatSound();
+        setNotice({ text: typeof message === "string" ? message : "Error al renovar el relicario.", isError: true });
+        window.setTimeout(() => setNotice(null), 2600);
+      },
+    },
+  );
 
   useEffect(() => {
     const timer = window.setTimeout(() => setMounted(true), 0);
@@ -230,6 +251,10 @@ export default function ChurchPage() {
               handlePayErrand={handlePayErrand}
               soldierCoins={soldier.coins}
               playPageSound={playPageSound}
+              stockByItem={shop?.stock}
+              nextRefreshAt={shop?.churchNextRefreshAt}
+              onRefresh={() => runRefresh({ shopId: "field_church" })}
+              isRefreshing={isRefreshing}
             />
           </section>
 

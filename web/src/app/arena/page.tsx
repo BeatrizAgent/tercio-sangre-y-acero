@@ -158,6 +158,23 @@ export default function ArenaPage() {
         <div className="grid gap-5 xl:grid-cols-[1.35fr_0.65fr]">
           <Card title="Cartel de Rivales" iconId="arena">
             <div className="grid gap-3">
+              {activeDuel && (
+                <div className="border border-gold/45 bg-stone-900/90 p-4 rounded-xs text-center space-y-2 animate-pulse">
+                  <span className="font-cinzel text-xs font-bold uppercase tracking-wider text-gold-soft flex items-center justify-center gap-2">
+                    <UiAssetIcon id="arena" label="" className="h-4 w-4 text-gold animate-spin" />
+                    PREPARANDO DUELO EN LA TABERNA...
+                  </span>
+                  <p className="text-[11px] text-text-muted font-mono uppercase">
+                    Los soldados se posicionan. Quedan {activeDuel.seconds} segundos para chocar el acero.
+                  </p>
+                  <div className="w-full bg-stone-950 h-1.5 border border-iron/45 rounded-full overflow-hidden">
+                    <div
+                      className="bg-gold h-full transition-all duration-300"
+                      style={{ width: `${(activeDuel.seconds / 10) * 100}%` }}
+                    />
+                  </div>
+                </div>
+              )}
               {opponentsLoading && <RivalCardSkeletonList count={3} />}
               {!opponentsLoading && opponents.map((opponent) => {
                 const isTooTired = soldier.fatigue + opponent.fatigue > 115;
@@ -314,7 +331,7 @@ function ArenaOpponentCard({
 
   return (
     <section
-      className={`game-panel overflow-hidden p-0 transition-colors ${
+      className={`game-panel arena-opponent-row overflow-hidden p-0 transition-colors ${
         disabled
           ? "opacity-90"
           : "hover:border-gold/45 focus-within:border-gold/55"

@@ -9,7 +9,8 @@ import { applyMissionRewardsInState } from "../domain/missions";
 import { canFallbackToFilesystem, loadGameState, persistGameState, shouldUseDatabase } from "./_demo";
 import { fail, ok, type ActionResult } from "../domain/result";
 import { getDb } from "../db";
-import { ARMORY_SHOP_ID, ensureShopRotation } from "../server/shop-rotation";
+import { ARMORY_SHOP_ID, CHURCH_SHOP_ID, ensureShopRotation, forceShopRotation } from "../server/shop-rotation";
+import type { GameState } from "../types";
 
 export interface BuyItemArgs {
   itemId: string;
@@ -86,6 +87,61 @@ export async function refreshShopAction(): Promise<ActionResult> {
   }
   revalidatePath("/armory");
   return ok("Puesto actualizado.");
+}
+
+export interface ForceRefreshShopArgs {
+  shopId: "company_armory" | "field_church";
+}
+
+export async function forceRefreshShopAction({
+  shopId,
+}: ForceRefreshShopArgs): Promise<ActionResult<{ state: GameState }>> {
+  const cost = 10;
+  const state = await loadGameState();
+  if (state.soldier.coins < cost) {
+    return fail(`No tienes suficientes doblones para sobornar al mercader (${cost} doblones).`);
+  }
+
+  const updatedSoldier = {
+    ...state.soldier,
+    coins: state.soldier.coins - cost,
+  };
+
+  const isArmory = shopId === "company_armory";
+  const periodMs = isArmory ? 60 * 60_000 : 6 * 60 * 60_000;
+  let nextRefreshAt = new Date(Date.now() + periodMs);
+
+  if (shouldUseDatabase()) {
+    try {
+      const db = getDb();
+      await db.soldier.update({
+        where: { id: state.soldier.id },
+        data: { coins: updatedSoldier.coins },
+      });
+      const dbNextRefreshAt = await forceShopRotation(shopId, new Date());
+      nextRefreshAt = dbNextRefreshAt;
+    } catch (error) {
+      if (!canFallbackToFilesystem()) throw error;
+    }
+  }
+
+  const updatedShop = {
+    ...state.shop,
+    armoryNextRefreshAt: isArmory ? nextRefreshAt.toISOString() : state.shop?.armoryNextRefreshAt,
+    churchNextRefreshAt: !isArmory ? nextRefreshAt.toISOString() : state.shop?.churchNextRefreshAt,
+  };
+
+  const next: GameState = {
+    ...state,
+    soldier: updatedSoldier,
+    shop: updatedShop,
+  };
+
+  await persistGameState(next);
+  revalidatePath(isArmory ? "/armory" : "/church");
+  revalidatePath("/soldier");
+
+  return ok("Inventario renovado con éxito.", { state: next });
 }
 
 export async function resolveMissionAction(formData: FormData) {

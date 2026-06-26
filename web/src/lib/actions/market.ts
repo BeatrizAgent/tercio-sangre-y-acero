@@ -1,11 +1,10 @@
 "use server";
 
 import { revalidatePath } from "next/cache";
-import { getItem, itemDefinitions } from "../data";
+import { getItem } from "../data";
 import { requireApiSession } from "../auth/session";
 import { getDb } from "../db";
 import {
-  closeAuctionInState,
   listAuctionInState,
   placeAuctionBidInState,
   type AuctionListingState,
@@ -13,7 +12,12 @@ import {
 import { fail, ok, type ActionResult } from "../domain/result";
 import { normalizeGameState } from "../domain/initial-state";
 import { canFallbackToFilesystem, loadGameState, persistGameState, persistGameStateForUser, shouldUseDatabase } from "./_demo";
+import { claimAuctionMessageForListing } from "./mailbox";
+import { ensureAuctionHouse } from "../server/auction-house";
 import type { GameState } from "../types";
+import type { getDb as getDbType } from "../db";
+
+type MarketDb = ReturnType<typeof getDbType>;
 
 export interface AuctionView {
   id: string;
@@ -34,186 +38,8 @@ export interface AuctionView {
   sellerClaimedAt: string | null;
 }
 
-function hashCode(str: string): number {
-  let hash = 0;
-  for (let i = 0; i < str.length; i++) {
-    hash = str.charCodeAt(i) + ((hash << 5) - hash);
-  }
-  return Math.abs(hash);
-}
-
-export async function checkAndRotateSystemAuctions(db: any, now: Date) {
-  // 1. Get active system auctions
-  const activeSystem = await db.auctionListing.findMany({
-    where: { sellerId: "system", status: "active" },
-  });
-
-  // Check if they need rotation
-  // If there are no active system auctions OR the first active one has expired
-  const needsRotation = activeSystem.length === 0 || activeSystem[0].endsAt <= now;
-
-  if (needsRotation) {
-    // Resolve expired system auctions
-    if (activeSystem.length > 0) {
-      for (const listing of activeSystem) {
-        if (listing.endsAt <= now) {
-          const nextStatus = listing.currentBidderId ? "sold" : "expired";
-          await db.auctionListing.update({
-            where: { id: listing.id },
-            data: { status: nextStatus },
-          });
-        }
-      }
-    }
-
-    // Clean up old system auctions (expired or sold & winner claimed)
-    await db.auctionListing.deleteMany({
-      where: {
-        sellerId: "system",
-        OR: [
-          { status: "expired" },
-          { status: "sold", winnerClaimedAt: { not: null } },
-        ],
-      },
-    });
-
-    // Generate new system auctions
-    // Calculate the next rotation boundary (even hours: 0, 2, 4, 6, 8, 10, 12, 14, 16, 18, 20, 22)
-    const currentHour = now.getUTCHours();
-    const nextEvenHour = currentHour + (2 - (currentHour % 2));
-    const endsAt = new Date(now);
-    endsAt.setUTCHours(nextEvenHour, 0, 0, 0);
-
-    const consumables = itemDefinitions.filter((i) => i.slot === "consumable");
-    const commonEquipment = itemDefinitions.filter((i) => i.slot !== "consumable" && i.rarity === "common");
-    const uncommonEquipment = itemDefinitions.filter((i) => i.slot !== "consumable" && i.rarity === "uncommon");
-    const rareEquipment = itemDefinitions.filter((i) => i.slot !== "consumable" && i.rarity === "rare");
-    const epicEquipment = itemDefinitions.filter((i) => i.slot !== "consumable" && i.rarity === "epic");
-
-    const pickRandom = (arr: typeof itemDefinitions[number][]) => {
-      if (arr.length === 0) return null;
-      return arr[Math.floor(Math.random() * arr.length)];
-    };
-
-    const selectedItems: typeof itemDefinitions[number][] = [];
-
-    // 2 Consumables
-    for (let i = 0; i < 2; i++) {
-      const item = pickRandom(consumables);
-      if (item) selectedItems.push(item);
-    }
-    // 2 Common Equipment
-    for (let i = 0; i < 2; i++) {
-      const item = pickRandom(commonEquipment);
-      if (item) selectedItems.push(item);
-    }
-    // 1 Uncommon Equipment
-    const uncommonItem = pickRandom(uncommonEquipment);
-    if (uncommonItem) selectedItems.push(uncommonItem);
-    // 1 Rare or Epic Equipment
-    const rareOrEpic = Math.random() > 0.4 ? rareEquipment : epicEquipment;
-    const highTierItem = pickRandom(rareOrEpic.length > 0 ? rareOrEpic : rareEquipment);
-    if (highTierItem) selectedItems.push(highTierItem);
-
-    for (const item of selectedItems) {
-      const startingBid = Math.max(1, Math.round(item.value * (0.5 + Math.random() * 0.3)));
-      await db.auctionListing.create({
-        data: {
-          id: `system_${item.id}_${now.getTime()}_${Math.random().toString(36).substr(2, 4)}`,
-          sellerId: "system",
-          itemId: item.id,
-          quantity: 1,
-          startingBid,
-          currentBid: null,
-          currentBidderId: null,
-          buyoutPrice: null,
-          status: "active",
-          endsAt,
-          createdAt: now,
-        },
-      });
-    }
-  } else {
-    // Check if we should simulate bot bids
-    await simulateBotBidsForActiveSystemAuctions(db, now, activeSystem);
-  }
-}
-
-async function simulateBotBidsForActiveSystemAuctions(db: any, now: Date, activeSystem: any[]) {
-  const bots = await db.soldier.findMany({
-    where: { user: { isBot: true } },
-    select: { id: true, name: true },
-  });
-  if (bots.length === 0) return;
-
-  for (const listing of activeSystem) {
-    const totalDuration = listing.endsAt.getTime() - listing.createdAt.getTime();
-    const elapsed = now.getTime() - listing.createdAt.getTime();
-    const elapsedPct = Math.max(0, Math.min(1, elapsed / totalDuration));
-
-    const seed = hashCode(listing.id);
-    const numBids = (seed % 3) + 1; // 1 to 3 bids scheduled
-
-    const scheduledBids = [];
-    for (let i = 0; i < numBids; i++) {
-      const bidPct = 0.05 + ((seed + i * 37) % 90) / 100; // 5% to 95% of duration
-      const botIdx = (seed + i * 17) % bots.length;
-      
-      // Calculate target bid amount
-      let bidAmount = listing.startingBid;
-      for (let k = 0; k <= i; k++) {
-        const incrementPct = 0.05 + ((seed + k * 13) % 10) / 100; // 5% to 15%
-        bidAmount += Math.max(1, Math.round(listing.startingBid * incrementPct));
-      }
-
-      scheduledBids.push({ pct: bidPct, bot: bots[botIdx], amount: bidAmount });
-    }
-
-    // Sort scheduled bids by time pct
-    scheduledBids.sort((a, b) => a.pct - b.pct);
-
-    // Find the latest bid that should have occurred up to current time
-    let targetBid = null;
-    for (const bid of scheduledBids) {
-      if (bid.pct <= elapsedPct) {
-        targetBid = bid;
-      }
-    }
-
-    if (targetBid) {
-      const currentVal = listing.currentBid ?? (listing.startingBid - 1);
-      const isPlayerBidder = listing.currentBidderId && !bots.some((b: any) => b.id === listing.currentBidderId);
-      
-      let finalBidAmount = targetBid.amount;
-      if (isPlayerBidder && listing.currentBid && listing.currentBid >= finalBidAmount) {
-        // If the player outbid the bot's default amount, bot bids higher (competing)
-        const maxBotBid = Math.round(listing.startingBid * 2.0); // max willingness to pay
-        const potentialBid = listing.currentBid + Math.max(1, Math.round(listing.startingBid * 0.08));
-        if (potentialBid <= maxBotBid) {
-          finalBidAmount = potentialBid;
-        }
-      }
-
-      if (listing.currentBidderId !== targetBid.bot.id && finalBidAmount > currentVal) {
-        await db.$transaction(async (tx: any) => {
-          await tx.auctionListing.update({
-            where: { id: listing.id },
-            data: {
-              currentBid: finalBidAmount,
-              currentBidderId: targetBid.bot.id,
-            },
-          });
-          await tx.auctionBid.create({
-            data: {
-              listingId: listing.id,
-              bidderId: targetBid.bot.id,
-              amount: finalBidAmount,
-            },
-          });
-        });
-      }
-    }
-  }
+export async function checkAndRotateSystemAuctions(db: MarketDb, now: Date) {
+  return ensureAuctionHouse(db, now);
 }
 
 export async function listAuctionsAction(): Promise<ActionResult<{ auctions: AuctionView[] }>> {
@@ -222,11 +48,22 @@ export async function listAuctionsAction(): Promise<ActionResult<{ auctions: Auc
     try {
       const db = getDb();
       
-      await checkAndRotateSystemAuctions(db, new Date());
-
       const soldier = await db.soldier.findUnique({ where: { userId: session.userId }, select: { id: true } });
+      await ensureAuctionHouse(db, new Date());
+
       const rows = await db.auctionListing.findMany({
-        where: { status: { in: ["active", "sold", "expired"] } },
+        where: {
+          status: { in: ["active", "sold", "expired"] },
+          OR: [
+            { status: "active" },
+            ...(soldier
+              ? [
+                  { sellerId: soldier.id, sellerClaimedAt: null },
+                  { currentBidderId: soldier.id, winnerClaimedAt: null },
+                ]
+              : []),
+          ],
+        },
         orderBy: [{ status: "asc" }, { endsAt: "asc" }],
         take: 50,
       });
@@ -255,7 +92,7 @@ export async function listAuctionsAction(): Promise<ActionResult<{ auctions: Auc
           isWinning: row.currentBidderId === soldier?.id,
           isSystem: row.sellerId === "system",
           currentBidderName: row.currentBidderId
-            ? bidders.find((b: any) => b.id === row.currentBidderId)?.name ?? "Soldado rival"
+            ? bidders.find((b) => b.id === row.currentBidderId)?.name ?? "Soldado rival"
             : null,
           winnerClaimedAt: row.winnerClaimedAt ? row.winnerClaimedAt.toISOString() : null,
           sellerClaimedAt: row.sellerClaimedAt ? row.sellerClaimedAt.toISOString() : null,
@@ -331,7 +168,7 @@ export async function placeAuctionBidAction({
     try {
       const db = getDb();
       
-      await checkAndRotateSystemAuctions(db, new Date());
+      await ensureAuctionHouse(db, new Date());
 
       const state = await loadGameState();
       const bidderSoldier = await db.soldier.findUnique({ where: { userId: session.userId }, select: { id: true } });
@@ -382,58 +219,27 @@ export async function claimAuctionAction({ listingId }: { listingId: string }): 
     try {
       const db = getDb();
       
-      await checkAndRotateSystemAuctions(db, new Date());
+      await ensureAuctionHouse(db, new Date());
 
-      const state = await loadGameState();
       const currentSoldier = await db.soldier.findUnique({ where: { userId: session.userId }, select: { id: true } });
       if (!currentSoldier) return fail("Soldado no encontrado.");
       const listingRow = await db.auctionListing.findUnique({ where: { id: listingId } });
       if (!listingRow) return fail("Subasta no encontrada.");
 
       const now = new Date();
-      if (listingRow.status === "active" && listingRow.endsAt <= now) {
-        await db.auctionListing.update({
-          where: { id: listingId },
-          data: { status: listingRow.currentBidderId ? "sold" : "expired" },
-        });
-        listingRow.status = listingRow.currentBidderId ? "sold" : "expired";
-      }
+      await ensureAuctionHouse(db, now);
+      const freshListing = await db.auctionListing.findUnique({ where: { id: listingId } });
+      if (!freshListing) return fail("Subasta no encontrada.");
+      if (freshListing.status === "active") return fail("La subasta aun esta activa.");
 
-      let next = state;
-      if (listingRow.sellerId === currentSoldier.id) {
-        if (listingRow.sellerClaimedAt) return fail("Ya has cobrado este lote.");
-        if (listingRow.status === "active") return fail("La subasta aun esta activa.");
-        const close = closeAuctionInState({
-          listing: rowToListingState(listingRow),
-          seller: { ...state, soldier: { ...state.soldier, id: currentSoldier.id } },
-          winner: null,
-          now,
-        });
-        if (listingRow.status === "sold" && listingRow.currentBid) {
-          next = close.seller ?? state;
-        } else if (listingRow.status === "expired") {
-          next = close.seller ?? state;
-        }
-        await db.auctionListing.update({ where: { id: listingId }, data: { sellerClaimedAt: now } });
-      } else if (listingRow.currentBidderId === currentSoldier.id) {
-        if (listingRow.winnerClaimedAt) return fail("Ya has recogido este lote.");
-        if (listingRow.status === "active") return fail("La subasta aun esta activa.");
-        const close = closeAuctionInState({
-          listing: rowToListingState(listingRow),
-          seller: null,
-          winner: { ...state, soldier: { ...state.soldier, id: currentSoldier.id } },
-          now,
-        });
-        if (!close.result.ok) return fail(close.result.message);
-        next = close.winner ?? state;
-        await db.auctionListing.update({ where: { id: listingId }, data: { winnerClaimedAt: now } });
-      } else {
+      if (freshListing.sellerId !== currentSoldier.id && freshListing.currentBidderId !== currentSoldier.id) {
         return fail("No tienes nada que reclamar en esta subasta.");
       }
 
-      await persistGameState(next);
+      const claimed = await claimAuctionMessageForListing(listingId);
+      if (!claimed.ok) return fail(claimed.message);
       revalidateMarketPaths();
-      return ok("Subasta reclamada.", { state: next });
+      return ok(claimed.message, claimed.data);
     } catch (error) {
       if (!canFallbackToFilesystem()) throw error;
     }

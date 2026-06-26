@@ -12,8 +12,9 @@ import { featuredAssetPaths, getItem, getItemFootprint } from "@/lib/game-data";
 import { useGameStore } from "@/lib/game-store";
 import { useGameData } from "@/lib/hooks/use-game-data";
 import { useOptimisticAction } from "@/lib/hooks/use-optimistic-action";
+import { useServerAction } from "@/lib/hooks/use-server-action";
 import { buyItemInState, sellItemInState } from "@/lib/domain/shop";
-import { buyItemAction, sellItemAction } from "@/lib/actions/shop";
+import { buyItemAction, sellItemAction, forceRefreshShopAction } from "@/lib/actions/shop";
 import { playCoinSound, playDefeatSound, playPageSound } from "@/lib/sounds";
 import { getCharacterLevel } from "@/lib/domain/character-level";
 import { BACKPACK_CHESTS, BACKPACK_COLS, BACKPACK_ROWS, inventoryWithAutoLayout } from "@/lib/domain/inventory-grid";
@@ -24,7 +25,7 @@ type DragSource = "merchant" | "backpack";
 // Legacy MVP validator tokens: armory-slot-grid ARMORY_CELL_SIZE armory-dropzone draggable Arrastra
 export default function ArmoryPage() {
   const { status } = useGameData();
-  const { soldier, characters, activeCharacterId, shop, setActiveCharacter, payTownBribe } = useGameStore();
+  const { soldier, characters, activeCharacterId, shop, setActiveCharacter, payTownBribe, hydrateState } = useGameStore();
   const [notice, setNotice] = useState<{ text: string; isError: boolean } | null>(null);
   const [dragged, setDragged] = useState<{ source: DragSource; itemId: string } | null>(null);
   const [dropTarget, setDropTarget] = useState<DragSource | null>(null);
@@ -64,6 +65,21 @@ export default function ArmoryPage() {
       onError: (message) => {
         playDefeatSound();
         showNotice(message, true);
+      },
+    },
+  );
+
+  const { run: runRefresh, pending: isRefreshing } = useServerAction(
+    forceRefreshShopAction,
+    {
+      onSuccess: (data) => {
+        playCoinSound();
+        if (data?.state) hydrateState(data.state);
+        showNotice("Inventario renovado con éxito.", false);
+      },
+      onError: (message) => {
+        playDefeatSound();
+        showNotice(typeof message === "string" ? message : "Error al renovar el inventario.", true);
       },
     },
   );
@@ -244,6 +260,8 @@ export default function ArmoryPage() {
               playPageSound={playPageSound}
               stockByItem={shop?.stock}
               nextRefreshAt={shop?.armoryNextRefreshAt}
+              onRefresh={() => runRefresh({ shopId: "company_armory" })}
+              isRefreshing={isRefreshing}
             />
           </section>
 

@@ -403,6 +403,7 @@ export const ModelName = {
   AuctionListing: 'AuctionListing',
   AuctionBid: 'AuctionBid',
   WorldJobRun: 'WorldJobRun',
+  GameMessage: 'GameMessage',
   TrainingLog: 'TrainingLog',
   LootTable: 'LootTable',
   ReportFragment: 'ReportFragment',
@@ -429,7 +430,7 @@ export type TypeMap<ExtArgs extends runtime.Types.Extensions.InternalArgs = runt
     omit: GlobalOmitOptions
   }
   meta: {
-    modelProps: "user" | "soldier" | "arenaBotProfile" | "gameSave" | "characterName" | "soldierStats" | "itemDefinition" | "inventoryItem" | "equipment" | "missionDefinition" | "missionResult" | "activeMission" | "woundDefinition" | "activeWound" | "shopItem" | "shopRotation" | "auctionListing" | "auctionBid" | "worldJobRun" | "trainingLog" | "lootTable" | "reportFragment" | "assetDefinition" | "enemyDefinition" | "rankDefinition" | "gameEventDefinition" | "characterDefinition" | "spriteSetDefinition" | "recruitmentCandidateDefinition" | "trainingDefinition"
+    modelProps: "user" | "soldier" | "arenaBotProfile" | "gameSave" | "characterName" | "soldierStats" | "itemDefinition" | "inventoryItem" | "equipment" | "missionDefinition" | "missionResult" | "activeMission" | "woundDefinition" | "activeWound" | "shopItem" | "shopRotation" | "auctionListing" | "auctionBid" | "worldJobRun" | "gameMessage" | "trainingLog" | "lootTable" | "reportFragment" | "assetDefinition" | "enemyDefinition" | "rankDefinition" | "gameEventDefinition" | "characterDefinition" | "spriteSetDefinition" | "recruitmentCandidateDefinition" | "trainingDefinition"
     txIsolationLevel: TransactionIsolationLevel
   }
   model: {
@@ -1839,6 +1840,80 @@ export type TypeMap<ExtArgs extends runtime.Types.Extensions.InternalArgs = runt
         }
       }
     }
+    GameMessage: {
+      payload: Prisma.$GameMessagePayload<ExtArgs>
+      fields: Prisma.GameMessageFieldRefs
+      operations: {
+        findUnique: {
+          args: Prisma.GameMessageFindUniqueArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$GameMessagePayload> | null
+        }
+        findUniqueOrThrow: {
+          args: Prisma.GameMessageFindUniqueOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$GameMessagePayload>
+        }
+        findFirst: {
+          args: Prisma.GameMessageFindFirstArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$GameMessagePayload> | null
+        }
+        findFirstOrThrow: {
+          args: Prisma.GameMessageFindFirstOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$GameMessagePayload>
+        }
+        findMany: {
+          args: Prisma.GameMessageFindManyArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$GameMessagePayload>[]
+        }
+        create: {
+          args: Prisma.GameMessageCreateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$GameMessagePayload>
+        }
+        createMany: {
+          args: Prisma.GameMessageCreateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        createManyAndReturn: {
+          args: Prisma.GameMessageCreateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$GameMessagePayload>[]
+        }
+        delete: {
+          args: Prisma.GameMessageDeleteArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$GameMessagePayload>
+        }
+        update: {
+          args: Prisma.GameMessageUpdateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$GameMessagePayload>
+        }
+        deleteMany: {
+          args: Prisma.GameMessageDeleteManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateMany: {
+          args: Prisma.GameMessageUpdateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateManyAndReturn: {
+          args: Prisma.GameMessageUpdateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$GameMessagePayload>[]
+        }
+        upsert: {
+          args: Prisma.GameMessageUpsertArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$GameMessagePayload>
+        }
+        aggregate: {
+          args: Prisma.GameMessageAggregateArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.AggregateGameMessage>
+        }
+        groupBy: {
+          args: Prisma.GameMessageGroupByArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.GameMessageGroupByOutputType>[]
+        }
+        count: {
+          args: Prisma.GameMessageCountArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.GameMessageCountAggregateOutputType> | number
+        }
+      }
+    }
     TrainingLog: {
       payload: Prisma.$TrainingLogPayload<ExtArgs>
       fields: Prisma.TrainingLogFieldRefs
@@ -2970,6 +3045,22 @@ export const WorldJobRunScalarFieldEnum = {
 export type WorldJobRunScalarFieldEnum = (typeof WorldJobRunScalarFieldEnum)[keyof typeof WorldJobRunScalarFieldEnum]
 
 
+export const GameMessageScalarFieldEnum = {
+  id: 'id',
+  recipientId: 'recipientId',
+  kind: 'kind',
+  title: 'title',
+  body: 'body',
+  payload: 'payload',
+  auctionListingId: 'auctionListingId',
+  readAt: 'readAt',
+  claimedAt: 'claimedAt',
+  createdAt: 'createdAt'
+} as const
+
+export type GameMessageScalarFieldEnum = (typeof GameMessageScalarFieldEnum)[keyof typeof GameMessageScalarFieldEnum]
+
+
 export const TrainingLogScalarFieldEnum = {
   id: 'id',
   soldierId: 'soldierId',
@@ -3356,6 +3447,7 @@ export type GlobalOmitConfig = {
   auctionListing?: Prisma.AuctionListingOmit
   auctionBid?: Prisma.AuctionBidOmit
   worldJobRun?: Prisma.WorldJobRunOmit
+  gameMessage?: Prisma.GameMessageOmit
   trainingLog?: Prisma.TrainingLogOmit
   lootTable?: Prisma.LootTableOmit
   reportFragment?: Prisma.ReportFragmentOmit

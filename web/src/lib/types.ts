@@ -168,6 +168,8 @@ export interface Soldier {
   inventory: InventoryItem[];
   equipment: Equipment;
   wounds: ActiveWound[];
+  actionPoints?: number;
+  lastRegenAt?: string;
 }
 
 export interface EventChoice {

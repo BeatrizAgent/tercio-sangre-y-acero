@@ -1933,76 +1933,7 @@ textarea:focus-visible {
   (DESIGN.md §3.10); below that the 4-col stat grid + 3-col cost grid
   become unreadable.
 */
-.recruit-card {
-  container-type: inline-size;
-  container-name: recruit-card;
-}
 
-.recruit-card__compact {
-  display: none;
-}
-
-@container recruit-card (max-width: 256px) {
-  .recruit-card {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    padding: 8px;
-  }
-
-  .recruit-card__body {
-    display: none;
-  }
-
-  .recruit-card__compact {
-    display: block;
-    position: relative;
-    width: 100%;
-    aspect-ratio: 1 / 1;
-    max-width: 200px;
-    margin-inline: auto;
-  }
-
-  .recruit-card__compact > .recruit-card__portrait {
-    width: 100% !important;
-    height: 100% !important;
-  }
-
-  .recruit-card__compact .recruit-card__name-ribbon {
-    position: absolute;
-    inset-inline: 0;
-    bottom: 0;
-    background: linear-gradient(180deg, transparent 0%, rgba(7, 6, 4, 0.92) 35%, rgba(7, 6, 4, 0.95) 100%);
-    padding: 14px 6px 6px;
-    text-align: center;
-    pointer-events: none;
-  }
-
-  .recruit-card__compact .recruit-card__name-ribbon > span {
-    display: block;
-    font-size: 14px;
-    line-height: 1.15;
-    color: var(--gold);
-    font-family: var(--font-cinzel), serif;
-    font-weight: 800;
-    text-transform: uppercase;
-    letter-spacing: 0.04em;
-    text-shadow: 0 1px 2px rgba(0, 0, 0, 0.9);
-    overflow: hidden;
-    text-overflow: ellipsis;
-    white-space: nowrap;
-  }
-
-  .recruit-card__compact .recruit-card__role-line {
-    display: block;
-    font-size: 10px;
-    line-height: 1.2;
-    color: var(--text-muted);
-    text-transform: uppercase;
-    letter-spacing: 0.14em;
-    margin-top: 2px;
-  }
-}
 
 /*
   Native form validation feedback. `:user-invalid` only matches after
@@ -2051,16 +1982,39 @@ textarea:not([data-fixed]) {
 }
 
 /*
-  Native <dialog> backdrop for the recruitment stats popup. The
-  browser renders `::backdrop` in the top layer behind a modal dialog
-  and makes the rest of the page inert automatically. See
-  modern-web-guidance `declarative-dialog-popover-control` and
-  `light-dismiss-a-dialog` (the onClick target === currentTarget
-  trick is what closes the dialog on backdrop click).
+  Bypass .game-panel's global font-size overrides in recruit cards
+  to maintain their design layout hierarchy (badges, stat grid, and cost chips).
 */
-.recruit-stats-dialog::backdrop {
-  background-color: rgba(7, 6, 4, 0.88);
+.recruit-card [class~="text-[8px]"] {
+  font-size: 8px !important;
+  line-height: 1.1;
 }
+
+.recruit-card [class~="text-[9px]"] {
+  font-size: 9px !important;
+  line-height: 1.2;
+}
+
+.recruit-card [class~="text-[10px]"] {
+  font-size: 10px !important;
+  line-height: 1.25;
+}
+
+.recruit-card [class~="text-[11px]"] {
+  font-size: 11px !important;
+  line-height: 1.3;
+}
+
+.recruit-card [class~="text-xs"] {
+  font-size: 12px !important;
+  line-height: 1.4;
+}
+
+.recruit-card [class~="text-sm"] {
+  font-size: 14px !important;
+  line-height: 1.45;
+}
+
 
 /*
   Skeleton shimmer used by <Skeleton>, <SkeletonText>, and

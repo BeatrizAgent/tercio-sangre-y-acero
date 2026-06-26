@@ -70,6 +70,7 @@ export const ModelName = {
   AuctionListing: 'AuctionListing',
   AuctionBid: 'AuctionBid',
   WorldJobRun: 'WorldJobRun',
+  GameMessage: 'GameMessage',
   TrainingLog: 'TrainingLog',
   LootTable: 'LootTable',
   ReportFragment: 'ReportFragment',
@@ -375,6 +376,22 @@ export const WorldJobRunScalarFieldEnum = {
 } as const
 
 export type WorldJobRunScalarFieldEnum = (typeof WorldJobRunScalarFieldEnum)[keyof typeof WorldJobRunScalarFieldEnum]
+
+
+export const GameMessageScalarFieldEnum = {
+  id: 'id',
+  recipientId: 'recipientId',
+  kind: 'kind',
+  title: 'title',
+  body: 'body',
+  payload: 'payload',
+  auctionListingId: 'auctionListingId',
+  readAt: 'readAt',
+  claimedAt: 'claimedAt',
+  createdAt: 'createdAt'
+} as const
+
+export type GameMessageScalarFieldEnum = (typeof GameMessageScalarFieldEnum)[keyof typeof GameMessageScalarFieldEnum]
 
 
 export const TrainingLogScalarFieldEnum = {

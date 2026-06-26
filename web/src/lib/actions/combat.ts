@@ -42,10 +42,20 @@ export async function startMissionAction({
   const mission = getMission(missionId);
   if (!mission) return fail("Misión desconocida.");
 
+  const currentPoints = state.soldier.actionPoints !== undefined ? state.soldier.actionPoints : 12;
+  if (currentPoints <= 0) {
+    return fail("No tienes suficientes puntos de acción.");
+  }
+
   const updatedSoldier = { ...state.soldier };
   if (updatedSoldier.banMissionsLeft > 0) {
     updatedSoldier.banMissionsLeft = Math.max(0, updatedSoldier.banMissionsLeft - 1);
   }
+
+  if (currentPoints === 12) {
+    updatedSoldier.lastRegenAt = new Date().toISOString();
+  }
+  updatedSoldier.actionPoints = currentPoints - 1;
 
   const shouldTriggerEvent = Math.random() < 0.40 && eventDefinitions.length > 0;
   if (shouldTriggerEvent) {

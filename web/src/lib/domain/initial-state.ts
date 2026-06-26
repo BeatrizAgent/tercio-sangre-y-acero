@@ -1,5 +1,6 @@
 import { inventoryWithAutoLayout } from "./inventory-grid";
 import { normalizeActiveCharacterId, normalizePlayableRoster, PLAYER_CHARACTER_ID } from "./player-character";
+import { regenerateActionPoints } from "./action-points";
 import type { GameState } from "../types";
 
 function rosterWithSoldier(state: GameState): GameState {
@@ -12,10 +13,22 @@ function rosterWithSoldier(state: GameState): GameState {
 }
 
 export function normalizeGameState(state: GameState): GameState {
-  const soldier = {
+  let soldier = {
     ...state.soldier,
     inventory: inventoryWithAutoLayout(state.soldier.inventory ?? []),
   };
+
+  if (soldier.actionPoints === undefined) {
+    soldier.actionPoints = 12;
+  }
+  if (!soldier.lastRegenAt) {
+    soldier.lastRegenAt = new Date().toISOString();
+  }
+
+  const regen = regenerateActionPoints(soldier, new Date());
+  if (regen.updated) {
+    soldier = regen.soldier;
+  }
 
   return rosterWithSoldier({ ...state, soldier });
 }
@@ -53,6 +66,8 @@ export function createInitialState(soldierName = "Diego de Arce", portraitAssetI
         consumable: null,
       },
       wounds: [],
+      actionPoints: 12,
+      lastRegenAt: new Date().toISOString(),
     },
     characters: [],
     activeCharacterId: PLAYER_CHARACTER_ID,

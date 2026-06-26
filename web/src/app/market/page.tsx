@@ -17,6 +17,7 @@ import { getItem, getItemImagePath } from "@/lib/game-data";
 import { Tooltip } from "@/components/ui/tooltip";
 import { rarityStyle, rarityLabel } from "@/lib/item-format";
 import { CountdownTimer } from "@/components/game/countdown-timer";
+import { SYSTEM_AUCTION_PLAN, SYSTEM_AUCTION_REFRESH_HOURS } from "@/lib/data/system-auctions";
 
 export default function MarketPage() {
   const { status } = useGameData();
@@ -29,6 +30,7 @@ export default function MarketPage() {
   const [notice, setNotice] = useState<string | null>(null);
   const [busy, setBusy] = useState(false);
   const [activeTab, setActiveTab] = useState<"system" | "p2p" | "history">("system");
+  const [nowMs, setNowMs] = useState(0);
 
   const sellableItems = useMemo(
     () => soldier.inventory.filter((item) => item.quantity > 0),
@@ -48,6 +50,16 @@ export default function MarketPage() {
     const timer = window.setTimeout(() => void refreshAuctions(), 0);
     return () => window.clearTimeout(timer);
   }, [status]);
+
+  useEffect(() => {
+    const tick = () => setNowMs(new Date().getTime());
+    const first = window.setTimeout(tick, 0);
+    const interval = window.setInterval(tick, 1000);
+    return () => {
+      window.clearTimeout(first);
+      window.clearInterval(interval);
+    };
+  }, []);
 
   const run = async (work: () => Promise<void>) => {
     setBusy(true);
@@ -74,6 +86,8 @@ export default function MarketPage() {
   const myBids = useMemo(() => {
     return auctions.filter((a) => a.isWinning || (a.isMine && !a.isSystem));
   }, [auctions]);
+  const nextSystemRefreshAt = systemAuctions[0]?.endsAt ?? null;
+  const winningSystemAuctions = systemAuctions.filter((auction) => auction.isWinning).length;
 
   if (status !== "ready") {
     return (
@@ -163,8 +177,41 @@ export default function MarketPage() {
           {/* TAB 1: SYSTEM AUCTIONS */}
           {activeTab === "system" && (
             <div className="space-y-4">
-              {/* Global Timer */}
               {systemAuctions.length > 0 && (
+                <div className="grid gap-3 border border-iron bg-stone-950/65 p-3 rounded-xs lg:grid-cols-[1fr_auto]">
+                  <div className="space-y-2">
+                    <div className="flex items-center gap-2.5">
+                      <UiAssetIcon id="battleReports" label="Reloj" className="h-6 w-6 text-gold-soft" />
+                      <div>
+                        <span className="font-cinzel text-sm font-bold uppercase tracking-wider text-gold-soft">
+                          Intendencia militar
+                        </span>
+                        <p className="text-[10px] text-text-muted">
+                          Ciclo fijo de {SYSTEM_AUCTION_REFRESH_HOURS}h. La puja alta al cierre recibe carta en el buzon con el adjunto.
+                        </p>
+                      </div>
+                    </div>
+                    <div className="flex flex-wrap gap-1.5">
+                      {SYSTEM_AUCTION_PLAN.map((slot) => (
+                        <span key={slot.id} className="border border-iron/60 bg-background/55 px-2 py-1 font-mono text-[9px] font-bold uppercase tracking-wider text-text-muted rounded-xs">
+                          {slot.count} {slot.label}
+                        </span>
+                      ))}
+                    </div>
+                  </div>
+                  <div className="grid min-w-56 gap-1.5 border border-gold/25 bg-background/75 p-3 text-right rounded-xs">
+                    <span className="font-mono text-[9px] uppercase tracking-wider text-text-muted">Cierre del ciclo</span>
+                    {nextSystemRefreshAt && (
+                      <CountdownTimer endsAt={nextSystemRefreshAt} onExpiry={() => void refreshAuctions()} />
+                    )}
+                    <span className="font-mono text-[9px] uppercase text-text-muted">
+                      {systemAuctions.length} lotes - {winningSystemAuctions} ganando
+                    </span>
+                  </div>
+                </div>
+              )}
+              {/* Global Timer */}
+              {false && systemAuctions.length > 0 && (
                 <div className="flex flex-col sm:flex-row justify-between items-center gap-2 border border-iron bg-stone-950/65 px-4 py-2.5 rounded-xs">
                   <div className="flex items-center gap-2.5">
                     <UiAssetIcon id="battleReports" label="Reloj" className="h-5 w-5 text-gold-soft" />
@@ -190,12 +237,14 @@ export default function MarketPage() {
                   No hay lotes de intendencia abiertos en este momento. Refrescando...
                 </div>
               ) : (
-                <div className="grid gap-3 sm:grid-cols-2 md:grid-cols-3">
+                <div className="grid gap-3 sm:grid-cols-2 xl:grid-cols-4">
                   {systemAuctions.map((auction) => {
                     const item = getItem(auction.itemId);
                     const style = rarityStyle(item?.rarity);
+                    const currentPrice = auction.currentBid ?? auction.startingBid;
+                    const nextBid = currentPrice + 1;
                     return (
-                      <div key={auction.id} className={`game-panel p-3 border ${style.ring} ${style.bg} flex flex-col justify-between hover:border-gold/30 transition-all rounded-xs relative group`}>
+                      <div key={auction.id} className={`game-panel p-3 border ${style.ring} ${style.bg} flex min-h-[248px] flex-col justify-between hover:border-gold/30 transition-all rounded-xs relative group`}>
                         <div>
                           {/* Item Card Header */}
                           <div className="flex gap-3 mb-3">
@@ -211,11 +260,9 @@ export default function MarketPage() {
                               <p className="text-[9px] text-text-muted font-mono uppercase mt-0.5">
                                 {rarityLabel(item?.rarity)}
                               </p>
-                              {item?.category && (
-                                <p className="text-[9px] text-gold-soft font-mono mt-0.5 uppercase tracking-wide">
-                                  {item.category}
-                                </p>
-                              )}
+                              <p className="text-[9px] text-gold-soft font-mono mt-0.5 uppercase tracking-wide">
+                                {item?.slot ?? "pertrecho"}
+                              </p>
                             </div>
                           </div>
 
@@ -227,7 +274,7 @@ export default function MarketPage() {
                             </div>
                             <div className="flex justify-between items-baseline">
                               <span className="text-text-muted text-[10px] uppercase">Puja Actual:</span>
-                              <span className="text-text font-bold">{auction.currentBid ?? auction.startingBid} <span className="text-gold text-[9px]">oro</span></span>
+                              <span className="text-text font-bold">{currentPrice} <span className="text-gold text-[9px]">oro</span></span>
                             </div>
                             <div className="flex justify-between items-baseline">
                               <span className="text-text-muted text-[10px] uppercase">Pujador:</span>
@@ -249,8 +296,8 @@ export default function MarketPage() {
                           <div className="flex gap-1.5 items-stretch">
                             <input
                               type="number"
-                              min={(auction.currentBid ?? auction.startingBid) + 1}
-                              value={bids[auction.id] ?? ((auction.currentBid ?? auction.startingBid) + 1)}
+                              min={nextBid}
+                              value={bids[auction.id] ?? nextBid}
                               onChange={(event) => setBids((current) => ({ ...current, [auction.id]: Number(event.target.value) }))}
                               className="field min-w-0 flex-1 text-center py-1 text-xs font-mono"
                               disabled={busy || auction.isWinning}
@@ -263,7 +310,7 @@ export default function MarketPage() {
                                 void run(async () => {
                                   const result = await placeAuctionBidAction({
                                     listingId: auction.id,
-                                    amount: bids[auction.id] ?? ((auction.currentBid ?? auction.startingBid) + 1),
+                                    amount: bids[auction.id] ?? nextBid,
                                   });
                                   setNotice(result.message);
                                   if (result.ok && result.data) hydrateState(result.data.state);
@@ -379,8 +426,8 @@ export default function MarketPage() {
                         </Tooltip>
                         <div className="min-w-0">
                           <div className="truncate font-cinzel text-sm font-bold uppercase text-gold-soft">{auction.itemName}</div>
-                          <div className="font-mono text-[9px] uppercase text-text-muted">
-                            Expira: {new Date(auction.endsAt).toLocaleString("es-ES", { hour: "2-digit", minute: "2-digit", day: "2-digit", month: "2-digit" })}
+                          <div className="font-mono text-[9px] uppercase text-text-muted flex items-center gap-1">
+                            Expira: <CountdownTimer endsAt={auction.endsAt} onExpiry={() => void refreshAuctions()} />
                           </div>
                         </div>
                         <div className="font-mono text-xs text-text">
@@ -438,9 +485,8 @@ export default function MarketPage() {
               ) : (
                 <div className="space-y-3">
                   {myBids.map((auction) => {
-                    const hasEnded = new Date(auction.endsAt).getTime() <= Date.now() || auction.status !== "active";
+                    const hasEnded = (nowMs > 0 && new Date(auction.endsAt).getTime() <= nowMs) || auction.status !== "active";
                     const isWinner = auction.isWinning;
-                    const isClaimed = auction.isSystem ? false : false; // handled by deletion on refresh, so if in list it's unclaimed.
 
                     return (
                       <div key={auction.id} className="border border-iron/50 bg-stone-950/40 p-3 rounded-xs flex flex-col sm:flex-row justify-between sm:items-center gap-3">
@@ -533,4 +579,3 @@ export default function MarketPage() {
     </PageTransition>
   );
 }
-

@@ -1,11 +1,12 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import assert from "node:assert/strict";
 import { checkAndRotateSystemAuctions } from "../../src/lib/actions/market";
-import { itemDefinitions } from "../../src/lib/data/items";
 
 // Mock DB implementation
 class MockDatabase {
   listings: any[] = [];
   bids: any[] = [];
+  messages: any[] = [];
   soldiers: any[] = [
     { id: "bot_alonso", name: "Alonso del Barro" },
     { id: "bot_mateo", name: "Mateo Cuerda" }
@@ -17,12 +18,16 @@ class MockDatabase {
       if (args?.where) {
         filtered = filtered.filter(item => {
           if (args.where.sellerId && item.sellerId !== args.where.sellerId) return false;
-          if (args.where.status && item.status !== args.where.status) return false;
+          if (typeof args.where.status === "string" && item.status !== args.where.status) return false;
+          if (args.where.status?.in && !args.where.status.in.includes(item.status)) return false;
+          if (args.where.endsAt?.lte && item.endsAt > args.where.endsAt.lte) return false;
           return true;
         });
       }
+      if (args?.take) return filtered.slice(0, args.take);
       return filtered;
     },
+    count: async (args: any) => (await this.auctionListing.findMany(args)).length,
     update: async (args: any) => {
       const listing = this.listings.find(l => l.id === args.where.id);
       if (listing) {
@@ -48,7 +53,11 @@ class MockDatabase {
       const newListing = { ...args.data };
       this.listings.push(newListing);
       return newListing;
-    }
+    },
+    createMany: async (args: any) => {
+      this.listings.push(...args.data.map((row: any) => ({ ...row })));
+      return { count: args.data.length };
+    },
   };
 
   soldier = {
@@ -68,6 +77,21 @@ class MockDatabase {
     }
   };
 
+  gameMessage = {
+    upsert: async (args: any) => {
+      const key = args.where.recipientId_kind_auctionListingId;
+      const existing = this.messages.find((message) =>
+        message.recipientId === key.recipientId &&
+        message.kind === key.kind &&
+        message.auctionListingId === key.auctionListingId
+      );
+      if (existing) return existing;
+      const created = { id: `msg_${this.messages.length + 1}`, ...args.create };
+      this.messages.push(created);
+      return created;
+    },
+  };
+
   $transaction = async (cb: any) => {
     return cb(this);
   };
@@ -82,11 +106,14 @@ class MockDatabase {
 
     await checkAndRotateSystemAuctions(db, now);
 
-    assert.equal(db.listings.length, 6, "Should generate exactly 6 items");
+    assert.equal(db.listings.length, 8, "Should generate exactly 8 recipe items");
     const endsAt = new Date(db.listings[0].endsAt);
     assert.equal(endsAt.getUTCHours(), 12, "Should align endsAt to next even hour (12:00)");
     assert.equal(endsAt.getUTCMinutes(), 0, "EndsAt minutes should be 0");
     assert.ok(db.listings.every((l: any) => l.sellerId === "system"), "All listings should be system-owned");
+    assert.equal(db.listings.filter((l: any) => l.id.includes("_legendary_")).length, 2, "Should include 2 top-tier lots");
+    assert.equal(db.listings.filter((l: any) => l.id.includes("_common_")).length, 2, "Should include 2 common lots");
+    assert.equal(db.listings.filter((l: any) => l.id.includes("_food_")).length, 2, "Should include 2 food lots");
   }
 
   // Test 2: Resolves expired active system listings
@@ -110,10 +137,10 @@ class MockDatabase {
 
     await checkAndRotateSystemAuctions(db, now);
 
-    // After rotation, the old listing should be cleaned up (since we delete old system listings during rotation)
     const oldListing = db.listings.find((l: any) => l.id === "system_item_1");
-    assert.equal(oldListing, undefined, "Expired listing should have been pruned/cleaned");
-    assert.equal(db.listings.length, 6, "A new batch of 6 items should have been generated");
+    assert.equal(oldListing?.status, "sold", "Expired listing should close as sold");
+    assert.equal(db.messages.length, 1, "Winner should receive an auction message");
+    assert.equal(db.listings.filter((l: any) => l.status === "active").length, 8, "A new batch of 8 items should be active");
   }
 
   // Test 3: Simulates bot bidding for active listings

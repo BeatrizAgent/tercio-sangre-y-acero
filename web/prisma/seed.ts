@@ -11,6 +11,7 @@ import { spriteSetDefinitions } from "../src/lib/data/characters";
 import { normalizeCharacterName, validateCharacterNamePools } from "../src/lib/domain/names";
 import { buildArenaBotStats, getArenaBotTargetLevel, xpForArenaBotLevel } from "../src/lib/domain/arena-bots";
 import { getSoldierLevel } from "../src/lib/domain/recruitment";
+import { buildSystemAuctionPlan, getNextSystemAuctionEnd, SYSTEM_AUCTION_COUNT, systemAuctionStartingBid } from "../src/lib/server/system-auction-plan";
 import {
   catalogAssets,
   catalogCharacters,
@@ -543,11 +544,41 @@ async function seedArenaBots() {
   }
 }
 
+async function seedSystemAuctions() {
+  const active = await prisma.auctionListing.count({
+    where: { sellerId: "system", status: "active" },
+  });
+  if (active >= SYSTEM_AUCTION_COUNT) return;
+
+  const now = new Date();
+  const endsAt = getNextSystemAuctionEnd(now);
+  const selected = buildSystemAuctionPlan(now, SYSTEM_AUCTION_COUNT - active);
+
+  if (selected.length === 0) return;
+
+  await prisma.auctionListing.createMany({
+    data: selected.map(({ item, slotId }, index) => ({
+      id: `system_seed_${slotId}_${item.id}_${now.getTime()}_${index}`,
+      sellerId: "system",
+      itemId: item.id,
+      quantity: 1,
+      startingBid: systemAuctionStartingBid(item, now, index),
+      currentBid: null,
+      currentBidderId: null,
+      buyoutPrice: null,
+      status: "active",
+      endsAt,
+      createdAt: now,
+    })),
+  });
+}
+
 async function main() {
   await seedCharacterNames();
   await seedCatalog();
   await seedDemoSave();
   await seedArenaBots();
+  await seedSystemAuctions();
 }
 
 main()

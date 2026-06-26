@@ -60,6 +60,40 @@ export async function ensureAllShopRotations(now = new Date()) {
   await ensureShopRotation(CHURCH_SHOP_ID, now);
 }
 
+export async function forceShopRotation(shopId = ARMORY_SHOP_ID, now = new Date()) {
+  const db = getDb();
+  const rows = SHOP_ROWS[shopId as keyof typeof SHOP_ROWS] ?? shopInventory;
+  const periodMs = SHOP_PERIOD_MS[shopId] ?? SHOP_PERIOD_MS[ARMORY_SHOP_ID];
+  const nextRefreshAt = new Date(now.getTime() + periodMs);
+
+  await db.$transaction(
+    rows.map((row) =>
+      db.shopRotation.upsert({
+        where: { shopId_itemId: { shopId, itemId: row.itemId } },
+        update: {
+          buyPrice: row.buyPrice,
+          sellPrice: row.sellPrice,
+          stock: row.stock,
+          maxStock: row.stock,
+          refreshedAt: now,
+          nextRefreshAt,
+        },
+        create: {
+          shopId,
+          itemId: row.itemId,
+          buyPrice: row.buyPrice,
+          sellPrice: row.sellPrice,
+          stock: row.stock,
+          maxStock: row.stock,
+          refreshedAt: now,
+          nextRefreshAt,
+        },
+      }),
+    ),
+  );
+  return nextRefreshAt;
+}
+
 export async function getShopView() {
   const db = getDb();
   await ensureAllShopRotations();

@@ -6,9 +6,10 @@
 
 "use client";
 
-import { useState } from "react";
+import { useState, useMemo } from "react";
 import { ScrollText } from "lucide-react";
 import { UiAssetIcon } from "@/components/ui/ui-asset-icon";
+import { CountdownTimer } from "@/components/game/countdown-timer";
 import { churchBlessings, churchInventory, getItem } from "@/lib/game-data";
 import { playCoinSound } from "@/lib/sounds";
 import type { ActionResult } from "@/lib/domain/result";
@@ -63,6 +64,10 @@ export interface ChaplainChestPanelProps {
   handlePayErrand: (cost: number) => void;
   soldierCoins: number;
   playPageSound: () => void;
+  stockByItem?: Record<string, number>;
+  nextRefreshAt?: string;
+  onRefresh?: () => void;
+  isRefreshing?: boolean;
 }
 
 export function ChaplainChestPanel({
@@ -74,8 +79,20 @@ export function ChaplainChestPanel({
   handlePayErrand,
   soldierCoins,
   playPageSound,
+  stockByItem,
+  nextRefreshAt,
+  onRefresh,
+  isRefreshing,
 }: ChaplainChestPanelProps) {
   const [activeTab, setActiveTab] = useState<ChaplainTab>("vende");
+
+  const activeChurchInventory = useMemo(() => {
+    if (!stockByItem) return churchInventory;
+    return churchInventory.map((row) => ({
+      ...row,
+      stock: stockByItem[row.itemId] ?? row.stock,
+    }));
+  }, [stockByItem]);
 
   const onSwitchTab = (tab: ChaplainTab) => {
     if (tab === activeTab) return;
@@ -107,6 +124,25 @@ export function ChaplainChestPanel({
             {tab.label}
           </button>
         ))}
+        {nextRefreshAt && (
+          <div className="ml-auto flex flex-wrap items-center gap-2">
+            <span className="self-center font-mono text-[10px] uppercase tracking-wider text-text-muted">
+              Nuevo inventario en: <CountdownTimer endsAt={nextRefreshAt} />
+            </span>
+            {onRefresh && (
+              <button
+                type="button"
+                onClick={onRefresh}
+                disabled={isRefreshing || soldierCoins < 10}
+                className="iron-button px-2 py-0.5 text-[9px] uppercase font-mono font-bold flex items-center gap-1 hover:border-gold/50 disabled:opacity-50"
+                title="Renovar inventario por 10 doblones"
+              >
+                <UiAssetIcon id="coins" label="" className="h-3 w-3" />
+                Renovar (10 dob)
+              </button>
+            )}
+          </div>
+        )}
       </div>
 
       {activeTab === "vende" && (
@@ -197,12 +233,12 @@ export function ChaplainChestPanel({
 
       {activeTab === "reliquias" && (
         <VendorChestSection title="Reliquias">
-          {churchInventory.length === 0 ? (
+          {activeChurchInventory.length === 0 ? (
             <p className="border border-dashed border-iron/60 bg-stone-950/30 px-3 py-6 text-center font-mono text-[11px] uppercase tracking-wider text-text-muted">
               El relicario está vacío. Vuelve cuando lleguen nuevas reliquias de Santiago.
             </p>
           ) : (
-            <RelicGrid rows={churchInventory} soldierCoins={soldierCoins} handleBuyChurchItem={handleBuyChurchItem} />
+            <RelicGrid rows={activeChurchInventory} soldierCoins={soldierCoins} handleBuyChurchItem={handleBuyChurchItem} />
           )}
         </VendorChestSection>
       )}
@@ -273,7 +309,12 @@ function RelicGrid({
                 <p className="truncate font-cinzel text-[11px] font-extrabold uppercase text-gold-soft">
                   {item?.name ?? row.itemId}
                 </p>
-                <p className="font-mono text-[10px] text-gold">{row.buyPrice} dob</p>
+                <div className="flex justify-between items-center text-[10px] font-mono">
+                  <span className="text-gold">{row.buyPrice} dob</span>
+                  <span className={row.stock > 0 ? "text-gold-soft" : "text-danger"}>
+                    {row.stock > 0 ? `Stock: ${row.stock}` : "Agotado"}
+                  </span>
+                </div>
               </div>
             </div>
           </button>

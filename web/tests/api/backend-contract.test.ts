@@ -67,7 +67,7 @@ async function main() {
   if (typeof worldTickRoute.POST !== "function") failures.push("world tick route missing POST");
 
   const schema = await import("node:fs").then((fs) => fs.readFileSync("prisma/schema.prisma", "utf8"));
-  for (const token of ["isBot", "model ArenaBotProfile", "arenaBotProfile", "model ActiveMission", "model AuctionListing", "model ShopRotation", "model WorldJobRun"]) {
+  for (const token of ["isBot", "model ArenaBotProfile", "arenaBotProfile", "model ActiveMission", "model AuctionListing", "model ShopRotation", "model WorldJobRun", "model GameMessage"]) {
     if (!schema.includes(token)) failures.push(`schema missing ${token}`);
   }
 

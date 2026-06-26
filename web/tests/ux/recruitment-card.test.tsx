@@ -1,6 +1,6 @@
 import { describe, expect, it, vi, beforeEach, afterEach } from "vitest";
 import { useEffect } from "react";
-import { render, screen, fireEvent } from "@testing-library/react";
+import { render, screen } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import type React from "react";
 
@@ -30,7 +30,7 @@ function buildCandidate(overrides: Partial<RecruitmentCandidate> = {}): Recruitm
       rank: "bisono",
       portraitAssetId: "portrait_tomas",
       stats: { pike: 4, sword: 2, arquebus: 1, discipline: 2, vigor: 3, cunning: 1, command: 0 },
-      fatigue: 0,
+      fatigue: 12,
     },
     cost: { coins: 15 },
     hook: "Cierra filas o muere en el intento.",
@@ -50,127 +50,59 @@ function buildSoldier(): Soldier {
   } as Soldier;
 }
 
-type ResizeObserverEntry = { contentRect: { width: number } };
-
-class MockResizeObserver {
-  private callback: (entries: ResizeObserverEntry[]) => void;
-
-  constructor(callback: (entries: ResizeObserverEntry[]) => void) {
-    this.callback = callback;
-  }
-
-  observe(target: Element) {
-    const width = Number(
-      (target as HTMLElement).dataset.mockWidth ??
-        (target.parentElement as HTMLElement | null)?.dataset.mockWidth ??
-        "0",
+describe("RecruitmentCard", () => {
+  it("renders candidate name, role, rank and quote correctly", () => {
+    render(
+      <RecruitmentCard
+        candidate={buildCandidate()}
+        soldier={buildSoldier()}
+        recruited={false}
+        onRecruit={vi.fn()}
+      />
     );
-    this.callback([{ contentRect: { width } }]);
-  }
 
-  disconnect() {}
-
-  unobserve() {}
-}
-
-describe("RecruitmentCard compact mode", () => {
-  beforeEach(() => {
-    (globalThis as unknown as { ResizeObserver: typeof MockResizeObserver }).ResizeObserver =
-      MockResizeObserver;
-    if (typeof HTMLDialogElement !== "undefined") {
-      HTMLDialogElement.prototype.showModal = function showModal() {
-        (this as HTMLDialogElement & { open: boolean }).open = true;
-      };
-      HTMLDialogElement.prototype.close = function close() {
-        (this as HTMLDialogElement & { open: boolean }).open = false;
-      };
-    }
+    expect(screen.getByText("Tomas de Orduna")).toBeInTheDocument();
+    expect(screen.getByText("piquero")).toBeInTheDocument();
+    expect(screen.getByText(/Cierra filas o muere en el intento/i)).toBeInTheDocument();
   });
 
-  afterEach(() => {
-    delete (globalThis as unknown as { ResizeObserver?: unknown }).ResizeObserver;
-  });
-
-  it("marks the card as non-compact when the container is wider than 256px", () => {
-    const { container } = render(
-      <div style={{ width: "320px" }} data-mock-width="320">
-        <RecruitmentCard
-          candidate={buildCandidate()}
-          soldier={buildSoldier()}
-          recruited={false}
-          onRecruit={vi.fn()}
-        />
-      </div>,
+  it("renders all 7 attributes and the power sum correctly", () => {
+    render(
+      <RecruitmentCard
+        candidate={buildCandidate()}
+        soldier={buildSoldier()}
+        recruited={false}
+        onRecruit={vi.fn()}
+      />
     );
-    const card = container.querySelector('[data-testid="recruit-card-tomas_de_orduna"]');
-    expect(card).toHaveAttribute("data-compact", "false");
-    expect(card?.getAttribute("role")).toBeNull();
+
+    // Stats values: pike(4), sword(2), arquebus(1), discipline(2), vigor(3), cunning(1), command(0)
+    expect(screen.getByText("Pic")).toBeInTheDocument();
+    expect(screen.getByText("Esp")).toBeInTheDocument();
+    expect(screen.getByText("Arc")).toBeInTheDocument();
+    expect(screen.getByText("Dis")).toBeInTheDocument();
+    expect(screen.getByText("Vig")).toBeInTheDocument();
+    expect(screen.getByText("Ast")).toBeInTheDocument();
+    expect(screen.getByText("Man")).toBeInTheDocument();
+
+    // Sum of stats is 4 + 2 + 1 + 2 + 3 + 1 + 0 = 13
+    expect(screen.getByText("13")).toBeInTheDocument();
   });
 
-  it("marks the card as compact and gives it a button role when the container is narrower than 256px", () => {
-    const { container } = render(
-      <div style={{ width: "200px" }} data-mock-width="200">
-        <RecruitmentCard
-          candidate={buildCandidate()}
-          soldier={buildSoldier()}
-          recruited={false}
-          onRecruit={vi.fn()}
-        />
-      </div>,
-    );
-    const card = container.querySelector('[data-testid="recruit-card-tomas_de_orduna"]');
-    expect(card).toHaveAttribute("data-compact", "true");
-    expect(card).toHaveAttribute("role", "button");
-    expect(card).toHaveAttribute("tabindex", "0");
-    expect(card).toHaveAttribute("aria-label", "Ver detalles y reclutar a Tomas de Orduna");
-  });
-
-  it("opens the stats popup when the compact card is activated via click or Enter", async () => {
-    const user = userEvent.setup();
-    const { container } = render(
-      <div style={{ width: "200px" }} data-mock-width="200">
-        <RecruitmentCard
-          candidate={buildCandidate()}
-          soldier={buildSoldier()}
-          recruited={false}
-          onRecruit={vi.fn()}
-        />
-      </div>,
-    );
-    const card = container.querySelector(
-      '[data-testid="recruit-card-tomas_de_orduna"]',
-    ) as HTMLElement;
-
-    await user.click(card);
-    expect(screen.getByRole("dialog")).toBeInTheDocument();
-
-    fireEvent.keyDown(card, { key: "Enter" });
-    expect(screen.getByRole("dialog")).toBeInTheDocument();
-  });
-
-  it("exposes the recruit action inside the stats popup so it can be triggered from compact mode", async () => {
+  it("triggers onRecruit callback when clicking the recruit button", async () => {
     const onRecruit = vi.fn();
     const user = userEvent.setup();
-    const { container } = render(
-      <div style={{ width: "200px" }} data-mock-width="200">
-        <RecruitmentCard
-          candidate={buildCandidate()}
-          soldier={buildSoldier()}
-          recruited={false}
-          onRecruit={onRecruit}
-        />
-      </div>,
+    render(
+      <RecruitmentCard
+        candidate={buildCandidate()}
+        soldier={buildSoldier()}
+        recruited={false}
+        onRecruit={onRecruit}
+      />
     );
-    const card = container.querySelector(
-      '[data-testid="recruit-card-tomas_de_orduna"]',
-    ) as HTMLElement;
 
-    await user.click(card);
-    const dialog = screen.getByRole("dialog");
-    const recruitButton = dialog.querySelector(
-      "button:not([aria-label='Cerrar estadisticas'])",
-    ) as HTMLButtonElement;
-    await user.click(recruitButton);
+    const button = screen.getByRole("button", { name: /Reclutar a Tomas de Orduna por 15 doblones/i });
+    await user.click(button);
     expect(onRecruit).toHaveBeenCalledOnce();
   });
 });

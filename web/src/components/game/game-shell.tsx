@@ -205,9 +205,9 @@ export function GameShell({ children }: { children: React.ReactNode }) {
                   href="/missions"
                   icon="missions"
                   label="Misiones"
-                  value={missionsRemaining}
-                  max={ACTION_MAX}
-                  tone={missionsRemaining > 0 ? "text-gold-soft" : "text-muted"}
+                  value={soldier.actionPoints !== undefined ? soldier.actionPoints : 12}
+                  max={12}
+                  tone={(soldier.actionPoints !== undefined ? soldier.actionPoints : 12) > 0 ? "text-gold-soft" : "text-muted"}
                   onNavigate={() => playPageSound()}
                   className="!py-0.5 !px-1.5 flex-1 md:flex-initial"
                 />

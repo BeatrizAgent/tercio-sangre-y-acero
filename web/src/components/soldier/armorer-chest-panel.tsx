@@ -8,6 +8,7 @@ import { useEffect, useMemo, useRef, useState } from "react";
 import { ItemChestGrid, VENDOR_CHEST_GRID, footprintPx } from "@/components/soldier/item-chest-grid";
 import { UiAssetIcon } from "@/components/ui/ui-asset-icon";
 import { Tooltip } from "@/components/ui/tooltip";
+import { CountdownTimer } from "@/components/game/countdown-timer";
 import { getItem, getItemFootprint, getItemImagePath, shopInventory, itemDefinitions } from "@/lib/game-data";
 import type { ShopItem } from "@/lib/types";
 
@@ -327,6 +328,8 @@ export interface ArmorerChestPanelProps {
   playPageSound: () => void;
   stockByItem?: Record<string, number>;
   nextRefreshAt?: string;
+  onRefresh?: () => void;
+  isRefreshing?: boolean;
 }
 
 export function ArmorerChestPanel({
@@ -339,11 +342,19 @@ export function ArmorerChestPanel({
   playPageSound,
   stockByItem,
   nextRefreshAt,
+  onRefresh,
+  isRefreshing,
 }: ArmorerChestPanelProps) {
   const [activeTab, setActiveTab] = useState<ArmorerTab>("armas");
-  const [dailySeed] = useState(() => getDailySeed());
+
+  const shopSeed = useMemo(() => {
+    if (!nextRefreshAt) return getDailySeed();
+    const time = new Date(nextRefreshAt).getTime();
+    return Math.floor(time / 1000) || getDailySeed();
+  }, [nextRefreshAt]);
+
   const shopStock = useMemo(() => {
-    const generated = generateShopStock(dailySeed);
+    const generated = generateShopStock(shopSeed);
     if (!stockByItem) return generated;
     const applyStock = (rows: LaidOutShopItem[]) =>
       rows.map((row) => ({ ...row, stock: stockByItem[row.itemId] ?? row.stock }));
@@ -352,7 +363,7 @@ export function ArmorerChestPanel({
       armors: applyStock(generated.armors),
       others: applyStock(generated.others),
     };
-  }, [dailySeed, stockByItem]);
+  }, [shopSeed, stockByItem]);
 
   const onSwitchTab = (tab: ArmorerTab) => {
     if (tab === activeTab) return;
@@ -388,9 +399,23 @@ export function ArmorerChestPanel({
           );
         })}
         {nextRefreshAt && (
-          <span className="ml-auto self-center font-mono text-[10px] uppercase tracking-wider text-text-muted">
-            Refresco {new Date(nextRefreshAt).toLocaleTimeString("es-ES", { hour: "2-digit", minute: "2-digit" })}
-          </span>
+          <div className="ml-auto flex flex-wrap items-center gap-2">
+            <span className="self-center font-mono text-[10px] uppercase tracking-wider text-text-muted">
+              Nuevo inventario en: <CountdownTimer endsAt={nextRefreshAt} />
+            </span>
+            {onRefresh && (
+              <button
+                type="button"
+                onClick={onRefresh}
+                disabled={isRefreshing || soldierCoins < 10}
+                className="iron-button px-2.5 py-0.5 text-[9px] uppercase font-mono font-bold flex items-center gap-1 hover:border-gold/50 disabled:opacity-50"
+                title="Renovar inventario por 10 doblones"
+              >
+                <UiAssetIcon id="coins" label="" className="h-3 w-3" />
+                Renovar (10 dob)
+              </button>
+            )}
+          </div>
         )}
       </div>
 

@@ -321,6 +321,7 @@ export type SoldierWhereInput = {
   trainingLog?: Prisma.TrainingLogListRelationFilter
   arenaBotProfile?: Prisma.XOR<Prisma.ArenaBotProfileNullableScalarRelationFilter, Prisma.ArenaBotProfileWhereInput> | null
   activeMission?: Prisma.XOR<Prisma.ActiveMissionNullableScalarRelationFilter, Prisma.ActiveMissionWhereInput> | null
+  messages?: Prisma.GameMessageListRelationFilter
 }
 
 export type SoldierOrderByWithRelationInput = {
@@ -347,6 +348,7 @@ export type SoldierOrderByWithRelationInput = {
   trainingLog?: Prisma.TrainingLogOrderByRelationAggregateInput
   arenaBotProfile?: Prisma.ArenaBotProfileOrderByWithRelationInput
   activeMission?: Prisma.ActiveMissionOrderByWithRelationInput
+  messages?: Prisma.GameMessageOrderByRelationAggregateInput
 }
 
 export type SoldierWhereUniqueInput = Prisma.AtLeast<{
@@ -376,6 +378,7 @@ export type SoldierWhereUniqueInput = Prisma.AtLeast<{
   trainingLog?: Prisma.TrainingLogListRelationFilter
   arenaBotProfile?: Prisma.XOR<Prisma.ArenaBotProfileNullableScalarRelationFilter, Prisma.ArenaBotProfileWhereInput> | null
   activeMission?: Prisma.XOR<Prisma.ActiveMissionNullableScalarRelationFilter, Prisma.ActiveMissionWhereInput> | null
+  messages?: Prisma.GameMessageListRelationFilter
 }, "id" | "userId">
 
 export type SoldierOrderByWithAggregationInput = {
@@ -443,6 +446,7 @@ export type SoldierCreateInput = {
   trainingLog?: Prisma.TrainingLogCreateNestedManyWithoutSoldierInput
   arenaBotProfile?: Prisma.ArenaBotProfileCreateNestedOneWithoutSoldierInput
   activeMission?: Prisma.ActiveMissionCreateNestedOneWithoutSoldierInput
+  messages?: Prisma.GameMessageCreateNestedManyWithoutRecipientInput
 }
 
 export type SoldierUncheckedCreateInput = {
@@ -468,6 +472,7 @@ export type SoldierUncheckedCreateInput = {
   trainingLog?: Prisma.TrainingLogUncheckedCreateNestedManyWithoutSoldierInput
   arenaBotProfile?: Prisma.ArenaBotProfileUncheckedCreateNestedOneWithoutSoldierInput
   activeMission?: Prisma.ActiveMissionUncheckedCreateNestedOneWithoutSoldierInput
+  messages?: Prisma.GameMessageUncheckedCreateNestedManyWithoutRecipientInput
 }
 
 export type SoldierUpdateInput = {
@@ -493,6 +498,7 @@ export type SoldierUpdateInput = {
   trainingLog?: Prisma.TrainingLogUpdateManyWithoutSoldierNestedInput
   arenaBotProfile?: Prisma.ArenaBotProfileUpdateOneWithoutSoldierNestedInput
   activeMission?: Prisma.ActiveMissionUpdateOneWithoutSoldierNestedInput
+  messages?: Prisma.GameMessageUpdateManyWithoutRecipientNestedInput
 }
 
 export type SoldierUncheckedUpdateInput = {
@@ -518,6 +524,7 @@ export type SoldierUncheckedUpdateInput = {
   trainingLog?: Prisma.TrainingLogUncheckedUpdateManyWithoutSoldierNestedInput
   arenaBotProfile?: Prisma.ArenaBotProfileUncheckedUpdateOneWithoutSoldierNestedInput
   activeMission?: Prisma.ActiveMissionUncheckedUpdateOneWithoutSoldierNestedInput
+  messages?: Prisma.GameMessageUncheckedUpdateManyWithoutRecipientNestedInput
 }
 
 export type SoldierCreateManyInput = {
@@ -789,6 +796,20 @@ export type SoldierUpdateOneRequiredWithoutWoundsNestedInput = {
   update?: Prisma.XOR<Prisma.XOR<Prisma.SoldierUpdateToOneWithWhereWithoutWoundsInput, Prisma.SoldierUpdateWithoutWoundsInput>, Prisma.SoldierUncheckedUpdateWithoutWoundsInput>
 }
 
+export type SoldierCreateNestedOneWithoutMessagesInput = {
+  create?: Prisma.XOR<Prisma.SoldierCreateWithoutMessagesInput, Prisma.SoldierUncheckedCreateWithoutMessagesInput>
+  connectOrCreate?: Prisma.SoldierCreateOrConnectWithoutMessagesInput
+  connect?: Prisma.SoldierWhereUniqueInput
+}
+
+export type SoldierUpdateOneRequiredWithoutMessagesNestedInput = {
+  create?: Prisma.XOR<Prisma.SoldierCreateWithoutMessagesInput, Prisma.SoldierUncheckedCreateWithoutMessagesInput>
+  connectOrCreate?: Prisma.SoldierCreateOrConnectWithoutMessagesInput
+  upsert?: Prisma.SoldierUpsertWithoutMessagesInput
+  connect?: Prisma.SoldierWhereUniqueInput
+  update?: Prisma.XOR<Prisma.XOR<Prisma.SoldierUpdateToOneWithWhereWithoutMessagesInput, Prisma.SoldierUpdateWithoutMessagesInput>, Prisma.SoldierUncheckedUpdateWithoutMessagesInput>
+}
+
 export type SoldierCreateNestedOneWithoutTrainingLogInput = {
   create?: Prisma.XOR<Prisma.SoldierCreateWithoutTrainingLogInput, Prisma.SoldierUncheckedCreateWithoutTrainingLogInput>
   connectOrCreate?: Prisma.SoldierCreateOrConnectWithoutTrainingLogInput
@@ -825,6 +846,7 @@ export type SoldierCreateWithoutUserInput = {
   trainingLog?: Prisma.TrainingLogCreateNestedManyWithoutSoldierInput
   arenaBotProfile?: Prisma.ArenaBotProfileCreateNestedOneWithoutSoldierInput
   activeMission?: Prisma.ActiveMissionCreateNestedOneWithoutSoldierInput
+  messages?: Prisma.GameMessageCreateNestedManyWithoutRecipientInput
 }
 
 export type SoldierUncheckedCreateWithoutUserInput = {
@@ -849,6 +871,7 @@ export type SoldierUncheckedCreateWithoutUserInput = {
   trainingLog?: Prisma.TrainingLogUncheckedCreateNestedManyWithoutSoldierInput
   arenaBotProfile?: Prisma.ArenaBotProfileUncheckedCreateNestedOneWithoutSoldierInput
   activeMission?: Prisma.ActiveMissionUncheckedCreateNestedOneWithoutSoldierInput
+  messages?: Prisma.GameMessageUncheckedCreateNestedManyWithoutRecipientInput
 }
 
 export type SoldierCreateOrConnectWithoutUserInput = {
@@ -889,6 +912,7 @@ export type SoldierUpdateWithoutUserInput = {
   trainingLog?: Prisma.TrainingLogUpdateManyWithoutSoldierNestedInput
   arenaBotProfile?: Prisma.ArenaBotProfileUpdateOneWithoutSoldierNestedInput
   activeMission?: Prisma.ActiveMissionUpdateOneWithoutSoldierNestedInput
+  messages?: Prisma.GameMessageUpdateManyWithoutRecipientNestedInput
 }
 
 export type SoldierUncheckedUpdateWithoutUserInput = {
@@ -913,6 +937,7 @@ export type SoldierUncheckedUpdateWithoutUserInput = {
   trainingLog?: Prisma.TrainingLogUncheckedUpdateManyWithoutSoldierNestedInput
   arenaBotProfile?: Prisma.ArenaBotProfileUncheckedUpdateOneWithoutSoldierNestedInput
   activeMission?: Prisma.ActiveMissionUncheckedUpdateOneWithoutSoldierNestedInput
+  messages?: Prisma.GameMessageUncheckedUpdateManyWithoutRecipientNestedInput
 }
 
 export type SoldierCreateWithoutArenaBotProfileInput = {
@@ -937,6 +962,7 @@ export type SoldierCreateWithoutArenaBotProfileInput = {
   results?: Prisma.MissionResultCreateNestedManyWithoutSoldierInput
   trainingLog?: Prisma.TrainingLogCreateNestedManyWithoutSoldierInput
   activeMission?: Prisma.ActiveMissionCreateNestedOneWithoutSoldierInput
+  messages?: Prisma.GameMessageCreateNestedManyWithoutRecipientInput
 }
 
 export type SoldierUncheckedCreateWithoutArenaBotProfileInput = {
@@ -961,6 +987,7 @@ export type SoldierUncheckedCreateWithoutArenaBotProfileInput = {
   results?: Prisma.MissionResultUncheckedCreateNestedManyWithoutSoldierInput
   trainingLog?: Prisma.TrainingLogUncheckedCreateNestedManyWithoutSoldierInput
   activeMission?: Prisma.ActiveMissionUncheckedCreateNestedOneWithoutSoldierInput
+  messages?: Prisma.GameMessageUncheckedCreateNestedManyWithoutRecipientInput
 }
 
 export type SoldierCreateOrConnectWithoutArenaBotProfileInput = {
@@ -1001,6 +1028,7 @@ export type SoldierUpdateWithoutArenaBotProfileInput = {
   results?: Prisma.MissionResultUpdateManyWithoutSoldierNestedInput
   trainingLog?: Prisma.TrainingLogUpdateManyWithoutSoldierNestedInput
   activeMission?: Prisma.ActiveMissionUpdateOneWithoutSoldierNestedInput
+  messages?: Prisma.GameMessageUpdateManyWithoutRecipientNestedInput
 }
 
 export type SoldierUncheckedUpdateWithoutArenaBotProfileInput = {
@@ -1025,6 +1053,7 @@ export type SoldierUncheckedUpdateWithoutArenaBotProfileInput = {
   results?: Prisma.MissionResultUncheckedUpdateManyWithoutSoldierNestedInput
   trainingLog?: Prisma.TrainingLogUncheckedUpdateManyWithoutSoldierNestedInput
   activeMission?: Prisma.ActiveMissionUncheckedUpdateOneWithoutSoldierNestedInput
+  messages?: Prisma.GameMessageUncheckedUpdateManyWithoutRecipientNestedInput
 }
 
 export type SoldierCreateWithoutStatsInput = {
@@ -1049,6 +1078,7 @@ export type SoldierCreateWithoutStatsInput = {
   trainingLog?: Prisma.TrainingLogCreateNestedManyWithoutSoldierInput
   arenaBotProfile?: Prisma.ArenaBotProfileCreateNestedOneWithoutSoldierInput
   activeMission?: Prisma.ActiveMissionCreateNestedOneWithoutSoldierInput
+  messages?: Prisma.GameMessageCreateNestedManyWithoutRecipientInput
 }
 
 export type SoldierUncheckedCreateWithoutStatsInput = {
@@ -1073,6 +1103,7 @@ export type SoldierUncheckedCreateWithoutStatsInput = {
   trainingLog?: Prisma.TrainingLogUncheckedCreateNestedManyWithoutSoldierInput
   arenaBotProfile?: Prisma.ArenaBotProfileUncheckedCreateNestedOneWithoutSoldierInput
   activeMission?: Prisma.ActiveMissionUncheckedCreateNestedOneWithoutSoldierInput
+  messages?: Prisma.GameMessageUncheckedCreateNestedManyWithoutRecipientInput
 }
 
 export type SoldierCreateOrConnectWithoutStatsInput = {
@@ -1113,6 +1144,7 @@ export type SoldierUpdateWithoutStatsInput = {
   trainingLog?: Prisma.TrainingLogUpdateManyWithoutSoldierNestedInput
   arenaBotProfile?: Prisma.ArenaBotProfileUpdateOneWithoutSoldierNestedInput
   activeMission?: Prisma.ActiveMissionUpdateOneWithoutSoldierNestedInput
+  messages?: Prisma.GameMessageUpdateManyWithoutRecipientNestedInput
 }
 
 export type SoldierUncheckedUpdateWithoutStatsInput = {
@@ -1137,6 +1169,7 @@ export type SoldierUncheckedUpdateWithoutStatsInput = {
   trainingLog?: Prisma.TrainingLogUncheckedUpdateManyWithoutSoldierNestedInput
   arenaBotProfile?: Prisma.ArenaBotProfileUncheckedUpdateOneWithoutSoldierNestedInput
   activeMission?: Prisma.ActiveMissionUncheckedUpdateOneWithoutSoldierNestedInput
+  messages?: Prisma.GameMessageUncheckedUpdateManyWithoutRecipientNestedInput
 }
 
 export type SoldierCreateWithoutInventoryInput = {
@@ -1161,6 +1194,7 @@ export type SoldierCreateWithoutInventoryInput = {
   trainingLog?: Prisma.TrainingLogCreateNestedManyWithoutSoldierInput
   arenaBotProfile?: Prisma.ArenaBotProfileCreateNestedOneWithoutSoldierInput
   activeMission?: Prisma.ActiveMissionCreateNestedOneWithoutSoldierInput
+  messages?: Prisma.GameMessageCreateNestedManyWithoutRecipientInput
 }
 
 export type SoldierUncheckedCreateWithoutInventoryInput = {
@@ -1185,6 +1219,7 @@ export type SoldierUncheckedCreateWithoutInventoryInput = {
   trainingLog?: Prisma.TrainingLogUncheckedCreateNestedManyWithoutSoldierInput
   arenaBotProfile?: Prisma.ArenaBotProfileUncheckedCreateNestedOneWithoutSoldierInput
   activeMission?: Prisma.ActiveMissionUncheckedCreateNestedOneWithoutSoldierInput
+  messages?: Prisma.GameMessageUncheckedCreateNestedManyWithoutRecipientInput
 }
 
 export type SoldierCreateOrConnectWithoutInventoryInput = {
@@ -1225,6 +1260,7 @@ export type SoldierUpdateWithoutInventoryInput = {
   trainingLog?: Prisma.TrainingLogUpdateManyWithoutSoldierNestedInput
   arenaBotProfile?: Prisma.ArenaBotProfileUpdateOneWithoutSoldierNestedInput
   activeMission?: Prisma.ActiveMissionUpdateOneWithoutSoldierNestedInput
+  messages?: Prisma.GameMessageUpdateManyWithoutRecipientNestedInput
 }
 
 export type SoldierUncheckedUpdateWithoutInventoryInput = {
@@ -1249,6 +1285,7 @@ export type SoldierUncheckedUpdateWithoutInventoryInput = {
   trainingLog?: Prisma.TrainingLogUncheckedUpdateManyWithoutSoldierNestedInput
   arenaBotProfile?: Prisma.ArenaBotProfileUncheckedUpdateOneWithoutSoldierNestedInput
   activeMission?: Prisma.ActiveMissionUncheckedUpdateOneWithoutSoldierNestedInput
+  messages?: Prisma.GameMessageUncheckedUpdateManyWithoutRecipientNestedInput
 }
 
 export type SoldierCreateWithoutEquipmentInput = {
@@ -1273,6 +1310,7 @@ export type SoldierCreateWithoutEquipmentInput = {
   trainingLog?: Prisma.TrainingLogCreateNestedManyWithoutSoldierInput
   arenaBotProfile?: Prisma.ArenaBotProfileCreateNestedOneWithoutSoldierInput
   activeMission?: Prisma.ActiveMissionCreateNestedOneWithoutSoldierInput
+  messages?: Prisma.GameMessageCreateNestedManyWithoutRecipientInput
 }
 
 export type SoldierUncheckedCreateWithoutEquipmentInput = {
@@ -1297,6 +1335,7 @@ export type SoldierUncheckedCreateWithoutEquipmentInput = {
   trainingLog?: Prisma.TrainingLogUncheckedCreateNestedManyWithoutSoldierInput
   arenaBotProfile?: Prisma.ArenaBotProfileUncheckedCreateNestedOneWithoutSoldierInput
   activeMission?: Prisma.ActiveMissionUncheckedCreateNestedOneWithoutSoldierInput
+  messages?: Prisma.GameMessageUncheckedCreateNestedManyWithoutRecipientInput
 }
 
 export type SoldierCreateOrConnectWithoutEquipmentInput = {
@@ -1337,6 +1376,7 @@ export type SoldierUpdateWithoutEquipmentInput = {
   trainingLog?: Prisma.TrainingLogUpdateManyWithoutSoldierNestedInput
   arenaBotProfile?: Prisma.ArenaBotProfileUpdateOneWithoutSoldierNestedInput
   activeMission?: Prisma.ActiveMissionUpdateOneWithoutSoldierNestedInput
+  messages?: Prisma.GameMessageUpdateManyWithoutRecipientNestedInput
 }
 
 export type SoldierUncheckedUpdateWithoutEquipmentInput = {
@@ -1361,6 +1401,7 @@ export type SoldierUncheckedUpdateWithoutEquipmentInput = {
   trainingLog?: Prisma.TrainingLogUncheckedUpdateManyWithoutSoldierNestedInput
   arenaBotProfile?: Prisma.ArenaBotProfileUncheckedUpdateOneWithoutSoldierNestedInput
   activeMission?: Prisma.ActiveMissionUncheckedUpdateOneWithoutSoldierNestedInput
+  messages?: Prisma.GameMessageUncheckedUpdateManyWithoutRecipientNestedInput
 }
 
 export type SoldierCreateWithoutResultsInput = {
@@ -1385,6 +1426,7 @@ export type SoldierCreateWithoutResultsInput = {
   trainingLog?: Prisma.TrainingLogCreateNestedManyWithoutSoldierInput
   arenaBotProfile?: Prisma.ArenaBotProfileCreateNestedOneWithoutSoldierInput
   activeMission?: Prisma.ActiveMissionCreateNestedOneWithoutSoldierInput
+  messages?: Prisma.GameMessageCreateNestedManyWithoutRecipientInput
 }
 
 export type SoldierUncheckedCreateWithoutResultsInput = {
@@ -1409,6 +1451,7 @@ export type SoldierUncheckedCreateWithoutResultsInput = {
   trainingLog?: Prisma.TrainingLogUncheckedCreateNestedManyWithoutSoldierInput
   arenaBotProfile?: Prisma.ArenaBotProfileUncheckedCreateNestedOneWithoutSoldierInput
   activeMission?: Prisma.ActiveMissionUncheckedCreateNestedOneWithoutSoldierInput
+  messages?: Prisma.GameMessageUncheckedCreateNestedManyWithoutRecipientInput
 }
 
 export type SoldierCreateOrConnectWithoutResultsInput = {
@@ -1449,6 +1492,7 @@ export type SoldierUpdateWithoutResultsInput = {
   trainingLog?: Prisma.TrainingLogUpdateManyWithoutSoldierNestedInput
   arenaBotProfile?: Prisma.ArenaBotProfileUpdateOneWithoutSoldierNestedInput
   activeMission?: Prisma.ActiveMissionUpdateOneWithoutSoldierNestedInput
+  messages?: Prisma.GameMessageUpdateManyWithoutRecipientNestedInput
 }
 
 export type SoldierUncheckedUpdateWithoutResultsInput = {
@@ -1473,6 +1517,7 @@ export type SoldierUncheckedUpdateWithoutResultsInput = {
   trainingLog?: Prisma.TrainingLogUncheckedUpdateManyWithoutSoldierNestedInput
   arenaBotProfile?: Prisma.ArenaBotProfileUncheckedUpdateOneWithoutSoldierNestedInput
   activeMission?: Prisma.ActiveMissionUncheckedUpdateOneWithoutSoldierNestedInput
+  messages?: Prisma.GameMessageUncheckedUpdateManyWithoutRecipientNestedInput
 }
 
 export type SoldierCreateWithoutActiveMissionInput = {
@@ -1497,6 +1542,7 @@ export type SoldierCreateWithoutActiveMissionInput = {
   results?: Prisma.MissionResultCreateNestedManyWithoutSoldierInput
   trainingLog?: Prisma.TrainingLogCreateNestedManyWithoutSoldierInput
   arenaBotProfile?: Prisma.ArenaBotProfileCreateNestedOneWithoutSoldierInput
+  messages?: Prisma.GameMessageCreateNestedManyWithoutRecipientInput
 }
 
 export type SoldierUncheckedCreateWithoutActiveMissionInput = {
@@ -1521,6 +1567,7 @@ export type SoldierUncheckedCreateWithoutActiveMissionInput = {
   results?: Prisma.MissionResultUncheckedCreateNestedManyWithoutSoldierInput
   trainingLog?: Prisma.TrainingLogUncheckedCreateNestedManyWithoutSoldierInput
   arenaBotProfile?: Prisma.ArenaBotProfileUncheckedCreateNestedOneWithoutSoldierInput
+  messages?: Prisma.GameMessageUncheckedCreateNestedManyWithoutRecipientInput
 }
 
 export type SoldierCreateOrConnectWithoutActiveMissionInput = {
@@ -1561,6 +1608,7 @@ export type SoldierUpdateWithoutActiveMissionInput = {
   results?: Prisma.MissionResultUpdateManyWithoutSoldierNestedInput
   trainingLog?: Prisma.TrainingLogUpdateManyWithoutSoldierNestedInput
   arenaBotProfile?: Prisma.ArenaBotProfileUpdateOneWithoutSoldierNestedInput
+  messages?: Prisma.GameMessageUpdateManyWithoutRecipientNestedInput
 }
 
 export type SoldierUncheckedUpdateWithoutActiveMissionInput = {
@@ -1585,6 +1633,7 @@ export type SoldierUncheckedUpdateWithoutActiveMissionInput = {
   results?: Prisma.MissionResultUncheckedUpdateManyWithoutSoldierNestedInput
   trainingLog?: Prisma.TrainingLogUncheckedUpdateManyWithoutSoldierNestedInput
   arenaBotProfile?: Prisma.ArenaBotProfileUncheckedUpdateOneWithoutSoldierNestedInput
+  messages?: Prisma.GameMessageUncheckedUpdateManyWithoutRecipientNestedInput
 }
 
 export type SoldierCreateWithoutWoundsInput = {
@@ -1609,6 +1658,7 @@ export type SoldierCreateWithoutWoundsInput = {
   trainingLog?: Prisma.TrainingLogCreateNestedManyWithoutSoldierInput
   arenaBotProfile?: Prisma.ArenaBotProfileCreateNestedOneWithoutSoldierInput
   activeMission?: Prisma.ActiveMissionCreateNestedOneWithoutSoldierInput
+  messages?: Prisma.GameMessageCreateNestedManyWithoutRecipientInput
 }
 
 export type SoldierUncheckedCreateWithoutWoundsInput = {
@@ -1633,6 +1683,7 @@ export type SoldierUncheckedCreateWithoutWoundsInput = {
   trainingLog?: Prisma.TrainingLogUncheckedCreateNestedManyWithoutSoldierInput
   arenaBotProfile?: Prisma.ArenaBotProfileUncheckedCreateNestedOneWithoutSoldierInput
   activeMission?: Prisma.ActiveMissionUncheckedCreateNestedOneWithoutSoldierInput
+  messages?: Prisma.GameMessageUncheckedCreateNestedManyWithoutRecipientInput
 }
 
 export type SoldierCreateOrConnectWithoutWoundsInput = {
@@ -1673,6 +1724,7 @@ export type SoldierUpdateWithoutWoundsInput = {
   trainingLog?: Prisma.TrainingLogUpdateManyWithoutSoldierNestedInput
   arenaBotProfile?: Prisma.ArenaBotProfileUpdateOneWithoutSoldierNestedInput
   activeMission?: Prisma.ActiveMissionUpdateOneWithoutSoldierNestedInput
+  messages?: Prisma.GameMessageUpdateManyWithoutRecipientNestedInput
 }
 
 export type SoldierUncheckedUpdateWithoutWoundsInput = {
@@ -1693,6 +1745,123 @@ export type SoldierUncheckedUpdateWithoutWoundsInput = {
   stats?: Prisma.SoldierStatsUncheckedUpdateOneWithoutSoldierNestedInput
   inventory?: Prisma.InventoryItemUncheckedUpdateManyWithoutSoldierNestedInput
   equipment?: Prisma.EquipmentUncheckedUpdateOneWithoutSoldierNestedInput
+  results?: Prisma.MissionResultUncheckedUpdateManyWithoutSoldierNestedInput
+  trainingLog?: Prisma.TrainingLogUncheckedUpdateManyWithoutSoldierNestedInput
+  arenaBotProfile?: Prisma.ArenaBotProfileUncheckedUpdateOneWithoutSoldierNestedInput
+  activeMission?: Prisma.ActiveMissionUncheckedUpdateOneWithoutSoldierNestedInput
+  messages?: Prisma.GameMessageUncheckedUpdateManyWithoutRecipientNestedInput
+}
+
+export type SoldierCreateWithoutMessagesInput = {
+  id?: string
+  name: string
+  rank: string
+  coins: number
+  honor: number
+  xp: number
+  fatigue: number
+  unpaidWages: number
+  reputation: number
+  corruption?: number
+  banMissionsLeft?: number
+  portraitAssetId?: string | null
+  saveState?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  user: Prisma.UserCreateNestedOneWithoutSoldierInput
+  stats?: Prisma.SoldierStatsCreateNestedOneWithoutSoldierInput
+  inventory?: Prisma.InventoryItemCreateNestedManyWithoutSoldierInput
+  equipment?: Prisma.EquipmentCreateNestedOneWithoutSoldierInput
+  wounds?: Prisma.ActiveWoundCreateNestedManyWithoutSoldierInput
+  results?: Prisma.MissionResultCreateNestedManyWithoutSoldierInput
+  trainingLog?: Prisma.TrainingLogCreateNestedManyWithoutSoldierInput
+  arenaBotProfile?: Prisma.ArenaBotProfileCreateNestedOneWithoutSoldierInput
+  activeMission?: Prisma.ActiveMissionCreateNestedOneWithoutSoldierInput
+}
+
+export type SoldierUncheckedCreateWithoutMessagesInput = {
+  id?: string
+  userId: string
+  name: string
+  rank: string
+  coins: number
+  honor: number
+  xp: number
+  fatigue: number
+  unpaidWages: number
+  reputation: number
+  corruption?: number
+  banMissionsLeft?: number
+  portraitAssetId?: string | null
+  saveState?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  stats?: Prisma.SoldierStatsUncheckedCreateNestedOneWithoutSoldierInput
+  inventory?: Prisma.InventoryItemUncheckedCreateNestedManyWithoutSoldierInput
+  equipment?: Prisma.EquipmentUncheckedCreateNestedOneWithoutSoldierInput
+  wounds?: Prisma.ActiveWoundUncheckedCreateNestedManyWithoutSoldierInput
+  results?: Prisma.MissionResultUncheckedCreateNestedManyWithoutSoldierInput
+  trainingLog?: Prisma.TrainingLogUncheckedCreateNestedManyWithoutSoldierInput
+  arenaBotProfile?: Prisma.ArenaBotProfileUncheckedCreateNestedOneWithoutSoldierInput
+  activeMission?: Prisma.ActiveMissionUncheckedCreateNestedOneWithoutSoldierInput
+}
+
+export type SoldierCreateOrConnectWithoutMessagesInput = {
+  where: Prisma.SoldierWhereUniqueInput
+  create: Prisma.XOR<Prisma.SoldierCreateWithoutMessagesInput, Prisma.SoldierUncheckedCreateWithoutMessagesInput>
+}
+
+export type SoldierUpsertWithoutMessagesInput = {
+  update: Prisma.XOR<Prisma.SoldierUpdateWithoutMessagesInput, Prisma.SoldierUncheckedUpdateWithoutMessagesInput>
+  create: Prisma.XOR<Prisma.SoldierCreateWithoutMessagesInput, Prisma.SoldierUncheckedCreateWithoutMessagesInput>
+  where?: Prisma.SoldierWhereInput
+}
+
+export type SoldierUpdateToOneWithWhereWithoutMessagesInput = {
+  where?: Prisma.SoldierWhereInput
+  data: Prisma.XOR<Prisma.SoldierUpdateWithoutMessagesInput, Prisma.SoldierUncheckedUpdateWithoutMessagesInput>
+}
+
+export type SoldierUpdateWithoutMessagesInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  name?: Prisma.StringFieldUpdateOperationsInput | string
+  rank?: Prisma.StringFieldUpdateOperationsInput | string
+  coins?: Prisma.IntFieldUpdateOperationsInput | number
+  honor?: Prisma.IntFieldUpdateOperationsInput | number
+  xp?: Prisma.IntFieldUpdateOperationsInput | number
+  fatigue?: Prisma.IntFieldUpdateOperationsInput | number
+  unpaidWages?: Prisma.IntFieldUpdateOperationsInput | number
+  reputation?: Prisma.IntFieldUpdateOperationsInput | number
+  corruption?: Prisma.IntFieldUpdateOperationsInput | number
+  banMissionsLeft?: Prisma.IntFieldUpdateOperationsInput | number
+  portraitAssetId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  saveState?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  user?: Prisma.UserUpdateOneRequiredWithoutSoldierNestedInput
+  stats?: Prisma.SoldierStatsUpdateOneWithoutSoldierNestedInput
+  inventory?: Prisma.InventoryItemUpdateManyWithoutSoldierNestedInput
+  equipment?: Prisma.EquipmentUpdateOneWithoutSoldierNestedInput
+  wounds?: Prisma.ActiveWoundUpdateManyWithoutSoldierNestedInput
+  results?: Prisma.MissionResultUpdateManyWithoutSoldierNestedInput
+  trainingLog?: Prisma.TrainingLogUpdateManyWithoutSoldierNestedInput
+  arenaBotProfile?: Prisma.ArenaBotProfileUpdateOneWithoutSoldierNestedInput
+  activeMission?: Prisma.ActiveMissionUpdateOneWithoutSoldierNestedInput
+}
+
+export type SoldierUncheckedUpdateWithoutMessagesInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  userId?: Prisma.StringFieldUpdateOperationsInput | string
+  name?: Prisma.StringFieldUpdateOperationsInput | string
+  rank?: Prisma.StringFieldUpdateOperationsInput | string
+  coins?: Prisma.IntFieldUpdateOperationsInput | number
+  honor?: Prisma.IntFieldUpdateOperationsInput | number
+  xp?: Prisma.IntFieldUpdateOperationsInput | number
+  fatigue?: Prisma.IntFieldUpdateOperationsInput | number
+  unpaidWages?: Prisma.IntFieldUpdateOperationsInput | number
+  reputation?: Prisma.IntFieldUpdateOperationsInput | number
+  corruption?: Prisma.IntFieldUpdateOperationsInput | number
+  banMissionsLeft?: Prisma.IntFieldUpdateOperationsInput | number
+  portraitAssetId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  saveState?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  stats?: Prisma.SoldierStatsUncheckedUpdateOneWithoutSoldierNestedInput
+  inventory?: Prisma.InventoryItemUncheckedUpdateManyWithoutSoldierNestedInput
+  equipment?: Prisma.EquipmentUncheckedUpdateOneWithoutSoldierNestedInput
+  wounds?: Prisma.ActiveWoundUncheckedUpdateManyWithoutSoldierNestedInput
   results?: Prisma.MissionResultUncheckedUpdateManyWithoutSoldierNestedInput
   trainingLog?: Prisma.TrainingLogUncheckedUpdateManyWithoutSoldierNestedInput
   arenaBotProfile?: Prisma.ArenaBotProfileUncheckedUpdateOneWithoutSoldierNestedInput
@@ -1721,6 +1890,7 @@ export type SoldierCreateWithoutTrainingLogInput = {
   results?: Prisma.MissionResultCreateNestedManyWithoutSoldierInput
   arenaBotProfile?: Prisma.ArenaBotProfileCreateNestedOneWithoutSoldierInput
   activeMission?: Prisma.ActiveMissionCreateNestedOneWithoutSoldierInput
+  messages?: Prisma.GameMessageCreateNestedManyWithoutRecipientInput
 }
 
 export type SoldierUncheckedCreateWithoutTrainingLogInput = {
@@ -1745,6 +1915,7 @@ export type SoldierUncheckedCreateWithoutTrainingLogInput = {
   results?: Prisma.MissionResultUncheckedCreateNestedManyWithoutSoldierInput
   arenaBotProfile?: Prisma.ArenaBotProfileUncheckedCreateNestedOneWithoutSoldierInput
   activeMission?: Prisma.ActiveMissionUncheckedCreateNestedOneWithoutSoldierInput
+  messages?: Prisma.GameMessageUncheckedCreateNestedManyWithoutRecipientInput
 }
 
 export type SoldierCreateOrConnectWithoutTrainingLogInput = {
@@ -1785,6 +1956,7 @@ export type SoldierUpdateWithoutTrainingLogInput = {
   results?: Prisma.MissionResultUpdateManyWithoutSoldierNestedInput
   arenaBotProfile?: Prisma.ArenaBotProfileUpdateOneWithoutSoldierNestedInput
   activeMission?: Prisma.ActiveMissionUpdateOneWithoutSoldierNestedInput
+  messages?: Prisma.GameMessageUpdateManyWithoutRecipientNestedInput
 }
 
 export type SoldierUncheckedUpdateWithoutTrainingLogInput = {
@@ -1809,6 +1981,7 @@ export type SoldierUncheckedUpdateWithoutTrainingLogInput = {
   results?: Prisma.MissionResultUncheckedUpdateManyWithoutSoldierNestedInput
   arenaBotProfile?: Prisma.ArenaBotProfileUncheckedUpdateOneWithoutSoldierNestedInput
   activeMission?: Prisma.ActiveMissionUncheckedUpdateOneWithoutSoldierNestedInput
+  messages?: Prisma.GameMessageUncheckedUpdateManyWithoutRecipientNestedInput
 }
 
 
@@ -1821,6 +1994,7 @@ export type SoldierCountOutputType = {
   wounds: number
   results: number
   trainingLog: number
+  messages: number
 }
 
 export type SoldierCountOutputTypeSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
@@ -1828,6 +2002,7 @@ export type SoldierCountOutputTypeSelect<ExtArgs extends runtime.Types.Extension
   wounds?: boolean | SoldierCountOutputTypeCountWoundsArgs
   results?: boolean | SoldierCountOutputTypeCountResultsArgs
   trainingLog?: boolean | SoldierCountOutputTypeCountTrainingLogArgs
+  messages?: boolean | SoldierCountOutputTypeCountMessagesArgs
 }
 
 /**
@@ -1868,6 +2043,13 @@ export type SoldierCountOutputTypeCountTrainingLogArgs<ExtArgs extends runtime.T
   where?: Prisma.TrainingLogWhereInput
 }
 
+/**
+ * SoldierCountOutputType without action
+ */
+export type SoldierCountOutputTypeCountMessagesArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  where?: Prisma.GameMessageWhereInput
+}
+
 
 export type SoldierSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
   id?: boolean
@@ -1893,6 +2075,7 @@ export type SoldierSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs 
   trainingLog?: boolean | Prisma.Soldier$trainingLogArgs<ExtArgs>
   arenaBotProfile?: boolean | Prisma.Soldier$arenaBotProfileArgs<ExtArgs>
   activeMission?: boolean | Prisma.Soldier$activeMissionArgs<ExtArgs>
+  messages?: boolean | Prisma.Soldier$messagesArgs<ExtArgs>
   _count?: boolean | Prisma.SoldierCountOutputTypeDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["soldier"]>
 
@@ -1960,6 +2143,7 @@ export type SoldierInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs
   trainingLog?: boolean | Prisma.Soldier$trainingLogArgs<ExtArgs>
   arenaBotProfile?: boolean | Prisma.Soldier$arenaBotProfileArgs<ExtArgs>
   activeMission?: boolean | Prisma.Soldier$activeMissionArgs<ExtArgs>
+  messages?: boolean | Prisma.Soldier$messagesArgs<ExtArgs>
   _count?: boolean | Prisma.SoldierCountOutputTypeDefaultArgs<ExtArgs>
 }
 export type SoldierIncludeCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
@@ -1981,6 +2165,7 @@ export type $SoldierPayload<ExtArgs extends runtime.Types.Extensions.InternalArg
     trainingLog: Prisma.$TrainingLogPayload<ExtArgs>[]
     arenaBotProfile: Prisma.$ArenaBotProfilePayload<ExtArgs> | null
     activeMission: Prisma.$ActiveMissionPayload<ExtArgs> | null
+    messages: Prisma.$GameMessagePayload<ExtArgs>[]
   }
   scalars: runtime.Types.Extensions.GetPayloadResult<{
     id: string
@@ -2404,6 +2589,7 @@ export interface Prisma__SoldierClient<T, Null = never, ExtArgs extends runtime.
   trainingLog<T extends Prisma.Soldier$trainingLogArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Soldier$trainingLogArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$TrainingLogPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   arenaBotProfile<T extends Prisma.Soldier$arenaBotProfileArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Soldier$arenaBotProfileArgs<ExtArgs>>): Prisma.Prisma__ArenaBotProfileClient<runtime.Types.Result.GetResult<Prisma.$ArenaBotProfilePayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
   activeMission<T extends Prisma.Soldier$activeMissionArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Soldier$activeMissionArgs<ExtArgs>>): Prisma.Prisma__ActiveMissionClient<runtime.Types.Result.GetResult<Prisma.$ActiveMissionPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+  messages<T extends Prisma.Soldier$messagesArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Soldier$messagesArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$GameMessagePayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   /**
    * Attaches callbacks for the resolution and/or rejection of the Promise.
    * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -3017,6 +3203,30 @@ export type Soldier$activeMissionArgs<ExtArgs extends runtime.Types.Extensions.I
    */
   include?: Prisma.ActiveMissionInclude<ExtArgs> | null
   where?: Prisma.ActiveMissionWhereInput
+}
+
+/**
+ * Soldier.messages
+ */
+export type Soldier$messagesArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the GameMessage
+   */
+  select?: Prisma.GameMessageSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the GameMessage
+   */
+  omit?: Prisma.GameMessageOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.GameMessageInclude<ExtArgs> | null
+  where?: Prisma.GameMessageWhereInput
+  orderBy?: Prisma.GameMessageOrderByWithRelationInput | Prisma.GameMessageOrderByWithRelationInput[]
+  cursor?: Prisma.GameMessageWhereUniqueInput
+  take?: number
+  skip?: number
+  distinct?: Prisma.GameMessageScalarFieldEnum | Prisma.GameMessageScalarFieldEnum[]
 }
 
 /**

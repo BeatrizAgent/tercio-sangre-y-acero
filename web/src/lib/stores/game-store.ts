@@ -31,6 +31,7 @@ import { fightArenaOpponentInState } from "../domain/arena";
 import { recruitCandidateInState } from "../domain/recruitment";
 import { eventDefinitions } from "../data/events";
 import { getItem, getMission } from "../data";
+import { regenerateActionPoints } from "../domain/action-points";
 import type { ActionResult } from "../domain/result";
 import type { EquipmentSlot, InventoryItem, StatId } from "../types";
 import type { CharacterState, Soldier } from "../types";
@@ -45,7 +46,7 @@ function rosterWithSoldier(state: GameState): GameState {
 }
 
 export function normalizeGameState(state: GameState): GameState {
-  const soldier = {
+  let soldier = {
     ...state.soldier,
     inventory: inventoryWithAutoLayout(
       state.soldier.inventory ?? [],
@@ -54,6 +55,18 @@ export function normalizeGameState(state: GameState): GameState {
       BACKPACK_CHESTS,
     ),
   };
+
+  if (soldier.actionPoints === undefined) {
+    soldier.actionPoints = 12;
+  }
+  if (!soldier.lastRegenAt) {
+    soldier.lastRegenAt = new Date().toISOString();
+  }
+
+  const regen = regenerateActionPoints(soldier, new Date());
+  if (regen.updated) {
+    soldier = regen.soldier;
+  }
 
   return rosterWithSoldier({ ...state, soldier });
 }
@@ -94,6 +107,8 @@ export function createInitialState(
         consumable: null,
       },
       wounds: [],
+      actionPoints: 12,
+      lastRegenAt: new Date().toISOString(),
     },
     characters: [],
     activeCharacterId: PLAYER_CHARACTER_ID,
@@ -296,10 +311,22 @@ export const useGameStore = create<GameStore>()(
           const mission = getMission(missionId);
           if (!mission) return {};
 
+          const currentPoints = state.soldier.actionPoints !== undefined ? state.soldier.actionPoints : 12;
+          if (currentPoints <= 0) {
+            result = { ok: false, message: "No tienes suficientes puntos de acción." };
+            return {};
+          }
+
           const updatedSoldier = { ...state.soldier };
           if (updatedSoldier.banMissionsLeft > 0) {
             updatedSoldier.banMissionsLeft = Math.max(0, updatedSoldier.banMissionsLeft - 1);
           }
+
+          // Spend action point
+          if (currentPoints === 12) {
+            updatedSoldier.lastRegenAt = new Date().toISOString();
+          }
+          updatedSoldier.actionPoints = currentPoints - 1;
 
           // 40% chance of triggering an event
           const shouldTriggerEvent = Math.random() < 0.40 && eventDefinitions.length > 0;

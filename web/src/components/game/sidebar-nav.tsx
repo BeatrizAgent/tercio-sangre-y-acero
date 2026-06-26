@@ -6,6 +6,7 @@ import { usePathname, useSearchParams } from "next/navigation";
 import { UiAssetIcon } from "@/components/ui/ui-asset-icon";
 import { playPageSound } from "@/lib/sounds";
 import { regions } from "@/lib/regions";
+import { useGameStore } from "@/lib/game-store";
 
 interface NavLinkProps {
   href: string;
@@ -32,11 +33,49 @@ export function SidebarNav() {
   const pathname = usePathname();
   const searchParams = useSearchParams();
   const [mounted, setMounted] = useState(false);
+  const { soldier, hydrateState } = useGameStore();
+  const [regenTimer, setRegenTimer] = useState<string>("");
 
   useEffect(() => {
     const timer = window.setTimeout(() => setMounted(true), 0);
     return () => window.clearTimeout(timer);
   }, []);
+
+  useEffect(() => {
+    if (!mounted) return;
+    const currentPoints = soldier.actionPoints !== undefined ? soldier.actionPoints : 12;
+    if (currentPoints >= 12 || !soldier.lastRegenAt) {
+      setRegenTimer("");
+      return;
+    }
+
+    const tick = () => {
+      const state = useGameStore.getState();
+      const s = state.soldier;
+      const pts = s.actionPoints !== undefined ? s.actionPoints : 12;
+      if (pts >= 12 || !s.lastRegenAt) {
+        setRegenTimer("");
+        return;
+      }
+
+      const nextRegenTime = new Date(s.lastRegenAt).getTime() + 30 * 60 * 1000;
+      const now = Date.now();
+      const remainingMs = nextRegenTime - now;
+
+      if (remainingMs <= 0) {
+        state.hydrateState({ ...state });
+        return;
+      }
+
+      const minutes = Math.floor(remainingMs / 60000);
+      const seconds = Math.floor((remainingMs % 60000) / 1000);
+      setRegenTimer(`${minutes}:${String(seconds).padStart(2, "0")}`);
+    };
+
+    tick();
+    const interval = window.setInterval(tick, 1000);
+    return () => window.clearInterval(interval);
+  }, [mounted, soldier.actionPoints, soldier.lastRegenAt]);
 
   if (!mounted) {
     return (
@@ -55,6 +94,30 @@ export function SidebarNav() {
   return (
     <aside className="sidebar-shell w-full md:w-56 md:max-h-[calc(100vh-1.5rem)] bg-panel border border-iron flex flex-col rounded-xs shadow-md p-2 z-20 overflow-y-auto">
       <div className="flex flex-col flex-1 min-h-0 gap-3">
+        {/* Puntos de Acción */}
+        <div className="game-panel border border-iron bg-stone-950/60 p-2.5 rounded-xs space-y-1.5 shrink-0">
+          <div className="flex items-center justify-between">
+            <span className="font-mono text-[10px] uppercase tracking-wider text-text-muted flex items-center gap-1">
+              <UiAssetIcon id="missions" label="Puntos de Acción" className="h-3.5 w-3.5" />
+              Puntos Acción
+            </span>
+            <span className="font-mono text-xs font-bold text-gold">
+              {soldier.actionPoints !== undefined ? soldier.actionPoints : 12} / 12
+            </span>
+          </div>
+          <div className="w-full bg-stone-900 border border-iron/40 h-1.5 rounded-full overflow-hidden">
+            <div
+              className="bg-gold h-full transition-all duration-300"
+              style={{ width: `${((soldier.actionPoints !== undefined ? soldier.actionPoints : 12) / 12) * 100}%` }}
+            />
+          </div>
+          {regenTimer && (
+            <div className="font-mono text-[9px] text-right text-text-muted uppercase">
+              Sig. punto en <span className="text-gold-soft">{regenTimer}</span>
+            </div>
+          )}
+        </div>
+
         {/* LOCALIZACIÓN SECTION */}
         <div>
           <div className="gladiatus-section-header">Localización</div>

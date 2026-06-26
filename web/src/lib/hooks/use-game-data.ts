@@ -18,6 +18,8 @@ import type { GameState } from "@/lib/types";
 
 export type GameDataStatus = "idle" | "loading" | "ready" | "error";
 
+const missingSessionRedirect = "/login?reason=missing-session";
+
 export interface UseGameDataResult {
   status: GameDataStatus;
   error: unknown;
@@ -50,6 +52,15 @@ export function useGameData(): UseGameDataResult {
           state?: GameState;
           error?: string;
         };
+
+        if (response.status === 401) {
+          await fetch("/api/auth/logout", {
+            method: "POST",
+            signal: controller.signal,
+          }).catch(() => undefined);
+          window.location.replace(missingSessionRedirect);
+          return;
+        }
 
         if (!response.ok || !payload.ok || !payload.state?.soldier) {
           throw new Error(payload.error ?? "No se pudo cargar la partida.");

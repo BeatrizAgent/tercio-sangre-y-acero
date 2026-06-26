@@ -181,7 +181,27 @@ export function closeAuctionInState({
   const paidSeller = seller
     ? { ...seller, soldier: { ...seller.soldier, coins: seller.soldier.coins + sellerRevenue } }
     : seller;
-  const awardedWinner = winner ? addItemToState(winner, listing.itemId, listing.quantity) : winner;
+
+  let awardedWinner = winner;
+  if (winner) {
+    const inserted = addInventoryItem(
+      winner.soldier.inventory,
+      listing.itemId,
+      listing.quantity,
+      BACKPACK_COLS,
+      BACKPACK_ROWS,
+      BACKPACK_CHESTS,
+    );
+    if (!inserted.ok) {
+      return {
+        listing,
+        seller,
+        winner,
+        result: fail("No tienes espacio en tu inventario para recoger este objeto."),
+      };
+    }
+    awardedWinner = { ...winner, soldier: { ...winner.soldier, inventory: inserted.inventory } };
+  }
 
   return {
     listing: { ...listing, status: "sold" },

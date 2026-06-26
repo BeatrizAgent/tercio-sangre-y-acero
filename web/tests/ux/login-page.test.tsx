@@ -24,7 +24,11 @@ describe("LoginPage", () => {
       "fetch",
       vi.fn().mockResolvedValue({
         ok: true,
-        json: async () => ({ ok: true, token: "tercio_abcdefghijklmnopqrstuvwxyzABCDEF" }),
+        json: async () => ({
+          ok: true,
+          publicIp: "203.0.113.9",
+          token: "tercio_abcdefghijklmnopqrstuvwxyzABCDEF",
+        }),
       }),
     );
     Object.defineProperty(navigator, "clipboard", {
@@ -48,6 +52,11 @@ describe("LoginPage", () => {
     expect(await screen.findByText(/Sesion cerrada/)).toBeInTheDocument();
   });
 
+  it("shows the detected public IP in the recovery panel", async () => {
+    render(<LoginPage />);
+    expect(await screen.findByText("203.0.113.9")).toBeInTheDocument();
+  });
+
   it("shows a copyable token after character creation", async () => {
     const user = userEvent.setup();
     render(<LoginPage />);
@@ -57,23 +66,106 @@ describe("LoginPage", () => {
     expect(screen.getByRole("button", { name: "Copiar" })).toBeInTheDocument();
   });
 
+  it("uses carousel controls for portrait selection", async () => {
+    const user = userEvent.setup();
+    render(<LoginPage />);
+
+    expect(screen.getByText("1 / 16")).toBeInTheDocument();
+    await user.click(screen.getByRole("button", { name: "Retrato siguiente" }));
+
+    expect(screen.getByText("2 / 16")).toBeInTheDocument();
+    expect(screen.getByText("Piquero veterano")).toBeInTheDocument();
+  });
+
   it("requests account recovery by saved public IP and shows the new token", async () => {
     const user = userEvent.setup();
-    const fetchMock = vi.fn().mockResolvedValue({
-      ok: true,
-      json: async () => ({ ok: true, token: "tercio_recoveredabcdefghijklmnopqrstuvwxyz" }),
-    });
+    const fetchMock = vi
+      .fn()
+      .mockResolvedValueOnce({
+        ok: true,
+        json: async () => ({ ok: true, publicIp: "203.0.113.9" }),
+      })
+      .mockResolvedValueOnce({
+        ok: true,
+        json: async () => ({
+          ok: true,
+          token: "tercio_recoveredabcdefghijklmnopqrstuvwxyz",
+          user: { id: "user-1", name: "Diego de Arce" },
+        }),
+      });
     vi.stubGlobal("fetch", fetchMock);
 
     render(<LoginPage />);
-    await user.type(screen.getByLabelText("Nombre del soldado"), "Diego de Arce");
     await user.click(screen.getByRole("button", { name: "Recuperar por IP" }));
 
     expect(fetchMock).toHaveBeenCalledWith("/api/auth/recover-ip", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ name: "Diego de Arce" }),
+      body: JSON.stringify({ name: "" }),
     });
     expect(await screen.findByText("tercio_recoveredabcdefghijklmnopqrstuvwxyz")).toBeInTheDocument();
+  });
+
+  it("lists public-IP recovery candidates when several characters share the IP", async () => {
+    const user = userEvent.setup();
+    const fetchMock = vi
+      .fn()
+      .mockResolvedValueOnce({
+        ok: true,
+        status: 200,
+        json: async () => ({ ok: true, publicIp: "203.0.113.9" }),
+      })
+      .mockResolvedValueOnce({
+        ok: false,
+        status: 409,
+        json: async () => ({
+          ok: false,
+          error: "Hay varias cuentas en esta IP. Elige el soldado.",
+          users: [
+            { id: "user-1", name: "Diego de Arce" },
+            { id: "user-2", name: "Alonso de Vera" },
+          ],
+        }),
+      })
+      .mockResolvedValueOnce({
+        ok: true,
+        status: 200,
+        json: async () => ({
+          ok: true,
+          token: "tercio_candidateabcdefghijklmnopqrstuvwxyz",
+          user: { id: "user-2", name: "Alonso de Vera" },
+        }),
+      });
+    vi.stubGlobal("fetch", fetchMock);
+
+    render(<LoginPage />);
+    await user.click(screen.getByRole("button", { name: "Recuperar por IP" }));
+    await user.click(await screen.findByRole("button", { name: "Alonso de Vera" }));
+
+    expect(fetchMock).toHaveBeenNthCalledWith(3, "/api/auth/recover-ip", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ name: "Alonso de Vera" }),
+    });
+    expect(await screen.findByText("tercio_candidateabcdefghijklmnopqrstuvwxyz")).toBeInTheDocument();
+  });
+
+  it("falls back to a browser-visible public IP when the server cannot detect one", async () => {
+    const fetchMock = vi
+      .fn()
+      .mockResolvedValueOnce({
+        ok: true,
+        json: async () => ({ ok: false, publicIp: null }),
+      })
+      .mockResolvedValueOnce({
+        ok: true,
+        json: async () => ({ ip: "198.51.100.44" }),
+      });
+    vi.stubGlobal("fetch", fetchMock);
+
+    render(<LoginPage />);
+
+    expect(await screen.findByText("198.51.100.44")).toBeInTheDocument();
+    expect(screen.getByText("Vista por navegador")).toBeInTheDocument();
   });
 });

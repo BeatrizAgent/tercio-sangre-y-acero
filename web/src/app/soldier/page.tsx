@@ -32,6 +32,7 @@ import { useGameData } from "@/lib/hooks/use-game-data";
 import { useOptimisticAction } from "@/lib/hooks/use-optimistic-action";
 import { equipItemInState, unequipItemInState } from "@/lib/domain/equipment";
 import { equipItemAction } from "@/lib/actions/equipment";
+import { getPlayerPortraitPathById } from "@/lib/data/player-portraits";
 import type { CharacterState, Equipment, EquipmentSlot, FormationSlot, Passive, Stats, StatId } from "@/lib/types";
 
 type Tab = "vision_general" | "estadisticas" | "logros" | "familia";
@@ -139,7 +140,8 @@ export default function SoldierPage() {
   const activeEquipment = activeProfile.equipment;
   const activeStats = activeProfile.stats;
   const activeLevel = getCharacterLevel(activeStats);
-  const activePortraitPath = getAssetPathById(activeProfile.portraitAssetId);
+  const activePortraitPath =
+    getPlayerPortraitPathById(activeProfile.portraitAssetId) ?? getAssetPathById(activeProfile.portraitAssetId);
   const equipmentBonuses = getEquipmentBonuses(activeEquipment);
 
   const currentRankIdx = rankDefinitions.findIndex((r) => r.id === activeProfile.rank);

@@ -17,6 +17,7 @@ import { trainCharacterStatInState } from "@/lib/domain/training";
 import { trainStatAction } from "@/lib/actions/training";
 import { getCharacterLevel } from "@/lib/domain/character-level";
 import { playCoinSound, playDefeatSound, playDrumSound } from "@/lib/sounds";
+import { getPlayerPortraitPathById } from "@/lib/data/player-portraits";
 import type { StatId } from "@/lib/types";
 
 const statLabels: Record<StatId, string> = {
@@ -159,7 +160,8 @@ export default function TrainingPage() {
           </div>
           <div className="grid gap-2 md:grid-cols-5">
             {characters.map((character) => {
-              const portrait = getAssetPathById(character.portraitAssetId);
+              const portrait =
+                getPlayerPortraitPathById(character.portraitAssetId) ?? getAssetPathById(character.portraitAssetId);
               const isActive = character.id === activeCharacter.id;
               const level = getCharacterLevel(character.stats);
               return (

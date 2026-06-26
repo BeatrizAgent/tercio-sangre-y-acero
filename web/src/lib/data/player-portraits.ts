@@ -49,6 +49,10 @@ export function getPlayerPortraitById(id: string | undefined): PlayerPortraitOpt
   return data.options.find((option) => option.id === id);
 }
 
+export function getPlayerPortraitPathById(id: string | undefined): string | undefined {
+  return getPlayerPortraitById(id)?.publicPath;
+}
+
 export function isValidPlayerPortraitId(id: string | undefined): id is string {
   if (!id) return false;
   return VALID_IDS.has(id);

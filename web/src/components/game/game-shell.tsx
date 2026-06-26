@@ -9,6 +9,7 @@ import { QuickAction, ResourceChip } from "@/components/ui/resource-chip";
 import { UiAssetIcon } from "@/components/ui/ui-asset-icon";
 import { useGameStore } from "@/lib/game-store";
 import { getRankName, getAssetPathById, featuredAssetPaths, missionDefinitions, rankDefinitions } from "@/lib/game-data";
+import { getPlayerPortraitPathById } from "@/lib/data/player-portraits";
 import { playPageSound } from "@/lib/sounds";
 import { GladiatusBar } from "@/components/ui/gladiatus-bar";
 
@@ -65,7 +66,9 @@ export function GameShell({ children }: { children: React.ReactNode }) {
   const hpMax = 100;
 
   const playerPortraitSrc =
-    getAssetPathById(soldier.portraitAssetId) ?? featuredAssetPaths.diegoDeArcePortrait;
+    getPlayerPortraitPathById(soldier.portraitAssetId) ??
+    getAssetPathById(soldier.portraitAssetId) ??
+    featuredAssetPaths.diegoDeArcePortrait;
 
   return (
     <div className="min-h-screen bg-stone-950 text-text font-sans selection:bg-gold/30 selection:text-gold-soft overflow-x-hidden overflow-y-auto py-4 px-2 md:py-8">

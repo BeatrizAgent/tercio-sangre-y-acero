@@ -71,4 +71,17 @@ describe("CharacterPortrait", () => {
     );
     expect(screen.getByText("tu")).toHaveClass("text-[8px]");
   });
+
+  it("resolves selectable player portrait ids outside the main asset catalog", () => {
+    render(
+      <CharacterPortrait
+        assetId="player_portrait_option_02_pike_veteran"
+        name="Piquero veterano"
+      />,
+    );
+    expect(screen.getByAltText("Piquero veterano")).toHaveAttribute(
+      "src",
+      expect.stringContaining("player_portrait_option_02_pike_veteran.png"),
+    );
+  });
 });

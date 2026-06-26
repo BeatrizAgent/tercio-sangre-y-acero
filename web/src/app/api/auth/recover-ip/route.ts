@@ -10,15 +10,22 @@ import {
 } from "@/lib/auth/session";
 import { getDb } from "@/lib/db";
 
+type RecoveryUser = { id: string; name: string };
+
 export async function OPTIONS() {
   return optionsResponse();
 }
 
+export async function GET(request: Request) {
+  const publicIp = getPublicIpFromRequest(request);
+  return jsonResponse({ ok: Boolean(publicIp), publicIp });
+}
+
 export async function POST(request: Request) {
   try {
-    const body = (await request.json().catch(() => ({}))) as { name?: string };
+    const body = (await request.json().catch(() => ({}))) as { name?: string; publicIpHint?: string };
     const name = body.name?.trim().replace(/\s+/g, " ");
-    const publicIp = getPublicIpFromRequest(request);
+    const publicIp = getPublicIpFromRequest(request) ?? (canUseFilesystemSessionFallback() ? body.publicIpHint : null);
     if (!publicIp) {
       return jsonResponse(
         { ok: false, error: "No se pudo detectar una IP publica para recuperar la cuenta." },
@@ -28,7 +35,7 @@ export async function POST(request: Request) {
 
     const token = generateRecoveryToken();
     const tokenHash = hashRecoveryToken(token);
-    let user: { id: string; name: string } | null = null;
+    let user: RecoveryUser | null = null;
 
     try {
       const db = getDb();
@@ -38,7 +45,7 @@ export async function POST(request: Request) {
           ...(name ? { name } : {}),
         },
         orderBy: { lastLoginAt: "desc" },
-        take: name ? 1 : 2,
+        take: name ? 1 : 10,
         select: { id: true, name: true },
       });
 
@@ -47,7 +54,11 @@ export async function POST(request: Request) {
       }
       if (!name && matches.length > 1) {
         return jsonResponse(
-          { ok: false, error: "Hay varias cuentas en esta IP. Indica el nombre del soldado." },
+          {
+            ok: false,
+            error: "Hay varias cuentas en esta IP. Elige el soldado.",
+            users: matches,
+          },
           { status: 409 },
         );
       }

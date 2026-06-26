@@ -1,9 +1,9 @@
 "use client";
 
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
-import { Check, Clipboard, Dices, KeyRound, LifeBuoy, LogIn, UserPlus } from "lucide-react";
+import { Check, ChevronLeft, ChevronRight, Clipboard, Dices, KeyRound, LifeBuoy, LogIn, UserPlus } from "lucide-react";
 import { featuredAssetPaths } from "@/lib/data/ui-paths";
 import {
   getDefaultPlayerPortraitId,
@@ -18,6 +18,13 @@ type CreatedSession = {
   name: string;
   portrait: PlayerPortraitOption;
 };
+
+type RecoveryCandidate = {
+  id: string;
+  name: string;
+};
+
+type PublicIpSource = "server" | "browser";
 
 const DEFAULT_NAME = "Diego de Arce";
 
@@ -34,9 +41,12 @@ export default function LoginPage() {
   const [token, setToken] = useState("");
   const [recoveryName, setRecoveryName] = useState("");
   const [recoveredToken, setRecoveredToken] = useState<string | null>(null);
-  const [missingSession] = useState(
-    () => typeof window !== "undefined" && new URLSearchParams(window.location.search).get("reason") === "missing-session",
-  );
+  const [recoveredName, setRecoveredName] = useState<string | null>(null);
+  const [recoveryCandidates, setRecoveryCandidates] = useState<RecoveryCandidate[]>([]);
+  const [publicIp, setPublicIp] = useState<string | null>(null);
+  const [publicIpSource, setPublicIpSource] = useState<PublicIpSource | null>(null);
+  const [publicIpChecked, setPublicIpChecked] = useState(false);
+  const [missingSession, setMissingSession] = useState(false);
   const [created, setCreated] = useState<CreatedSession | null>(null);
   const [busy, setBusy] = useState<"create" | "resume" | "recover" | null>(null);
   const [error, setError] = useState<string | null>(null);
@@ -44,8 +54,32 @@ export default function LoginPage() {
 
   const selectedPortrait =
     getPlayerPortraitById(portraitId) ?? portraitOptions[0] ?? null;
+  const selectedPortraitIndex = Math.max(
+    0,
+    portraitOptions.findIndex((option) => option.id === selectedPortrait?.id),
+  );
   const canCreate =
     busy === null && name.trim().length >= 2 && name.trim().length <= 40 && portraitId.length > 0;
+
+  useEffect(() => {
+    setMissingSession(new URLSearchParams(window.location.search).get("reason") === "missing-session");
+    fetch("/api/auth/recover-ip", { cache: "no-store" })
+      .then((response) => response.json() as Promise<{ publicIp?: string | null }>)
+      .then(async (payload) => {
+        if (payload.publicIp) {
+          setPublicIp(payload.publicIp);
+          setPublicIpSource("server");
+          return;
+        }
+        const fallback = await fetch("https://api.ipify.org?format=json", { cache: "no-store" })
+          .then((response) => response.json() as Promise<{ ip?: string }>)
+          .catch(() => null);
+        setPublicIp(fallback?.ip ?? null);
+        setPublicIpSource(fallback?.ip ? "browser" : null);
+      })
+      .catch(() => setPublicIp(null))
+      .finally(() => setPublicIpChecked(true));
+  }, []);
 
   async function createCharacter() {
     if (!selectedPortrait) {
@@ -102,22 +136,35 @@ export default function LoginPage() {
     }
   }
 
-  async function recoverByIp() {
+  async function recoverByIp(candidateName?: string) {
     setBusy("recover");
     setError(null);
     setRecoveredToken(null);
+    setRecoveredName(null);
+    setRecoveryCandidates([]);
     try {
-      const trimmedName = recoveryName.trim().replace(/\s+/g, " ");
+      const trimmedName = (candidateName ?? recoveryName).trim().replace(/\s+/g, " ");
       const response = await fetch("/api/auth/recover-ip", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ name: trimmedName }),
+        body: JSON.stringify({ name: trimmedName, publicIpHint: publicIpSource === "browser" ? publicIp : undefined }),
       });
-      const payload = (await response.json()) as { ok?: boolean; token?: string; error?: string };
+      const payload = (await response.json()) as {
+        ok?: boolean;
+        token?: string;
+        error?: string;
+        user?: RecoveryCandidate;
+        users?: RecoveryCandidate[];
+      };
+      if (response.status === 409 && payload.users?.length) {
+        setRecoveryCandidates(payload.users);
+        return;
+      }
       if (!response.ok || !payload.ok || !payload.token) {
         throw new Error(payload.error ?? "No se pudo recuperar la cuenta por IP.");
       }
       setRecoveredToken(payload.token);
+      setRecoveredName(payload.user?.name ?? trimmedName);
     } catch (err) {
       setError(err instanceof Error ? err.message : "No se pudo recuperar la cuenta por IP.");
     } finally {
@@ -135,6 +182,12 @@ export default function LoginPage() {
   function rollName() {
     const next = generateCharacterName();
     setName(next.fullName);
+  }
+
+  function rotatePortrait(direction: -1 | 1) {
+    if (portraitOptions.length === 0) return;
+    const nextIndex = (selectedPortraitIndex + direction + portraitOptions.length) % portraitOptions.length;
+    setPortraitId(portraitOptions[nextIndex]?.id ?? portraitId);
   }
 
   return (
@@ -234,50 +287,62 @@ export default function LoginPage() {
               <div
                 role="radiogroup"
                 aria-labelledby="portrait-picker-label"
-                className="grid grid-cols-4 gap-2"
+                className="relative"
               >
-                {portraitOptions.map((option) => {
-                  const checked = option.id === portraitId;
-                  return (
-                    <button
-                      key={option.id}
-                      type="button"
-                      role="radio"
-                      aria-checked={checked}
-                      aria-label={`${option.displayName} (${option.roleLabel})`}
-                      title={`${option.displayName} - ${option.roleLabel}`}
-                      onClick={() => setPortraitId(option.id)}
-                      disabled={busy !== null}
-                      className={`relative aspect-square overflow-hidden border bg-stone-900 transition focus:outline-none focus-visible:ring-2 focus-visible:ring-gold disabled:cursor-not-allowed disabled:opacity-60 ${
-                        checked
-                          ? "border-gold shadow-[0_0_0_2px_rgba(201,162,79,0.35)]"
-                          : "border-iron hover:border-gold/45"
-                      }`}
+                <button
+                  type="button"
+                  onClick={() => rotatePortrait(-1)}
+                  disabled={busy !== null || portraitOptions.length <= 1}
+                  aria-label="Retrato anterior"
+                  className="absolute left-2 top-14 z-20 flex h-10 w-10 items-center justify-center border border-gold/70 bg-stone-950/90 text-gold shadow-[0_2px_8px_rgba(0,0,0,0.55)] transition hover:border-gold hover:bg-stone-900 hover:text-gold-soft focus:outline-none focus-visible:ring-2 focus-visible:ring-gold disabled:cursor-not-allowed disabled:opacity-35"
+                >
+                  <ChevronLeft className="h-5 w-5" strokeWidth={3} />
+                </button>
+                {selectedPortrait && (
+                  <button
+                    key={selectedPortrait.id}
+                    type="button"
+                    role="radio"
+                    aria-checked
+                    aria-label={`${selectedPortrait.displayName} (${selectedPortrait.roleLabel})`}
+                    title={`${selectedPortrait.displayName} - ${selectedPortrait.roleLabel}`}
+                    disabled={busy !== null}
+                    className="relative block min-h-44 w-full overflow-hidden border border-gold bg-stone-900 shadow-[0_0_0_2px_rgba(201,162,79,0.35)] transition focus:outline-none focus-visible:ring-2 focus-visible:ring-gold disabled:cursor-not-allowed disabled:opacity-60"
+                  >
+                    <Image
+                      src={selectedPortrait.publicPath}
+                      alt={selectedPortrait.displayName}
+                      width={selectedPortrait.width}
+                      height={selectedPortrait.height}
+                      loading="lazy"
+                      decoding="async"
+                      className="absolute inset-0 h-full w-full object-cover object-top"
+                      draggable={false}
+                    />
+                    <span
+                      aria-hidden
+                      className="absolute right-2 top-2 flex h-5 w-5 items-center justify-center border border-gold bg-gold text-stone-950"
                     >
-                      <Image
-                        src={option.publicPath}
-                        alt={option.displayName}
-                        width={option.width}
-                        height={option.height}
-                        loading="lazy"
-                        decoding="async"
-                        className="absolute inset-0 h-full w-full object-cover object-top"
-                        draggable={false}
-                      />
-                      {checked && (
-                        <span
-                          aria-hidden
-                          className="absolute right-1 top-1 flex h-4 w-4 items-center justify-center border border-gold bg-gold text-stone-950"
-                        >
-                          <Check className="h-3 w-3" strokeWidth={3} />
-                        </span>
-                      )}
-                      <span className="pointer-events-none absolute inset-x-0 bottom-0 truncate bg-stone-950/85 px-1 py-0.5 text-center font-mono text-[8px] font-bold uppercase tracking-wider text-text-muted">
-                        {option.roleLabel}
+                      <Check className="h-3.5 w-3.5" strokeWidth={3} />
+                    </span>
+                    <span className="pointer-events-none absolute inset-x-0 bottom-0 flex min-h-14 flex-col justify-center bg-stone-950/90 px-3 py-2 text-left font-mono uppercase text-text">
+                      <span className="truncate text-[11px] font-bold leading-4">{selectedPortrait.displayName}</span>
+                      <span className="truncate text-[9px] leading-3 text-text-muted">{selectedPortrait.roleLabel}</span>
+                      <span className="mt-1 text-[8px] leading-3 text-text-muted">
+                        {selectedPortraitIndex + 1} / {portraitOptions.length}
                       </span>
-                    </button>
-                  );
-                })}
+                    </span>
+                  </button>
+                )}
+                <button
+                  type="button"
+                  onClick={() => rotatePortrait(1)}
+                  disabled={busy !== null || portraitOptions.length <= 1}
+                  aria-label="Retrato siguiente"
+                  className="absolute right-2 top-14 z-20 flex h-10 w-10 items-center justify-center border border-gold/70 bg-stone-950/90 text-gold shadow-[0_2px_8px_rgba(0,0,0,0.55)] transition hover:border-gold hover:bg-stone-900 hover:text-gold-soft focus:outline-none focus-visible:ring-2 focus-visible:ring-gold disabled:cursor-not-allowed disabled:opacity-35"
+                >
+                  <ChevronRight className="h-5 w-5" strokeWidth={3} />
+                </button>
               </div>
               <p className="mt-2 font-mono text-[9px] uppercase tracking-wider text-text-muted">
                 {selectedPortrait
@@ -348,6 +413,17 @@ export default function LoginPage() {
               </span>
               <span className="panel-header__meta">Sin token</span>
             </div>
+            <div className="border border-iron/60 bg-background/70 px-3 py-2">
+              <p className="font-mono text-[9px] uppercase tracking-wider text-text-muted">IP publica detectada</p>
+              <p className="mt-1 break-all font-mono text-xs text-text">
+                {publicIpChecked ? publicIp ?? "No detectada" : "Detectando..."}
+              </p>
+              {publicIpSource === "browser" && (
+                <p className="mt-1 font-mono text-[8px] uppercase tracking-wider text-text-muted">
+                  Vista por navegador
+                </p>
+              )}
+            </div>
             <div className="form-field">
               <label htmlFor="recovery-name" className="form-label">
                 Nombre del soldado
@@ -356,23 +432,43 @@ export default function LoginPage() {
                 id="recovery-name"
                 value={recoveryName}
                 onChange={(event) => setRecoveryName(event.target.value)}
-                minLength={2}
                 maxLength={40}
                 className="form-input"
-                placeholder={DEFAULT_NAME}
+                placeholder="Opcional si solo hay una cuenta en tu IP"
               />
             </div>
             <button
               type="submit"
-              disabled={busy !== null || recoveryName.trim().length < 2}
+              disabled={busy !== null}
               className="iron-button mt-1 inline-flex w-full items-center justify-center gap-2 px-3 py-2 text-[11px]"
             >
               <LifeBuoy className="h-4 w-4" />
               Recuperar por IP
             </button>
+            {recoveryCandidates.length > 0 && (
+              <div className="flex flex-col gap-2 border-t border-iron/60 pt-3">
+                <p className="font-mono text-[9px] uppercase tracking-wider text-text-muted">
+                  Personajes encontrados en esta IP
+                </p>
+                <div className="grid gap-2">
+                  {recoveryCandidates.map((candidate) => (
+                    <button
+                      key={candidate.id}
+                      type="button"
+                      disabled={busy !== null}
+                      onClick={() => void recoverByIp(candidate.name)}
+                      className="iron-button inline-flex items-center justify-center gap-2 px-3 py-1.5 text-[11px]"
+                    >
+                      <LogIn className="h-3.5 w-3.5" />
+                      {candidate.name}
+                    </button>
+                  ))}
+                </div>
+              </div>
+            )}
             {recoveredToken && (
               <p className="font-mono text-[10px] uppercase leading-5 tracking-wider text-text-muted">
-                Token nuevo de <strong className="text-gold-soft">{recoveryName.trim()}</strong>:{" "}
+                Token nuevo de <strong className="text-gold-soft">{recoveredName ?? "tu soldado"}</strong>:{" "}
                 <span className="break-all text-text">{recoveredToken}</span>
               </p>
             )}

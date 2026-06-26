@@ -89,6 +89,33 @@ describe("useGameData", () => {
     expect(result.current.status).toBe("error");
   });
 
+  it("clears a stale session and redirects to login when the backend returns 401", async () => {
+    const fetchMock = vi
+      .fn()
+      .mockResolvedValueOnce({
+        ok: false,
+        status: 401,
+        json: async () => ({ ok: false, error: "No hay sesion activa." }),
+      })
+      .mockResolvedValueOnce({
+        ok: true,
+        status: 200,
+        json: async () => ({ ok: true }),
+      });
+    vi.stubGlobal("fetch", fetchMock);
+
+    renderHook(() => useGameData());
+    await act(async () => {
+      await new Promise((r) => setTimeout(r, 10));
+    });
+
+    expect(fetchMock).toHaveBeenNthCalledWith(
+      2,
+      "/api/auth/logout",
+      expect.objectContaining({ method: "POST" }),
+    );
+  });
+
   it("returns 'error' status when setError is called", async () => {
     const { result } = renderHook(() => useGameData());
     await act(async () => {

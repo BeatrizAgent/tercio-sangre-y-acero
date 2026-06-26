@@ -1922,6 +1922,89 @@ textarea:focus-visible {
 }
 
 /*
+  Recruitment card "compact" mode via container queries.
+  When the card is too narrow to fit the full layout (3-col grid at
+  2xl, narrow sidebars, etc.) we collapse it to a single portrait with
+  a name ribbon. All the dense info (stats, costs, hook, fatigue) is
+  already in the stats popup, so we never duplicate it inline. See
+  modern-web-guidance `size-aware-styling` guide.
+
+  The 256px threshold matches the smallest comfortable card width
+  (DESIGN.md §3.10); below that the 4-col stat grid + 3-col cost grid
+  become unreadable.
+*/
+.recruit-card {
+  container-type: inline-size;
+  container-name: recruit-card;
+}
+
+.recruit-card__compact {
+  display: none;
+}
+
+@container recruit-card (max-width: 256px) {
+  .recruit-card {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 8px;
+  }
+
+  .recruit-card__body {
+    display: none;
+  }
+
+  .recruit-card__compact {
+    display: block;
+    position: relative;
+    width: 100%;
+    aspect-ratio: 1 / 1;
+    max-width: 200px;
+    margin-inline: auto;
+  }
+
+  .recruit-card__compact > .recruit-card__portrait {
+    width: 100% !important;
+    height: 100% !important;
+  }
+
+  .recruit-card__compact .recruit-card__name-ribbon {
+    position: absolute;
+    inset-inline: 0;
+    bottom: 0;
+    background: linear-gradient(180deg, transparent 0%, rgba(7, 6, 4, 0.92) 35%, rgba(7, 6, 4, 0.95) 100%);
+    padding: 14px 6px 6px;
+    text-align: center;
+    pointer-events: none;
+  }
+
+  .recruit-card__compact .recruit-card__name-ribbon > span {
+    display: block;
+    font-size: 14px;
+    line-height: 1.15;
+    color: var(--gold);
+    font-family: var(--font-cinzel), serif;
+    font-weight: 800;
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+    text-shadow: 0 1px 2px rgba(0, 0, 0, 0.9);
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+
+  .recruit-card__compact .recruit-card__role-line {
+    display: block;
+    font-size: 10px;
+    line-height: 1.2;
+    color: var(--text-muted);
+    text-transform: uppercase;
+    letter-spacing: 0.14em;
+    margin-top: 2px;
+  }
+}
+
+/*
   Native form validation feedback. `:user-invalid` only matches after
   the user has interacted with a field or attempted submit, so empty
   required inputs don't show errors on page load. See

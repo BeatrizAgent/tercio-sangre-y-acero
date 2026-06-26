@@ -12,6 +12,7 @@ import React, { useState } from "react";
 import Image from "next/image";
 import { Skeleton } from "@/components/ui/skeleton";
 import { getAssetPathById } from "@/lib/game-data";
+import { getPlayerPortraitPathById } from "@/lib/data/player-portraits";
 
 export type PortraitSize = "xs" | "sm" | "md" | "lg" | "xl";
 
@@ -52,7 +53,7 @@ export function CharacterPortrait({
   children?: React.ReactNode;
 }) {
   const px = SIZE_PX[size];
-  const src = getAssetPathById(assetId);
+  const src = getPlayerPortraitPathById(assetId) ?? getAssetPathById(assetId);
   const radiusClass = rounded === "full" ? "rounded-full" : `rounded-${rounded}`;
   const playerBadgeText = size === "xs" || size === "sm" ? "text-[7px]" : "text-[8px]";
   const [loaded, setLoaded] = useState(false);

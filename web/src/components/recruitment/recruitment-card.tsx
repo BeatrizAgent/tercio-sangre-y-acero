@@ -10,6 +10,14 @@
 // in 70px cells, and native `title` tooltips instead of the custom
 // Tooltip component (whose `w-full h-full` wrapper breaks flex/grid
 // layouts and was the root cause of the previous unreadable render).
+//
+// Below ~256px of available width (e.g. inside a narrow sidebar) the
+// card collapses to a "compact" view that only shows the portrait with
+// a name ribbon — see the `.recruit-card` container-query rules in
+// `globals.css`. The dense body content is already mirrored in the
+// stats popup, so we never repeat it inline; in compact mode the whole
+// card becomes a button that opens that popup, which also exposes the
+// "Reclutar" action so the player can still close the deal.
 
 "use client";
 
@@ -29,6 +37,8 @@ import { getRankName } from "@/lib/data/ranks";
 import { formationRoleIconPaths } from "@/lib/data/ui-paths";
 import { STAT_INFO } from "@/lib/stats";
 import type { Soldier, StatId } from "@/lib/types";
+
+const COMPACT_WIDTH_PX = 256;
 
 const STAT_ORDER: readonly StatId[] = [
   "pike",
@@ -82,6 +92,8 @@ export function RecruitmentCard({
 }) {
   const { character, cost, hook } = candidate;
   const [statsOpen, setStatsOpen] = useState(false);
+  const [isCompact, setIsCompact] = useState(false);
+  const sectionRef = useRef<HTMLElement>(null);
   const affordability = candidateAffordability(soldier, candidate);
   const power = candidatePowerScore(candidate);
   const bestStats = topStats(candidate, 3);
@@ -95,17 +107,75 @@ export function RecruitmentCard({
   const totalMissing =
     affordability.missing.coins + affordability.missing.honor + affordability.missing.reputation;
 
+  useEffect(() => {
+    const el = sectionRef.current;
+    if (!el || typeof ResizeObserver === "undefined") return;
+    const observer = new ResizeObserver((entries) => {
+      const width = entries[0]?.contentRect.width ?? el.clientWidth;
+      setIsCompact(width <= COMPACT_WIDTH_PX);
+    });
+    observer.observe(el);
+    return () => observer.disconnect();
+  }, []);
+
+  function openStats() {
+    setStatsOpen(true);
+  }
+
+  function handleCompactKeyDown(event: React.KeyboardEvent<HTMLElement>) {
+    if (event.key === "Enter" || event.key === " ") {
+      event.preventDefault();
+      openStats();
+    }
+  }
+
+  const compactInteractionProps = isCompact
+    ? ({
+        onClick: openStats,
+        onKeyDown: handleCompactKeyDown,
+        role: "button",
+        tabIndex: 0,
+        "aria-label": `Ver detalles y reclutar a ${character.name}`,
+      } as const)
+    : ({} as const);
+
   return (
     <section
+      ref={sectionRef}
       data-testid={`recruit-card-${candidate.id}`}
-      className={`game-panel flex min-w-0 flex-col gap-2 rounded-xs border p-2.5 transition ${
+      data-compact={isCompact ? "true" : "false"}
+      className={`recruit-card game-panel flex min-w-0 flex-col gap-2 rounded-xs border p-2.5 transition ${
         recruited
           ? "border-success/40 bg-panel-soft/45 opacity-65"
           : canRecruit
             ? "border-iron/70 bg-stone-950/70 hover:border-gold/45"
             : "border-iron/70 bg-stone-950/70"
-      }`}
+      } ${isCompact ? "cursor-pointer focus-visible:outline-2 focus-visible:outline-gold/70" : ""}`}
+      {...compactInteractionProps}
     >
+      <div className="recruit-card__compact">
+        <CharacterPortrait
+          assetId={character.portraitAssetId}
+          name={character.name}
+          size="md"
+          rounded="xs"
+          className="recruit-card__portrait border-gold/30"
+        >
+          {recruited && (
+            <span className="absolute inset-x-0 bottom-0 bg-success/90 py-1 text-center font-mono text-[9px] font-extrabold uppercase tracking-wider text-stone-950">
+              En el tercio
+            </span>
+          )}
+        </CharacterPortrait>
+        <div className="recruit-card__name-ribbon">
+          <span>{character.name}</span>
+          <small className="recruit-card__role-line">
+            {getRankName(character.rank)} · {character.role}
+          </small>
+        </div>
+      </div>
+
+      <div className="recruit-card__body flex min-w-0 flex-col gap-2">
       <header className="flex min-w-0 items-start gap-2.5">
         <CharacterPortrait
           assetId={character.portraitAssetId}
@@ -164,7 +234,7 @@ export function RecruitmentCard({
         </span>
         <button
           type="button"
-          onClick={() => setStatsOpen(true)}
+          onClick={openStats}
           className="inline-flex h-full min-h-7 w-8 cursor-pointer items-center justify-center rounded-xs border border-iron/70 bg-stone-950/70 text-text-muted transition hover:border-gold/45 hover:text-gold-soft"
           aria-label={`Ver estadisticas de ${character.name}`}
           title={`Ver estadisticas de ${character.name}`}
@@ -255,12 +325,17 @@ export function RecruitmentCard({
           Te faltan {totalMissing === 1 ? "1 recurso" : `${totalMissing} recursos`} para cerrar el trato
         </p>
       )}
+      </div>
 
       {statsOpen && (
         <RecruitStatsPopup
           candidate={candidate}
           power={power}
           recruited={recruited}
+          canRecruit={canRecruit}
+          blockedReason={blockedReason}
+          costLabel={costLabel}
+          onRecruit={onRecruit}
           onClose={() => setStatsOpen(false)}
         />
       )}
@@ -272,11 +347,19 @@ function RecruitStatsPopup({
   candidate,
   power,
   recruited,
+  canRecruit,
+  blockedReason,
+  costLabel,
+  onRecruit,
   onClose,
 }: {
   candidate: RecruitmentCandidate;
   power: number;
   recruited: boolean;
+  canRecruit: boolean;
+  blockedReason: string | null;
+  costLabel: string;
+  onRecruit: () => void;
   onClose: () => void;
 }) {
   const { character, hook } = candidate;
@@ -359,6 +442,36 @@ function RecruitStatsPopup({
           </div>
         </div>
       </div>
+
+      <footer className="flex items-center gap-2 border-t border-iron bg-stone-950/90 px-3 py-2.5">
+        {recruited ? (
+          <Link
+            href="/company"
+            onClick={onClose}
+            className="iron-button inline-flex min-h-9 w-full items-center justify-center gap-1.5 px-3 py-1.5 font-mono text-[10px] font-bold uppercase tracking-wider"
+          >
+            En la formación →
+          </Link>
+        ) : (
+          <button
+            type="button"
+            disabled={!canRecruit}
+            onClick={onRecruit}
+            aria-label={
+              canRecruit
+                ? `Reclutar a ${character.name} por ${costLabel}`
+                : `No puedes reclutar: ${blockedReason}`
+            }
+            className={`min-h-9 w-full cursor-pointer border px-3 py-1.5 font-mono text-[11px] font-bold uppercase tracking-wider transition ${
+              canRecruit
+                ? "blood-button"
+                : "cursor-not-allowed border-iron bg-stone-950 text-muted"
+            }`}
+          >
+            {canRecruit ? `Reclutar · ${costLabel}` : (blockedReason ?? "Reclutar")}
+          </button>
+        )}
+      </footer>
     </dialog>
   );
 }

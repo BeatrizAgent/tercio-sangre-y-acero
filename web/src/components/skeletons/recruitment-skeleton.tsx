@@ -2,6 +2,11 @@
 // Mirrors the hero strip, the filter chip row, and the 6-card
 // candidate grid (2x3 at the typical lg breakpoint). Used while
 // useGameData().status is not "ready".
+//
+// The candidate card uses the same `.recruit-card` class as the real
+// card, so the same container-query rules collapse it to a centered
+// portrait+ribbon at narrow widths. That way there is no layout shift
+// when the real cards replace these placeholders.
 
 import { Skeleton, SkeletonCircle, SkeletonText } from "@/components/ui/skeleton";
 
@@ -59,24 +64,33 @@ function CandidateCard() {
   return (
     <div
       aria-hidden="true"
-      className="game-panel flex flex-col gap-3 rounded-xs border border-iron/70 bg-stone-950/65 p-3"
+      className="recruit-card game-panel flex flex-col gap-2 rounded-xs border border-iron/70 bg-stone-950/65 p-2.5"
     >
-      <div className="flex items-start gap-3">
-        <SkeletonCircle className="h-12 w-12" />
-        <div className="min-w-0 flex-1 space-y-1.5">
-          <Skeleton className="h-3 w-32" />
-          <Skeleton className="h-2 w-20" />
+      <div className="recruit-card__compact">
+        <SkeletonCircle className="recruit-card__portrait h-24 w-24" />
+        <div className="recruit-card__name-ribbon">
+          <Skeleton className="mx-auto h-3 w-24" />
+          <Skeleton className="mx-auto mt-1.5 h-2 w-16" />
         </div>
-        <Skeleton className="h-5 w-12" />
       </div>
-      <div className="grid grid-cols-4 gap-1.5">
-        {Array.from({ length: 4 }, (_, index) => (
-          <Skeleton key={index} className="h-9 w-full" />
-        ))}
-      </div>
-      <div className="mt-1 flex items-center justify-between border-t border-iron/50 pt-2">
-        <SkeletonText lines={1} className="w-32" lastLineWidth={80} />
-        <Skeleton className="h-7 w-24" />
+      <div className="recruit-card__body flex flex-col gap-3">
+        <div className="flex items-start gap-3">
+          <SkeletonCircle className="h-12 w-12" />
+          <div className="min-w-0 flex-1 space-y-1.5">
+            <Skeleton className="h-3 w-32" />
+            <Skeleton className="h-2 w-20" />
+          </div>
+          <Skeleton className="h-5 w-12" />
+        </div>
+        <div className="grid grid-cols-4 gap-1.5">
+          {Array.from({ length: 4 }, (_, index) => (
+            <Skeleton key={index} className="h-9 w-full" />
+          ))}
+        </div>
+        <div className="mt-1 flex items-center justify-between border-t border-iron/50 pt-2">
+          <SkeletonText lines={1} className="w-32" lastLineWidth={80} />
+          <Skeleton className="h-7 w-24" />
+        </div>
       </div>
     </div>
   );

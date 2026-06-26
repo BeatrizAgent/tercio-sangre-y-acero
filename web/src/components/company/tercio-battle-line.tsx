@@ -12,6 +12,7 @@ import {
   pickTopStat,
 } from "@/lib/domain/formation";
 import { getAssetPathById } from "@/lib/game-data";
+import { getPlayerPortraitPathById } from "@/lib/data/player-portraits";
 import { SlotPlaque } from "@/components/ui/slot-plaque";
 import { FitBadge } from "@/components/ui/fit-badge";
 import Image from "next/image";
@@ -235,7 +236,7 @@ function RosterCard({
   character: CharacterState;
   isPlayer: boolean;
 }) {
-  const portraitSrc = getAssetPathById(character.portraitAssetId);
+  const portraitSrc = getPlayerPortraitPathById(character.portraitAssetId) ?? getAssetPathById(character.portraitAssetId);
   const topStat = pickTopStat(character.stats);
   const fit = getFitState(character, character.formationSlot);
 

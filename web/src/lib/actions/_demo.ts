@@ -15,7 +15,7 @@ export function shouldUseDatabase() {
   return Boolean(process.env.DATABASE_URL) && process.env.TERCIO_DEMO_STORE !== "filesystem";
 }
 
-function canFallbackToFilesystem() {
+export function canFallbackToFilesystem() {
   return process.env.NODE_ENV !== "production" && process.env.TERCIO_DEMO_STORE !== "database";
 }
 

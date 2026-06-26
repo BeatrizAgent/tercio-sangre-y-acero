@@ -6,7 +6,7 @@ import { redirect } from "next/navigation";
 import { buyItemInState, sellItemInState } from "../domain/shop";
 import { buyRotatingShopItemInState } from "../domain/shop-rotation";
 import { applyMissionRewardsInState } from "../domain/missions";
-import { loadGameState, persistGameState, shouldUseDatabase } from "./_demo";
+import { canFallbackToFilesystem, loadGameState, persistGameState, shouldUseDatabase } from "./_demo";
 import { fail, ok, type ActionResult } from "../domain/result";
 import { getDb } from "../db";
 import { ARMORY_SHOP_ID, ensureShopRotation } from "../server/shop-rotation";
@@ -37,7 +37,7 @@ export async function buyItemAction({ itemId }: BuyItemArgs): Promise<ActionResu
       revalidatePath("/soldier");
       return ok(out.result.message);
     } catch (error) {
-      if (process.env.NODE_ENV === "production") throw error;
+      if (!canFallbackToFilesystem()) throw error;
     }
   }
 
@@ -66,7 +66,7 @@ export async function sellItemAction({ itemId }: SellItemArgs): Promise<ActionRe
         data: { stock: { increment: 1 } },
       });
     } catch (error) {
-      if (process.env.NODE_ENV === "production") throw error;
+      if (!canFallbackToFilesystem()) throw error;
     }
   }
   await persistGameState(next);
@@ -81,7 +81,7 @@ export async function refreshShopAction(): Promise<ActionResult> {
     try {
       await ensureShopRotation(ARMORY_SHOP_ID, new Date());
     } catch (error) {
-      if (process.env.NODE_ENV === "production") throw error;
+      if (!canFallbackToFilesystem()) throw error;
     }
   }
   revalidatePath("/armory");

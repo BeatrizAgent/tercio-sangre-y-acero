@@ -12,7 +12,7 @@ import {
 } from "../domain/auction";
 import { fail, ok, type ActionResult } from "../domain/result";
 import { normalizeGameState } from "../domain/initial-state";
-import { loadGameState, persistGameState, persistGameStateForUser, shouldUseDatabase } from "./_demo";
+import { canFallbackToFilesystem, loadGameState, persistGameState, persistGameStateForUser, shouldUseDatabase } from "./_demo";
 import type { GameState } from "../types";
 
 export interface AuctionView {
@@ -218,50 +218,54 @@ async function simulateBotBidsForActiveSystemAuctions(db: any, now: Date, active
 
 export async function listAuctionsAction(): Promise<ActionResult<{ auctions: AuctionView[] }>> {
   const session = await requireApiSession();
-  if (!shouldUseDatabase()) {
-    return ok("Subastas cargadas (Modo Demo sin Base de Datos).", { auctions: [] });
+  if (shouldUseDatabase()) {
+    try {
+      const db = getDb();
+      
+      await checkAndRotateSystemAuctions(db, new Date());
+
+      const soldier = await db.soldier.findUnique({ where: { userId: session.userId }, select: { id: true } });
+      const rows = await db.auctionListing.findMany({
+        where: { status: { in: ["active", "sold", "expired"] } },
+        orderBy: [{ status: "asc" }, { endsAt: "asc" }],
+        take: 50,
+      });
+
+      const bidderIds = rows.map((row) => row.currentBidderId).filter(Boolean) as string[];
+      const bidders = bidderIds.length > 0
+        ? await db.soldier.findMany({
+            where: { id: { in: bidderIds } },
+            select: { id: true, name: true },
+          })
+        : [];
+
+      return ok("Subastas cargadas.", {
+        auctions: rows.map((row) => ({
+          id: row.id,
+          itemId: row.itemId,
+          itemName: getItem(row.itemId)?.name ?? row.itemId,
+          sellerId: row.sellerId,
+          startingBid: row.startingBid,
+          currentBid: row.currentBid,
+          currentBidderId: row.currentBidderId,
+          buyoutPrice: row.buyoutPrice,
+          status: row.status,
+          endsAt: row.endsAt.toISOString(),
+          isMine: row.sellerId === soldier?.id,
+          isWinning: row.currentBidderId === soldier?.id,
+          isSystem: row.sellerId === "system",
+          currentBidderName: row.currentBidderId
+            ? bidders.find((b: any) => b.id === row.currentBidderId)?.name ?? "Soldado rival"
+            : null,
+          winnerClaimedAt: row.winnerClaimedAt ? row.winnerClaimedAt.toISOString() : null,
+          sellerClaimedAt: row.sellerClaimedAt ? row.sellerClaimedAt.toISOString() : null,
+        })),
+      });
+    } catch (error) {
+      if (!canFallbackToFilesystem()) throw error;
+    }
   }
-  const db = getDb();
-  
-  await checkAndRotateSystemAuctions(db, new Date());
-
-  const soldier = await db.soldier.findUnique({ where: { userId: session.userId }, select: { id: true } });
-  const rows = await db.auctionListing.findMany({
-    where: { status: { in: ["active", "sold", "expired"] } },
-    orderBy: [{ status: "asc" }, { endsAt: "asc" }],
-    take: 50,
-  });
-
-  const bidderIds = rows.map((row) => row.currentBidderId).filter(Boolean) as string[];
-  const bidders = bidderIds.length > 0
-    ? await db.soldier.findMany({
-        where: { id: { in: bidderIds } },
-        select: { id: true, name: true },
-      })
-    : [];
-
-  return ok("Subastas cargadas.", {
-    auctions: rows.map((row) => ({
-      id: row.id,
-      itemId: row.itemId,
-      itemName: getItem(row.itemId)?.name ?? row.itemId,
-      sellerId: row.sellerId,
-      startingBid: row.startingBid,
-      currentBid: row.currentBid,
-      currentBidderId: row.currentBidderId,
-      buyoutPrice: row.buyoutPrice,
-      status: row.status,
-      endsAt: row.endsAt.toISOString(),
-      isMine: row.sellerId === soldier?.id,
-      isWinning: row.currentBidderId === soldier?.id,
-      isSystem: row.sellerId === "system",
-      currentBidderName: row.currentBidderId
-        ? bidders.find((b: any) => b.id === row.currentBidderId)?.name ?? "Soldado rival"
-        : null,
-      winnerClaimedAt: row.winnerClaimedAt ? row.winnerClaimedAt.toISOString() : null,
-      sellerClaimedAt: row.sellerClaimedAt ? row.sellerClaimedAt.toISOString() : null,
-    })),
-  });
+  return ok("Subastas cargadas (Modo Demo sin Base de Datos).", { auctions: [] });
 }
 
 export async function createAuctionListingAction({
@@ -309,7 +313,7 @@ export async function createAuctionListingAction({
       revalidateMarketPaths();
       return ok("Lote puesto en subasta.", { state: out.next });
     } catch (error) {
-      if (process.env.NODE_ENV === "production") throw error;
+      if (!canFallbackToFilesystem()) throw error;
     }
   }
   return fail("Las subastas requieren una base de datos PostgreSQL activa.");
@@ -366,7 +370,7 @@ export async function placeAuctionBidAction({
       revalidateMarketPaths();
       return ok("Puja registrada.", { state: out.bidder });
     } catch (error) {
-      if (process.env.NODE_ENV === "production") throw error;
+      if (!canFallbackToFilesystem()) throw error;
     }
   }
   return fail("Las subastas requieren una base de datos PostgreSQL activa.");
@@ -431,7 +435,7 @@ export async function claimAuctionAction({ listingId }: { listingId: string }): 
       revalidateMarketPaths();
       return ok("Subasta reclamada.", { state: next });
     } catch (error) {
-      if (process.env.NODE_ENV === "production") throw error;
+      if (!canFallbackToFilesystem()) throw error;
     }
   }
   return fail("Las subastas requieren una base de datos PostgreSQL activa.");

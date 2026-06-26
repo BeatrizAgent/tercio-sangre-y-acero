@@ -6,7 +6,7 @@ import { getDb } from "../db";
 import { claimTimedMissionInState, startTimedMissionInState, type TimedMissionState } from "../domain/timed-missions";
 import { fail, ok, type ActionResult } from "../domain/result";
 import { requireApiSession } from "../auth/session";
-import { loadGameState, persistGameState, shouldUseDatabase } from "./_demo";
+import { canFallbackToFilesystem, loadGameState, persistGameState, shouldUseDatabase } from "./_demo";
 import type { GameState } from "../types";
 
 export interface StartTimedMissionArgs {
@@ -59,7 +59,7 @@ export async function startTimedMissionAction({
       revalidateMissionPaths(missionId);
       return ok("Mision iniciada.", { state: out.next, activeMission: out.activeMission });
     } catch (error) {
-      if (process.env.NODE_ENV === "production") throw error;
+      if (!canFallbackToFilesystem()) throw error;
     }
   }
 
@@ -118,7 +118,7 @@ export async function claimMissionAction(): Promise<ActionResult<{ state: GameSt
       revalidateMissionPaths(activeMission.missionId);
       return ok(out.result.message, { state: out.next, reportId: out.result.data?.reportId });
     } catch (error) {
-      if (process.env.NODE_ENV === "production") throw error;
+      if (!canFallbackToFilesystem()) throw error;
     }
   }
 

@@ -11,7 +11,7 @@ import { getDb } from "../db";
 import { normalizeGameState } from "../domain/initial-state";
 import type { GameState } from "../types";
 
-function shouldUseDatabase() {
+export function shouldUseDatabase() {
   return Boolean(process.env.DATABASE_URL) && process.env.TERCIO_DEMO_STORE !== "filesystem";
 }
 

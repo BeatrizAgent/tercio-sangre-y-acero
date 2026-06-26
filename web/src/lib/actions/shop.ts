@@ -1,11 +1,12 @@
 "use server";
+"use server";
 
 import { revalidatePath } from "next/cache";
 import { redirect } from "next/navigation";
 import { buyItemInState, sellItemInState } from "../domain/shop";
 import { buyRotatingShopItemInState } from "../domain/shop-rotation";
 import { applyMissionRewardsInState } from "../domain/missions";
-import { loadGameState, persistGameState } from "./_demo";
+import { loadGameState, persistGameState, shouldUseDatabase } from "./_demo";
 import { fail, ok, type ActionResult } from "../domain/result";
 import { getDb } from "../db";
 import { ARMORY_SHOP_ID, ensureShopRotation } from "../server/shop-rotation";
@@ -15,7 +16,7 @@ export interface BuyItemArgs {
 }
 
 export async function buyItemAction({ itemId }: BuyItemArgs): Promise<ActionResult> {
-  if (process.env.DATABASE_URL) {
+  if (shouldUseDatabase()) {
     try {
       await ensureShopRotation(ARMORY_SHOP_ID);
       const db = getDb();
@@ -57,7 +58,7 @@ export async function sellItemAction({ itemId }: SellItemArgs): Promise<ActionRe
   const state = await loadGameState();
   const { next, result } = sellItemInState(state, itemId);
   if (!result.ok) return result;
-  if (process.env.DATABASE_URL) {
+  if (shouldUseDatabase()) {
     try {
       const db = getDb();
       await db.shopRotation.updateMany({
@@ -76,7 +77,13 @@ export async function sellItemAction({ itemId }: SellItemArgs): Promise<ActionRe
 }
 
 export async function refreshShopAction(): Promise<ActionResult> {
-  await ensureShopRotation(ARMORY_SHOP_ID, new Date());
+  if (shouldUseDatabase()) {
+    try {
+      await ensureShopRotation(ARMORY_SHOP_ID, new Date());
+    } catch (error) {
+      if (process.env.NODE_ENV === "production") throw error;
+    }
+  }
   revalidatePath("/armory");
   return ok("Puesto actualizado.");
 }

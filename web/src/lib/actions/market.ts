@@ -12,7 +12,7 @@ import {
 } from "../domain/auction";
 import { fail, ok, type ActionResult } from "../domain/result";
 import { normalizeGameState } from "../domain/initial-state";
-import { loadGameState, persistGameState, persistGameStateForUser } from "./_demo";
+import { loadGameState, persistGameState, persistGameStateForUser, shouldUseDatabase } from "./_demo";
 import type { GameState } from "../types";
 
 export interface AuctionView {
@@ -218,6 +218,9 @@ async function simulateBotBidsForActiveSystemAuctions(db: any, now: Date, active
 
 export async function listAuctionsAction(): Promise<ActionResult<{ auctions: AuctionView[] }>> {
   const session = await requireApiSession();
+  if (!shouldUseDatabase()) {
+    return ok("Subastas cargadas (Modo Demo sin Base de Datos).", { auctions: [] });
+  }
   const db = getDb();
   
   await checkAndRotateSystemAuctions(db, new Date());
@@ -273,6 +276,9 @@ export async function createAuctionListingAction({
   durationHours: 2 | 8 | 24;
 }): Promise<ActionResult<{ state: GameState }>> {
   const session = await requireApiSession();
+  if (!shouldUseDatabase()) {
+    return fail("Las subastas requieren una base de datos PostgreSQL activa.");
+  }
   const db = getDb();
   const state = await loadGameState();
   const soldier = await db.soldier.findUnique({ where: { userId: session.userId }, select: { id: true } });
@@ -313,6 +319,9 @@ export async function placeAuctionBidAction({
   amount: number;
 }): Promise<ActionResult<{ state: GameState }>> {
   const session = await requireApiSession();
+  if (!shouldUseDatabase()) {
+    return fail("Las subastas requieren una base de datos PostgreSQL activa.");
+  }
   const db = getDb();
   
   await checkAndRotateSystemAuctions(db, new Date());
@@ -357,6 +366,9 @@ export async function placeAuctionBidAction({
 
 export async function claimAuctionAction({ listingId }: { listingId: string }): Promise<ActionResult<{ state: GameState }>> {
   const session = await requireApiSession();
+  if (!shouldUseDatabase()) {
+    return fail("Las subastas requieren una base de datos PostgreSQL activa.");
+  }
   const db = getDb();
   
   await checkAndRotateSystemAuctions(db, new Date());

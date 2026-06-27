@@ -199,7 +199,7 @@ async function createAuctionMessages(db: AuctionHouseDb, listing: AuctionListing
   const itemName = getItem(listing.itemId)?.name ?? listing.itemId;
 
   if (listing.status === "expired" && listing.sellerId !== SYSTEM_AUCTION_SELLER_ID) {
-    await createMessage(db, {
+    if (await createMessage(db, {
       recipientId: listing.sellerId,
       kind: "auction_return_item",
       auctionListingId: listing.id,
@@ -207,12 +207,13 @@ async function createAuctionMessages(db: AuctionHouseDb, listing: AuctionListing
       body: `La lonja devuelve ${itemName}. Nadie sostuvo la puja final.`,
       payload: { listingId: listing.id, itemId: listing.itemId, quantity: listing.quantity, role: "seller" },
       createdAt: now,
-    });
-    count += 1;
+    })) {
+      count += 1;
+    }
   }
 
   if (listing.status === "sold" && listing.currentBidderId) {
-    await createMessage(db, {
+    if (await createMessage(db, {
       recipientId: listing.currentBidderId,
       kind: "auction_won_item",
       auctionListingId: listing.id,
@@ -220,13 +221,14 @@ async function createAuctionMessages(db: AuctionHouseDb, listing: AuctionListing
       body: `La escribania de la lonja guarda ${itemName} a tu nombre.`,
       payload: { listingId: listing.id, itemId: listing.itemId, quantity: listing.quantity, role: "winner" },
       createdAt: now,
-    });
-    count += 1;
+    })) {
+      count += 1;
+    }
 
     if (listing.sellerId !== SYSTEM_AUCTION_SELLER_ID) {
       const winningBid = listing.currentBid ?? listing.startingBid;
       const coins = winningBid - Math.max(1, Math.floor(winningBid * 0.05));
-      await createMessage(db, {
+      if (await createMessage(db, {
         recipientId: listing.sellerId,
         kind: "auction_sold_coins",
         auctionListingId: listing.id,
@@ -234,8 +236,9 @@ async function createAuctionMessages(db: AuctionHouseDb, listing: AuctionListing
         body: `${itemName} se vendio por ${winningBid} doblones. La lonja retuvo su tasa.`,
         payload: { listingId: listing.id, coins, role: "seller" },
         createdAt: now,
-      });
-      count += 1;
+      })) {
+        count += 1;
+      }
     }
   }
 
@@ -253,7 +256,13 @@ async function createMessage(
     payload: Record<string, string | number>;
     createdAt: Date;
   },
-) {
+): Promise<boolean> {
+  const recipient = await db.soldier.findUnique({
+    where: { id: data.recipientId },
+    select: { id: true },
+  });
+  if (!recipient) return false;
+
   await db.gameMessage.upsert({
     where: {
       recipientId_kind_auctionListingId: {
@@ -265,6 +274,7 @@ async function createMessage(
     update: {},
     create: data,
   });
+  return true;
 }
 
 function pickSystemAuctionItems(now: Date, count: number) {

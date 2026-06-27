@@ -261,5 +261,30 @@ class MockDatabase {
     assert.equal(db.soldiers.find((row: any) => row.id === "soldier_player_1").coins, 25, "Outbid player should recover previous bid in soldier row");
   }
 
+  // Test 5: Ignores stale closed auctions whose recipient no longer exists
+  {
+    const db = new MockDatabase() as any;
+    const now = new Date("2026-06-26T12:05:00.000Z");
+
+    db.listings.push({
+      id: "system_stale_winner",
+      sellerId: "system",
+      itemId: "consumable_pan_duro_001",
+      quantity: 1,
+      startingBid: 10,
+      currentBid: 12,
+      currentBidderId: "soldier_deleted",
+      status: "active",
+      endsAt: new Date("2026-06-26T12:00:00.000Z"),
+      createdAt: new Date("2026-06-26T10:00:00.000Z")
+    });
+
+    await checkAndRotateSystemAuctions(db, now);
+
+    const stale = db.listings.find((l: any) => l.id === "system_stale_winner");
+    assert.equal(stale?.status, "sold", "Stale listing should still close");
+    assert.equal(db.messages.length, 0, "Missing recipient should not create message");
+  }
+
   console.log(JSON.stringify({ ok: true, checked: "system-auction" }, null, 2));
 })();

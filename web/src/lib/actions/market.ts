@@ -5,15 +5,13 @@ import { requireApiSession } from "../auth/session";
 import { getDb } from "../db";
 import {
   listAuctionInState,
-  placeAuctionBidInState,
-  type AuctionListingState,
 } from "../domain/auction";
 import { fail, ok, type ActionResult } from "../domain/result";
-import { normalizeGameState } from "../domain/initial-state";
-import { canFallbackToFilesystem, loadGameState, persistGameState, persistGameStateForUser, shouldUseDatabase } from "./_demo";
+import { canFallbackToFilesystem, loadGameState, persistGameState, shouldUseDatabase } from "./_demo";
 import { claimAuctionMessageForListing } from "./mailbox";
 import { ensureAuctionHouse } from "../server/auction-house";
 import { listAuctionViewsForCurrentSession, type AuctionView } from "../server/market-auctions";
+import { placeAuctionBidForCurrentSession } from "../server/market-bids";
 import type { GameState } from "../types";
 import type { getDb as getDbType } from "../db";
 
@@ -87,54 +85,9 @@ export async function placeAuctionBidAction({
   listingId: string;
   amount: number;
 }): Promise<ActionResult<{ state: GameState }>> {
-  const session = await requireApiSession();
-  if (shouldUseDatabase()) {
-    try {
-      const db = getDb();
-      
-      await ensureAuctionHouse(db, new Date());
-
-      const state = await loadGameState();
-      const bidderSoldier = await db.soldier.findUnique({ where: { userId: session.userId }, select: { id: true } });
-      if (!bidderSoldier) return fail("Soldado no encontrado.");
-
-      const listingRow = await db.auctionListing.findUnique({ where: { id: listingId } });
-      if (!listingRow) return fail("Subasta no encontrada.");
-      const previous = listingRow.currentBidderId
-        ? await loadStateBySoldierId(listingRow.currentBidderId)
-        : null;
-
-      const out = placeAuctionBidInState({
-        listing: rowToListingState(listingRow),
-        bidder: { ...state, soldier: { ...state.soldier, id: bidderSoldier.id } },
-        previousBidder: previous?.state ?? null,
-        amount,
-        now: new Date(),
-      });
-      if (!out.result.ok) return fail(out.result.message);
-
-      await db.$transaction(async (tx) => {
-        await tx.auctionListing.update({
-          where: { id: listingId },
-          data: {
-            currentBid: out.listing.currentBid,
-            currentBidderId: out.listing.currentBidderId,
-            status: out.listing.status,
-          },
-        });
-        await tx.auctionBid.create({ data: { listingId, bidderId: bidderSoldier.id, amount } });
-      });
-      await persistGameState(out.bidder);
-      if (previous && out.previousBidder) {
-        await persistGameStateForUser(previous.userId, normalizeGameState(out.previousBidder));
-      }
-      revalidateMarketPaths();
-      return ok("Puja registrada.", { state: out.bidder });
-    } catch (error) {
-      if (!canFallbackToFilesystem()) throw error;
-    }
-  }
-  return fail("Las subastas requieren una base de datos PostgreSQL activa.");
+  const result = await placeAuctionBidForCurrentSession({ listingId, amount });
+  if (result.ok) revalidateMarketPaths();
+  return result;
 }
 
 export async function claimAuctionAction({ listingId }: { listingId: string }): Promise<ActionResult<{ state: GameState }>> {
@@ -169,45 +122,6 @@ export async function claimAuctionAction({ listingId }: { listingId: string }): 
     }
   }
   return fail("Las subastas requieren una base de datos PostgreSQL activa.");
-}
-
-function rowToListingState(row: {
-  id: string;
-  sellerId: string;
-  itemId: string;
-  quantity: number;
-  startingBid: number;
-  currentBid: number | null;
-  currentBidderId: string | null;
-  buyoutPrice: number | null;
-  status: string;
-  endsAt: Date;
-}): AuctionListingState {
-  return {
-    id: row.id,
-    sellerId: row.sellerId,
-    itemId: row.itemId,
-    quantity: row.quantity,
-    startingBid: row.startingBid,
-    currentBid: row.currentBid,
-    currentBidderId: row.currentBidderId,
-    buyoutPrice: row.buyoutPrice,
-    status: row.status as AuctionListingState["status"],
-    endsAt: row.endsAt.toISOString(),
-  };
-}
-
-async function loadStateBySoldierId(soldierId: string): Promise<{ userId: string; state: GameState } | null> {
-  const db = getDb();
-  const soldier = await db.soldier.findUnique({
-    where: { id: soldierId },
-    select: { userId: true, user: { select: { gameSave: true } } },
-  });
-  if (!soldier?.user.gameSave?.state) return null;
-  return {
-    userId: soldier.userId,
-    state: normalizeGameState(soldier.user.gameSave.state as unknown as GameState),
-  };
 }
 
 function revalidateMarketPaths() {

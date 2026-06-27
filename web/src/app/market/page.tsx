@@ -9,10 +9,10 @@ import { useGameStore } from "@/lib/game-store";
 import {
   claimAuctionAction,
   createAuctionListingAction,
-  placeAuctionBidAction,
   type AuctionView,
 } from "@/lib/actions/market";
 import type { ActionResult } from "@/lib/domain/result";
+import type { GameState } from "@/lib/types";
 import { getItem, getItemImagePath } from "@/lib/game-data";
 import { Tooltip } from "@/components/ui/tooltip";
 import { rarityStyle, rarityLabel } from "@/lib/item-format";
@@ -44,6 +44,15 @@ export default function MarketPage() {
     const result = (await response.json()) as ActionResult<{ auctions: AuctionView[] }>;
     if (result.ok && result.data) setAuctions(result.data.auctions);
     else setNotice(result.message);
+  };
+
+  const placeBid = async (listingId: string, amount: number) => {
+    const response = await fetch("/api/market/bid", {
+      method: "POST",
+      headers: { "content-type": "application/json" },
+      body: JSON.stringify({ listingId, amount }),
+    });
+    return (await response.json()) as ActionResult<{ state: GameState }>;
   };
 
   useEffect(() => {
@@ -309,10 +318,7 @@ export default function MarketPage() {
                               disabled={busy || auction.isWinning}
                               onClick={() =>
                                 void run(async () => {
-                                  const result = await placeAuctionBidAction({
-                                    listingId: auction.id,
-                                    amount: bids[auction.id] ?? nextBid,
-                                  });
+                                  const result = await placeBid(auction.id, bids[auction.id] ?? nextBid);
                                   setNotice(result.message);
                                   if (result.ok && result.data) hydrateState(result.data.state);
                                 })
@@ -449,10 +455,7 @@ export default function MarketPage() {
                             disabled={busy || auction.isMine || auction.isWinning}
                             onClick={() =>
                               void run(async () => {
-                                const result = await placeAuctionBidAction({
-                                  listingId: auction.id,
-                                  amount: bids[auction.id] ?? ((auction.currentBid ?? auction.startingBid) + 1),
-                                });
+                                const result = await placeBid(auction.id, bids[auction.id] ?? ((auction.currentBid ?? auction.startingBid) + 1));
                                 setNotice(result.message);
                                 if (result.ok && result.data) hydrateState(result.data.state);
                               })

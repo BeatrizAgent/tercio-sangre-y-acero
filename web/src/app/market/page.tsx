@@ -9,10 +9,10 @@ import { useGameStore } from "@/lib/game-store";
 import {
   claimAuctionAction,
   createAuctionListingAction,
-  listAuctionsAction,
   placeAuctionBidAction,
   type AuctionView,
 } from "@/lib/actions/market";
+import type { ActionResult } from "@/lib/domain/result";
 import { getItem, getItemImagePath } from "@/lib/game-data";
 import { Tooltip } from "@/components/ui/tooltip";
 import { rarityStyle, rarityLabel } from "@/lib/item-format";
@@ -40,7 +40,8 @@ export default function MarketPage() {
   const effectiveSelectedItemId = selectedItemId || sellableItems[0]?.itemId || "";
 
   const refreshAuctions = async () => {
-    const result = await listAuctionsAction();
+    const response = await fetch("/api/market/auctions", { cache: "no-store" });
+    const result = (await response.json()) as ActionResult<{ auctions: AuctionView[] }>;
     if (result.ok && result.data) setAuctions(result.data.auctions);
     else setNotice(result.message);
   };

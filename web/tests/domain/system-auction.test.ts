@@ -7,10 +7,42 @@ class MockDatabase {
   listings: any[] = [];
   bids: any[] = [];
   messages: any[] = [];
+  playerState: any = {
+    soldier: {
+      id: "soldier_player_1",
+      name: "Diego de Arce",
+      rank: "bisono",
+      coins: 25,
+      honor: 0,
+      xp: 0,
+      fatigue: 0,
+      unpaidWages: 0,
+      reputation: 0,
+      corruption: 0,
+      banMissionsLeft: 0,
+      stats: { pike: 2, sword: 1, arquebus: 1, discipline: 2, vigor: 2, cunning: 1, command: 0 },
+      inventory: [],
+      equipment: {},
+      wounds: [],
+    },
+    reports: [],
+    notifications: [],
+  };
   soldiers: any[] = [
     { id: "bot_alonso", name: "Alonso del Barro" },
-    { id: "bot_mateo", name: "Mateo Cuerda" }
+    { id: "bot_mateo", name: "Mateo Cuerda" },
+    {
+      id: "soldier_player_1",
+      userId: "user_player_1",
+      name: "Diego de Arce",
+      coins: 25,
+      user: { gameSave: { state: null as any } },
+    },
   ];
+
+  constructor() {
+    this.soldiers[2].user.gameSave.state = this.playerState;
+  }
 
   auctionListing = {
     findMany: async (args: any) => {
@@ -63,10 +95,30 @@ class MockDatabase {
   soldier = {
     findMany: async (args: any) => {
       if (args?.where?.user?.isBot) {
-        return this.soldiers;
+        return this.soldiers.filter((soldier) => soldier.id.startsWith("bot_"));
       }
       return [];
-    }
+    },
+    findUnique: async (args: any) => {
+      const soldier = this.soldiers.find((row) => row.id === args.where.id);
+      return soldier ?? null;
+    },
+    update: async (args: any) => {
+      const soldier = this.soldiers.find((row) => row.id === args.where.id);
+      if (soldier) Object.assign(soldier, args.data);
+      return soldier;
+    },
+  };
+
+  gameSave = {
+    update: async (args: any) => {
+      const soldier = this.soldiers.find((row) => row.userId === args.where.userId);
+      if (soldier) {
+        soldier.user.gameSave.state = args.data.state;
+        this.playerState = args.data.state;
+      }
+      return soldier?.user.gameSave;
+    },
   };
 
   auctionBid = {
@@ -177,6 +229,36 @@ class MockDatabase {
     );
     assert.ok(listing.currentBid > 10, "Bid should have increased above starting bid");
     assert.equal(db.bids.length, 1, "Should have created a bid history entry");
+  }
+
+  // Test 4: Refunds player when a system bot outbids them
+  {
+    const db = new MockDatabase() as any;
+    db.playerState.soldier.coins = 13;
+    db.soldiers.find((row: any) => row.id === "soldier_player_1").coins = 13;
+    const createdAt = new Date("2026-06-26T10:00:00.000Z");
+    const endsAt = new Date("2026-06-26T12:00:00.000Z");
+    const now = new Date("2026-06-26T11:00:00.000Z");
+
+    db.listings.push({
+      id: "system_test_listing_1",
+      sellerId: "system",
+      itemId: "weapon_pica_gastada_001",
+      quantity: 1,
+      startingBid: 10,
+      currentBid: 12,
+      currentBidderId: "soldier_player_1",
+      status: "active",
+      endsAt,
+      createdAt
+    });
+
+    await checkAndRotateSystemAuctions(db, now);
+
+    const listing = db.listings.find((l: any) => l.id === "system_test_listing_1");
+    assert.notEqual(listing.currentBidderId, "soldier_player_1", "Bot should overbid player");
+    assert.equal(db.playerState.soldier.coins, 25, "Outbid player should recover previous bid in save state");
+    assert.equal(db.soldiers.find((row: any) => row.id === "soldier_player_1").coins, 25, "Outbid player should recover previous bid in soldier row");
   }
 
   console.log(JSON.stringify({ ok: true, checked: "system-auction" }, null, 2));

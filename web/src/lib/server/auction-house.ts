@@ -1,4 +1,7 @@
 import { getItem } from "../data/items";
+import { Prisma } from "@/generated/prisma/client";
+import { normalizeGameState } from "../domain/initial-state";
+import type { GameState } from "../types";
 import type { getDb } from "../db";
 import {
   buildSystemAuctionPlan,
@@ -10,6 +13,7 @@ import {
 type AuctionHouseDb = ReturnType<typeof getDb>;
 type AuctionListingRow = Awaited<ReturnType<AuctionHouseDb["auctionListing"]["findMany"]>>[number];
 type BotSoldierRow = { id: string; name: string };
+type AuctionTx = Parameters<Parameters<AuctionHouseDb["$transaction"]>[0]>[0];
 
 export const SYSTEM_AUCTION_SELLER_ID = "system";
 
@@ -139,6 +143,9 @@ export async function simulateBotBidsForActiveSystemAuctions(db: AuctionHouseDb,
     if (listing.currentBidderId === target.bot.id || amount <= currentBid) continue;
 
     await db.$transaction(async (tx) => {
+      if (listing.currentBidderId && playerIsWinning && listing.currentBid) {
+        await refundOutbidPlayer(tx, listing.currentBidderId, listing.currentBid);
+      }
       await tx.auctionListing.update({
         where: { id: listing.id },
         data: { currentBid: amount, currentBidderId: target.bot.id },
@@ -148,6 +155,43 @@ export async function simulateBotBidsForActiveSystemAuctions(db: AuctionHouseDb,
     created += 1;
   }
   return created;
+}
+
+async function refundOutbidPlayer(tx: AuctionTx, soldierId: string, amount: number) {
+  const soldier = await tx.soldier.findUnique({
+    where: { id: soldierId },
+    select: {
+      userId: true,
+      coins: true,
+      user: { select: { gameSave: { select: { state: true } } } },
+    },
+  });
+  if (!soldier) return;
+
+  const savedState = soldier.user.gameSave?.state;
+  if (!savedState) {
+    await tx.soldier.update({
+      where: { id: soldierId },
+      data: { coins: soldier.coins + amount },
+    });
+    return;
+  }
+
+  const state = normalizeGameState(savedState as unknown as GameState);
+  const next = normalizeGameState({
+    ...state,
+    soldier: { ...state.soldier, coins: state.soldier.coins + amount },
+  });
+  const stateJson = next as unknown as Prisma.InputJsonValue;
+
+  await tx.soldier.update({
+    where: { id: soldierId },
+    data: { coins: next.soldier.coins, saveState: stateJson },
+  });
+  await tx.gameSave.update({
+    where: { userId: soldier.userId },
+    data: { state: stateJson },
+  });
 }
 
 async function createAuctionMessages(db: AuctionHouseDb, listing: AuctionListingRow, now: Date) {

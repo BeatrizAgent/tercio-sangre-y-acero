@@ -1,4 +1,5 @@
 import { getDb } from "@/lib/db";
+import { shouldUseDatabase } from "@/lib/actions/_demo";
 import {
   catalogAssets,
   catalogCharacters,
@@ -14,7 +15,7 @@ import {
 } from "@/lib/data/catalog-bridge";
 
 function hasDatabase() {
-  return Boolean(process.env.DATABASE_URL);
+  return shouldUseDatabase();
 }
 
 export async function getCatalogPayload() {

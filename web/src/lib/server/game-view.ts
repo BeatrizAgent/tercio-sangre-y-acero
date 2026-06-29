@@ -3,11 +3,9 @@ import { getDb } from "../db";
 import { loadGameState } from "../actions/_demo";
 import type { GameState } from "../types";
 import { getShopView } from "./shop-rotation";
-import { settleWorld } from "./world";
 
 export async function loadGameViewState(): Promise<GameState> {
   try {
-    await settleWorld();
     const session = await requireApiSession();
     const state = await loadGameState();
     const db = getDb();

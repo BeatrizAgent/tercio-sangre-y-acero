@@ -174,7 +174,7 @@ body {
   background-image:
     radial-gradient(circle at 50% 10%, rgba(101, 67, 27, 0.16), transparent 34rem),
     linear-gradient(180deg, rgba(7, 6, 4, 0.5), rgba(7, 6, 4, 0.82)),
-    url("/assets/generated/backgrounds/tercio-camp-background-v1.png");
+    url("/assets/generated/backgrounds/tercio-camp-background-v1-1280.webp");
   background-size: auto, auto, cover;
   background-position: center;
   background-attachment: fixed;
@@ -217,7 +217,7 @@ body::after {
 .game-shell-frame {
   background:
     linear-gradient(180deg, rgba(28, 17, 7, 0.72), rgba(11, 8, 5, 0.86)),
-    url("/assets/generated/backgrounds/tercio-camp-background-v1.png");
+    url("/assets/generated/backgrounds/tercio-camp-background-v1-1280.webp");
   background-size: auto, cover;
   background-position: center top;
   background-repeat: no-repeat;
@@ -2061,6 +2061,25 @@ textarea:not([data-fixed]) {
     animation: none;
     transform: translateX(0);
     opacity: 0.4;
+  }
+}
+
+.page-transition {
+  animation: page-fade-in 180ms ease-out both;
+}
+
+@keyframes page-fade-in {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .page-transition {
+    animation: none;
   }
 }
 

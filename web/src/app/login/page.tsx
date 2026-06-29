@@ -206,10 +206,10 @@ export default function LoginPage() {
       <section className="relative z-10 mx-auto flex min-h-screen w-full max-w-5xl flex-col justify-center gap-5 px-4 py-10">
         <header className="flex flex-col items-center gap-3 text-center">
           <Image
-            src="/assets/brand/tercio-logo.png"
+            src="/assets/brand/tercio-logo-512.webp"
             alt="Tercio: Sangre y Acero"
-            width={2048}
-            height={875}
+            width={512}
+            height={218}
             fetchPriority="high"
             loading="eager"
             className="h-auto w-56 object-contain drop-shadow-[0_4px_8px_rgba(0,0,0,0.55)] md:w-64"
@@ -320,6 +320,7 @@ export default function LoginPage() {
                       height={selectedPortrait.height}
                       loading="lazy"
                       decoding="async"
+                      sizes="(min-width: 1024px) 300px, 90vw"
                       className="absolute inset-0 h-full w-full object-cover object-top"
                       draggable={false}
                     />
@@ -555,8 +556,8 @@ function PreviewPortrait({ portrait }: { portrait: PlayerPortraitOption | null }
         alt={portrait.displayName}
         width={portrait.width}
         height={portrait.height}
-        fetchPriority="high"
-        loading="eager"
+        loading="lazy"
+        sizes="96px"
         className="absolute inset-0 h-full w-full object-cover object-top"
         draggable={false}
       />

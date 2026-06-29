@@ -4,7 +4,7 @@ import Link from "next/link";
 import Image from "next/image";
 import { PageTransition } from "@/components/game/page-transition";
 import { UiAssetIcon } from "@/components/ui/ui-asset-icon";
-import { featuredAssetPaths } from "@/lib/game-data";
+import { featuredAssetPaths } from "@/lib/data/ui-paths";
 
 const citySpots = [
   {
@@ -98,7 +98,8 @@ export default function CityPage() {
               alt="Plaza de campamento con soldados, oficiales, tiendas y barro"
               fill
               sizes="(min-width: 1280px) 960px, 100vw"
-              priority
+              fetchPriority="high"
+              loading="eager"
               className="scene-image-realism absolute inset-0 h-full w-full object-cover opacity-90"
             />
             <div className="absolute inset-0 bg-[radial-gradient(circle_at_52%_42%,transparent_0%,rgba(7,6,4,0.18)_45%,rgba(7,6,4,0.76)_100%)]" />

@@ -8,12 +8,31 @@ import { SidebarNav } from "./sidebar-nav";
 import { QuickAction, ResourceChip } from "@/components/ui/resource-chip";
 import { UiAssetIcon } from "@/components/ui/ui-asset-icon";
 import { useGameStore } from "@/lib/game-store";
-import { getRankName, getAssetPathById, featuredAssetPaths, missionDefinitions, rankDefinitions } from "@/lib/game-data";
+import { featuredAssetPaths } from "@/lib/data/ui-paths";
 import { getPlayerPortraitPathById } from "@/lib/data/player-portraits";
 import { playPageSound } from "@/lib/sounds";
 import { GladiatusBar } from "@/components/ui/gladiatus-bar";
 
 const overviewLink = { href: "/soldier", label: "Vision general", icon: "info" } as const;
+
+const shellRanks = [
+  { id: "bisono", name: "Bisoño", minXp: 0 },
+  { id: "soldado", name: "Soldado", minXp: 20 },
+  { id: "soldado_viejo", name: "Soldado viejo", minXp: 60 },
+  { id: "cabo", name: "Cabo", minXp: 110 },
+  { id: "cabo_de_escuadra", name: "Cabo de escuadra", minXp: 180 },
+  { id: "sargento", name: "Sargento", minXp: 280 },
+  { id: "sargento_primero", name: "Sargento primero", minXp: 400 },
+  { id: "alferez", name: "Alférez", minXp: 560 },
+  { id: "capitan", name: "Capitán", minXp: 760 },
+  { id: "maestre_de_campo", name: "Maestre de campo", minXp: 1000 },
+  { id: "teniente_coronel", name: "Teniente coronel", minXp: 1300 },
+  { id: "coronel", name: "Coronel", minXp: 1700 },
+] as const;
+
+function getShellRankName(rankId: string) {
+  return shellRanks.find((rank) => rank.id === rankId)?.name ?? rankId;
+}
 
 const dispatchLinks = [
   { href: "/mailbox", label: "Buzon", icon: "mailbox" },
@@ -38,24 +57,14 @@ export function GameShell({ children }: { children: React.ReactNode }) {
   }
 
   const ACTION_MAX = 15;
-  const warVictories = reports.filter((report) => {
-    if (!report.success) return false;
-    const mission = missionDefinitions.find((entry) => entry.id === report.missionId);
-    return mission?.locationType === "battle" || mission?.locationType === "fortress";
-  }).length;
-  const missionsCompleted = reports.filter((report) => {
-    const mission = missionDefinitions.find((entry) => entry.id === report.missionId);
-    return mission?.locationType === "road" || mission?.locationType === "city" || mission?.locationType === "skirmish";
-  }).length;
   const actionsRemaining = Math.max(0, ACTION_MAX - reports.length);
-  const missionsRemaining = Math.max(0, ACTION_MAX - missionsCompleted);
   const pvpRemaining = Math.max(0, ACTION_MAX - arenaResults.length);
-  const warRemaining = Math.max(0, ACTION_MAX - warVictories);
+  const warRemaining = ACTION_MAX;
 
-  const currentRankIdx = rankDefinitions.findIndex((r) => r.id === soldier.rank);
-  const currentRank = currentRankIdx >= 0 ? rankDefinitions[currentRankIdx] : null;
-  const nextRank = currentRankIdx >= 0 && currentRankIdx < rankDefinitions.length - 1
-    ? rankDefinitions[currentRankIdx + 1]
+  const currentRankIdx = shellRanks.findIndex((r) => r.id === soldier.rank);
+  const currentRank = currentRankIdx >= 0 ? shellRanks[currentRankIdx] : null;
+  const nextRank = currentRankIdx >= 0 && currentRankIdx < shellRanks.length - 1
+    ? shellRanks[currentRankIdx + 1]
     : null;
   
   const xpMin = currentRank ? currentRank.minXp : 0;
@@ -67,7 +76,6 @@ export function GameShell({ children }: { children: React.ReactNode }) {
 
   const playerPortraitSrc =
     getPlayerPortraitPathById(soldier.portraitAssetId) ??
-    getAssetPathById(soldier.portraitAssetId) ??
     featuredAssetPaths.diegoDeArcePortrait;
 
   return (
@@ -83,12 +91,11 @@ export function GameShell({ children }: { children: React.ReactNode }) {
               <div className="gladiatus-titleplate flex items-center justify-center shrink-0 w-full md:w-[200px] p-2 relative overflow-hidden">
                 <Link href="/city" className="w-full h-full flex items-center justify-center">
                   <Image
-                    src="/assets/brand/tercio-logo.png"
+                    src="/assets/brand/tercio-logo-512.webp"
                     alt="Tercio: Sangre y Acero"
-                    width={2048}
-                    height={875}
-                    fetchPriority="high"
-                    loading="eager"
+                    width={512}
+                    height={218}
+                    loading="lazy"
                     className="tercio-brand-logo max-h-[64px] object-contain drop-shadow-[0_4px_8px_rgba(0,0,0,0.55)]"
                   />
                 </Link>
@@ -103,8 +110,7 @@ export function GameShell({ children }: { children: React.ReactNode }) {
                     alt={soldier.name}
                     width={100}
                     height={100}
-                    fetchPriority="high"
-                    loading="eager"
+                    loading="lazy"
                     className="absolute inset-0 h-full w-full object-cover object-top"
                   />
                 </div>
@@ -112,7 +118,7 @@ export function GameShell({ children }: { children: React.ReactNode }) {
                 <div className="flex-1 min-w-0 flex flex-col gap-1 justify-center">
                   <div className="flex items-baseline justify-between gap-2">
                     <span className="font-cinzel text-sm font-bold text-text truncate">{soldier.name}</span>
-                    <span className="font-mono text-[10px] font-bold uppercase tracking-wider text-gold-soft truncate">{getRankName(soldier.rank)}</span>
+                    <span className="font-mono text-[10px] font-bold uppercase tracking-wider text-gold-soft truncate">{getShellRankName(soldier.rank)}</span>
                   </div>
                   <div className="flex flex-col gap-1 w-full">
                     <GladiatusBar

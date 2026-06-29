@@ -40,14 +40,17 @@ const cuirass = "chest_cuirass_001"; // 2x2
   const out2 = addInventoryItem(out.inventory, secondPike, 1, BACKPACK_COLS, BACKPACK_ROWS, BACKPACK_CHESTS);
   assert.equal(out2.ok, true);
   const second = out2.inventory.find((i) => i.itemId === secondPike);
-  assert.ok(second, "second pike placed");
+  if (!second) throw new Error("second pike placed");
   // Confirm there is no overlap.
   const first = out2.inventory.find((i) => i.itemId === pike)!;
+  if (first.x === undefined || first.y === undefined || second.x === undefined || second.y === undefined) {
+    throw new Error("placed pikes should have grid coordinates");
+  }
   const overlap =
-    first.x < second!.x + 1 &&
-    first.x + 1 > second!.x &&
-    first.y < second!.y + 3 &&
-    first.y + 3 > second!.y;
+    first.x < second.x + 1 &&
+    first.x + 1 > second.x &&
+    first.y < second.y + 3 &&
+    first.y + 3 > second.y;
   assert.equal(overlap, false, "pikes do not overlap");
 }
 

@@ -1,7 +1,6 @@
 "use client";
 
 import type { ComponentProps, ReactNode } from "react";
-import { motion } from "motion/react";
 import { playSwordSound, playDrumSound } from "@/lib/sounds";
 import { UiAssetIcon } from "./ui-asset-icon";
 
@@ -81,16 +80,14 @@ export function SubmitButton({
   };
 
   return (
-    <motion.button
+    <button
       type={onClick ? "button" : "submit"}
       onClick={handleClick}
       disabled={disabled}
-      whileHover={!disabled ? { scale: 1.02 } : {}}
-      whileTap={!disabled ? { scale: 0.97 } : {}}
-      className={`${btnClass} text-xs md:text-sm cursor-pointer ${disabled ? "cursor-not-allowed" : ""}`}
+      className={`${btnClass} text-xs md:text-sm cursor-pointer transition-transform enabled:hover:scale-[1.02] enabled:active:scale-[0.97] ${disabled ? "cursor-not-allowed" : ""}`}
       data-testid={testId}
     >
       {children}
-    </motion.button>
+    </button>
   );
 }

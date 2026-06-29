@@ -34,9 +34,7 @@ export async function loadGameState(): Promise<GameState> {
       });
 
       if (user?.gameSave?.state) {
-        const state = normalizeGameState(user.gameSave.state as unknown as GameState);
-        await persistGameStateForUser(session.userId, state);
-        return state;
+        return normalizeGameState(user.gameSave.state as unknown as GameState);
       }
 
       const state = createInitialState();

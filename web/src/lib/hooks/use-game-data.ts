@@ -42,23 +42,17 @@ export function useGameData(): UseGameDataResult {
       setErrorState(null);
 
       try {
-        const refreshResponse = await authFetch("/api/auth/refresh", {
-          cache: "no-store",
-          method: "POST",
-          signal: controller.signal,
-        });
-        if (refreshResponse.status === 401) return;
-
         const response = await authFetch("/api/game/state", {
           cache: "no-store",
           signal: controller.signal,
         });
+        if (response.status === 401) return;
+
         const payload = (await response.json()) as {
           ok?: boolean;
           state?: GameState;
           error?: string;
         };
-        if (response.status === 401) return;
 
         if (!response.ok || !payload.ok || !payload.state?.soldier) {
           throw new Error(payload.error ?? "No se pudo cargar la partida.");

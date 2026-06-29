@@ -52,18 +52,11 @@ describe("useGameData", () => {
     mockStoreState.hydrateState.mockReset();
     vi.stubGlobal(
       "fetch",
-      vi
-        .fn()
-        .mockResolvedValueOnce({
-          ok: true,
-          status: 200,
-          json: async () => ({ ok: true, user: { id: "local_demo_user", name: "Diego de Arce" } }),
-        })
-        .mockResolvedValue({
-          ok: true,
-          status: 200,
-          json: async () => ({ ok: true, state: mockState }),
-        }),
+      vi.fn().mockResolvedValue({
+        ok: true,
+        status: 200,
+        json: async () => ({ ok: true, state: mockState }),
+      }),
     );
   });
 
@@ -81,7 +74,7 @@ describe("useGameData", () => {
     expect(result.current.error).toBeNull();
   });
 
-  it("refreshes the session before loading game state", async () => {
+  it("loads game state without a separate session refresh request", async () => {
     const fetchMock = vi.mocked(fetch);
     renderHook(() => useGameData());
     await act(async () => {
@@ -89,32 +82,21 @@ describe("useGameData", () => {
     });
     expect(fetchMock).toHaveBeenNthCalledWith(
       1,
-      "/api/auth/refresh",
-      expect.objectContaining({ method: "POST", cache: "no-store" }),
-    );
-    expect(fetchMock).toHaveBeenNthCalledWith(
-      2,
       "/api/game/state",
       expect.objectContaining({ cache: "no-store" }),
     );
+    expect(fetchMock).toHaveBeenCalledTimes(1);
   });
 
   it("returns 'error' status when the backend returns no soldier", async () => {
     mockStoreState.soldier = null;
     vi.stubGlobal(
       "fetch",
-      vi
-        .fn()
-        .mockResolvedValueOnce({
-          ok: true,
-          status: 200,
-          json: async () => ({ ok: true }),
-        })
-        .mockResolvedValue({
-          ok: true,
-          status: 200,
-          json: async () => ({ ok: true, state: { ...mockState, soldier: null } }),
-        }),
+      vi.fn().mockResolvedValue({
+        ok: true,
+        status: 200,
+        json: async () => ({ ok: true, state: { ...mockState, soldier: null } }),
+      }),
     );
     const { result } = renderHook(() => useGameData());
     await act(async () => {
@@ -123,7 +105,7 @@ describe("useGameData", () => {
     expect(result.current.status).toBe("error");
   });
 
-  it("clears a stale session and redirects to login when refresh returns 401", async () => {
+  it("clears a stale session and redirects to login when game state returns 401", async () => {
     const fetchMock = vi
       .fn()
       .mockResolvedValueOnce({
@@ -145,38 +127,6 @@ describe("useGameData", () => {
 
     expect(fetchMock).toHaveBeenNthCalledWith(
       2,
-      "/api/auth/logout",
-      expect.objectContaining({ method: "POST" }),
-    );
-  });
-
-  it("clears a stale session and redirects to login when game state returns 401", async () => {
-    const fetchMock = vi
-      .fn()
-      .mockResolvedValueOnce({
-        ok: true,
-        status: 200,
-        json: async () => ({ ok: true }),
-      })
-      .mockResolvedValueOnce({
-        ok: false,
-        status: 401,
-        json: async () => ({ ok: false, error: "No hay sesion activa." }),
-      })
-      .mockResolvedValueOnce({
-        ok: true,
-        status: 200,
-        json: async () => ({ ok: true }),
-      });
-    vi.stubGlobal("fetch", fetchMock);
-
-    renderHook(() => useGameData());
-    await act(async () => {
-      await new Promise((r) => setTimeout(r, 10));
-    });
-
-    expect(fetchMock).toHaveBeenNthCalledWith(
-      3,
       "/api/auth/logout",
       expect.objectContaining({ method: "POST" }),
     );

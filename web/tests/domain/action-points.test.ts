@@ -131,7 +131,8 @@ import { withActionPoints } from "../helpers/with-resources";
   const state = createTestState();
   const soldier = withActionPoints(state, 0, new Date(before - REGEN_TIME_MS).toISOString()).soldier;
   const out = regenerateActionPoints(soldier);
-  assert.ok(out.soldier.actionPoints >= 1);
+  assert.ok((out.soldier.actionPoints ?? 0) >= 1);
+  assert.ok(out.soldier.lastRegenAt);
   assert.ok(new Date(out.soldier.lastRegenAt).getTime() >= before);
 }
 

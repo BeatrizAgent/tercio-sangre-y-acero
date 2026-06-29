@@ -13,7 +13,7 @@ import {
   type FormationMeta,
 } from "@/lib/domain/formation";
 import type { FormationSlot } from "@/lib/types";
-import { formationRoleIconPaths } from "@/lib/game-data";
+import { formationRoleIconPaths } from "@/lib/data/ui-paths";
 
 export function SlotPlaque({
   slot,

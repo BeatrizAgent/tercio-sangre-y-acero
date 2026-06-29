@@ -73,6 +73,7 @@ export function CharacterPortrait({
             width={px}
             height={px}
             loading="eager"
+            sizes={`${px}px`}
             className={`absolute inset-0 h-full w-full object-cover object-top transition-[transform,opacity] duration-300 hover:scale-[1.02] ${loaded ? "opacity-100" : "opacity-0"}`}
             draggable={false}
             onLoad={() => setLoaded(true)}

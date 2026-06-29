@@ -4,7 +4,7 @@
 // equipment, description, and price.
 
 import { useGameStore } from "@/lib/game-store";
-import { getItem, getItemImagePath } from "@/lib/game-data";
+import { getItem, getItemImagePath } from "@/lib/data/items";
 import { STAT_INFO } from "@/lib/stats";
 import { passiveShortLine, rarityStyle, TRIGGER_LABEL } from "@/lib/item-format";
 import { UiAssetIcon } from "../ui-asset-icon";

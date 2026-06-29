@@ -4,11 +4,14 @@
 // one file.
 
 import type { FormationSlot, MissionDefinition, StatId } from "../types";
-import { assetPath } from "./assets";
+
+function assetPath(relativePath: string): string {
+  return `/assets/gpt-bank/${relativePath}`;
+}
 
 export const featuredAssetPaths = {
-  city: assetPath("scenes/events/pay_mutiny_bg.png"),
-  barracks: assetPath("scenes/events/barracks_bg.png"),
+  city: "/assets/gpt-bank/scenes/events/pay_mutiny_bg_1280.webp",
+  barracks: "/assets/gpt-bank/scenes/events/barracks_bg_1280.webp",
   armory: assetPath("scenes/events/armory_bg.png"),
   hospital: assetPath("scenes/events/hospital_bg.png"),
   hospitalFieldWard: assetPath("scenes/events/hospital_field_ward_bg.png"),

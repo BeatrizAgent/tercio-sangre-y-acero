@@ -125,7 +125,8 @@ import type { MissionDefinition, Soldier } from "../../src/lib/types";
   }
   // At least one event uses the danger/success/reward tone.
   const tones = new Set(result.eventLog.map((e) => e.tone));
-  assert.ok(["danger", "success", "reward", "neutral"].some((t) => tones.has(t)));
+  const expectedTones = ["danger", "success", "reward", "neutral"] as const;
+  assert.ok(expectedTones.some((t) => tones.has(t)));
 }
 
 {

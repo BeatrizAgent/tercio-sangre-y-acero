@@ -188,7 +188,7 @@ function delta() {
   const after = useGameStore.getState().soldier;
   // Exactly one slot is now null (the one that was broken).
   const afterEquipped = Object.entries(beforeEquipment).filter(
-    ([, itemId]) => itemId !== null && after.equipment[([0] as [string])[0] as keyof typeof after.equipment] === null,
+    ([slot, itemId]) => itemId !== null && after.equipment[slot as keyof typeof after.equipment] === null,
   );
   // The broken item is no longer in inventory.
   const brokenItemIds = Object.values(beforeEquipment).filter(

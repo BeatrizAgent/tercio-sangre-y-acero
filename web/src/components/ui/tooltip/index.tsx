@@ -1,13 +1,20 @@
 "use client";
 
-import React, { useEffect, useLayoutEffect, useRef, useState } from "react";
+import React, { lazy, Suspense, useEffect, useLayoutEffect, useRef, useState } from "react";
 import { createPortal } from "react-dom";
 import { Info } from "lucide-react";
 import type { StatId } from "@/lib/types";
-import { ItemTooltipContent } from "./content-item";
 import { SimpleTooltipContent } from "./content-simple";
-import { StatTooltipContent } from "./content-stat";
-import { WoundTooltipContent } from "./content-wound";
+
+const ItemTooltipContent = lazy(() =>
+  import("./content-item").then((module) => ({ default: module.ItemTooltipContent })),
+);
+const StatTooltipContent = lazy(() =>
+  import("./content-stat").then((module) => ({ default: module.StatTooltipContent })),
+);
+const WoundTooltipContent = lazy(() =>
+  import("./content-wound").then((module) => ({ default: module.WoundTooltipContent })),
+);
 
 export type TooltipType = "simple" | "item" | "stat" | "wound";
 
@@ -143,13 +150,26 @@ function TooltipArrow({ side }: { side: Side }) {
 }
 
 function TooltipBody({ type, content, itemId, statId, woundId, treated }: Omit<TooltipProps, "children">) {
+  const fallback = <SimpleTooltipContent content="Cargando..." />;
   switch (type) {
     case "item":
-      return <ItemTooltipContent itemId={itemId} />;
+      return (
+        <Suspense fallback={fallback}>
+          <ItemTooltipContent itemId={itemId} />
+        </Suspense>
+      );
     case "stat":
-      return <StatTooltipContent statId={statId} />;
+      return (
+        <Suspense fallback={fallback}>
+          <StatTooltipContent statId={statId} />
+        </Suspense>
+      );
     case "wound":
-      return <WoundTooltipContent woundId={woundId} treated={treated} />;
+      return (
+        <Suspense fallback={fallback}>
+          <WoundTooltipContent woundId={woundId} treated={treated} />
+        </Suspense>
+      );
     default:
       return <SimpleTooltipContent content={content ?? ""} />;
   }

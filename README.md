@@ -122,6 +122,9 @@ node tests/validate_tercio_refocus.js
 cd web
 pnpm validate
 pnpm build
+
+# Ejecutar smoke E2E real contra localhost:3000
+pnpm test:e2e
 ```
 
 ---

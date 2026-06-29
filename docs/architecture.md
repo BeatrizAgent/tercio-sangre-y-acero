@@ -10,8 +10,6 @@ Routes live under `/web/src/app`. Shared services live under `/web/src/lib`. Sha
 
 Prisma/PostgreSQL is the target persistence layer. The Prisma schema lives in `/web/prisma/schema.prisma`, and seed content lives in `/web/data`.
 
-The current MVP also includes a local demo store in `/web/.demo/state.json` so the loop can run without a local PostgreSQL server. This is a development fallback, not the final backend.
-
 ## Services
 
 Core service modules:

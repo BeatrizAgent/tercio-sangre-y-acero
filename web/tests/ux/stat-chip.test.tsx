@@ -3,6 +3,11 @@ import { render, screen } from "@testing-library/react";
 import { StatChip, FatigueBar, fatigueTone, fatigueLabel } from "@/components/ui/stat-chip";
 
 describe("StatChip", () => {
+  it("matches the snapshot", () => {
+    const { container } = render(<StatChip value={7} label="Pica" />);
+    expect(container.firstChild).toMatchSnapshot();
+  });
+
   it("renders the value", () => {
     render(<StatChip value={7} />);
     expect(screen.getByText("7")).toBeInTheDocument();

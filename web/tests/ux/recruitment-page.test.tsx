@@ -1,3 +1,7 @@
+// RecruitmentPage: dense per-candidate card used by /recruitment. Renders
+// against the real GameState store so the page exercises its full render
+// path (filters, candidate cards, recruit action).
+
 import { describe, expect, it, vi, beforeEach } from "vitest";
 import { useEffect } from "react";
 import { render, screen, waitFor } from "@testing-library/react";
@@ -5,9 +9,7 @@ import userEvent from "@testing-library/user-event";
 import type React from "react";
 
 const { useGameDataMock, useGameStoreMock } = vi.hoisted(() => {
-  const useGameDataMock = vi.fn();
-  const useGameStoreMock = vi.fn();
-  return { useGameDataMock, useGameStoreMock };
+  return { useGameDataMock: vi.fn(), useGameStoreMock: vi.fn() };
 });
 
 vi.mock("@/lib/hooks/use-game-data", () => ({ useGameData: useGameDataMock }));
@@ -25,40 +27,46 @@ vi.mock("next/image", () => {
     }, [onLoad]);
     return <img {...rest} alt={rest.alt ?? ""} />;
   }
-
   return {
     default: MockImage,
   };
 });
 
 import RecruitmentPage from "@/app/recruitment/page";
+import { createInitialState } from "@/lib/domain/initial-state";
+import type { GameState } from "@/lib/types";
 
-function baseStore() {
-  return {
-    soldier: {
-      id: "diego_de_arce",
-      name: "Diego de Arce",
-      rank: "bisono",
-      coins: 25,
-      honor: 0,
-      xp: 0,
-      reputation: 0,
+// Real, in-memory store backing useGameStoreMock. The page reads from this
+// store via the standard zustand `useGameStore(selector)` API.
+function installRealStore(initial: GameState = createInitialState()) {
+  const state: { current: GameState } = { current: initial };
+  const listeners = new Set<() => void>();
+  useGameStoreMock.mockImplementation((selector?: (s: GameState) => unknown) =>
+    selector ? selector(state.current) : state.current,
+  );
+  Object.assign(useGameStoreMock, {
+    getState: () => state.current,
+    setState: (partial: Partial<GameState> | ((s: GameState) => Partial<GameState>)) => {
+      const update = typeof partial === "function" ? partial(state.current) : partial;
+      state.current = { ...state.current, ...update };
+      listeners.forEach((l) => l());
     },
-    characters: [],
-    recruitCandidate: vi.fn().mockReturnValue({ ok: true, message: "ok" }),
-  };
+    subscribe: (l: () => void) => {
+      listeners.add(l);
+      return () => listeners.delete(l);
+    },
+  });
+  return state;
 }
 
 describe("RecruitmentPage", () => {
   beforeEach(() => {
     useGameDataMock.mockReset();
     useGameStoreMock.mockReset();
-    useGameStoreMock.mockImplementation((selector?: (s: ReturnType<typeof baseStore>) => unknown) =>
-      selector ? selector(baseStore()) : baseStore(),
-    );
   });
 
   it("shows the RecruitmentSkeleton while the game data is loading", () => {
+    installRealStore();
     useGameDataMock.mockReturnValue({
       status: "loading",
       error: null,
@@ -67,12 +75,12 @@ describe("RecruitmentPage", () => {
       clearError: vi.fn(),
     });
     const { container } = render(<RecruitmentPage />);
-    // The skeleton renders multiple shimmer blocks.
     const shimmers = container.querySelectorAll(".skeleton-shimmer");
     expect(shimmers.length).toBeGreaterThan(0);
   });
 
   it("shows the ErrorState when the game data has an error", () => {
+    installRealStore();
     const refetch = vi.fn();
     useGameDataMock.mockReturnValue({
       status: "error",
@@ -87,6 +95,7 @@ describe("RecruitmentPage", () => {
   });
 
   it("calls refetch when the retry button is clicked", async () => {
+    installRealStore();
     const refetch = vi.fn();
     useGameDataMock.mockReturnValue({
       status: "error",
@@ -102,6 +111,7 @@ describe("RecruitmentPage", () => {
   });
 
   it("renders the page content when the game data is ready", async () => {
+    installRealStore();
     useGameDataMock.mockReturnValue({
       status: "ready",
       error: null,
@@ -110,10 +120,7 @@ describe("RecruitmentPage", () => {
       clearError: vi.fn(),
     });
     const { container } = render(<RecruitmentPage />);
-    // The page renders the role filter for "all" and at least one candidate
-    // from the recruitment catalog (Tomas de Orduna, the Piquero).
     expect(await screen.findByRole("button", { name: /Todos/ })).toBeInTheDocument();
-    // No skeleton shimmer blocks and no alert.
     await waitFor(() => {
       expect(container.querySelector(".skeleton-shimmer")).toBeNull();
     });

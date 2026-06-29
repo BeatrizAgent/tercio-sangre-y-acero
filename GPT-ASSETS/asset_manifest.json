@@ -1,5 +1,5 @@
 {
-  "count": 629,
+  "count": 607,
   "assets": [
     {
       "source": "armor/armet_celada_cerrada_visor.png",
@@ -6641,21 +6641,6 @@
       "background_reason": "no_magenta_border"
     },
     {
-      "source": "props/food/food_hard_biscuit_stack.png",
-      "asset": "props/food/food_hard_biscuit_stack.png",
-      "original_size": [
-        192,
-        192
-      ],
-      "clean_size": [
-        192,
-        192
-      ],
-      "cropped": false,
-      "background_removed": false,
-      "background_reason": "no_magenta_border"
-    },
-    {
       "source": "props/food/food_pan_municion.png",
       "asset": "props/food/food_pan_municion.png",
       "original_size": [
@@ -6695,21 +6680,6 @@
       "clean_size": [
         1254,
         1254
-      ],
-      "cropped": false,
-      "background_removed": false,
-      "background_reason": "no_magenta_border"
-    },
-    {
-      "source": "props/food/food_wine_skin_dark.png",
-      "asset": "props/food/food_wine_skin_dark.png",
-      "original_size": [
-        192,
-        192
-      ],
-      "clean_size": [
-        192,
-        192
       ],
       "cropped": false,
       "background_removed": false,
@@ -8631,201 +8601,6 @@
         0,
         240
       ]
-    },
-    {
-      "source": "ui/action/action_icon_command_banner.png",
-      "asset": "ui/action/action_icon_command_banner.png",
-      "original_size": [
-        192,
-        192
-      ],
-      "clean_size": [
-        192,
-        192
-      ],
-      "cropped": false,
-      "background_removed": false,
-      "background_reason": "no_magenta_border"
-    },
-    {
-      "source": "ui/action/action_icon_train_arquebus.png",
-      "asset": "ui/action/action_icon_train_arquebus.png",
-      "original_size": [
-        192,
-        192
-      ],
-      "clean_size": [
-        192,
-        192
-      ],
-      "cropped": false,
-      "background_removed": false,
-      "background_reason": "no_magenta_border"
-    },
-    {
-      "source": "ui/action/action_icon_train_pike.png",
-      "asset": "ui/action/action_icon_train_pike.png",
-      "original_size": [
-        192,
-        192
-      ],
-      "clean_size": [
-        192,
-        192
-      ],
-      "cropped": false,
-      "background_removed": false,
-      "background_reason": "no_magenta_border"
-    },
-    {
-      "source": "ui/game-icons/asset_pack_2026_06_21_icon_atlas_imagegen.png",
-      "asset": "ui/game-icons/asset_pack_2026_06_21_icon_atlas_imagegen.png",
-      "original_size": [
-        1254,
-        1254
-      ],
-      "clean_size": [
-        1254,
-        1254
-      ],
-      "cropped": false,
-      "background_removed": false,
-      "background_reason": "no_magenta_border"
-    },
-    {
-      "source": "ui/game-icons/game_icon_delayed_pay_chest.png",
-      "asset": "ui/game-icons/game_icon_delayed_pay_chest.png",
-      "original_size": [
-        192,
-        192
-      ],
-      "clean_size": [
-        192,
-        192
-      ],
-      "cropped": false,
-      "background_removed": false,
-      "background_reason": "no_magenta_border"
-    },
-    {
-      "source": "ui/game-icons/game_icon_fatigue_watch.png",
-      "asset": "ui/game-icons/game_icon_fatigue_watch.png",
-      "original_size": [
-        192,
-        192
-      ],
-      "clean_size": [
-        192,
-        192
-      ],
-      "cropped": false,
-      "background_removed": false,
-      "background_reason": "no_magenta_border"
-    },
-    {
-      "source": "ui/game-icons/game_icon_field_surgery.png",
-      "asset": "ui/game-icons/game_icon_field_surgery.png",
-      "original_size": [
-        192,
-        192
-      ],
-      "clean_size": [
-        192,
-        192
-      ],
-      "cropped": false,
-      "background_removed": false,
-      "background_reason": "no_magenta_border"
-    },
-    {
-      "source": "ui/game-icons/game_icon_morale_honor.png",
-      "asset": "ui/game-icons/game_icon_morale_honor.png",
-      "original_size": [
-        192,
-        192
-      ],
-      "clean_size": [
-        192,
-        192
-      ],
-      "cropped": false,
-      "background_removed": false,
-      "background_reason": "no_magenta_border"
-    },
-    {
-      "source": "ui/game-icons/game_icon_powder_barrel.png",
-      "asset": "ui/game-icons/game_icon_powder_barrel.png",
-      "original_size": [
-        192,
-        192
-      ],
-      "clean_size": [
-        192,
-        192
-      ],
-      "cropped": false,
-      "background_removed": false,
-      "background_reason": "no_magenta_border"
-    },
-    {
-      "source": "ui/game-icons/game_icon_sealed_orders.png",
-      "asset": "ui/game-icons/game_icon_sealed_orders.png",
-      "original_size": [
-        192,
-        192
-      ],
-      "clean_size": [
-        192,
-        192
-      ],
-      "cropped": false,
-      "background_removed": false,
-      "background_reason": "no_magenta_border"
-    },
-    {
-      "source": "ui/game-icons/game_icon_supply_cart.png",
-      "asset": "ui/game-icons/game_icon_supply_cart.png",
-      "original_size": [
-        192,
-        192
-      ],
-      "clean_size": [
-        192,
-        192
-      ],
-      "cropped": false,
-      "background_removed": false,
-      "background_reason": "no_magenta_border"
-    },
-    {
-      "source": "ui/game-icons/game_icon_tavern_duel.png",
-      "asset": "ui/game-icons/game_icon_tavern_duel.png",
-      "original_size": [
-        192,
-        192
-      ],
-      "clean_size": [
-        192,
-        192
-      ],
-      "cropped": false,
-      "background_removed": false,
-      "background_reason": "no_magenta_border"
-    },
-    {
-      "source": "ui/game-icons/game_icon_wet_boots.png",
-      "asset": "ui/game-icons/game_icon_wet_boots.png",
-      "original_size": [
-        192,
-        192
-      ],
-      "clean_size": [
-        192,
-        192
-      ],
-      "cropped": false,
-      "background_removed": false,
-      "background_reason": "no_magenta_border"
     },
     {
       "source": "ui/game-icons/icon_arrow_left.png",
@@ -11222,36 +10997,6 @@
       "background_reason": "no_magenta_border"
     },
     {
-      "source": "ui/resource/resource_icon_camp_disease.png",
-      "asset": "ui/resource/resource_icon_camp_disease.png",
-      "original_size": [
-        192,
-        192
-      ],
-      "clean_size": [
-        192,
-        192
-      ],
-      "cropped": false,
-      "background_removed": false,
-      "background_reason": "no_magenta_border"
-    },
-    {
-      "source": "ui/resource/resource_icon_wounds.png",
-      "asset": "ui/resource/resource_icon_wounds.png",
-      "original_size": [
-        192,
-        192
-      ],
-      "clean_size": [
-        192,
-        192
-      ],
-      "cropped": false,
-      "background_removed": false,
-      "background_reason": "no_magenta_border"
-    },
-    {
       "source": "ui/roles/role_apoyo.png",
       "asset": "ui/roles/role_apoyo.png",
       "original_size": [
@@ -11321,81 +11066,6 @@
       "clean_size": [
         1254,
         1254
-      ],
-      "cropped": false,
-      "background_removed": false,
-      "background_reason": "no_magenta_border"
-    },
-    {
-      "source": "ui/training/training_arquebus.png",
-      "asset": "ui/training/training_arquebus.png",
-      "original_size": [
-        512,
-        512
-      ],
-      "clean_size": [
-        512,
-        512
-      ],
-      "cropped": false,
-      "background_removed": false,
-      "background_reason": "no_magenta_border"
-    },
-    {
-      "source": "ui/training/training_discipline.png",
-      "asset": "ui/training/training_discipline.png",
-      "original_size": [
-        512,
-        512
-      ],
-      "clean_size": [
-        512,
-        512
-      ],
-      "cropped": false,
-      "background_removed": false,
-      "background_reason": "no_magenta_border"
-    },
-    {
-      "source": "ui/training/training_pike.png",
-      "asset": "ui/training/training_pike.png",
-      "original_size": [
-        512,
-        512
-      ],
-      "clean_size": [
-        512,
-        512
-      ],
-      "cropped": false,
-      "background_removed": false,
-      "background_reason": "no_magenta_border"
-    },
-    {
-      "source": "ui/training/training_sword.png",
-      "asset": "ui/training/training_sword.png",
-      "original_size": [
-        512,
-        512
-      ],
-      "clean_size": [
-        512,
-        512
-      ],
-      "cropped": false,
-      "background_removed": false,
-      "background_reason": "no_magenta_border"
-    },
-    {
-      "source": "ui/training/training_vigor.png",
-      "asset": "ui/training/training_vigor.png",
-      "original_size": [
-        512,
-        512
-      ],
-      "clean_size": [
-        512,
-        512
       ],
       "cropped": false,
       "background_removed": false,

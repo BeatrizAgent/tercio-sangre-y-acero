@@ -120,11 +120,11 @@ export const reportAssetPaths = {
 } as const;
 
 export const trainingAssetPaths: Record<StatId, string> = {
-  pike: assetPath("ui/training/training_pike.png"),
-  sword: assetPath("ui/training/training_sword.png"),
-  arquebus: assetPath("ui/training/training_arquebus.png"),
-  discipline: assetPath("ui/training/training_discipline.png"),
-  vigor: assetPath("ui/training/training_vigor.png"),
+  pike: assetPath("ui/icons/estandarte_cruz_roja_colgante.png"),
+  sword: assetPath("ui/icons/espada_martillo_cruzados.png"),
+  arquebus: assetPath("ui/icons/morion_flecha_engranaje.png"),
+  discipline: assetPath("ui/icons/medalla_cruz_roja_bronce.png"),
+  vigor: assetPath("ui/icons/sol_dorado_cara.png"),
   cunning: assetPath("ui/icons/pergamino_pluma_sello.png"),
   command: assetPath("ui/icons/estandarte_cruz_roja_colgante.png"),
 };

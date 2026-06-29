@@ -339,18 +339,11 @@ export default function MissionDetailPage() {
   const [localRegenTimer, setLocalRegenTimer] = useState<string>("");
 
   useEffect(() => {
-    const currentPoints = soldier.actionPoints !== undefined ? soldier.actionPoints : 12;
-    if (currentPoints >= 12 || !soldier.lastRegenAt) {
-      setLocalRegenTimer("");
-      return;
-    }
-
-    const tick = () => {
+    const computeTimer = (): string => {
       const s = useGameStore.getState().soldier;
       const pts = s.actionPoints !== undefined ? s.actionPoints : 12;
       if (pts >= 12 || !s.lastRegenAt) {
-        setLocalRegenTimer("");
-        return;
+        return "";
       }
 
       const nextRegenTime = new Date(s.lastRegenAt).getTime() + 30 * 60 * 1000;
@@ -358,18 +351,31 @@ export default function MissionDetailPage() {
       const remainingMs = nextRegenTime - now;
 
       if (remainingMs <= 0) {
-        useGameStore.getState().hydrateState({ ...useGameStore.getState() });
-        return;
+        return "";
       }
 
       const minutes = Math.floor(remainingMs / 60000);
       const seconds = Math.floor((remainingMs % 60000) / 1000);
-      setLocalRegenTimer(`${minutes}:${String(seconds).padStart(2, "0")}`);
+      return `${minutes}:${String(seconds).padStart(2, "0")}`;
     };
 
-    tick();
-    const interval = window.setInterval(tick, 1000);
-    return () => window.clearInterval(interval);
+    // Defer the first read by one tick so the effect body only schedules
+    // side effects and never calls setState synchronously (avoids the
+    // "setState in effect" lint and any cascading-render warnings).
+    const initial = window.setTimeout(() => {
+      setLocalRegenTimer(computeTimer());
+    }, 0);
+    const interval = window.setInterval(() => {
+      const next = computeTimer();
+      setLocalRegenTimer((current) => (current === next ? current : next));
+      if (next === "" && useGameStore.getState().soldier.actionPoints !== 12) {
+        useGameStore.getState().hydrateState({ ...useGameStore.getState() });
+      }
+    }, 1000);
+    return () => {
+      window.clearTimeout(initial);
+      window.clearInterval(interval);
+    };
   }, [soldier.actionPoints, soldier.lastRegenAt]);
   const [clockTick, setClockTick] = useState(() => Date.now());
   const mountedRef = useRef(true);

@@ -1,8 +1,8 @@
+// Missions flow: list + detail. Renders against the real GameState store.
+
 import { describe, expect, it, vi, beforeEach } from "vitest";
 import { render, screen } from "@testing-library/react";
 import type React from "react";
-import { createInitialState } from "@/lib/domain/initial-state";
-import type { GameState } from "@/lib/types";
 
 const { useGameDataMock, useGameStoreMock, replaceMock, pushMock, paramsMock, searchParamsMock } = vi.hoisted(() => ({
   useGameDataMock: vi.fn(),
@@ -26,9 +26,32 @@ vi.mock("next/image", () => ({
 
 import MissionsPage from "@/app/missions/page";
 import MissionDetailPage from "@/app/missions/[id]/page";
+import { createInitialState } from "@/lib/domain/initial-state";
+import type { GameState } from "@/lib/types";
 
-function installReadyStore() {
-  const state = createInitialState();
+function installReadyStore(overrides: Partial<GameState> = {}) {
+  let base = createInitialState();
+  base = { ...base, ...overrides };
+  if (overrides.soldier) {
+    base = { ...base, soldier: { ...base.soldier, ...overrides.soldier } };
+  }
+  const state: { current: GameState } = { current: base };
+  const listeners = new Set<() => void>();
+  useGameStoreMock.mockImplementation((selector?: (s: GameState) => unknown) =>
+    selector ? selector(state.current) : state.current,
+  );
+  Object.assign(useGameStoreMock, {
+    getState: () => state.current,
+    setState: (partial: Partial<GameState> | ((s: GameState) => Partial<GameState>)) => {
+      const update = typeof partial === "function" ? partial(state.current) : partial;
+      state.current = { ...state.current, ...update };
+      listeners.forEach((l) => l());
+    },
+    subscribe: (l: () => void) => {
+      listeners.add(l);
+      return () => listeners.delete(l);
+    },
+  });
   useGameDataMock.mockReturnValue({
     status: "ready",
     error: null,
@@ -36,15 +59,7 @@ function installReadyStore() {
     setError: vi.fn(),
     clearError: vi.fn(),
   });
-  useGameStoreMock.mockImplementation((selector?: (state: GameState & Record<string, unknown>) => unknown) => {
-    const store = {
-      ...state,
-      startMission: vi.fn().mockReturnValue({ ok: true, data: { reportId: "r1" } }),
-      resolveActiveEventChoice: vi.fn(),
-      activeEvent: null,
-    };
-    return selector ? selector(store) : store;
-  });
+  return state;
 }
 
 describe("missions flow", () => {
@@ -55,10 +70,10 @@ describe("missions flow", () => {
     pushMock.mockReset();
     paramsMock.mockReset();
     searchParamsMock.mockReset();
-    installReadyStore();
   });
 
   it("opens a ready boss and links to the mission detail", () => {
+    installReadyStore();
     searchParamsMock.mockReturnValue(new URLSearchParams("region=flandes&boss=flandes_boss_1"));
     render(<MissionsPage />);
 
@@ -67,6 +82,7 @@ describe("missions flow", () => {
   });
 
   it("renders the mission detail start button", () => {
+    installReadyStore();
     paramsMock.mockReturnValue({ id: "mission_patrulla_flandes_001" });
     render(<MissionDetailPage />);
 

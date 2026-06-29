@@ -1,0 +1,9 @@
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
+
+exports[`FormationBackdrop > matches the snapshot for the default composition 1`] = `
+<div
+  aria-hidden="true"
+  class="absolute inset-0 bg-cover bg-center "
+  style="background-image: url("/assets/generated/scenes/tercio_formation_field_v01.png");"
+/>
+`;

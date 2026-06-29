@@ -4,6 +4,7 @@ import {
   buildSessionCookie,
   generateRecoveryToken,
   getPublicIpFromRequest,
+  getSessionTokenFromCookieHeader,
   hashRecoveryToken,
   isRecoveryTokenFormat,
 } from "../../src/lib/auth/session";
@@ -28,6 +29,8 @@ assert.equal(cookie.value, token);
 assert.equal(cookie.httpOnly, true);
 assert.equal(cookie.sameSite, "lax");
 assert.equal(cookie.path, "/");
+assert.equal(getSessionTokenFromCookieHeader(`${SESSION_COOKIE_NAME}=${token}; other=value`), token);
+assert.equal(getSessionTokenFromCookieHeader("other=value"), undefined);
 
 const forwardedRequest = new Request("https://tercios.test/login", {
   headers: {

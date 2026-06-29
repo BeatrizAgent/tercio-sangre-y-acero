@@ -20,22 +20,14 @@ export function getItemFootprint(item: ItemDefinition | undefined): ItemFootprin
   return catalogGetItemFootprint(item);
 }
 
-const PREFERRED_VARIANTS: Record<string, string> = {
-  cheap_morion: "v03",
-  chipped_sword: "v03",
-  dented_cuirass: "v03",
-  worn_arquebus: "v01",
-};
+const FALLBACK_ITEM_IMAGE = "/assets/gpt-bank/ui/icons/saquito_monedas_documento.png";
 
 export function getItemImagePath(itemId: string): string {
   const item = getItem(itemId);
   const asset = assetDefinitions.find((entry) => entry.id === item?.assetId);
   if (asset) return getAssetPublicPath(asset);
 
-  if (itemId === "worn_arquebus") {
-    return `/assets/generated/icons/arquebus_with_worn_stock_${PREFERRED_VARIANTS[itemId]}.png`;
-  }
-  return `/assets/generated/icons/${itemId}_${PREFERRED_VARIANTS[itemId] ?? "v01"}.png`;
+  return FALLBACK_ITEM_IMAGE;
 }
 
 export function getEquipmentBonuses(equipment: Record<string, string | null>) {

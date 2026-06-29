@@ -20,7 +20,9 @@
     "test:store": "tsx tests/run-store.mjs",
     "test:data": "tsx tests/run-data.mjs",
     "test:ux": "tsx tests/run-ux.mjs",
-    "validate": "node tests/validate-web-mvp.mjs && node tests/validate-db-contract.mjs && node ../scripts/validate_data_references.mjs && pnpm test"
+    "test:e2e": "playwright test",
+    "test:full": "pnpm test && pnpm test:e2e",
+    "validate": "node tests/validate-web-mvp.mjs && node tests/validate-db-contract.mjs && node ../scripts/validate_data_references.mjs && node tests/validate-coverage.mjs && pnpm test"
   },
   "prisma": {
     "seed": "node scripts/sync-data.mjs && tsx prisma/seed.ts"
@@ -55,6 +57,7 @@
     "zustand": "^5.0.14"
   },
   "devDependencies": {
+    "@playwright/test": "^1.61.1",
     "@tailwindcss/postcss": "^4",
     "@testing-library/jest-dom": "^6.9.1",
     "@testing-library/react": "^16.3.2",
@@ -68,6 +71,7 @@
     "@vitest/coverage-v8": "^4.1.9",
     "eslint": "^9",
     "eslint-config-next": "16.2.9",
+    "fast-check": "^4.8.0",
     "jsdom": "^29.1.1",
     "prisma": "^7.8.0",
     "tailwindcss": "^4",

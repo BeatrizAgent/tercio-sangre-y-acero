@@ -4411,21 +4411,6 @@
       "prompt": "Historical SFW game asset (pre-existing from GPT-ASSETS bank). role veterans role veteran 03 unpaid old soldier."
     },
     {
-      "id": "food_hard_biscuit_stack",
-      "kind": "item",
-      "publicPath": "/assets/gpt-bank/props/food/food_hard_biscuit_stack.png",
-      "width": 192,
-      "height": 192,
-      "usage": [
-        "consumable",
-        "food",
-        "inventory"
-      ],
-      "mature": false,
-      "presentation": "normal",
-      "prompt": "Historical SFW game asset (pre-existing from GPT-ASSETS bank). food hard biscuit stack."
-    },
-    {
       "id": "food_pan_municion",
       "kind": "item",
       "publicPath": "/assets/gpt-bank/props/food/food_pan_municion.png",
@@ -4469,21 +4454,6 @@
       "mature": false,
       "presentation": "normal",
       "prompt": "Historical SFW game asset (pre-existing from GPT-ASSETS bank). food tocino saldo."
-    },
-    {
-      "id": "food_wine_skin_dark",
-      "kind": "item",
-      "publicPath": "/assets/gpt-bank/props/food/food_wine_skin_dark.png",
-      "width": 192,
-      "height": 192,
-      "usage": [
-        "consumable",
-        "food",
-        "inventory"
-      ],
-      "mature": false,
-      "presentation": "normal",
-      "prompt": "Historical SFW game asset (pre-existing from GPT-ASSETS bank). food wine skin dark."
     },
     {
       "id": "prop_aceite_de_armas_013",
@@ -5765,185 +5735,6 @@
       "mature": false,
       "presentation": "normal",
       "prompt": "Historical SFW game asset (pre-existing from GPT-ASSETS bank). support aux 010."
-    },
-    {
-      "id": "action_icon_command_banner",
-      "kind": "item",
-      "publicPath": "/assets/gpt-bank/ui/action/action_icon_command_banner.png",
-      "width": 192,
-      "height": 192,
-      "usage": [
-        "asset_bank"
-      ],
-      "mature": false,
-      "presentation": "normal",
-      "prompt": "Historical SFW game asset (pre-existing from GPT-ASSETS bank). action icon command banner."
-    },
-    {
-      "id": "action_icon_train_arquebus",
-      "kind": "item",
-      "publicPath": "/assets/gpt-bank/ui/action/action_icon_train_arquebus.png",
-      "width": 192,
-      "height": 192,
-      "usage": [
-        "asset_bank"
-      ],
-      "mature": false,
-      "presentation": "normal",
-      "prompt": "Historical SFW game asset (pre-existing from GPT-ASSETS bank). action icon train arquebus."
-    },
-    {
-      "id": "action_icon_train_pike",
-      "kind": "item",
-      "publicPath": "/assets/gpt-bank/ui/action/action_icon_train_pike.png",
-      "width": 192,
-      "height": 192,
-      "usage": [
-        "asset_bank"
-      ],
-      "mature": false,
-      "presentation": "normal",
-      "prompt": "Historical SFW game asset (pre-existing from GPT-ASSETS bank). action icon train pike."
-    },
-    {
-      "id": "asset_pack_2026_06_21_icon_atlas_imagegen",
-      "kind": "icon",
-      "publicPath": "/assets/gpt-bank/ui/game-icons/asset_pack_2026_06_21_icon_atlas_imagegen.png",
-      "width": 1254,
-      "height": 1254,
-      "usage": [
-        "game_icon",
-        "ui"
-      ],
-      "mature": false,
-      "presentation": "normal",
-      "prompt": "Historical SFW game asset (pre-existing from GPT-ASSETS bank). asset pack 2026 06 21 icon atlas imagegen."
-    },
-    {
-      "id": "game_icon_delayed_pay_chest",
-      "kind": "icon",
-      "publicPath": "/assets/gpt-bank/ui/game-icons/game_icon_delayed_pay_chest.png",
-      "width": 192,
-      "height": 192,
-      "usage": [
-        "game_icon",
-        "ui"
-      ],
-      "mature": false,
-      "presentation": "normal",
-      "prompt": "Historical SFW game asset (pre-existing from GPT-ASSETS bank). game icon delayed pay chest."
-    },
-    {
-      "id": "game_icon_fatigue_watch",
-      "kind": "icon",
-      "publicPath": "/assets/gpt-bank/ui/game-icons/game_icon_fatigue_watch.png",
-      "width": 192,
-      "height": 192,
-      "usage": [
-        "game_icon",
-        "ui"
-      ],
-      "mature": false,
-      "presentation": "normal",
-      "prompt": "Historical SFW game asset (pre-existing from GPT-ASSETS bank). game icon fatigue watch."
-    },
-    {
-      "id": "game_icon_field_surgery",
-      "kind": "icon",
-      "publicPath": "/assets/gpt-bank/ui/game-icons/game_icon_field_surgery.png",
-      "width": 192,
-      "height": 192,
-      "usage": [
-        "game_icon",
-        "ui"
-      ],
-      "mature": false,
-      "presentation": "normal",
-      "prompt": "Historical SFW game asset (pre-existing from GPT-ASSETS bank). game icon field surgery."
-    },
-    {
-      "id": "game_icon_morale_honor",
-      "kind": "icon",
-      "publicPath": "/assets/gpt-bank/ui/game-icons/game_icon_morale_honor.png",
-      "width": 192,
-      "height": 192,
-      "usage": [
-        "game_icon",
-        "ui"
-      ],
-      "mature": false,
-      "presentation": "normal",
-      "prompt": "Historical SFW game asset (pre-existing from GPT-ASSETS bank). game icon morale honor."
-    },
-    {
-      "id": "game_icon_powder_barrel",
-      "kind": "icon",
-      "publicPath": "/assets/gpt-bank/ui/game-icons/game_icon_powder_barrel.png",
-      "width": 192,
-      "height": 192,
-      "usage": [
-        "game_icon",
-        "ui"
-      ],
-      "mature": false,
-      "presentation": "normal",
-      "prompt": "Historical SFW game asset (pre-existing from GPT-ASSETS bank). game icon powder barrel."
-    },
-    {
-      "id": "game_icon_sealed_orders",
-      "kind": "icon",
-      "publicPath": "/assets/gpt-bank/ui/game-icons/game_icon_sealed_orders.png",
-      "width": 192,
-      "height": 192,
-      "usage": [
-        "game_icon",
-        "ui"
-      ],
-      "mature": false,
-      "presentation": "normal",
-      "prompt": "Historical SFW game asset (pre-existing from GPT-ASSETS bank). game icon sealed orders."
-    },
-    {
-      "id": "game_icon_supply_cart",
-      "kind": "icon",
-      "publicPath": "/assets/gpt-bank/ui/game-icons/game_icon_supply_cart.png",
-      "width": 192,
-      "height": 192,
-      "usage": [
-        "game_icon",
-        "ui"
-      ],
-      "mature": false,
-      "presentation": "normal",
-      "prompt": "Historical SFW game asset (pre-existing from GPT-ASSETS bank). game icon supply cart."
-    },
-    {
-      "id": "game_icon_tavern_duel",
-      "kind": "icon",
-      "publicPath": "/assets/gpt-bank/ui/game-icons/game_icon_tavern_duel.png",
-      "width": 192,
-      "height": 192,
-      "usage": [
-        "game_icon",
-        "ui"
-      ],
-      "mature": false,
-      "presentation": "normal",
-      "prompt": "Historical SFW game asset (pre-existing from GPT-ASSETS bank). game icon tavern duel."
-    },
-    {
-      "id": "game_icon_wet_boots",
-      "kind": "icon",
-      "publicPath": "/assets/gpt-bank/ui/game-icons/game_icon_wet_boots.png",
-      "width": 192,
-      "height": 192,
-      "usage": [
-        "game_icon",
-        "ui"
-      ],
-      "mature": false,
-      "presentation": "normal",
-      "prompt": "Historical SFW game asset (pre-existing from GPT-ASSETS bank). game icon wet boots."
     },
     {
       "id": "icon_arrow_left",
@@ -7428,32 +7219,6 @@
       "prompt": "Historical SFW game asset (pre-existing from GPT-ASSETS bank). ordinance reserva cerrada."
     },
     {
-      "id": "resource_icon_camp_disease",
-      "kind": "item",
-      "publicPath": "/assets/gpt-bank/ui/resource/resource_icon_camp_disease.png",
-      "width": 192,
-      "height": 192,
-      "usage": [
-        "asset_bank"
-      ],
-      "mature": false,
-      "presentation": "normal",
-      "prompt": "Historical SFW game asset (pre-existing from GPT-ASSETS bank). resource icon camp disease."
-    },
-    {
-      "id": "resource_icon_wounds",
-      "kind": "item",
-      "publicPath": "/assets/gpt-bank/ui/resource/resource_icon_wounds.png",
-      "width": 192,
-      "height": 192,
-      "usage": [
-        "asset_bank"
-      ],
-      "mature": false,
-      "presentation": "normal",
-      "prompt": "Historical SFW game asset (pre-existing from GPT-ASSETS bank). resource icon wounds."
-    },
-    {
       "id": "role_apoyo",
       "kind": "item",
       "publicPath": "/assets/gpt-bank/ui/roles/role_apoyo.png",
@@ -7532,76 +7297,6 @@
       "mature": false,
       "presentation": "normal",
       "prompt": "Historical SFW game asset (pre-existing from GPT-ASSETS bank). role vanguardia."
-    },
-    {
-      "id": "training_arquebus",
-      "kind": "item",
-      "publicPath": "/assets/gpt-bank/ui/training/training_arquebus.png",
-      "width": 512,
-      "height": 512,
-      "usage": [
-        "training",
-        "ui"
-      ],
-      "mature": false,
-      "presentation": "normal",
-      "prompt": "Historical SFW game asset (pre-existing from GPT-ASSETS bank). training arquebus."
-    },
-    {
-      "id": "training_discipline",
-      "kind": "item",
-      "publicPath": "/assets/gpt-bank/ui/training/training_discipline.png",
-      "width": 512,
-      "height": 512,
-      "usage": [
-        "training",
-        "ui"
-      ],
-      "mature": false,
-      "presentation": "normal",
-      "prompt": "Historical SFW game asset (pre-existing from GPT-ASSETS bank). training discipline."
-    },
-    {
-      "id": "training_pike",
-      "kind": "item",
-      "publicPath": "/assets/gpt-bank/ui/training/training_pike.png",
-      "width": 512,
-      "height": 512,
-      "usage": [
-        "training",
-        "ui"
-      ],
-      "mature": false,
-      "presentation": "normal",
-      "prompt": "Historical SFW game asset (pre-existing from GPT-ASSETS bank). training pike."
-    },
-    {
-      "id": "training_sword",
-      "kind": "item",
-      "publicPath": "/assets/gpt-bank/ui/training/training_sword.png",
-      "width": 512,
-      "height": 512,
-      "usage": [
-        "training",
-        "ui"
-      ],
-      "mature": false,
-      "presentation": "normal",
-      "prompt": "Historical SFW game asset (pre-existing from GPT-ASSETS bank). training sword."
-    },
-    {
-      "id": "training_vigor",
-      "kind": "item",
-      "publicPath": "/assets/gpt-bank/ui/training/training_vigor.png",
-      "width": 512,
-      "height": 512,
-      "usage": [
-        "training",
-        "ui"
-      ],
-      "mature": false,
-      "presentation": "normal",
-      "prompt": "Historical SFW game asset (pre-existing from GPT-ASSETS bank). training vigor."
     },
     {
       "id": "weapon_arquebus_common_005",
@@ -9412,9 +9107,9 @@
     {
       "id": "asset_consumable_wine_001",
       "kind": "item",
-      "publicPath": "/assets/gpt-bank/props/food/food_wine_skin_dark.png",
-      "width": 1024,
-      "height": 1024,
+      "publicPath": "/assets/gpt-bank/props/prop_bota_de_vino_003.png",
+      "width": 904,
+      "height": 1041,
       "usage": [
         "item",
         "consumable"
@@ -9454,9 +9149,9 @@
     {
       "id": "asset_consumable_powder_001",
       "kind": "item",
-      "publicPath": "/assets/gpt-bank/ui/game-icons/game_icon_powder_barrel.png",
-      "width": 1024,
-      "height": 1024,
+      "publicPath": "/assets/gpt-bank/props/prop_polvora_humeda_001.png",
+      "width": 1093,
+      "height": 736,
       "usage": [
         "item",
         "consumable"
@@ -9468,9 +9163,9 @@
     {
       "id": "asset_consumable_lead_001",
       "kind": "item",
-      "publicPath": "/assets/gpt-bank/ui/game-icons/game_icon_powder_barrel.png",
-      "width": 1024,
-      "height": 1024,
+      "publicPath": "/assets/gpt-bank/props/prop_piedra_de_mechero_014.png",
+      "width": 729,
+      "height": 1141,
       "usage": [
         "item",
         "consumable"
@@ -9482,9 +9177,9 @@
     {
       "id": "asset_consumable_match_001",
       "kind": "item",
-      "publicPath": "/assets/gpt-bank/ui/game-icons/game_icon_powder_barrel.png",
-      "width": 1024,
-      "height": 1024,
+      "publicPath": "/assets/gpt-bank/props/prop_mechas_de_repuesto_009.png",
+      "width": 866,
+      "height": 1171,
       "usage": [
         "item",
         "consumable"
@@ -9552,9 +9247,9 @@
     {
       "id": "asset_material_powder_001",
       "kind": "item",
-      "publicPath": "/assets/gpt-bank/ui/game-icons/game_icon_powder_barrel.png",
-      "width": 1024,
-      "height": 1024,
+      "publicPath": "/assets/gpt-bank/props/prop_polvora_humeda_001.png",
+      "width": 1093,
+      "height": 736,
       "usage": [
         "item",
         "material"
@@ -9566,9 +9261,9 @@
     {
       "id": "asset_material_lead_001",
       "kind": "item",
-      "publicPath": "/assets/gpt-bank/ui/game-icons/game_icon_powder_barrel.png",
-      "width": 1024,
-      "height": 1024,
+      "publicPath": "/assets/gpt-bank/props/prop_piedra_de_mechero_014.png",
+      "width": 729,
+      "height": 1141,
       "usage": [
         "item",
         "material"
@@ -9953,19 +9648,6 @@
       "mature": false,
       "presentation": "normal",
       "prompt": "Historical SFW game asset, transparent background, gritty historical oil-painting style, period-accurate 16th-17th century early modern Spanish tercios, mud, steel, powder smoke, no modern elements, no fantasy glow, no neon, no anime. single silver coin."
-    },
-    {
-      "id": "asset_icon_honor_001",
-      "kind": "icon",
-      "publicPath": "/assets/gpt-bank/ui/game-icons/game_icon_morale_honor.png",
-      "width": 1024,
-      "height": 1024,
-      "usage": [
-        "ui"
-      ],
-      "mature": false,
-      "presentation": "normal",
-      "prompt": "Historical SFW game asset, transparent background, gritty historical oil-painting style, period-accurate 16th-17th century early modern Spanish tercios, mud, steel, powder smoke, no modern elements, no fantasy glow, no neon, no anime. small honor cross, brass."
     },
     {
       "id": "asset_icon_fatigue_001",

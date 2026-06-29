@@ -3,6 +3,11 @@ import { render, screen } from "@testing-library/react";
 import { FitBadge } from "@/components/ui/fit-badge";
 
 describe("FitBadge", () => {
+  it("matches the snapshot for encaja", () => {
+    const { container } = render(<FitBadge fit="encaja" />);
+    expect(container.firstChild).toMatchSnapshot();
+  });
+
   it("renders 'encaja' with a check icon", () => {
     render(<FitBadge fit="encaja" />);
     expect(screen.getByText("encaja")).toBeInTheDocument();

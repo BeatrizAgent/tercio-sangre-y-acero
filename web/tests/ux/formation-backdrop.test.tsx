@@ -39,6 +39,11 @@ describe("UiArtFrame", () => {
 });
 
 describe("FormationBackdrop", () => {
+  it("matches the snapshot for the default composition", () => {
+    const { container } = render(<FormationBackdrop />);
+    expect(container.firstChild).toMatchSnapshot();
+  });
+
   it("composes field, frame, and camp backdrop when withFrame=true", () => {
     const { container } = render(<FormationBackdrop />);
     expect(container.children.length).toBeGreaterThan(5);

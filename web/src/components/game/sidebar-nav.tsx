@@ -43,19 +43,12 @@ export function SidebarNav() {
 
   useEffect(() => {
     if (!mounted) return;
-    const currentPoints = soldier.actionPoints !== undefined ? soldier.actionPoints : 12;
-    if (currentPoints >= 12 || !soldier.lastRegenAt) {
-      setRegenTimer("");
-      return;
-    }
-
-    const tick = () => {
+    const computeTimer = (): string => {
       const state = useGameStore.getState();
       const s = state.soldier;
       const pts = s.actionPoints !== undefined ? s.actionPoints : 12;
       if (pts >= 12 || !s.lastRegenAt) {
-        setRegenTimer("");
-        return;
+        return "";
       }
 
       const nextRegenTime = new Date(s.lastRegenAt).getTime() + 30 * 60 * 1000;
@@ -63,18 +56,33 @@ export function SidebarNav() {
       const remainingMs = nextRegenTime - now;
 
       if (remainingMs <= 0) {
-        state.hydrateState({ ...state });
-        return;
+        return "";
       }
 
       const minutes = Math.floor(remainingMs / 60000);
       const seconds = Math.floor((remainingMs % 60000) / 1000);
-      setRegenTimer(`${minutes}:${String(seconds).padStart(2, "0")}`);
+      return `${minutes}:${String(seconds).padStart(2, "0")}`;
     };
 
-    tick();
-    const interval = window.setInterval(tick, 1000);
-    return () => window.clearInterval(interval);
+    // Defer the first read by one tick so the effect body only schedules
+    // side effects and never calls setState synchronously (avoids the
+    // "setState in effect" lint and any cascading-render warnings).
+    const initial = window.setTimeout(() => {
+      setRegenTimer(computeTimer());
+    }, 0);
+    const interval = window.setInterval(() => {
+      const next = computeTimer();
+      setRegenTimer((current) => (current === next ? current : next));
+      // When the timer resets to empty, the store has already advanced to
+      // max; trigger a rehydrate so the UI shows the new value immediately.
+      if (next === "" && useGameStore.getState().soldier.actionPoints !== 12) {
+        useGameStore.getState().hydrateState({ ...useGameStore.getState() });
+      }
+    }, 1000);
+    return () => {
+      window.clearTimeout(initial);
+      window.clearInterval(interval);
+    };
   }, [mounted, soldier.actionPoints, soldier.lastRegenAt]);
 
   if (!mounted) {

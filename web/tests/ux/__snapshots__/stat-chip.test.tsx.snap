@@ -1,0 +1,18 @@
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
+
+exports[`StatChip > matches the snapshot 1`] = `
+<span
+  class="inline-flex items-center gap-1 rounded-xs border px-1.5 py-0.5 font-mono transition-colors text-[11px] font-bold border-iron/70 bg-stone-950/60 text-text-muted "
+>
+  <span
+    class="text-[9px] uppercase text-text-muted"
+  >
+    Pica
+  </span>
+  <span
+    class="text-text"
+  >
+    7
+  </span>
+</span>
+`;

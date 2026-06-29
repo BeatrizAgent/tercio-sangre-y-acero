@@ -1,53 +1,49 @@
+// HospitalPage: healing and rest flows. Renders against the real
+// GameState store.
+
 import { describe, expect, it, vi, beforeEach } from "vitest";
 import { render, screen, act } from "@testing-library/react";
 
 const { useGameDataMock, useGameStoreMock } = vi.hoisted(() => {
-  const useGameDataMock = vi.fn();
-  const useGameStoreMock = vi.fn();
-  return { useGameDataMock, useGameStoreMock };
+  return { useGameDataMock: vi.fn(), useGameStoreMock: vi.fn() };
 });
 
 vi.mock("@/lib/hooks/use-game-data", () => ({ useGameData: useGameDataMock }));
 vi.mock("@/lib/game-store", () => ({ useGameStore: useGameStoreMock }));
 
 import HospitalPage from "@/app/hospital/page";
+import { createInitialState } from "@/lib/domain/initial-state";
+import type { GameState } from "@/lib/types";
 
-function baseStore() {
-  return {
-    soldier: {
-      id: "diego_de_arce",
-      name: "Diego de Arce",
-      rank: "bisono",
-      coins: 25,
-      honor: 0,
-      fatigue: 30,
-      unpaidWages: 0,
-      reputation: 0,
-      corruption: 0,
-      banMissionsLeft: 0,
-      stats: { pike: 2, sword: 1, arquebus: 1, discipline: 2, vigor: 2, cunning: 1, command: 0 },
-      inventory: [],
-      equipment: {
-        head: null, body: null, mainHand: null, offHand: null,
-        firearm: null, accessory: null, boots: null, consumable: null,
-      },
-      wounds: [],
+function installRealStore(initial: GameState = createInitialState()) {
+  const state: { current: GameState } = { current: initial };
+  const listeners = new Set<() => void>();
+  useGameStoreMock.mockImplementation((selector?: (s: GameState) => unknown) =>
+    selector ? selector(state.current) : state.current,
+  );
+  Object.assign(useGameStoreMock, {
+    getState: () => state.current,
+    setState: (partial: Partial<GameState> | ((s: GameState) => Partial<GameState>)) => {
+      const update = typeof partial === "function" ? partial(state.current) : partial;
+      state.current = { ...state.current, ...update };
+      listeners.forEach((l) => l());
     },
-    treatWound: vi.fn().mockReturnValue({ ok: true, message: "Herida vendada." }),
-    payTownBribe: vi.fn().mockReturnValue({ ok: true, message: "Soborno aceptado." }),
-  };
+    subscribe: (l: () => void) => {
+      listeners.add(l);
+      return () => listeners.delete(l);
+    },
+  });
+  return state;
 }
 
 describe("HospitalPage", () => {
   beforeEach(() => {
     useGameDataMock.mockReset();
     useGameStoreMock.mockReset();
-    useGameStoreMock.mockImplementation((selector?: (s: ReturnType<typeof baseStore>) => unknown) =>
-      selector ? selector(baseStore()) : baseStore(),
-    );
   });
 
   it("renders the HospitalSkeleton while loading", () => {
+    installRealStore();
     useGameDataMock.mockReturnValue({
       status: "loading",
       error: null,
@@ -60,6 +56,7 @@ describe("HospitalPage", () => {
   });
 
   it("renders the resting panel when ready", async () => {
+    installRealStore();
     useGameDataMock.mockReturnValue({
       status: "ready",
       error: null,
@@ -68,12 +65,10 @@ describe("HospitalPage", () => {
       clearError: vi.fn(),
     });
     const { container } = render(<HospitalPage />);
-    // The page has its own `mounted` flag that flips after a setTimeout(0).
     await act(async () => {
       await new Promise((r) => setTimeout(r, 10));
     });
     expect(container.querySelector(".skeleton-shimmer")).toBeNull();
-    // The page has buttons to rest and treat wounds.
     const buttons = screen.getAllByRole("button");
     expect(buttons.length).toBeGreaterThan(0);
   });

@@ -1,15 +1,11 @@
 import { jsonResponse, optionsResponse } from "@/lib/api/cors";
 import {
   buildSessionCookie,
-  canUseFilesystemSessionFallback,
-  getFilesystemSessionFromToken,
   getPublicIpFromRequest,
-  getSessionFromToken,
-  hashRecoveryToken,
   isRecoveryTokenFormat,
   sessionCookieHeader,
+  touchSessionFromToken,
 } from "@/lib/auth/session";
-import { getDb } from "@/lib/db";
 
 export async function OPTIONS() {
   return optionsResponse();
@@ -23,21 +19,9 @@ export async function POST(request: Request) {
       return jsonResponse({ ok: false, error: "Token invalido." }, { status: 401 });
     }
 
-    const session = await getSessionFromToken(token);
+    const session = await touchSessionFromToken(token, getPublicIpFromRequest(request));
     if (!session) {
       return jsonResponse({ ok: false, error: "Token invalido." }, { status: 401 });
-    }
-
-    const publicIp = getPublicIpFromRequest(request);
-    try {
-      await getDb().user.update({
-        where: { tokenHash: hashRecoveryToken(token) },
-        data: { lastLoginAt: new Date(), lastLoginIp: publicIp },
-      });
-    } catch (error) {
-      if (!canUseFilesystemSessionFallback()) throw error;
-      const filesystemSession = await getFilesystemSessionFromToken(token);
-      if (!filesystemSession) throw error;
     }
 
     return jsonResponse(

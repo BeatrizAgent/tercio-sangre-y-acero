@@ -217,6 +217,7 @@ function itemToLegacy(raw: CatalogRoot["items"][number]): ItemDefinition {
 }
 
 export const itemDefinitions: readonly ItemDefinition[] = catalog.items.map(itemToLegacy);
+const FALLBACK_ITEM_IMAGE = "/assets/gpt-bank/ui/icons/saquito_monedas_documento.png";
 
 export function getItem(itemId: string | undefined) {
   if (!itemId) return undefined;
@@ -237,7 +238,7 @@ export function getItemImagePath(itemId: string): string {
     const a = getAsset(item.assetId);
     if (a) return a.publicPath;
   }
-  return `/assets/generated/icons/${itemId}_v01.png`;
+  return FALLBACK_ITEM_IMAGE;
 }
 
 export function getEquipmentBonuses(equipment: Record<string, string | null>) {

@@ -13,12 +13,11 @@
 "use client";
 
 import { useCallback, useEffect, useState } from "react";
+import { authFetch } from "@/lib/auth/client-session";
 import { useGameStore } from "@/lib/game-store";
 import type { GameState } from "@/lib/types";
 
 export type GameDataStatus = "idle" | "loading" | "ready" | "error";
-
-const missingSessionRedirect = "/login?reason=missing-session";
 
 export interface UseGameDataResult {
   status: GameDataStatus;
@@ -43,7 +42,14 @@ export function useGameData(): UseGameDataResult {
       setErrorState(null);
 
       try {
-        const response = await fetch("/api/game/state", {
+        const refreshResponse = await authFetch("/api/auth/refresh", {
+          cache: "no-store",
+          method: "POST",
+          signal: controller.signal,
+        });
+        if (refreshResponse.status === 401) return;
+
+        const response = await authFetch("/api/game/state", {
           cache: "no-store",
           signal: controller.signal,
         });
@@ -52,15 +58,7 @@ export function useGameData(): UseGameDataResult {
           state?: GameState;
           error?: string;
         };
-
-        if (response.status === 401) {
-          await fetch("/api/auth/logout", {
-            method: "POST",
-            signal: controller.signal,
-          }).catch(() => undefined);
-          window.location.replace(missingSessionRedirect);
-          return;
-        }
+        if (response.status === 401) return;
 
         if (!response.ok || !payload.ok || !payload.state?.soldier) {
           throw new Error(payload.error ?? "No se pudo cargar la partida.");

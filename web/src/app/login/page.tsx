@@ -66,8 +66,9 @@ export default function LoginPage() {
       setMissingSession(new URLSearchParams(window.location.search).get("reason") === "missing-session");
     }, 0);
     fetch("/api/auth/recover-ip", { cache: "no-store" })
-      .then((response) => response.json() as Promise<{ publicIp?: string | null }>)
+      .then((response) => response.json() as Promise<{ publicIp?: string | null; users?: RecoveryCandidate[] }>)
       .then(async (payload) => {
+        setRecoveryCandidates(payload.users ?? []);
         if (payload.publicIp) {
           setPublicIp(payload.publicIp);
           setPublicIpSource("server");
@@ -429,7 +430,7 @@ export default function LoginPage() {
             </div>
             <div className="form-field">
               <label htmlFor="recovery-name" className="form-label">
-                Nombre del soldado
+                Nombre del soldado (opcional)
               </label>
               <input
                 id="recovery-name"
@@ -437,21 +438,13 @@ export default function LoginPage() {
                 onChange={(event) => setRecoveryName(event.target.value)}
                 maxLength={40}
                 className="form-input"
-                placeholder="Opcional si solo hay una cuenta en tu IP"
+                placeholder="Si no lo recuerdas, usa los sugeridos"
               />
             </div>
-            <button
-              type="submit"
-              disabled={busy !== null}
-              className="iron-button mt-1 inline-flex w-full items-center justify-center gap-2 px-3 py-2 text-[11px]"
-            >
-              <LifeBuoy className="h-4 w-4" />
-              Recuperar por IP
-            </button>
             {recoveryCandidates.length > 0 && (
-              <div className="flex flex-col gap-2 border-t border-iron/60 pt-3">
+              <div className="flex flex-col gap-2 border border-iron/60 bg-background/60 px-3 py-2">
                 <p className="font-mono text-[9px] uppercase tracking-wider text-text-muted">
-                  Personajes encontrados en esta IP
+                  Soldados sugeridos por tu IP
                 </p>
                 <div className="grid gap-2">
                   {recoveryCandidates.map((candidate) => (
@@ -469,6 +462,14 @@ export default function LoginPage() {
                 </div>
               </div>
             )}
+            <button
+              type="submit"
+              disabled={busy !== null}
+              className="iron-button mt-1 inline-flex w-full items-center justify-center gap-2 px-3 py-2 text-[11px]"
+            >
+              <LifeBuoy className="h-4 w-4" />
+              Recuperar por IP
+            </button>
             {recoveredToken && (
               <p className="font-mono text-[10px] uppercase leading-5 tracking-wider text-text-muted">
                 Token nuevo de <strong className="text-gold-soft">{recoveredName ?? "tu soldado"}</strong>:{" "}

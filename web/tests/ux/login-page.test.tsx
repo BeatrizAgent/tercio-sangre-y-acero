@@ -57,6 +57,29 @@ describe("LoginPage", () => {
     expect(await screen.findByText("203.0.113.9")).toBeInTheDocument();
   });
 
+  it("suggests account names found for the detected public IP", async () => {
+    vi.stubGlobal(
+      "fetch",
+      vi.fn().mockResolvedValue({
+        ok: true,
+        json: async () => ({
+          ok: true,
+          publicIp: "203.0.113.9",
+          users: [
+            { id: "user-1", name: "Diego de Arce" },
+            { id: "user-2", name: "Alonso de Vera" },
+          ],
+        }),
+      }),
+    );
+
+    render(<LoginPage />);
+
+    expect(await screen.findByText("Soldados sugeridos por tu IP")).toBeInTheDocument();
+    expect(screen.getByRole("button", { name: "Diego de Arce" })).toBeInTheDocument();
+    expect(screen.getByRole("button", { name: "Alonso de Vera" })).toBeInTheDocument();
+  });
+
   it("shows a copyable token after character creation", async () => {
     const user = userEvent.setup();
     render(<LoginPage />);
@@ -148,6 +171,41 @@ describe("LoginPage", () => {
       body: JSON.stringify({ name: "Alonso de Vera" }),
     });
     expect(await screen.findByText("tercio_candidateabcdefghijklmnopqrstuvwxyz")).toBeInTheDocument();
+  });
+
+  it("recovers a suggested account without typing the soldier name", async () => {
+    const user = userEvent.setup();
+    const fetchMock = vi
+      .fn()
+      .mockResolvedValueOnce({
+        ok: true,
+        status: 200,
+        json: async () => ({
+          ok: true,
+          publicIp: "203.0.113.9",
+          users: [{ id: "user-1", name: "Diego de Arce" }],
+        }),
+      })
+      .mockResolvedValueOnce({
+        ok: true,
+        status: 200,
+        json: async () => ({
+          ok: true,
+          token: "tercio_suggestedabcdefghijklmnopqrstuvwxyz",
+          user: { id: "user-1", name: "Diego de Arce" },
+        }),
+      });
+    vi.stubGlobal("fetch", fetchMock);
+
+    render(<LoginPage />);
+    await user.click(await screen.findByRole("button", { name: "Diego de Arce" }));
+
+    expect(fetchMock).toHaveBeenNthCalledWith(2, "/api/auth/recover-ip", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ name: "Diego de Arce" }),
+    });
+    expect(await screen.findByText("tercio_suggestedabcdefghijklmnopqrstuvwxyz")).toBeInTheDocument();
   });
 
   it("falls back to a browser-visible public IP when the server cannot detect one", async () => {

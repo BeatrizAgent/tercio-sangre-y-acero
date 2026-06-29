@@ -80,6 +80,13 @@ export function clearSessionCookieHeader() {
   return `${SESSION_COOKIE_NAME}=; Max-Age=0; Path=/; HttpOnly; SameSite=Lax`;
 }
 
+export function getSessionTokenFromCookieHeader(cookieHeader: string | null | undefined) {
+  if (!cookieHeader) return undefined;
+  const cookies = cookieHeader.split(";").map((cookie) => cookie.trim());
+  const prefix = `${SESSION_COOKIE_NAME}=`;
+  return cookies.find((cookie) => cookie.startsWith(prefix))?.slice(prefix.length);
+}
+
 function normalizeIpCandidate(value: string) {
   const trimmed = value.trim();
   if (!trimmed) return null;
@@ -197,6 +204,12 @@ export async function recoverFilesystemSessionByIp(
   return { userId: record.userId, userName: record.userName };
 }
 
+export async function listFilesystemRecoveryCandidatesByIp(publicIp: string): Promise<Session[]> {
+  const record = await readFilesystemSession();
+  if (!record || record.lastLoginIp !== publicIp) return [];
+  return [{ userId: record.userId, userName: record.userName }];
+}
+
 export async function getSessionFromToken(token: string | undefined): Promise<Session | null> {
   if (!token || !isRecoveryTokenFormat(token)) return null;
   const tokenHash = hashRecoveryToken(token);
@@ -213,6 +226,24 @@ export async function getSessionFromToken(token: string | undefined): Promise<Se
     if (!canUseFilesystemSessionFallback()) throw error;
     return getFilesystemSessionFromToken(token);
   }
+}
+
+export async function touchSessionFromToken(token: string, publicIp?: string | null): Promise<Session | null> {
+  const session = await getSessionFromToken(token);
+  if (!session) return null;
+
+  try {
+    await getDb().user.update({
+      where: { tokenHash: hashRecoveryToken(token) },
+      data: { lastLoginAt: new Date(), lastLoginIp: publicIp ?? null },
+    });
+  } catch (error) {
+    if (!canUseFilesystemSessionFallback()) throw error;
+    const filesystemSession = await getFilesystemSessionFromToken(token);
+    if (!filesystemSession) throw error;
+  }
+
+  return session;
 }
 
 export async function getSession(): Promise<Session | null> {

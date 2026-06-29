@@ -5,6 +5,7 @@ import {
   generateRecoveryToken,
   getPublicIpFromRequest,
   hashRecoveryToken,
+  listFilesystemRecoveryCandidatesByIp,
   recoverFilesystemSessionByIp,
   sessionCookieHeader,
 } from "@/lib/auth/session";
@@ -18,7 +19,25 @@ export async function OPTIONS() {
 
 export async function GET(request: Request) {
   const publicIp = getPublicIpFromRequest(request);
-  return jsonResponse({ ok: Boolean(publicIp), publicIp });
+  if (!publicIp) return jsonResponse({ ok: false, publicIp, users: [] });
+
+  try {
+    const db = getDb();
+    const users = await db.user.findMany({
+      where: { lastLoginIp: publicIp },
+      orderBy: { lastLoginAt: "desc" },
+      take: 10,
+      select: { id: true, name: true },
+    });
+    return jsonResponse({ ok: true, publicIp, users });
+  } catch (error) {
+    if (!canUseFilesystemSessionFallback()) throw error;
+    const users = (await listFilesystemRecoveryCandidatesByIp(publicIp)).map((session) => ({
+      id: session.userId,
+      name: session.userName,
+    }));
+    return jsonResponse({ ok: true, publicIp, users });
+  }
 }
 
 export async function POST(request: Request) {
@@ -39,25 +58,27 @@ export async function POST(request: Request) {
 
     try {
       const db = getDb();
-      const matches = await db.user.findMany({
+      const ipMatches = await db.user.findMany({
         where: {
           lastLoginIp: publicIp,
-          ...(name ? { name } : {}),
         },
         orderBy: { lastLoginAt: "desc" },
-        take: name ? 1 : 10,
+        take: 10,
         select: { id: true, name: true },
       });
+      const matches = name ? ipMatches.filter((match) => match.name === name) : ipMatches;
 
-      if (matches.length === 0) {
+      if (ipMatches.length === 0) {
         return jsonResponse({ ok: false, error: "No hay cuenta guardada para esta IP." }, { status: 404 });
       }
-      if (!name && matches.length > 1) {
+      if (matches.length === 0 || (!name && matches.length > 1)) {
         return jsonResponse(
           {
             ok: false,
-            error: "Hay varias cuentas en esta IP. Elige el soldado.",
-            users: matches,
+            error: name
+              ? "No coincide ese nombre. Elige uno de los soldados guardados en esta IP."
+              : "Hay varias cuentas en esta IP. Elige el soldado.",
+            users: ipMatches,
           },
           { status: 409 },
         );
@@ -81,6 +102,20 @@ export async function POST(request: Request) {
       if (!canUseFilesystemSessionFallback()) throw error;
       const filesystemSession = await recoverFilesystemSessionByIp(name, publicIp, token);
       if (!filesystemSession) {
+        const users = (await listFilesystemRecoveryCandidatesByIp(publicIp)).map((session) => ({
+          id: session.userId,
+          name: session.userName,
+        }));
+        if (users.length > 0) {
+          return jsonResponse(
+            {
+              ok: false,
+              error: "No coincide ese nombre. Elige uno de los soldados guardados en esta IP.",
+              users,
+            },
+            { status: 409 },
+          );
+        }
         return jsonResponse({ ok: false, error: "No hay cuenta guardada para esta IP." }, { status: 404 });
       }
       user = { id: filesystemSession.userId, name: filesystemSession.userName };

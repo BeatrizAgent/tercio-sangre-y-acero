@@ -13,6 +13,16 @@ import { getDb } from "@/lib/db";
 
 type RecoveryUser = { id: string; name: string };
 
+function normalizePublicIpHint(value: unknown) {
+  if (typeof value !== "string") return null;
+  const trimmed = value.trim();
+  return trimmed.length > 0 && trimmed.length <= 80 ? trimmed : null;
+}
+
+function uniqueIps(...values: Array<string | null | undefined>) {
+  return Array.from(new Set(values.filter((value): value is string => Boolean(value))));
+}
+
 export async function OPTIONS() {
   return optionsResponse();
 }
@@ -44,8 +54,9 @@ export async function POST(request: Request) {
   try {
     const body = (await request.json().catch(() => ({}))) as { name?: string; publicIpHint?: string };
     const name = body.name?.trim().replace(/\s+/g, " ");
-    const publicIp = getPublicIpFromRequest(request) ?? (canUseFilesystemSessionFallback() ? body.publicIpHint : null);
-    if (!publicIp) {
+    const requestIp = getPublicIpFromRequest(request);
+    const ipCandidates = uniqueIps(requestIp, normalizePublicIpHint(body.publicIpHint));
+    if (ipCandidates.length === 0) {
       return jsonResponse(
         { ok: false, error: "No se pudo detectar una IP publica para recuperar la cuenta." },
         { status: 400 },
@@ -55,17 +66,24 @@ export async function POST(request: Request) {
     const token = generateRecoveryToken();
     const tokenHash = hashRecoveryToken(token);
     let user: RecoveryUser | null = null;
+    let publicIp = ipCandidates[0] ?? null;
 
     try {
       const db = getDb();
-      const ipMatches = await db.user.findMany({
-        where: {
-          lastLoginIp: publicIp,
-        },
-        orderBy: { lastLoginAt: "desc" },
-        take: 10,
-        select: { id: true, name: true },
-      });
+      let ipMatches: RecoveryUser[] = [];
+      for (const candidateIp of ipCandidates) {
+        const matches = await db.user.findMany({
+          where: { lastLoginIp: candidateIp },
+          orderBy: { lastLoginAt: "desc" },
+          take: 10,
+          select: { id: true, name: true },
+        });
+        if (matches.length > 0 || candidateIp === ipCandidates[ipCandidates.length - 1]) {
+          publicIp = candidateIp;
+          ipMatches = matches;
+          break;
+        }
+      }
       const matches = name ? ipMatches.filter((match) => match.name === name) : ipMatches;
 
       if (ipMatches.length === 0) {
@@ -100,12 +118,26 @@ export async function POST(request: Request) {
       });
     } catch (error) {
       if (!canUseFilesystemSessionFallback()) throw error;
-      const filesystemSession = await recoverFilesystemSessionByIp(name, publicIp, token);
+      let filesystemSession = null;
+      for (const candidateIp of ipCandidates) {
+        filesystemSession = await recoverFilesystemSessionByIp(name, candidateIp, token);
+        if (filesystemSession) {
+          publicIp = candidateIp;
+          break;
+        }
+      }
       if (!filesystemSession) {
-        const users = (await listFilesystemRecoveryCandidatesByIp(publicIp)).map((session) => ({
-          id: session.userId,
-          name: session.userName,
-        }));
+        let users: RecoveryUser[] = [];
+        for (const candidateIp of ipCandidates) {
+          users = (await listFilesystemRecoveryCandidatesByIp(candidateIp)).map((session) => ({
+            id: session.userId,
+            name: session.userName,
+          }));
+          if (users.length > 0) {
+            publicIp = candidateIp;
+            break;
+          }
+        }
         if (users.length > 0) {
           return jsonResponse(
             {

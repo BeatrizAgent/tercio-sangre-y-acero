@@ -296,6 +296,29 @@ async function main() {
     }
   }
 
+  // Auth recover IP: browser-visible IP hint is a production fallback when proxy IP has no account.
+  {
+    const recoveryToken = generateRecoveryToken();
+    await createFilesystemSession("Diego de Arce", recoveryToken, "203.0.113.77");
+    const r = await callRoute((authRecoverIpRoute as { POST: (req: Request) => Promise<Response> }).POST, {
+      method: "POST",
+      headers: {
+        "content-type": "application/json",
+        "x-forwarded-for": "198.51.100.9",
+      },
+      body: JSON.stringify({ publicIpHint: "203.0.113.77" }),
+    });
+    if (r.status !== 200) failures.push(`auth/recover-ip browser hint returned ${r.status}, expected 200`);
+    if (typeof r.body === "object" && r.body !== null) {
+      const obj = r.body as Record<string, unknown>;
+      if (obj.ok !== true) failures.push("auth/recover-ip browser hint body.ok is not true");
+      const user = obj.user as Record<string, unknown> | undefined;
+      if (user?.name !== "Diego de Arce") {
+        failures.push("auth/recover-ip browser hint did not recover hinted-IP account");
+      }
+    }
+  }
+
   // Game state: 401 when no cookie is set (the demo fallback throws
   // UnauthorizedError when no session and no filesystem state).
   {

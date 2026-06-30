@@ -38,6 +38,16 @@ export type ArenaBotProfile = Prisma.ArenaBotProfileModel
  */
 export type GameSave = Prisma.GameSaveModel
 /**
+ * Model PlayerStoryProgress
+ *
+ */
+export type PlayerStoryProgress = Prisma.PlayerStoryProgressModel
+/**
+ * Model StoryReport
+ *
+ */
+export type StoryReport = Prisma.StoryReportModel
+/**
  * Model CharacterName
  *
  */

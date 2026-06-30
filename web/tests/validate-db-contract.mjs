@@ -18,6 +18,8 @@ const requiredModels = [
   "CharacterDefinition",
   "RecruitmentCandidateDefinition",
   "TrainingDefinition",
+  "PlayerStoryProgress",
+  "StoryReport",
 ];
 
 for (const model of requiredModels) {
@@ -38,6 +40,9 @@ const requiredSchemaTokens = [
   "region       String?",
   "treatmentItems Json",
   "@@unique([shopId, itemId])",
+  "@@unique([soldierId, arcId])",
+  "completedChapterIds String[]",
+  "choiceId            String?",
 ];
 
 for (const token of requiredSchemaTokens) {
@@ -54,6 +59,11 @@ const requiredSeedTokens = [
   "catalogTraining",
   "upsert",
 ];
+
+const packageJson = JSON.parse(fs.readFileSync(path.join(root, "package.json"), "utf8"));
+if (packageJson.scripts?.["debug:user"] !== "tsx scripts/create-debug-user.ts") {
+  failures.push("package missing debug:user script");
+}
 
 for (const token of requiredSeedTokens) {
   if (!seed.includes(token)) failures.push(`seed missing token ${token}`);

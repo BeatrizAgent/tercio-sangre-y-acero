@@ -11,3 +11,4 @@ export * from "./market";
 export * from "./gate";
 export * from "./wounds";
 export * from "./reset";
+export * from "./story";

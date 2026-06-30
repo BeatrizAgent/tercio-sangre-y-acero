@@ -11,6 +11,7 @@ import { spriteSetDefinitions } from "../src/lib/data/characters";
 import { normalizeCharacterName, validateCharacterNamePools } from "../src/lib/domain/names";
 import { buildArenaBotStats, getArenaBotTargetLevel, xpForArenaBotLevel } from "../src/lib/domain/arena-bots";
 import { getSoldierLevel } from "../src/lib/domain/recruitment";
+import { toStoryProgressRecord } from "../src/lib/server/story-persistence";
 import { buildSystemAuctionPlan, getNextSystemAuctionEnd, SYSTEM_AUCTION_COUNT, systemAuctionStartingBid } from "../src/lib/server/system-auction-plan";
 import {
   catalogAssets,
@@ -445,7 +446,7 @@ async function seedDemoSave() {
 
   const initialState = createInitialState();
 
-  await prisma.soldier.upsert({
+  const soldier = await prisma.soldier.upsert({
     where: { userId: user.id },
     update: {},
     create: {
@@ -470,6 +471,19 @@ async function seedDemoSave() {
       inventory: {
         create: initialState.soldier.inventory.map(({ itemId, quantity }) => ({ itemId, quantity })),
       },
+    },
+  });
+
+  const storyProgress = toStoryProgressRecord(initialState.storyProgress);
+  await prisma.playerStoryProgress.upsert({
+    where: { soldierId_arcId: { soldierId: soldier.id, arcId: storyProgress.arcId } },
+    update: {},
+    create: {
+      soldierId: soldier.id,
+      arcId: storyProgress.arcId,
+      currentChapterId: storyProgress.currentChapterId,
+      completedChapterIds: [...storyProgress.completedChapterIds],
+      choices: json(storyProgress.choices),
     },
   });
 

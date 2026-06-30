@@ -5,6 +5,7 @@
 
 import { useGameStore } from "@/lib/game-store";
 import { getItem, getItemImagePath } from "@/lib/data/items";
+import { trainingAssetPaths } from "@/lib/data/ui-paths";
 import { STAT_INFO } from "@/lib/stats";
 import { passiveShortLine, rarityStyle, TRIGGER_LABEL } from "@/lib/item-format";
 import { UiAssetIcon } from "../ui-asset-icon";
@@ -19,12 +20,6 @@ const SLOT_LABEL: Record<string, string> = {
   boots: "Calzado",
   accessory: "Reliquia / Accesorio",
   consumable: "Consumible",
-};
-
-const TREATMENT_LABEL: Record<string, string> = {
-  objeto_002: "Venda de lino",
-  clean_bandage: "Venda de lino",
-  wine_skin: "Odre de Vino",
 };
 
 export function ItemTooltipContent({ itemId }: { itemId?: string }) {
@@ -48,25 +43,25 @@ export function ItemTooltipContent({ itemId }: { itemId?: string }) {
 
   return (
     <div className="w-72 p-4 space-y-3">
-      <div className="flex gap-3 items-start pb-2.5 border-b border-iron/40">
-        <div className="h-12 w-12 shrink-0 overflow-hidden border border-iron bg-stone-900/90 rounded-xs flex items-center justify-center p-1">
+      <div className="grid grid-cols-[48px_minmax(0,1fr)] gap-3 items-start pb-2.5 border-b border-iron/40">
+        <div className="asset-icon-frame h-12 w-12 shrink-0 overflow-hidden rounded-xs p-1">
           <img
             src={getItemImagePath(itemId)}
             alt={item.name}
-            className="w-full h-full object-contain"
+            className="asset-icon-image h-full w-full object-contain"
             onError={(e) => {
               e.currentTarget.style.display = "none";
             }}
           />
         </div>
         <div className="min-w-0">
-          <div className="flex items-center gap-1.5">
-            <h4 className="font-cinzel font-bold text-gold text-sm truncate leading-tight">
+          <div className="flex min-w-0 items-start gap-1.5">
+            <h4 className="min-w-0 flex-1 truncate font-cinzel text-sm font-bold leading-tight text-gold">
               {item.name}
             </h4>
             {item.rarity && (
               <span
-                className={`text-[8px] font-mono font-bold uppercase tracking-widest border px-1 rounded-xs ${rarity.ring} ${rarity.color} ${rarity.bg}`}
+                className={`shrink-0 rounded-xs border px-1 font-mono text-[8px] font-bold uppercase tracking-widest ${rarity.ring} ${rarity.color} ${rarity.bg}`}
               >
                 {rarity.label}
               </span>
@@ -129,10 +124,22 @@ export function ItemTooltipContent({ itemId }: { itemId?: string }) {
             return (
               <div
                 key={key}
-                className="flex justify-between items-center py-0.5 border-b border-iron/10 last:border-0"
+                className="grid grid-cols-[minmax(0,1fr)_auto] items-center gap-2 py-1 border-b border-iron/10 last:border-0"
               >
-                <span className="capitalize text-text-muted">{statLabel}</span>
-                <span className="font-bold flex items-center gap-1.5">
+                <span className="flex min-w-0 items-center gap-1.5 text-text-muted">
+                  {trainingAssetPaths[key] && (
+                    <span className="inline-flex h-4 w-4 shrink-0 items-center justify-center rounded-xs border border-iron/35 bg-stone-950/65 p-0.5">
+                      <img
+                        src={trainingAssetPaths[key]}
+                        alt=""
+                        className="h-full w-full object-contain"
+                        draggable={false}
+                      />
+                    </span>
+                  )}
+                  <span className="truncate capitalize">{statLabel}</span>
+                </span>
+                <span className="flex shrink-0 items-center gap-1.5 font-bold leading-none">
                   <span className={val > 0 ? "text-success" : val < 0 ? "text-danger" : "text-text"}>
                     {sign}
                     {val}
@@ -159,9 +166,9 @@ export function ItemTooltipContent({ itemId }: { itemId?: string }) {
 
       <div className="flex justify-between items-center text-[10px] font-mono border-t border-iron/40 pt-2 text-text-muted">
         <span>Valor Sugerido</span>
-        <span className="text-gold font-bold flex items-center gap-0.5">
-          <UiAssetIcon id="coins" label="" className="h-4 w-4" />
-          {item.value} dob.
+        <span className="inline-flex shrink-0 items-center gap-1 text-gold font-bold leading-none">
+          <UiAssetIcon id="coins" label="" className="h-4 w-4 shrink-0" />
+          <span>{item.value} dob.</span>
         </span>
       </div>
     </div>

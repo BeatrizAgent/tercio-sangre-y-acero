@@ -4,11 +4,12 @@ import React from "react";
 import { Backpack } from "lucide-react";
 import { Tooltip } from "@/components/ui/tooltip";
 import { getItem, getItemFootprint, getItemImagePath } from "@/lib/game-data";
-import { ItemChestGrid, PLAYER_CHEST_GRID, footprintPx } from "@/components/soldier/item-chest-grid";
+import { ItemChestGrid, PLAYER_CHEST_GRID, footprintPx, type ChestDropPreview } from "@/components/soldier/item-chest-grid";
 import {
   BACKPACK_CHESTS,
   BACKPACK_COLS,
   BACKPACK_ROWS,
+  canPlaceItem,
 } from "@/lib/domain/inventory-grid";
 import type { Equipment, InventoryItem } from "@/lib/types";
 
@@ -55,6 +56,7 @@ export function InventoryChest({
 }: InventoryChestProps) {
   const capacity = BACKPACK_COLS * BACKPACK_ROWS;
   const gridHostRef = React.useRef<HTMLDivElement>(null);
+  const [dropPreview, setDropPreview] = React.useState<ChestDropPreview | null>(null);
   const [gridHostWidth, setGridHostWidth] = React.useState(() => {
     if (typeof window !== "undefined" && window.innerWidth >= 1280) {
       return 332;
@@ -83,11 +85,60 @@ export function InventoryChest({
     return () => observer.disconnect();
   }, []);
 
+  const updateDropPreview = React.useCallback(
+    (x: number, y: number) => {
+      if (!draggingItemId) {
+        setDropPreview(null);
+        return;
+      }
+
+      const item = getItem(draggingItemId);
+      if (!item) {
+        setDropPreview(null);
+        return;
+      }
+
+      const footprint = getItemFootprint(item);
+      setDropPreview({
+        itemId: draggingItemId,
+        x,
+        y,
+        cols: footprint.cols,
+        rows: footprint.rows,
+        valid: canPlaceItem(
+          items,
+          draggingItemId,
+          x,
+          y,
+          BACKPACK_COLS,
+          BACKPACK_ROWS,
+          draggingItemId,
+          activeChest,
+        ),
+      });
+    },
+    [activeChest, draggingItemId, items],
+  );
+
   return (
     <section
       onDragOver={readOnly ? undefined : onDragOverBackpack}
-      onDragLeave={readOnly ? undefined : onDragLeaveBackpack}
-      onDrop={readOnly ? undefined : onDropBackpack}
+      onDragLeave={
+        readOnly
+          ? undefined
+          : () => {
+              setDropPreview(null);
+              onDragLeaveBackpack();
+            }
+      }
+      onDrop={
+        readOnly
+          ? undefined
+          : (event) => {
+              setDropPreview(null);
+              onDropBackpack(event);
+            }
+      }
       className={`min-w-0 w-full max-w-full overflow-hidden bg-panel border border-iron rounded-xs p-3 shadow-md transition-all ${
         isOverBackpack ? "ring-2 ring-gold/40" : ""
       }`}
@@ -139,15 +190,24 @@ export function InventoryChest({
         <ItemChestGrid
           metrics={gridMetrics}
           inventory={items.filter((entry) => (entry.chest ?? 0) === activeChest)}
+          dropPreview={draggingItemId ? dropPreview : null}
           onCellDragOver={
             readOnly
               ? undefined
-              : (event) => {
+              : (x, y, event) => {
                   event.preventDefault();
+                  updateDropPreview(x, y);
                   onDragOverBackpack(event);
                 }
           }
-          onCellDrop={readOnly ? undefined : onCellDrop}
+          onCellDrop={
+            readOnly
+              ? undefined
+              : (x, y, event) => {
+                  setDropPreview(null);
+                  onCellDrop(x, y, event);
+                }
+          }
           renderItem={(invItem, metrics) => {
               if (invItem.x === undefined || invItem.y === undefined) return null;
               const item = getItem(invItem.itemId);
@@ -170,7 +230,10 @@ export function InventoryChest({
                       onDoubleClick={() => onDoubleClickItem?.(invItem.itemId)}
                       draggable={!readOnly}
                       onDragStart={(event) => onDragStart(invItem.itemId, event)}
-                      onDragEnd={onDragEnd}
+                      onDragEnd={() => {
+                        setDropPreview(null);
+                        onDragEnd();
+                      }}
                       className={`relative flex h-full w-full cursor-pointer items-center justify-center rounded-xs border bg-stone-950/40 p-1 transition-all hover:bg-stone-950/70 ${
                         isSelected
                           ? "border-gold bg-panel-raised shadow-[0_0_6px_rgba(201,162,79,0.4)]"

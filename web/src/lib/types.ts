@@ -202,6 +202,50 @@ export interface GameEvent {
   choices: EventChoice[];
 }
 
+export interface StoryChoice {
+  id: string;
+  label: string;
+  requirements?: {
+    coins?: number;
+    items?: { itemId: string; quantity: number }[];
+  };
+  effects: {
+    coins?: number;
+    xp?: number;
+    honor?: number;
+    fatigue?: number;
+    reputation?: number;
+    corruption?: number;
+    wound?: string;
+    items?: { itemId: string; quantity: number }[];
+  };
+  resultText: string;
+}
+
+export interface StoryChapter {
+  id: string;
+  title: string;
+  text: string;
+  sceneAssetId?: string;
+  mature?: boolean;
+  presentation?: AssetPresentation;
+  choices: StoryChoice[];
+}
+
+export interface StoryProgress {
+  arcId: string;
+  currentChapterId: string;
+  completedChapterIds: string[];
+  choices: Record<string, string>;
+}
+
+export interface StoryArc {
+  id: string;
+  title: string;
+  subtitle: string;
+  chapters: StoryChapter[];
+}
+
 export type RegionId = "italia" | "africa" | "flandes" | "francia" | "inglaterra";
 
 export interface MissionDefinition {
@@ -377,6 +421,7 @@ export interface GameState {
     status: "active" | "claimed" | "cancelled";
     resultId?: string | null;
   } | null;
+  storyProgress?: StoryProgress;
   shop?: {
     armoryNextRefreshAt?: string;
     churchNextRefreshAt?: string;

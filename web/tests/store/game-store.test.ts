@@ -67,6 +67,8 @@ async function main() {
     assert.ok(typeof store.buyItem === "function", "buyItem action exists");
     assert.ok(typeof store.equipItem === "function", "equipItem action exists");
     assert.ok(typeof store.startMission === "function", "startMission action exists");
+    assert.ok(typeof store.resolveStoryChoice === "function", "resolveStoryChoice action exists");
+    assert.equal(store.storyProgress?.currentChapterId, "prologue_village", "story starts at prologue");
   }
 
   {
@@ -299,6 +301,17 @@ async function main() {
     assert.equal(out.ok, true);
     // Honor at least reflects the choice effect (could be higher from mission).
     assert.ok(useGameStore.getState().soldier.honor >= beforeHonor);
+  }
+
+  // resolveStoryChoice happy path ------------------------------------
+
+  {
+    useGameStore.getState().resetState();
+    const beforeXp = useGameStore.getState().soldier.xp;
+    const out = useGameStore.getState().resolveStoryChoice("prologue_village", "take_bread");
+    assert.equal(out.ok, true, "story choice succeeds");
+    assert.equal(useGameStore.getState().soldier.xp, beforeXp + 6, "story grants xp");
+    assert.equal(useGameStore.getState().storyProgress?.currentChapterId, "prologue_recruiter", "story advances");
   }
 
   // applyServerEvent: exhaustive -------------------------------------

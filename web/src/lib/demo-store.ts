@@ -69,7 +69,7 @@ export function createInitialState(portraitAssetId?: string): GameState {
         }
       : character,
   );
-  return state;
+  return normalizeGameState(state);
 }
 
 export async function getState(): Promise<GameState> {

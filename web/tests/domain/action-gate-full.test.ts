@@ -98,7 +98,7 @@ const secret = "extended_test_secret";
 
 {
   // Every ActionGateKind round-trips.
-  const kinds: ActionGateKind[] = ["mission", "arena", "event"];
+  const kinds: ActionGateKind[] = ["mission", "arena", "event", "story"];
   for (const kind of kinds) {
     const gate = prepareActionGate({ kind, targetId: "x", nowMs: now, waitMs: 1_000, secret });
     const out = verifyActionGate({ token: gate.token, kind, targetId: "x", nowMs: now + 1_000, secret });

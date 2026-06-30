@@ -1,6 +1,6 @@
 import { createHmac, timingSafeEqual } from "node:crypto";
 
-export type ActionGateKind = "mission" | "arena" | "event";
+export type ActionGateKind = "mission" | "arena" | "event" | "story";
 
 const DEFAULT_WAIT_MS = 10_000;
 

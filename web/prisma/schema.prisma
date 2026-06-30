@@ -56,6 +56,8 @@ model Soldier {
   arenaBotProfile ArenaBotProfile?
   activeMission   ActiveMission?
   messages        GameMessage[]
+  storyProgress   PlayerStoryProgress[]
+  storyReports    StoryReport[]
 }
 
 model ArenaBotProfile {
@@ -80,6 +82,38 @@ model GameSave {
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
   user      User     @relation(fields: [userId], references: [id])
+}
+
+model PlayerStoryProgress {
+  id                  String   @id @default(cuid())
+  soldierId           String
+  arcId               String
+  currentChapterId    String
+  completedChapterIds String[]
+  choices             Json
+  createdAt           DateTime @default(now())
+  updatedAt           DateTime @updatedAt
+  soldier             Soldier  @relation(fields: [soldierId], references: [id])
+
+  @@unique([soldierId, arcId])
+  @@index([arcId, currentChapterId])
+}
+
+model StoryReport {
+  id        String   @id
+  soldierId String
+  arcId     String
+  chapterId String
+  choiceId            String?
+  report    String
+  rewards   Json
+  wounds    Json
+  loot      Json
+  createdAt DateTime @default(now())
+  soldier   Soldier  @relation(fields: [soldierId], references: [id])
+
+  @@index([soldierId, createdAt])
+  @@index([soldierId, arcId])
 }
 
 model CharacterName {

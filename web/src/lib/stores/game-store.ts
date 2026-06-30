@@ -32,6 +32,7 @@ import { recruitCandidateInState } from "../domain/recruitment";
 import { eventDefinitions } from "../data/events";
 import { getItem, getMission } from "../data";
 import { regenerateActionPoints } from "../domain/action-points";
+import { normalizeStoryProgress, resolveStoryChoiceInState } from "../domain/story";
 import type { ActionResult } from "../domain/result";
 import type { EquipmentSlot, InventoryItem, StatId } from "../types";
 import type { CharacterState, Soldier } from "../types";
@@ -68,7 +69,7 @@ export function normalizeGameState(state: GameState): GameState {
     soldier = regen.soldier;
   }
 
-  return rosterWithSoldier({ ...state, soldier });
+  return rosterWithSoldier({ ...state, soldier, storyProgress: normalizeStoryProgress(state.storyProgress) });
 }
 
 export function createInitialState(
@@ -116,6 +117,7 @@ export function createInitialState(
     arenaResults: [],
     activeEvent: null,
     pendingMissionId: null,
+    storyProgress: normalizeStoryProgress(undefined),
     // Multiplayer fields stay undefined in single-player state; lib/realtime/*
     // will populate them when Django Channels is wired up.
   };
@@ -140,6 +142,7 @@ export interface GameStore extends GameState {
   fightArenaOpponent: (opponentId: string) => ActionResult<{ resultId?: string }>;
   recruitCandidate: (candidateId: string) => ActionResult;
   resolveActiveEventChoice: (choiceId: string) => ActionResult<{ reportId?: string }>;
+  resolveStoryChoice: (chapterId: string, choiceId: string) => ActionResult<{ reportId?: string }>;
   payTownBribe: () => ActionResult;
   treatWound: (woundInstanceId: string) => ActionResult;
   /**
@@ -454,6 +457,19 @@ export const useGameStore = create<GameStore>()(
         return result;
       },
 
+      resolveStoryChoice: (chapterId, choiceId) => {
+        let result: ActionResult<{ reportId?: string }> = {
+          ok: false,
+          message: "Capitulo desconocido.",
+        };
+        set((state) => {
+          const out = resolveStoryChoiceInState({ state, chapterId, choiceId });
+          result = out.result;
+          return out.next;
+        });
+        return result;
+      },
+
       payTownBribe: () => {
         let result: ActionResult = { ok: false, message: "No estás expulsado del pueblo." };
         set((state) => {
@@ -543,6 +559,7 @@ export const useGameStore = create<GameStore>()(
         rehydrated.soldier = healed.soldier;
         rehydrated.characters = healed.characters;
         rehydrated.activeCharacterId = healed.activeCharacterId;
+        rehydrated.storyProgress = healed.storyProgress;
       },
     },
   ),

@@ -1,7 +1,6 @@
 // MissionsSkeleton: layout-mirroring placeholder for /missions.
-// Mirrors the header, the world-map region grid (when no region is
-// selected), and the region panel with its boss list (when a
-// region is selected). The caller decides which view to render.
+// Mirrors the header, world-map region grid, and the region panel with its
+// boss list. Mode selection lives in the sidebar.
 
 import { Skeleton, SkeletonCircle } from "@/components/ui/skeleton";
 

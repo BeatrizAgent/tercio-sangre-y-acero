@@ -81,6 +81,32 @@ describe("missions flow", () => {
     expect(deploy).toHaveAttribute("href", "/missions/mission_patrulla_flandes_001");
   });
 
+  it("renders story mode from the URL", () => {
+    installReadyStore();
+    searchParamsMock.mockReturnValue(new URLSearchParams("mode=story&region=flandes&boss=flandes_boss_1"));
+    render(<MissionsPage />);
+
+    expect(screen.getByText("Modo historia")).toBeInTheDocument();
+    expect(screen.queryByRole("link", { name: /Desplegar/ })).not.toBeInTheDocument();
+  });
+
+  it("shows campaign as the default mode", () => {
+    installReadyStore();
+    searchParamsMock.mockReturnValue(new URLSearchParams(""));
+    render(<MissionsPage />);
+
+    expect(screen.getByRole("heading", { name: /Mapa de campaña/ })).toBeInTheDocument();
+  });
+
+  it("groups story progress into five stable acts", () => {
+    installReadyStore();
+    searchParamsMock.mockReturnValue(new URLSearchParams("mode=story"));
+    render(<MissionsPage />);
+
+    expect(screen.getAllByText(/Acto \d/)).toHaveLength(5);
+    expect(screen.queryByText("Acto 6")).not.toBeInTheDocument();
+  });
+
   it("renders the mission detail start button", () => {
     installReadyStore();
     paramsMock.mockReturnValue({ id: "mission_patrulla_flandes_001" });

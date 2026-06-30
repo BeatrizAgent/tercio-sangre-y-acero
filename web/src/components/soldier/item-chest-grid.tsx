@@ -11,6 +11,15 @@ export interface ChestGridMetrics {
   padding: number;
 }
 
+export interface ChestDropPreview {
+  itemId: string;
+  x: number;
+  y: number;
+  cols: number;
+  rows: number;
+  valid: boolean;
+}
+
 export const PLAYER_CHEST_GRID: ChestGridMetrics = {
   cols: 8,
   rows: 5,
@@ -40,6 +49,8 @@ export function ItemChestGrid({
   className = "",
   onCellDrop,
   onCellDragOver,
+  onCellDragLeave,
+  dropPreview,
 }: {
   metrics: ChestGridMetrics;
   inventory?: InventoryItem[];
@@ -47,7 +58,9 @@ export function ItemChestGrid({
   children?: React.ReactNode;
   className?: string;
   onCellDrop?: (x: number, y: number, event: React.DragEvent) => void;
-  onCellDragOver?: (event: React.DragEvent) => void;
+  onCellDragOver?: (x: number, y: number, event: React.DragEvent) => void;
+  onCellDragLeave?: (event: React.DragEvent) => void;
+  dropPreview?: ChestDropPreview | null;
 }) {
   const width = metrics.cols * metrics.cellSize + (metrics.cols - 1) * metrics.gap + metrics.padding * 2;
   const height = metrics.rows * metrics.cellSize + (metrics.rows - 1) * metrics.gap + metrics.padding * 2;
@@ -70,7 +83,8 @@ export function ItemChestGrid({
         Array.from({ length: metrics.cols }).map((__, x) => (
           <div
             key={`cell-${x}-${y}`}
-            onDragOver={onCellDragOver}
+            onDragOver={onCellDragOver ? (event) => onCellDragOver(x, y, event) : undefined}
+            onDragLeave={onCellDragLeave}
             onDrop={onCellDrop ? (event) => onCellDrop(x, y, event) : undefined}
             className="absolute"
             style={{
@@ -81,6 +95,23 @@ export function ItemChestGrid({
             }}
           />
         )),
+      )}
+
+      {dropPreview && (
+        <div
+          className={`pointer-events-none absolute z-10 rounded-xs border-2 border-dashed transition-colors ${
+            dropPreview.valid
+              ? "border-emerald-300 bg-emerald-500/30 shadow-[0_0_12px_rgba(16,185,129,0.35)]"
+              : "border-red-300 bg-red-950/45 shadow-[0_0_10px_rgba(220,38,38,0.25)]"
+          }`}
+          style={{
+            left: metrics.padding + dropPreview.x * (metrics.cellSize + metrics.gap),
+            top: metrics.padding + dropPreview.y * (metrics.cellSize + metrics.gap),
+            width: footprintPx(dropPreview, metrics, "x"),
+            height: footprintPx(dropPreview, metrics, "y"),
+          }}
+          aria-hidden="true"
+        />
       )}
 
       {inventory && renderItem

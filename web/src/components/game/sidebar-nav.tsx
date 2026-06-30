@@ -7,6 +7,7 @@ import { UiAssetIcon } from "@/components/ui/ui-asset-icon";
 import { playPageSound } from "@/lib/sounds";
 import { regions } from "@/lib/regions";
 import { useGameStore } from "@/lib/game-store";
+import { prologueStoryArc } from "@/lib/game-data";
 
 interface NavLinkProps {
   href: string;
@@ -29,11 +30,19 @@ function NavLink({ href, label, icon, isActive }: NavLinkProps) {
   );
 }
 
+function chunkStoryChapters<T>(items: T[], groups: number): T[][] {
+  return Array.from({ length: groups }, (_, groupIndex) => {
+    const start = Math.floor((groupIndex * items.length) / groups);
+    const end = Math.floor(((groupIndex + 1) * items.length) / groups);
+    return items.slice(start, end);
+  }).filter((group) => group.length > 0);
+}
+
 export function SidebarNav() {
   const pathname = usePathname();
   const searchParams = useSearchParams();
   const [mounted, setMounted] = useState(false);
-  const { soldier, hydrateState } = useGameStore();
+  const { soldier, storyProgress } = useGameStore();
   const [regenTimer, setRegenTimer] = useState<string>("");
 
   useEffect(() => {
@@ -97,7 +106,12 @@ export function SidebarNav() {
 
   // Active status helper functions
   const isRouteActive = (route: string) => pathname === route || pathname.startsWith(route + "/");
-  const isRegionActive = (regionId: string) => pathname === "/missions" && searchParams.get("region") === regionId;
+  const campaignMode = searchParams.get("mode") === "story" ? "story" : "campaign";
+  const isCampaignRoute = pathname === "/missions";
+  const isRegionActive = (regionId: string) =>
+    isCampaignRoute && campaignMode === "campaign" && searchParams.get("region") === regionId;
+  const storyGroups = chunkStoryChapters(prologueStoryArc.chapters, 5);
+  const activeStoryChapterId = storyProgress?.currentChapterId ?? prologueStoryArc.chapters[0]?.id;
 
   return (
     <aside className="sidebar-shell w-full md:w-56 md:max-h-[calc(100vh-1.5rem)] bg-panel border border-iron flex flex-col rounded-xs shadow-md p-2 z-20 overflow-y-auto">
@@ -179,13 +193,51 @@ export function SidebarNav() {
         <div>
           <div className="gladiatus-section-header">Campaña</div>
           <nav className="flex flex-col gap-1 pl-1">
-            {regions.map((region) => (
+            <div role="tablist" className="mb-1 grid grid-cols-2 gap-1">
+              <Link
+                href="/missions"
+                onClick={() => playPageSound()}
+                role="tab"
+                aria-selected={isCampaignRoute && campaignMode === "campaign"}
+                title="Campaña"
+                className={`gladiatus-location-button justify-center gap-1 px-1 text-center ${
+                  isCampaignRoute && campaignMode === "campaign" ? "active" : ""
+                }`}
+              >
+                <UiAssetIcon id="missions" label="" className="h-3.5 w-3.5 shrink-0" />
+                <span className="truncate">Campaña</span>
+              </Link>
+              <Link
+                href="/missions?mode=story"
+                onClick={() => playPageSound()}
+                role="tab"
+                aria-selected={isCampaignRoute && campaignMode === "story"}
+                title="Historia"
+                className={`gladiatus-location-button justify-center gap-1 px-1 text-center ${
+                  isCampaignRoute && campaignMode === "story" ? "active" : ""
+                }`}
+              >
+                <UiAssetIcon id="order" label="" className="h-3.5 w-3.5 shrink-0" />
+                <span className="truncate">Historia</span>
+              </Link>
+            </div>
+
+            {campaignMode === "campaign" && regions.map((region) => (
               <NavLink
                 key={region.id}
                 href={`/missions?region=${region.id}`}
                 label={region.name}
                 icon="missions"
                 isActive={isRegionActive(region.id)}
+              />
+            ))}
+            {campaignMode === "story" && storyGroups.map((group, index) => (
+              <NavLink
+                key={group[0]?.id ?? index}
+                href="/missions?mode=story"
+                label={`Acto ${index + 1}`}
+                icon="order"
+                isActive={isCampaignRoute && group.some((chapter) => chapter.id === activeStoryChapterId)}
               />
             ))}
           </nav>

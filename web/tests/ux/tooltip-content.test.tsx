@@ -1,7 +1,16 @@
-import { describe, expect, it } from "vitest";
+import { describe, expect, it, vi } from "vitest";
 import { render, screen } from "@testing-library/react";
+
+const { useGameStoreMock } = vi.hoisted(() => ({
+  useGameStoreMock: vi.fn(),
+}));
+
+vi.mock("@/lib/game-store", () => ({ useGameStore: useGameStoreMock }));
+
 import { SimpleTooltipContent } from "@/components/ui/tooltip/content-simple";
+import { ItemTooltipContent } from "@/components/ui/tooltip/content-item";
 import { WoundTooltipContent } from "@/components/ui/tooltip/content-wound";
+import { createInitialState } from "@/lib/domain/initial-state";
 
 describe("SimpleTooltipContent", () => {
   it("renders the content inside an italic quote", () => {
@@ -9,6 +18,19 @@ describe("SimpleTooltipContent", () => {
     const el = screen.getByText(/El barro es neutral/);
     expect(el).toBeInTheDocument();
     expect(el).toHaveClass("italic");
+  });
+});
+
+describe("ItemTooltipContent", () => {
+  it("formats item, stat, and coin icons inside the item popover", () => {
+    useGameStoreMock.mockReturnValue(createInitialState());
+    const { container } = render(<ItemTooltipContent itemId="weapon_pica_gastada_001" />);
+
+    expect(screen.getByRole("img", { name: /pica/i })).toBeInTheDocument();
+    expect(screen.getByText("Valor Sugerido")).toBeInTheDocument();
+    expect(container.querySelector(".asset-icon-frame img")).not.toBeNull();
+    expect(container.querySelector(".ui-asset-icon img")).not.toBeNull();
+    expect(container.querySelector("span.inline-flex.h-4.w-4 img")).not.toBeNull();
   });
 });
 

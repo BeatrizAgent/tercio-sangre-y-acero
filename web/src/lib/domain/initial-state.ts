@@ -1,6 +1,7 @@
 import { inventoryWithAutoLayout } from "./inventory-grid";
 import { normalizeActiveCharacterId, normalizePlayableRoster, PLAYER_CHARACTER_ID } from "./player-character";
 import { regenerateActionPoints } from "./action-points";
+import { normalizeStoryProgress } from "./story";
 import type { GameState } from "../types";
 
 function rosterWithSoldier(state: GameState): GameState {
@@ -30,7 +31,7 @@ export function normalizeGameState(state: GameState): GameState {
     soldier = regen.soldier;
   }
 
-  return rosterWithSoldier({ ...state, soldier });
+  return rosterWithSoldier({ ...state, soldier, storyProgress: normalizeStoryProgress(state.storyProgress) });
 }
 
 export function createInitialState(soldierName = "Diego de Arce", portraitAssetId?: string): GameState {
@@ -75,6 +76,7 @@ export function createInitialState(soldierName = "Diego de Arce", portraitAssetI
     arenaResults: [],
     activeEvent: null,
     pendingMissionId: null,
+    storyProgress: normalizeStoryProgress(undefined),
   };
 
   return normalizeGameState(state);

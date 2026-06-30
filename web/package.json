@@ -14,6 +14,7 @@
     "db:seed": "node scripts/sync-data.mjs && tsx prisma/seed.ts",
     "auctions:seed": "tsx scripts/seed-system-auctions.ts",
     "auctions:plan": "tsx scripts/seed-system-auctions.ts --dry-run",
+    "debug:user": "tsx scripts/create-debug-user.ts",
     "test": "tsx tests/run-all.mjs",
     "test:api": "node tests/run-api.mjs",
     "test:domain": "tsx tests/run-domain.mjs",

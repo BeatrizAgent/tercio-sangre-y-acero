@@ -55,6 +55,8 @@ export const ModelName = {
   Soldier: 'Soldier',
   ArenaBotProfile: 'ArenaBotProfile',
   GameSave: 'GameSave',
+  PlayerStoryProgress: 'PlayerStoryProgress',
+  StoryReport: 'StoryReport',
   CharacterName: 'CharacterName',
   SoldierStats: 'SoldierStats',
   ItemDefinition: 'ItemDefinition',
@@ -160,6 +162,36 @@ export const GameSaveScalarFieldEnum = {
 } as const
 
 export type GameSaveScalarFieldEnum = (typeof GameSaveScalarFieldEnum)[keyof typeof GameSaveScalarFieldEnum]
+
+
+export const PlayerStoryProgressScalarFieldEnum = {
+  id: 'id',
+  soldierId: 'soldierId',
+  arcId: 'arcId',
+  currentChapterId: 'currentChapterId',
+  completedChapterIds: 'completedChapterIds',
+  choices: 'choices',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+} as const
+
+export type PlayerStoryProgressScalarFieldEnum = (typeof PlayerStoryProgressScalarFieldEnum)[keyof typeof PlayerStoryProgressScalarFieldEnum]
+
+
+export const StoryReportScalarFieldEnum = {
+  id: 'id',
+  soldierId: 'soldierId',
+  arcId: 'arcId',
+  chapterId: 'chapterId',
+  choiceId: 'choiceId',
+  report: 'report',
+  rewards: 'rewards',
+  wounds: 'wounds',
+  loot: 'loot',
+  createdAt: 'createdAt'
+} as const
+
+export type StoryReportScalarFieldEnum = (typeof StoryReportScalarFieldEnum)[keyof typeof StoryReportScalarFieldEnum]
 
 
 export const CharacterNameScalarFieldEnum = {

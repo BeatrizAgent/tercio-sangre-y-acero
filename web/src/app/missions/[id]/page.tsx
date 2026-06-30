@@ -393,6 +393,49 @@ export default function MissionDetailPage() {
     return () => window.clearInterval(timer);
   }, [activeMission]);
 
+  const handleGateCountdown = useCallback(async (waitMs: number) => {
+    const startedAt = Date.now();
+    setCountdown(Math.ceil(waitMs / 1000));
+    await new Promise<void>((resolve) => {
+      const tick = () => {
+        const remainingMs = Math.max(0, waitMs - (Date.now() - startedAt));
+        if (mountedRef.current) setCountdown(Math.ceil(remainingMs / 1000));
+        if (remainingMs <= 0) {
+          window.clearInterval(timer);
+          resolve();
+        }
+      };
+      const timer = window.setInterval(tick, 250);
+      tick();
+    });
+    if (mountedRef.current) setCountdown(null);
+  }, []);
+
+  const handleEventChoice = async (choiceId: string) => {
+    if (!pendingMissionId || resolving || countdown !== null) return;
+    setActionError(null);
+    try {
+      const gate = await prepareActionGateAction({ kind: "event", targetId: `${pendingMissionId}:${choiceId}` });
+      await handleGateCountdown(gate.waitMs);
+      if (!mountedRef.current) return;
+      setResolving(true);
+      playDrumSound();
+      const result = await resolveActiveEventChoiceAction({ choiceId, gateToken: gate.token });
+      if (result.ok && result.data?.state) {
+        hydrateState(result.data.state);
+        if (result.data.reportId) {
+          router.push(`/reports/${result.data.reportId}`);
+          return;
+        }
+      }
+      setActionError(result.message);
+    } catch (error) {
+      setActionError(error instanceof Error ? error.message : "No se pudo resolver el evento.");
+    } finally {
+      if (mountedRef.current) setResolving(false);
+    }
+  };
+
   if (!mounted || status !== "ready") {
     return (
       <PageTransition>
@@ -531,31 +574,13 @@ export default function MissionDetailPage() {
     discipline: "Disciplina",
   };
 
-  const startGateCountdown = async (waitMs: number) => {
-    const startedAt = Date.now();
-    setCountdown(Math.ceil(waitMs / 1000));
-    await new Promise<void>((resolve) => {
-      const tick = () => {
-        const remainingMs = Math.max(0, waitMs - (Date.now() - startedAt));
-        if (mountedRef.current) setCountdown(Math.ceil(remainingMs / 1000));
-        if (remainingMs <= 0) {
-          window.clearInterval(timer);
-          resolve();
-        }
-      };
-      const timer = window.setInterval(tick, 250);
-      tick();
-    });
-    if (mountedRef.current) setCountdown(null);
-  };
-
   const handleMissionStart = async (missionId: string) => {
     if (resolving || countdown !== null) return;
     setActionError(null);
     try {
       const gate = await prepareActionGateAction({ kind: "mission", targetId: missionId });
       setGateToken(gate.token);
-      await startGateCountdown(gate.waitMs);
+      await handleGateCountdown(gate.waitMs);
       if (!mountedRef.current) return;
       const result = await startMissionAction({ missionId, gateToken: gate.token });
       if (result.ok && result.data?.state) {
@@ -600,31 +625,6 @@ export default function MissionDetailPage() {
         setResolving(false);
         setGateToken(null);
       }
-    }
-  };
-
-  const handleEventChoice = async (choiceId: string) => {
-    if (!pendingMissionId || resolving || countdown !== null) return;
-    setActionError(null);
-    try {
-      const gate = await prepareActionGateAction({ kind: "event", targetId: `${pendingMissionId}:${choiceId}` });
-      await startGateCountdown(gate.waitMs);
-      if (!mountedRef.current) return;
-      setResolving(true);
-      playDrumSound();
-      const result = await resolveActiveEventChoiceAction({ choiceId, gateToken: gate.token });
-      if (result.ok && result.data?.state) {
-        hydrateState(result.data.state);
-        if (result.data.reportId) {
-          router.push(`/reports/${result.data.reportId}`);
-          return;
-        }
-      }
-      setActionError(result.message);
-    } catch (error) {
-      setActionError(error instanceof Error ? error.message : "No se pudo resolver el evento.");
-    } finally {
-      if (mountedRef.current) setResolving(false);
     }
   };
 

@@ -388,6 +388,8 @@ export const ModelName = {
   Soldier: 'Soldier',
   ArenaBotProfile: 'ArenaBotProfile',
   GameSave: 'GameSave',
+  PlayerStoryProgress: 'PlayerStoryProgress',
+  StoryReport: 'StoryReport',
   CharacterName: 'CharacterName',
   SoldierStats: 'SoldierStats',
   ItemDefinition: 'ItemDefinition',
@@ -430,7 +432,7 @@ export type TypeMap<ExtArgs extends runtime.Types.Extensions.InternalArgs = runt
     omit: GlobalOmitOptions
   }
   meta: {
-    modelProps: "user" | "soldier" | "arenaBotProfile" | "gameSave" | "characterName" | "soldierStats" | "itemDefinition" | "inventoryItem" | "equipment" | "missionDefinition" | "missionResult" | "activeMission" | "woundDefinition" | "activeWound" | "shopItem" | "shopRotation" | "auctionListing" | "auctionBid" | "worldJobRun" | "gameMessage" | "trainingLog" | "lootTable" | "reportFragment" | "assetDefinition" | "enemyDefinition" | "rankDefinition" | "gameEventDefinition" | "characterDefinition" | "spriteSetDefinition" | "recruitmentCandidateDefinition" | "trainingDefinition"
+    modelProps: "user" | "soldier" | "arenaBotProfile" | "gameSave" | "playerStoryProgress" | "storyReport" | "characterName" | "soldierStats" | "itemDefinition" | "inventoryItem" | "equipment" | "missionDefinition" | "missionResult" | "activeMission" | "woundDefinition" | "activeWound" | "shopItem" | "shopRotation" | "auctionListing" | "auctionBid" | "worldJobRun" | "gameMessage" | "trainingLog" | "lootTable" | "reportFragment" | "assetDefinition" | "enemyDefinition" | "rankDefinition" | "gameEventDefinition" | "characterDefinition" | "spriteSetDefinition" | "recruitmentCandidateDefinition" | "trainingDefinition"
     txIsolationLevel: TransactionIsolationLevel
   }
   model: {
@@ -727,6 +729,154 @@ export type TypeMap<ExtArgs extends runtime.Types.Extensions.InternalArgs = runt
         count: {
           args: Prisma.GameSaveCountArgs<ExtArgs>
           result: runtime.Types.Utils.Optional<Prisma.GameSaveCountAggregateOutputType> | number
+        }
+      }
+    }
+    PlayerStoryProgress: {
+      payload: Prisma.$PlayerStoryProgressPayload<ExtArgs>
+      fields: Prisma.PlayerStoryProgressFieldRefs
+      operations: {
+        findUnique: {
+          args: Prisma.PlayerStoryProgressFindUniqueArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$PlayerStoryProgressPayload> | null
+        }
+        findUniqueOrThrow: {
+          args: Prisma.PlayerStoryProgressFindUniqueOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$PlayerStoryProgressPayload>
+        }
+        findFirst: {
+          args: Prisma.PlayerStoryProgressFindFirstArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$PlayerStoryProgressPayload> | null
+        }
+        findFirstOrThrow: {
+          args: Prisma.PlayerStoryProgressFindFirstOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$PlayerStoryProgressPayload>
+        }
+        findMany: {
+          args: Prisma.PlayerStoryProgressFindManyArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$PlayerStoryProgressPayload>[]
+        }
+        create: {
+          args: Prisma.PlayerStoryProgressCreateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$PlayerStoryProgressPayload>
+        }
+        createMany: {
+          args: Prisma.PlayerStoryProgressCreateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        createManyAndReturn: {
+          args: Prisma.PlayerStoryProgressCreateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$PlayerStoryProgressPayload>[]
+        }
+        delete: {
+          args: Prisma.PlayerStoryProgressDeleteArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$PlayerStoryProgressPayload>
+        }
+        update: {
+          args: Prisma.PlayerStoryProgressUpdateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$PlayerStoryProgressPayload>
+        }
+        deleteMany: {
+          args: Prisma.PlayerStoryProgressDeleteManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateMany: {
+          args: Prisma.PlayerStoryProgressUpdateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateManyAndReturn: {
+          args: Prisma.PlayerStoryProgressUpdateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$PlayerStoryProgressPayload>[]
+        }
+        upsert: {
+          args: Prisma.PlayerStoryProgressUpsertArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$PlayerStoryProgressPayload>
+        }
+        aggregate: {
+          args: Prisma.PlayerStoryProgressAggregateArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.AggregatePlayerStoryProgress>
+        }
+        groupBy: {
+          args: Prisma.PlayerStoryProgressGroupByArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.PlayerStoryProgressGroupByOutputType>[]
+        }
+        count: {
+          args: Prisma.PlayerStoryProgressCountArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.PlayerStoryProgressCountAggregateOutputType> | number
+        }
+      }
+    }
+    StoryReport: {
+      payload: Prisma.$StoryReportPayload<ExtArgs>
+      fields: Prisma.StoryReportFieldRefs
+      operations: {
+        findUnique: {
+          args: Prisma.StoryReportFindUniqueArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$StoryReportPayload> | null
+        }
+        findUniqueOrThrow: {
+          args: Prisma.StoryReportFindUniqueOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$StoryReportPayload>
+        }
+        findFirst: {
+          args: Prisma.StoryReportFindFirstArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$StoryReportPayload> | null
+        }
+        findFirstOrThrow: {
+          args: Prisma.StoryReportFindFirstOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$StoryReportPayload>
+        }
+        findMany: {
+          args: Prisma.StoryReportFindManyArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$StoryReportPayload>[]
+        }
+        create: {
+          args: Prisma.StoryReportCreateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$StoryReportPayload>
+        }
+        createMany: {
+          args: Prisma.StoryReportCreateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        createManyAndReturn: {
+          args: Prisma.StoryReportCreateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$StoryReportPayload>[]
+        }
+        delete: {
+          args: Prisma.StoryReportDeleteArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$StoryReportPayload>
+        }
+        update: {
+          args: Prisma.StoryReportUpdateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$StoryReportPayload>
+        }
+        deleteMany: {
+          args: Prisma.StoryReportDeleteManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateMany: {
+          args: Prisma.StoryReportUpdateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateManyAndReturn: {
+          args: Prisma.StoryReportUpdateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$StoryReportPayload>[]
+        }
+        upsert: {
+          args: Prisma.StoryReportUpsertArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$StoryReportPayload>
+        }
+        aggregate: {
+          args: Prisma.StoryReportAggregateArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.AggregateStoryReport>
+        }
+        groupBy: {
+          args: Prisma.StoryReportGroupByArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.StoryReportGroupByOutputType>[]
+        }
+        count: {
+          args: Prisma.StoryReportCountArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.StoryReportCountAggregateOutputType> | number
         }
       }
     }
@@ -2829,6 +2979,36 @@ export const GameSaveScalarFieldEnum = {
 export type GameSaveScalarFieldEnum = (typeof GameSaveScalarFieldEnum)[keyof typeof GameSaveScalarFieldEnum]
 
 
+export const PlayerStoryProgressScalarFieldEnum = {
+  id: 'id',
+  soldierId: 'soldierId',
+  arcId: 'arcId',
+  currentChapterId: 'currentChapterId',
+  completedChapterIds: 'completedChapterIds',
+  choices: 'choices',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+} as const
+
+export type PlayerStoryProgressScalarFieldEnum = (typeof PlayerStoryProgressScalarFieldEnum)[keyof typeof PlayerStoryProgressScalarFieldEnum]
+
+
+export const StoryReportScalarFieldEnum = {
+  id: 'id',
+  soldierId: 'soldierId',
+  arcId: 'arcId',
+  chapterId: 'chapterId',
+  choiceId: 'choiceId',
+  report: 'report',
+  rewards: 'rewards',
+  wounds: 'wounds',
+  loot: 'loot',
+  createdAt: 'createdAt'
+} as const
+
+export type StoryReportScalarFieldEnum = (typeof StoryReportScalarFieldEnum)[keyof typeof StoryReportScalarFieldEnum]
+
+
 export const CharacterNameScalarFieldEnum = {
   id: 'id',
   kind: 'kind',
@@ -3432,6 +3612,8 @@ export type GlobalOmitConfig = {
   soldier?: Prisma.SoldierOmit
   arenaBotProfile?: Prisma.ArenaBotProfileOmit
   gameSave?: Prisma.GameSaveOmit
+  playerStoryProgress?: Prisma.PlayerStoryProgressOmit
+  storyReport?: Prisma.StoryReportOmit
   characterName?: Prisma.CharacterNameOmit
   soldierStats?: Prisma.SoldierStatsOmit
   itemDefinition?: Prisma.ItemDefinitionOmit

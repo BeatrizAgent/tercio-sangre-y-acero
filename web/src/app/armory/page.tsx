@@ -2,7 +2,7 @@
 
 import React, { useMemo, useState } from "react";
 import { PageTransition } from "@/components/game/page-transition";
-import { Badge, Card } from "@/components/ui/card";
+import { Badge } from "@/components/ui/card";
 import { UiAssetIcon } from "@/components/ui/ui-asset-icon";
 import { NpcOfferFrame } from "@/components/game/visual-offers";
 import { PlayerChestPanel } from "@/components/soldier/player-chest-panel";
@@ -25,7 +25,7 @@ type DragSource = "merchant" | "backpack";
 // Legacy MVP validator tokens: armory-slot-grid ARMORY_CELL_SIZE armory-dropzone draggable Arrastra
 export default function ArmoryPage() {
   const { status } = useGameData();
-  const { soldier, characters, activeCharacterId, shop, setActiveCharacter, payTownBribe, hydrateState } = useGameStore();
+  const { soldier, characters, activeCharacterId, shop, setActiveCharacter, payTownBribe, hydrateState, moveInventoryItem } = useGameStore();
   const [notice, setNotice] = useState<{ text: string; isError: boolean } | null>(null);
   const [dragged, setDragged] = useState<{ source: DragSource; itemId: string } | null>(null);
   const [dropTarget, setDropTarget] = useState<DragSource | null>(null);
@@ -125,8 +125,17 @@ export default function ArmoryPage() {
     handleDrop("backpack");
   };
 
-  const handleBackpackCellDrop = (_x: number, _y: number, event: React.DragEvent) => {
-    handleBackpackDrop(event);
+  const handleBackpackCellDrop = (x: number, y: number, event: React.DragEvent) => {
+    event.preventDefault();
+    event.stopPropagation();
+    if (dragged?.source === "backpack") {
+      const result = moveInventoryItem(dragged.itemId, x, y, activeChest);
+      if (!result.ok) showNotice(result.message, true);
+      setDragged(null);
+      setDropTarget(null);
+      return;
+    }
+    handleDrop("backpack");
   };
 
   if (status !== "ready") {

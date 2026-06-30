@@ -9,6 +9,12 @@ import { createInitialState, getState, resetState, saveState } from "../demo-sto
 import { UnauthorizedError, requireApiSession } from "../auth/session";
 import { getDb } from "../db";
 import { normalizeGameState } from "../domain/initial-state";
+import {
+  overlayPersistedStoryState,
+  splitReportsForPersistence,
+  toStoryProgressRecord,
+  type StoryReportRecord,
+} from "../server/story-persistence";
 import type { GameState } from "../types";
 
 export function shouldUseDatabase() {
@@ -30,11 +36,40 @@ export async function loadGameState(): Promise<GameState> {
       const db = getDb();
       const user = await db.user.findUnique({
         where: { id: session.userId },
-        include: { gameSave: true },
+        include: {
+          gameSave: true,
+          soldier: {
+            include: {
+              storyProgress: true,
+              storyReports: { orderBy: { createdAt: "desc" } },
+            },
+          },
+        },
       });
 
       if (user?.gameSave?.state) {
-        return normalizeGameState(user.gameSave.state as unknown as GameState);
+        const snapshot = normalizeGameState(user.gameSave.state as unknown as GameState);
+        const progress = user.soldier?.storyProgress[0]
+          ? {
+              arcId: user.soldier.storyProgress[0].arcId,
+              currentChapterId: user.soldier.storyProgress[0].currentChapterId,
+              completedChapterIds: [...user.soldier.storyProgress[0].completedChapterIds],
+              choices: user.soldier.storyProgress[0].choices as Record<string, string>,
+            }
+          : null;
+        const storyReports: StoryReportRecord[] =
+          user.soldier?.storyReports.map((report) => ({
+            id: report.id,
+            arcId: report.arcId,
+            chapterId: report.chapterId,
+            choiceId: report.choiceId,
+            report: report.report,
+            rewards: report.rewards as GameState["reports"][number]["rewards"],
+            wounds: report.wounds as string[],
+            loot: report.loot as unknown as GameState["reports"][number]["loot"],
+            createdAt: report.createdAt.toISOString(),
+          })) ?? [];
+        return normalizeGameState(overlayPersistedStoryState(snapshot, { progress, reports: storyReports }));
       }
 
       const state = createInitialState();
@@ -53,6 +88,8 @@ export async function loadGameState(): Promise<GameState> {
 export async function persistGameStateForUser(userId: string, state: GameState): Promise<void> {
   const db = getDb();
   const normalizedState = normalizeGameState(state);
+  const storyProgress = toStoryProgressRecord(normalizedState.storyProgress);
+  const { missionReports, storyReports } = splitReportsForPersistence(normalizedState.reports, storyProgress);
   const portraitAssetId = normalizedState.soldier.portraitAssetId ?? null;
   await db.$transaction(async (tx) => {
     const user = await tx.user.findUniqueOrThrow({
@@ -134,13 +171,47 @@ export async function persistGameStateForUser(userId: string, state: GameState):
     }
 
     await tx.missionResult.deleteMany({ where: { soldierId: soldier.id } });
-    if (normalizedState.reports.length > 0) {
+    if (missionReports.length > 0) {
       await tx.missionResult.createMany({
-        data: normalizedState.reports.map((report) => ({
+        data: missionReports.map((report) => ({
           id: report.id,
           soldierId: soldier.id,
           missionId: report.missionId,
           success: report.success,
+          report: report.report,
+          rewards: json({ ...report.rewards }),
+          wounds: json([...report.wounds]),
+          loot: json(report.loot.map((item) => ({ ...item }))),
+          createdAt: new Date(report.createdAt),
+        })),
+      });
+    }
+
+    await tx.playerStoryProgress.upsert({
+      where: { soldierId_arcId: { soldierId: soldier.id, arcId: storyProgress.arcId } },
+      update: {
+        currentChapterId: storyProgress.currentChapterId,
+        completedChapterIds: [...storyProgress.completedChapterIds],
+        choices: json(storyProgress.choices),
+      },
+      create: {
+        soldierId: soldier.id,
+        arcId: storyProgress.arcId,
+        currentChapterId: storyProgress.currentChapterId,
+        completedChapterIds: [...storyProgress.completedChapterIds],
+        choices: json(storyProgress.choices),
+      },
+    });
+
+    await tx.storyReport.deleteMany({ where: { soldierId: soldier.id } });
+    if (storyReports.length > 0) {
+      await tx.storyReport.createMany({
+        data: storyReports.map((report) => ({
+          id: report.id,
+          soldierId: soldier.id,
+          arcId: report.arcId,
+          chapterId: report.chapterId,
+          choiceId: report.choiceId,
           report: report.report,
           rewards: json({ ...report.rewards }),
           wounds: json([...report.wounds]),

@@ -34,6 +34,7 @@ export default function ChurchPage() {
     characters,
     activeCharacterId,
     setActiveCharacter,
+    moveInventoryItem,
     buyChurchBlessing,
     buyChurchItem,
     donateItem,
@@ -159,6 +160,17 @@ export default function ChurchPage() {
 
   const handleBackpackDrop = (event: React.DragEvent) => {
     event.preventDefault();
+    setDragged(null);
+    setDropTarget(null);
+  };
+
+  const handleBackpackCellDrop = (x: number, y: number, event: React.DragEvent) => {
+    event.preventDefault();
+    event.stopPropagation();
+    if (dragged?.source === "backpack") {
+      const result = moveInventoryItem(dragged.itemId, x, y, activeChest);
+      if (!result.ok) showNotice(result.message, true);
+    }
     setDragged(null);
     setDropTarget(null);
   };
@@ -309,7 +321,7 @@ export default function ChurchPage() {
               }}
               onDragLeaveBackpack={() => setDropTarget(null)}
               onDropBackpack={handleBackpackDrop}
-              onCellDrop={(_x, _y, event) => handleBackpackDrop(event)}
+              onCellDrop={handleBackpackCellDrop}
             />
           </div>
         </div>

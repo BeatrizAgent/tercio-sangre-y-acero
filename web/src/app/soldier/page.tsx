@@ -237,6 +237,7 @@ export default function SoldierPage() {
 
   const handleDropOnBackpack = (e: React.DragEvent) => {
     e.preventDefault();
+    e.stopPropagation();
     const data = e.dataTransfer.getData("text/plain");
     if (data.startsWith("slot:")) {
       const slot = data.split(":")[1] as EquipmentSlot;
@@ -248,6 +249,7 @@ export default function SoldierPage() {
 
   const handleCellDrop = (x: number, y: number, e: React.DragEvent) => {
     e.preventDefault();
+    e.stopPropagation();
     const data = e.dataTransfer.getData("text/plain");
     if (data.startsWith("slot:")) {
       const slot = data.split(":")[1] as EquipmentSlot;

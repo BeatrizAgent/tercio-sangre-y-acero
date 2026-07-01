@@ -29,6 +29,7 @@ web/node_modules/
 output/
 /.codegraph/
 /.cursor/
+/.pnpm-store/
 /web/test-results/
 /web/[{]
 __pycache__/

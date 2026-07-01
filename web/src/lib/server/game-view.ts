@@ -1,4 +1,4 @@
-import { canUseFilesystemSessionFallback, requireApiSession } from "../auth/session";
+import { canUseFilesystemSessionFallback, requireApiSession, UnauthorizedError } from "../auth/session";
 import { getDb } from "../db";
 import { loadGameState } from "../actions/_demo";
 import type { GameState } from "../types";
@@ -50,6 +50,7 @@ export async function loadGameViewState(): Promise<GameState> {
       auctions: { activeCount, playerListingCount, playerBidCount },
     };
   } catch (error) {
+    if (error instanceof UnauthorizedError) throw error;
     if (!canUseFilesystemSessionFallback()) throw error;
     return loadGameState();
   }

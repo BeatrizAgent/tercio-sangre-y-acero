@@ -18,6 +18,7 @@ CATEGORY_BY_DIR = {
     "support": "support",
     "scenes/events": "scene",
     "portraits/npcs": "portrait",
+    "portraits/story": "portrait",
     "portraits/variants": "portrait_variant",
     "scenes/backgrounds": "screen_background",
     "scenes/event-sprites": "event_sprite",
@@ -254,6 +255,8 @@ def usage_for(asset_id: str, rel_dir: str) -> list[str]:
         usage.append("campaign_boss")
     if rel_dir.startswith("portraits/enemies/"):
         usage.extend(["enemy", "portrait"])
+    if rel_dir == "portraits/story":
+        usage.extend(["story", "portrait", "dialogue"])
     if rel_dir == "portraits/player-options" or rel_dir.startswith("portraits/player-options/"):
         usage.append("player_portrait_selection")
         parts = rel_dir.split("/")
@@ -299,6 +302,13 @@ def load_data(name: str) -> Any:
     return repair_mojibake(json.loads((DATA / name).read_text(encoding="utf-8")))
 
 
+def load_optional_data(name: str) -> Any | None:
+    path = DATA / name
+    if not path.exists():
+        return None
+    return load_data(name)
+
+
 def write_json(name: str, payload: Any) -> None:
     (DATA / name).write_text(json.dumps(payload, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
 
@@ -324,50 +334,58 @@ def stamp_link(records: list[dict[str, Any]], id_field: str, link_field: str, ma
 
 
 def apply_links(asset_ids: set[str]) -> None:
-    items = load_data("items.json")
-    for item in items:
-        if item["id"] in ITEM_ASSETS:
-            item["assetId"] = ITEM_ASSETS[item["id"]]
-    write_json("items.json", items)
+    items = load_optional_data("items.json")
+    if items is not None:
+        for item in items:
+            if item["id"] in ITEM_ASSETS:
+                item["assetId"] = ITEM_ASSETS[item["id"]]
+        write_json("items.json", items)
 
-    enemies = load_data("enemies.json")
-    for enemy in enemies:
-        if enemy["id"] in ENEMY_ASSETS:
-            enemy["portraitAssetId"] = ENEMY_ASSETS[enemy["id"]]
-    write_json("enemies.json", enemies)
+    enemies = load_optional_data("enemies.json")
+    if enemies is not None:
+        for enemy in enemies:
+            if enemy["id"] in ENEMY_ASSETS:
+                enemy["portraitAssetId"] = ENEMY_ASSETS[enemy["id"]]
+        write_json("enemies.json", enemies)
 
-    missions = load_data("missions.json")
-    for mission in missions:
-        if mission["id"] in MISSION_SCENES:
-            mission["sceneAssetId"] = MISSION_SCENES[mission["id"]]
-    write_json("missions.json", missions)
+    missions = load_optional_data("missions.json")
+    if missions is not None:
+        for mission in missions:
+            if mission["id"] in MISSION_SCENES:
+                mission["sceneAssetId"] = MISSION_SCENES[mission["id"]]
+        write_json("missions.json", missions)
 
-    events = load_data("events.json")
-    for event in events:
-        asset_id, mature = EVENT_ASSETS.get(event["id"], ("loot_body_001", False))
-        event["assetId"] = asset_id
-        event["mature"] = mature
-        event["presentation"] = "blurred" if mature else "normal"
-    write_json("events.json", events)
+    events = load_optional_data("events.json")
+    if events is not None:
+        for event in events:
+            asset_id, mature = EVENT_ASSETS.get(event["id"], ("loot_body_001", False))
+            event["assetId"] = asset_id
+            event["mature"] = mature
+            event["presentation"] = "blurred" if mature else "normal"
+        write_json("events.json", events)
 
     # New stamping tables. These only write the link when the target
     # asset already exists in the bank, so the script is a no-op until
     # the user generates the new waves. The audit script catches the gap.
-    ranks = load_data("ranks.json")
-    stamp_link(ranks, "id", "iconAssetId", RANK_ASSETS, asset_ids)
-    write_json("ranks.json", ranks)
+    ranks = load_optional_data("ranks.json")
+    if ranks is not None:
+        stamp_link(ranks, "id", "iconAssetId", RANK_ASSETS, asset_ids)
+        write_json("ranks.json", ranks)
 
-    training = load_data("training.json")
-    stamp_link(training, "stat_id", "assetId", TRAINING_ASSETS, asset_ids)
-    write_json("training.json", training)
+    training = load_optional_data("training.json")
+    if training is not None:
+        stamp_link(training, "stat_id", "assetId", TRAINING_ASSETS, asset_ids)
+        write_json("training.json", training)
 
-    shops = load_data("shops.json")
-    stamp_link(shops, "id", "portraitAssetId", SHOP_ASSETS, asset_ids)
-    write_json("shops.json", shops)
+    shops = load_optional_data("shops.json")
+    if shops is not None:
+        stamp_link(shops, "id", "portraitAssetId", SHOP_ASSETS, asset_ids)
+        write_json("shops.json", shops)
 
-    report_fragments = load_data("report_fragments.json")
-    stamp_link(report_fragments, "id", "assetId", REPORT_FRAGMENT_ASSETS, asset_ids)
-    write_json("report_fragments.json", report_fragments)
+    report_fragments = load_optional_data("report_fragments.json")
+    if report_fragments is not None:
+        stamp_link(report_fragments, "id", "assetId", REPORT_FRAGMENT_ASSETS, asset_ids)
+        write_json("report_fragments.json", report_fragments)
 
     for name in ["loot_tables.json", "stats.json", "wounds.json"]:
         path = DATA / name

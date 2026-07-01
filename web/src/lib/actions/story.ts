@@ -10,12 +10,14 @@ import type { GameState } from "../types";
 export interface ResolveStoryChoiceArgs {
   chapterId: string;
   choiceId: string;
+  puzzleAnswer?: string[];
   gateToken?: string;
 }
 
 export async function resolveStoryChoiceAction({
   chapterId,
   choiceId,
+  puzzleAnswer,
   gateToken,
 }: ResolveStoryChoiceArgs): Promise<ActionResult<{ state: GameState; reportId?: string }>> {
   const gate = consumeActionGate({
@@ -26,7 +28,7 @@ export async function resolveStoryChoiceAction({
   if (!gate.ok) return fail(gate.message);
 
   const state = await loadGameState();
-  const out = resolveStoryChoiceInState({ state, chapterId, choiceId });
+  const out = resolveStoryChoiceInState({ state, chapterId, choiceId, puzzleAnswer });
   if (!out.result.ok) return out.result as ActionResult<{ state: GameState; reportId?: string }>;
 
   await persistGameState(out.next);

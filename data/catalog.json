@@ -8757,7 +8757,7 @@
     {
       "id": "asset_pike_common_001",
       "kind": "item",
-      "publicPath": "/assets/gpt-bank/missions/combat-sprites/minion_pike.png",
+      "publicPath": "/assets/gpt-bank/weapons/weapon_pike_common_001.png",
       "width": 1024,
       "height": 1024,
       "usage": [
@@ -8771,7 +8771,7 @@
     {
       "id": "asset_pike_common_002",
       "kind": "item",
-      "publicPath": "/assets/gpt-bank/missions/combat-sprites/minion_pike.png",
+      "publicPath": "/assets/gpt-bank/weapons/weapon_pike_common_001.png",
       "width": 1024,
       "height": 1024,
       "usage": [
@@ -8785,7 +8785,7 @@
     {
       "id": "asset_pike_uncommon_001",
       "kind": "item",
-      "publicPath": "/assets/gpt-bank/missions/combat-sprites/minion_pike.png",
+      "publicPath": "/assets/gpt-bank/weapons/weapon_pike_common_001.png",
       "width": 1024,
       "height": 1024,
       "usage": [
@@ -8799,7 +8799,7 @@
     {
       "id": "asset_pike_uncommon_002",
       "kind": "item",
-      "publicPath": "/assets/gpt-bank/missions/combat-sprites/minion_pike.png",
+      "publicPath": "/assets/gpt-bank/weapons/weapon_pike_common_001.png",
       "width": 1024,
       "height": 1024,
       "usage": [
@@ -8813,7 +8813,7 @@
     {
       "id": "asset_pike_rare_001",
       "kind": "item",
-      "publicPath": "/assets/gpt-bank/missions/combat-sprites/minion_pike.png",
+      "publicPath": "/assets/gpt-bank/weapons/weapon_pike_common_001.png",
       "width": 1024,
       "height": 1024,
       "usage": [
@@ -8827,7 +8827,7 @@
     {
       "id": "asset_pike_rare_002",
       "kind": "item",
-      "publicPath": "/assets/gpt-bank/missions/combat-sprites/minion_pike.png",
+      "publicPath": "/assets/gpt-bank/weapons/weapon_pike_common_001.png",
       "width": 1024,
       "height": 1024,
       "usage": [
@@ -8841,7 +8841,7 @@
     {
       "id": "asset_pike_veteran_001",
       "kind": "item",
-      "publicPath": "/assets/gpt-bank/missions/combat-sprites/minion_pike.png",
+      "publicPath": "/assets/gpt-bank/weapons/weapon_pike_common_001.png",
       "width": 1024,
       "height": 1024,
       "usage": [
@@ -8855,7 +8855,7 @@
     {
       "id": "asset_pike_masterwork_001",
       "kind": "item",
-      "publicPath": "/assets/gpt-bank/missions/combat-sprites/minion_pike.png",
+      "publicPath": "/assets/gpt-bank/weapons/weapon_pike_common_001.png",
       "width": 1024,
       "height": 1024,
       "usage": [
@@ -9809,6 +9809,165 @@
       "mature": true,
       "presentation": "blurred",
       "prompt": "Historical SFW game asset, transparent background, gritty historical oil-painting style, period-accurate 16th-17th century early modern Spanish tercios, mud, steel, powder smoke, no modern elements, no fantasy glow, no neon, no anime. single dark drop, blurred for SFW."
+    },
+    {
+      "id": "story_castilla_choza_hermanos",
+      "kind": "scene",
+      "publicPath": "/assets/gpt-bank/scenes/events/story_castilla_choza_hermanos.png",
+      "width": 1024,
+      "height": 1024,
+      "usage": [
+        "story",
+        "dialogue"
+      ],
+      "mature": false,
+      "presentation": "normal",
+      "prompt": "Historical SFW game asset, transparent background, gritty historical oil-painting style, period-accurate 16th-17th century early modern Spanish tercios, mud, steel, powder smoke, no modern elements, no fantasy glow, no neon, no anime. poor 16th-century Castilian hut with two brothers, SFW."
+    },
+    {
+      "id": "story_castilla_abuelo_hogar",
+      "kind": "scene",
+      "publicPath": "/assets/gpt-bank/scenes/events/story_castilla_abuelo_hogar.png",
+      "width": 1024,
+      "height": 1024,
+      "usage": [
+        "story",
+        "dialogue"
+      ],
+      "mature": false,
+      "presentation": "normal",
+      "prompt": "Historical SFW game asset, transparent background, gritty historical oil-painting style, period-accurate 16th-17th century early modern Spanish tercios, mud, steel, powder smoke, no modern elements, no fantasy glow, no neon, no anime. grandfather advising a young Castilian farmhand by the hearth, SFW."
+    },
+    {
+      "id": "story_castilla_despedida_camino",
+      "kind": "scene",
+      "publicPath": "/assets/gpt-bank/scenes/events/story_castilla_despedida_camino.png",
+      "width": 1024,
+      "height": 1024,
+      "usage": [
+        "story",
+        "dialogue"
+      ],
+      "mature": false,
+      "presentation": "normal",
+      "prompt": "Historical SFW game asset, transparent background, gritty historical oil-painting style, period-accurate 16th-17th century early modern Spanish tercios, mud, steel, powder smoke, no modern elements, no fantasy glow, no neon, no anime. farewell on a dry Castilian road before the levy, SFW."
+    },
+    {
+      "id": "story_castilla_leva_veteranos",
+      "kind": "scene",
+      "publicPath": "/assets/gpt-bank/scenes/events/story_castilla_leva_veteranos.png",
+      "width": 1024,
+      "height": 1024,
+      "usage": [
+        "story",
+        "dialogue"
+      ],
+      "mature": false,
+      "presentation": "normal",
+      "prompt": "Historical SFW game asset, transparent background, gritty historical oil-painting style, period-accurate 16th-17th century early modern Spanish tercios, mud, steel, powder smoke, no modern elements, no fantasy glow, no neon, no anime. veteran tercios recruiting villagers during a Castilian levy, SFW."
+    },
+    {
+      "id": "asset_icon_honor_001",
+      "kind": "icon",
+      "publicPath": "/assets/gpt-bank/ui/icons/condecoracion_estrella_laurel.png",
+      "width": 1024,
+      "height": 1024,
+      "usage": [
+        "ui"
+      ],
+      "mature": false,
+      "presentation": "normal",
+      "prompt": "Historical SFW game asset, transparent background, gritty historical oil-painting style, period-accurate 16th-17th century early modern Spanish tercios, mud, steel, powder smoke, no modern elements, no fantasy glow, no neon, no anime. small honor cross, brass."
+    },
+    {
+      "id": "story_martin_paje_portrait",
+      "kind": "portrait",
+      "publicPath": "/assets/gpt-bank/portraits/story/story_martin_paje_portrait.png",
+      "width": 1024,
+      "height": 1024,
+      "usage": [
+        "story",
+        "portrait",
+        "dialogue"
+      ],
+      "mature": false,
+      "presentation": "normal",
+      "prompt": "Historical SFW game asset, transparent background, gritty historical oil-painting style, period-accurate 16th-17th century early modern Spanish tercios, mud, steel, powder smoke, no modern elements, no fantasy glow, no neon, no anime. poor Castilian boy page, patched clothing, scared but alive eyes, SFW."
+    },
+    {
+      "id": "story_padre_viudo_portrait",
+      "kind": "portrait",
+      "publicPath": "/assets/gpt-bank/portraits/story/story_padre_viudo_portrait.png",
+      "width": 1024,
+      "height": 1024,
+      "usage": [
+        "story",
+        "portrait",
+        "dialogue"
+      ],
+      "mature": false,
+      "presentation": "normal",
+      "prompt": "Historical SFW game asset, transparent background, gritty historical oil-painting style, period-accurate 16th-17th century early modern Spanish tercios, mud, steel, powder smoke, no modern elements, no fantasy glow, no neon, no anime. broken Castilian widower, hard exhausted face, SFW."
+    },
+    {
+      "id": "story_abuelo_hernan_portrait",
+      "kind": "portrait",
+      "publicPath": "/assets/gpt-bank/portraits/story/story_abuelo_hernan_portrait.png",
+      "width": 1024,
+      "height": 1024,
+      "usage": [
+        "story",
+        "portrait",
+        "dialogue"
+      ],
+      "mature": false,
+      "presentation": "normal",
+      "prompt": "Historical SFW game asset, transparent background, gritty historical oil-painting style, period-accurate 16th-17th century early modern Spanish tercios, mud, steel, powder smoke, no modern elements, no fantasy glow, no neon, no anime. old retired Spanish soldier, wise bitter eyes, SFW."
+    },
+    {
+      "id": "story_ines_castilla_portrait",
+      "kind": "portrait",
+      "publicPath": "/assets/gpt-bank/portraits/story/story_ines_castilla_portrait.png",
+      "width": 1024,
+      "height": 1024,
+      "usage": [
+        "story",
+        "portrait",
+        "dialogue"
+      ],
+      "mature": false,
+      "presentation": "normal",
+      "prompt": "Historical SFW game asset, transparent background, gritty historical oil-painting style, period-accurate 16th-17th century early modern Spanish tercios, mud, steel, powder smoke, no modern elements, no fantasy glow, no neon, no anime. young rural Castilian woman before the levy, sober and dignified, SFW."
+    },
+    {
+      "id": "story_sargento_valcarcel_portrait",
+      "kind": "portrait",
+      "publicPath": "/assets/gpt-bank/portraits/story/story_sargento_valcarcel_portrait.png",
+      "width": 1024,
+      "height": 1024,
+      "usage": [
+        "story",
+        "portrait",
+        "dialogue"
+      ],
+      "mature": false,
+      "presentation": "normal",
+      "prompt": "Historical SFW game asset, transparent background, gritty historical oil-painting style, period-accurate 16th-17th century early modern Spanish tercios, mud, steel, powder smoke, no modern elements, no fantasy glow, no neon, no anime. veteran Spanish tercio recruiter with worn morion and dangerous smile, SFW."
+    },
+    {
+      "id": "story_madre_recuerdo_portrait",
+      "kind": "portrait",
+      "publicPath": "/assets/gpt-bank/portraits/story/story_madre_recuerdo_portrait.png",
+      "width": 1024,
+      "height": 1024,
+      "usage": [
+        "story",
+        "portrait",
+        "dialogue"
+      ],
+      "mature": false,
+      "presentation": "normal",
+      "prompt": "Historical SFW game asset, transparent background, gritty historical oil-painting style, period-accurate 16th-17th century early modern Spanish tercios, mud, steel, powder smoke, no modern elements, no fantasy glow, no neon, no anime. remembered poor Castilian mother, sepia family relic portrait, SFW."
     }
   ],
   "items": [
@@ -9822,7 +9981,7 @@
       "tier": 1,
       "price": 14,
       "sellPrice": 4,
-      "assetId": "weapon_pike_common_001",
+      "assetId": "asset_pike_common_001",
       "footprint": {
         "w": 1,
         "h": 3
@@ -9860,7 +10019,7 @@
       "tier": 1,
       "price": 18,
       "sellPrice": 6,
-      "assetId": "weapon_pike_common_002",
+      "assetId": "asset_pike_common_002",
       "footprint": {
         "w": 1,
         "h": 3
@@ -9897,7 +10056,7 @@
       "tier": 2,
       "price": 70,
       "sellPrice": 24,
-      "assetId": "weapon_pike_uncommon_011",
+      "assetId": "asset_pike_uncommon_001",
       "footprint": {
         "w": 1,
         "h": 3
@@ -9934,7 +10093,7 @@
       "tier": 2,
       "price": 80,
       "sellPrice": 28,
-      "assetId": "weapon_pike_uncommon_012",
+      "assetId": "asset_pike_uncommon_002",
       "footprint": {
         "w": 1,
         "h": 3
@@ -9971,7 +10130,7 @@
       "tier": 3,
       "price": 220,
       "sellPrice": 77,
-      "assetId": "weapon_pike_rare_031",
+      "assetId": "asset_pike_rare_001",
       "footprint": {
         "w": 1,
         "h": 3
@@ -10014,7 +10173,7 @@
       "tier": 3,
       "price": 260,
       "sellPrice": 91,
-      "assetId": "weapon_pike_rare_032",
+      "assetId": "asset_pike_rare_002",
       "footprint": {
         "w": 1,
         "h": 3
@@ -10051,7 +10210,7 @@
       "tier": 4,
       "price": 540,
       "sellPrice": 189,
-      "assetId": "weapon_pike_epic_051",
+      "assetId": "asset_pike_veteran_001",
       "footprint": {
         "w": 1,
         "h": 3
@@ -10094,7 +10253,7 @@
       "tier": 4,
       "price": 620,
       "sellPrice": 217,
-      "assetId": "weapon_pike_legendary_066",
+      "assetId": "asset_pike_masterwork_001",
       "footprint": {
         "w": 1,
         "h": 3
@@ -13579,7 +13738,7 @@
       "tier": 1,
       "price": 12,
       "sellPrice": 4,
-      "assetId": "weapon_pike_common_006",
+      "assetId": "asset_pike_common_001",
       "footprint": {
         "w": 1,
         "h": 3

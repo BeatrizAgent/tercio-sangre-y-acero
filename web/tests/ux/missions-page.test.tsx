@@ -1,7 +1,7 @@
 // Missions flow: list + detail. Renders against the real GameState store.
 
 import { describe, expect, it, vi, beforeEach } from "vitest";
-import { render, screen } from "@testing-library/react";
+import { fireEvent, render, screen } from "@testing-library/react";
 import type React from "react";
 
 const { useGameDataMock, useGameStoreMock, replaceMock, pushMock, paramsMock, searchParamsMock } = vi.hoisted(() => ({
@@ -87,7 +87,28 @@ describe("missions flow", () => {
     render(<MissionsPage />);
 
     expect(screen.getByText("Modo historia")).toBeInTheDocument();
+    expect(screen.getByRole("dialog", { name: /Casa de tierra y humo/ })).toBeInTheDocument();
+    expect(screen.getByText("Capitulo 1: La leva de Castilla")).toBeInTheDocument();
     expect(screen.queryByRole("link", { name: /Desplegar/ })).not.toBeInTheDocument();
+  });
+
+  it("renders story puzzle controls for puzzle chapters", () => {
+    installReadyStore({
+      storyProgress: {
+        arcId: "prologue_castilla",
+        currentChapterId: "cap1_recuerdo_madre",
+        completedChapterIds: ["cap1_choza_castellana"],
+        choices: { cap1_choza_castellana: "shield_brother" },
+      },
+    });
+    searchParamsMock.mockReturnValue(new URLSearchParams("mode=story"));
+    render(<MissionsPage />);
+
+    expect(screen.getByRole("dialog", { name: /El pan de la madre/ })).toBeInTheDocument();
+    fireEvent.click(screen.getByRole("button", { name: /Saltar/ }));
+    expect(screen.getByText(/Ordena los recuerdos/)).toBeInTheDocument();
+    expect(screen.getAllByRole("checkbox")).toHaveLength(3);
+    expect(screen.getByRole("button", { name: /Canturrear bajo/ })).toBeDisabled();
   });
 
   it("shows campaign as the default mode", () => {

@@ -6,6 +6,7 @@
 - Do not add real-time combat.
 - Do not add multiplayer yet.
 - Keep systems data-driven.
+- Keep story mode as a light visual novel: centered choices, icon rewards, and easy flow after chapter 3. See `docs/story_mode.md`.
 - Preserve Prisma schema unless instructed.
 - Make small changes.
 - Use placeholder assets only.

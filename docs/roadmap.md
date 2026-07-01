@@ -20,6 +20,10 @@ Add clearer costs, fatigue pressure, and rank-gated drills.
 
 Expand formulas, mission types, and risk/reward tuning.
 
+Story mode lives under `/missions?mode=story` and follows the UX contract in
+[`docs/story_mode.md`](story_mode.md): light visual novel flow, centered choices,
+icon reward previews, and low friction after the early tutorial chapters.
+
 ## Phase 5: Reports, Wounds, Loot
 
 Make reports richer and wounds more meaningful.

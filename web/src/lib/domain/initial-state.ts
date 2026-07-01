@@ -2,6 +2,7 @@ import { inventoryWithAutoLayout } from "./inventory-grid";
 import { normalizeActiveCharacterId, normalizePlayableRoster, PLAYER_CHARACTER_ID } from "./player-character";
 import { regenerateActionPoints } from "./action-points";
 import { normalizeStoryProgress } from "./story";
+import { generateFamilyBackground } from "./names";
 import type { GameState } from "../types";
 
 function rosterWithSoldier(state: GameState): GameState {
@@ -18,6 +19,10 @@ export function normalizeGameState(state: GameState): GameState {
     ...state.soldier,
     inventory: inventoryWithAutoLayout(state.soldier.inventory ?? []),
   };
+
+  if (!soldier.background) {
+    soldier.background = generateFamilyBackground(soldier.name);
+  }
 
   if (soldier.actionPoints === undefined) {
     soldier.actionPoints = 12;
@@ -49,17 +54,15 @@ export function createInitialState(soldierName = "Diego de Arce", portraitAssetI
       corruption: 0,
       banMissionsLeft: 0,
       portraitAssetId,
-      stats: { pike: 2, sword: 1, arquebus: 1, discipline: 2, vigor: 2, cunning: 1, command: 0 },
+      stats: { pike: 1, sword: 1, arquebus: 1, discipline: 1, vigor: 1, cunning: 1, command: 0 },
       inventory: inventoryWithAutoLayout([
-        { itemId: "weapon_pica_gastada_001", quantity: 1 },
-        { itemId: "chest_cuirass_001", quantity: 1 },
         { itemId: "consumable_pan_duro_001", quantity: 2 },
         { itemId: "consumable_vendas_001", quantity: 2 },
       ]),
       equipment: {
         head: null,
-        body: "chest_cuirass_001",
-        mainHand: "weapon_pica_gastada_001",
+        body: null,
+        mainHand: null,
         offHand: null,
         firearm: null,
         accessory: null,

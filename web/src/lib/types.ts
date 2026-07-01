@@ -148,6 +148,16 @@ export interface ActiveWound {
   treated: boolean;
 }
 
+export interface RelativeContext {
+  name: string;
+  relation: "mother" | "brother" | "father" | "grandfather" | "love_interest";
+  portraitId: string;
+  description: string;
+  status: "living" | "deceased" | "unknown";
+}
+
+export type FamilyBackground = Record<string, RelativeContext>; // e.g. mother, brother, father, grandfather, love_interest
+
 export interface Soldier {
   id: string;
   name: string;
@@ -170,6 +180,7 @@ export interface Soldier {
   wounds: ActiveWound[];
   actionPoints?: number;
   lastRegenAt?: string;
+  background?: FamilyBackground;
 }
 
 export interface EventChoice {
@@ -218,8 +229,39 @@ export interface StoryChoice {
     corruption?: number;
     wound?: string;
     items?: { itemId: string; quantity: number }[];
+    stats?: Partial<Stats>;
+    equipment?: Partial<Equipment>;
   };
   resultText: string;
+}
+
+export interface StoryCharacter {
+  id: string;
+  name: string;
+  role: string;
+  portraitAssetId?: string;
+}
+
+export interface StoryDialogueLine {
+  speakerId: string;
+  text: string;
+}
+
+export interface StoryPuzzleOption {
+  id: string;
+  label: string;
+  description?: string;
+}
+
+export interface StoryPuzzle {
+  id: string;
+  kind: "sequence" | "packing" | "clue";
+  title: string;
+  prompt: string;
+  options: StoryPuzzleOption[];
+  answer: string[];
+  successText: string;
+  failureText: string;
 }
 
 export interface StoryChapter {
@@ -229,6 +271,9 @@ export interface StoryChapter {
   sceneAssetId?: string;
   mature?: boolean;
   presentation?: AssetPresentation;
+  characters?: StoryCharacter[];
+  dialogue?: StoryDialogueLine[];
+  puzzle?: StoryPuzzle;
   choices: StoryChoice[];
 }
 

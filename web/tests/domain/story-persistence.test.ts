@@ -7,11 +7,11 @@ import {
 import { createTestState } from "../helpers/state-fixtures";
 
 const storyReport = {
-  id: "story_prologue_village_1782813600000",
-  missionId: "story_prologue_village",
+  id: "story_cap1_choza_castellana_1782813600000",
+  missionId: "story_cap1_choza_castellana",
   success: true,
-  report: "**[Historia: Salida de la aldea]**",
-  rewards: { coins: 2, xp: 6, honor: 1 },
+  report: "**[Historia: Casa de tierra y humo]**",
+  rewards: { coins: 0, xp: 5, honor: 1 },
   fatigue: 0,
   wounds: [],
   loot: [{ itemId: "consumable_pan_duro_001", quantity: 1 }],
@@ -33,8 +33,8 @@ const missionReport = {
 const persistedStoryReport = {
   id: storyReport.id,
   arcId: "prologue_castilla",
-  chapterId: "prologue_village",
-  choiceId: "take_bread",
+  chapterId: "cap1_choza_castellana",
+  choiceId: "shield_brother",
   report: storyReport.report,
   rewards: storyReport.rewards,
   wounds: storyReport.wounds,
@@ -45,30 +45,30 @@ const persistedStoryReport = {
 {
   const progress = {
     arcId: "prologue_castilla",
-    currentChapterId: "prologue_recruiter",
-    completedChapterIds: ["prologue_village"],
-    choices: { prologue_village: "take_bread" },
+    currentChapterId: "cap1_recuerdo_madre",
+    completedChapterIds: ["cap1_choza_castellana"],
+    choices: { cap1_choza_castellana: "shield_brother" },
   };
 
   const split = splitReportsForPersistence([storyReport, missionReport], progress);
 
   assert.deepEqual(split.missionReports, [missionReport], "story reports do not persist through MissionResult");
   assert.equal(split.storyReports.length, 1, "story report gets normalized separately");
-  assert.equal(split.storyReports[0]?.chapterId, "prologue_village");
-  assert.equal(split.storyReports[0]?.choiceId, "take_bread");
+  assert.equal(split.storyReports[0]?.chapterId, "cap1_choza_castellana");
+  assert.equal(split.storyReports[0]?.choiceId, "shield_brother");
 }
 
 {
   const record = toStoryProgressRecord({
     arcId: "prologue_castilla",
     currentChapterId: "missing_chapter",
-    completedChapterIds: ["prologue_village", "missing_chapter"],
-    choices: { prologue_village: "take_bread" },
+    completedChapterIds: ["cap1_choza_castellana", "missing_chapter"],
+    choices: { cap1_choza_castellana: "shield_brother" },
   });
 
-  assert.equal(record.currentChapterId, "prologue_village", "invalid current chapter normalizes to start");
-  assert.deepEqual(record.completedChapterIds, ["prologue_village"], "invalid completed chapters are pruned");
-  assert.deepEqual(record.choices, { prologue_village: "take_bread" });
+  assert.equal(record.currentChapterId, "cap1_choza_castellana", "invalid current chapter normalizes to start");
+  assert.deepEqual(record.completedChapterIds, ["cap1_choza_castellana"], "invalid completed chapters are pruned");
+  assert.deepEqual(record.choices, { cap1_choza_castellana: "shield_brother" });
 }
 
 {
@@ -76,7 +76,7 @@ const persistedStoryReport = {
     reports: [missionReport],
     storyProgress: {
       arcId: "prologue_castilla",
-      currentChapterId: "prologue_village",
+      currentChapterId: "cap1_choza_castellana",
       completedChapterIds: [],
       choices: {},
     },
@@ -84,14 +84,14 @@ const persistedStoryReport = {
   const state = overlayPersistedStoryState(snapshot, {
     progress: {
       arcId: "prologue_castilla",
-      currentChapterId: "prologue_recruiter",
-      completedChapterIds: ["prologue_village"],
-      choices: { prologue_village: "take_bread" },
+      currentChapterId: "cap1_recuerdo_madre",
+      completedChapterIds: ["cap1_choza_castellana"],
+      choices: { cap1_choza_castellana: "shield_brother" },
     },
     reports: [persistedStoryReport],
   });
 
-  assert.equal(state.storyProgress?.currentChapterId, "prologue_recruiter", "DB progress wins over stale snapshot");
+  assert.equal(state.storyProgress?.currentChapterId, "cap1_recuerdo_madre", "DB progress wins over stale snapshot");
   assert.deepEqual(
     state.reports.map((report) => report.id),
     [storyReport.id, missionReport.id],

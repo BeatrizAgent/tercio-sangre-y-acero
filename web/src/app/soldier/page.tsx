@@ -603,16 +603,89 @@ export default function SoldierPage() {
 
         {/* TAB: FAMILIA */}
         {activeTab === "familia" && (
-          <div className="bg-panel border border-iron rounded-xs p-6 shadow-md text-center">
-            <div className="text-[10px] font-sans font-bold uppercase tracking-[0.16em] text-gold-soft/80 mb-2">
-              Vinculo al perfil
+          <div className="space-y-6 animate-fade-in">
+            {/* Biography Intro Header */}
+            <div className="bg-panel border border-iron/40 rounded-xs p-5 shadow-md">
+              <h3 className="font-cinzel text-xs font-bold uppercase tracking-wider text-gold-soft mb-2">Orígenes y Vínculos</h3>
+              <p className="text-xs leading-relaxed text-text-muted">
+                <span className="font-bold text-text">{soldier.name}</span> nació y se crió en las duras tierras de Castilla.
+                Bajo el frío del invierno y el sol del tajo, la miseria obligó a tomar una decisión definitiva.
+                Dejando atrás la era, la familia y el amor, marchó al tercio con una pica al hombro y el deber en la sangre.
+              </p>
             </div>
-            <p className="text-[11px] font-mono text-text-muted">
-              Envia este enlace a tus companeros para mostrar tu hoja de servicios.
-            </p>
-            <code className="block mt-2 px-3 py-1.5 bg-stone-900/50 border border-iron rounded-xs text-[10px] font-mono text-gold-soft break-all">
-              https://s60-es.gladiatus.gameforce.com/game/index.php?mod=player&p={soldier.id}&language=es
-            </code>
+
+            {/* Relatives Grid */}
+            {soldier.background ? (
+              <div className="grid gap-4 grid-cols-1 md:grid-cols-2">
+                {Object.entries(soldier.background).map(([key, relative]) => {
+                  const isDeceased = relative.status === "deceased";
+                  const relationLabels: Record<string, string> = {
+                    mother: "Madre",
+                    brother: "Hermano pequeño",
+                    father: "Padre",
+                    grandfather: "Abuelo",
+                    love_interest: "Interés amoroso",
+                  };
+                  return (
+                    <div
+                      key={key}
+                      className="bg-panel border border-iron/30 hover:border-gold/20 transition rounded-xs p-4 flex gap-4 items-start"
+                    >
+                      {/* circular / square portrait */}
+                      <div className="relative h-16 w-16 md:h-20 md:w-20 shrink-0 border border-gold/30 rounded-xs bg-stone-950 overflow-hidden select-none">
+                        <img
+                          src={relative.portraitId}
+                          alt={relative.name}
+                          className={`h-full w-full object-cover transition duration-300 ${
+                            isDeceased ? "sepia opacity-50 contrast-75 brightness-75 scale-105" : ""
+                          }`}
+                        />
+                      </div>
+
+                      {/* details */}
+                      <div className="min-w-0 flex-1">
+                        <div className="flex items-center justify-between gap-2">
+                          <span className="font-mono text-[9px] uppercase tracking-widest text-gold-soft">
+                            {relationLabels[relative.relation] || relative.relation}
+                          </span>
+                          <span
+                            className={`rounded-xs border px-1.5 py-0.5 font-mono text-[7px] uppercase tracking-wider font-bold ${
+                              isDeceased
+                                ? "border-danger/30 bg-danger/10 text-danger"
+                                : "border-success/30 bg-success/10 text-success"
+                            }`}
+                          >
+                            {isDeceased ? "Fallecida" : "En Castilla"}
+                          </span>
+                        </div>
+                        <h4 className="font-cinzel text-xs font-bold text-text mt-1 truncate">
+                          {relative.name}
+                        </h4>
+                        <p className="text-[11px] text-text-muted mt-1 leading-normal italic">
+                          "{relative.description}"
+                        </p>
+                      </div>
+                    </div>
+                  );
+                })}
+              </div>
+            ) : (
+              <div className="bg-panel border border-iron rounded-xs p-6 shadow-md text-center">
+                <p className="text-[11px] font-mono text-text-muted">
+                  No se ha registrado biografía familiar para este soldado.
+                </p>
+              </div>
+            )}
+
+            {/* Legacy Profile Link Footer */}
+            <div className="bg-panel/40 border border-iron/20 rounded-xs p-4 text-center">
+              <div className="text-[8px] font-sans font-bold uppercase tracking-[0.16em] text-text-muted mb-1">
+                Ficha militar del soldado
+              </div>
+              <code className="block px-3 py-1 bg-stone-900/40 border border-iron/10 rounded-xs text-[9px] font-mono text-gold-soft/75 break-all">
+                https://s60-es.gladiatus.gameforce.com/game/index.php?mod=player&p={soldier.id}&language=es
+              </code>
+            </div>
           </div>
         )}
       </div>

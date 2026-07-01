@@ -90,17 +90,15 @@ export function createInitialState(
       corruption: 0,
       banMissionsLeft: 0,
       portraitAssetId,
-      stats: { pike: 2, sword: 1, arquebus: 1, discipline: 2, vigor: 2, cunning: 1, command: 0 },
+      stats: { pike: 1, sword: 1, arquebus: 1, discipline: 1, vigor: 1, cunning: 1, command: 0 },
       inventory: inventoryWithAutoLayout([
-        { itemId: "weapon_pica_gastada_001", quantity: 1 },
-        { itemId: "chest_cuirass_001", quantity: 1 },
         { itemId: "consumable_pan_duro_001", quantity: 2 },
         { itemId: "consumable_vendas_001", quantity: 2 },
       ]),
       equipment: {
         head: null,
-        body: "chest_cuirass_001",
-        mainHand: "weapon_pica_gastada_001",
+        body: null,
+        mainHand: null,
         offHand: null,
         firearm: null,
         accessory: null,
@@ -142,7 +140,7 @@ export interface GameStore extends GameState {
   fightArenaOpponent: (opponentId: string) => ActionResult<{ resultId?: string }>;
   recruitCandidate: (candidateId: string) => ActionResult;
   resolveActiveEventChoice: (choiceId: string) => ActionResult<{ reportId?: string }>;
-  resolveStoryChoice: (chapterId: string, choiceId: string) => ActionResult<{ reportId?: string }>;
+  resolveStoryChoice: (chapterId: string, choiceId: string, puzzleAnswer?: string[]) => ActionResult<{ reportId?: string }>;
   payTownBribe: () => ActionResult;
   treatWound: (woundInstanceId: string) => ActionResult;
   /**
@@ -457,13 +455,13 @@ export const useGameStore = create<GameStore>()(
         return result;
       },
 
-      resolveStoryChoice: (chapterId, choiceId) => {
+      resolveStoryChoice: (chapterId, choiceId, puzzleAnswer) => {
         let result: ActionResult<{ reportId?: string }> = {
           ok: false,
           message: "Capitulo desconocido.",
         };
         set((state) => {
-          const out = resolveStoryChoiceInState({ state, chapterId, choiceId });
+          const out = resolveStoryChoiceInState({ state, chapterId, choiceId, puzzleAnswer });
           result = out.result;
           return out.next;
         });

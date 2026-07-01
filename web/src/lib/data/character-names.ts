@@ -13,6 +13,7 @@ export interface CharacterNamesData {
   era: string;
   region: string;
   description: string;
+  femaleFirstNames: string[];
   firstNames: string[];
   surnames: string[];
 }
@@ -20,6 +21,10 @@ export interface CharacterNamesData {
 const data = characterNamesJson as CharacterNamesData;
 
 export const characterNames: CharacterNamesData = data;
+
+export function getFemaleFirstNames(): readonly string[] {
+  return data.femaleFirstNames || [];
+}
 
 export function getFirstNames(): readonly string[] {
   return data.firstNames;

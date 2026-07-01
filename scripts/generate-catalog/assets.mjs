@@ -118,7 +118,7 @@ function buildRealAssetPathMap() {
     asset_scene_escaramuza_flandes_001: ["scenes/events/", "road_ambush"],
     asset_scene_escaramuza_italia_001: ["scenes/events/", "muddy_road"],
     asset_icon_coin_001: ["ui/icons/", "monedas"],
-    asset_icon_honor_001: ["ui/game-icons/", "honor"],
+    asset_icon_honor_001: ["ui/icons/", "condecoracion_estrella_laurel"],
     asset_icon_fatigue_001: ["ui/icons/", "calavera"],
     asset_icon_xp_001: ["ui/icons/", "morion_flecha"],
     asset_enemy_bandolero_001: ["enemies/bandits/", "enemy"],
@@ -174,7 +174,7 @@ function buildRealAssetPathMap() {
     "asset_pike_rare_002",
     "asset_pike_veteran_001",
     "asset_pike_masterwork_001",
-  ]) prefer(id, ["missions/combat-sprites/", "pike"]);
+  ]) prefer(id, ["weapons/", "weapon_pike"]);
 
   for (const id of [
     "asset_sword_common_001",
@@ -364,6 +364,16 @@ const NEW_ASSETS = [
   makeAsset("asset_scene_asedio_001", "scene", ["mission", "siege"], "siege line, bastion in distance, smoke"),
   makeAsset("asset_scene_escaramuza_flandes_001", "scene", ["mission", "skirmish"], "Flanders crossroads, low farms, rain"),
   makeAsset("asset_scene_escaramuza_italia_001", "scene", ["mission", "skirmish"], "Italian hill road, vineyards, hot sun"),
+  makeAsset("story_castilla_choza_hermanos", "scene", ["story", "dialogue"], "poor 16th-century Castilian hut with two brothers, SFW"),
+  makeAsset("story_castilla_abuelo_hogar", "scene", ["story", "dialogue"], "grandfather advising a young Castilian farmhand by the hearth, SFW"),
+  makeAsset("story_castilla_despedida_camino", "scene", ["story", "dialogue"], "farewell on a dry Castilian road before the levy, SFW"),
+  makeAsset("story_castilla_leva_veteranos", "scene", ["story", "dialogue"], "veteran tercios recruiting villagers during a Castilian levy, SFW"),
+  makeAsset("story_martin_paje_portrait", "portrait", ["story", "portrait", "dialogue"], "poor Castilian boy page, patched clothing, scared but alive eyes, SFW"),
+  makeAsset("story_padre_viudo_portrait", "portrait", ["story", "portrait", "dialogue"], "broken Castilian widower, hard exhausted face, SFW"),
+  makeAsset("story_abuelo_hernan_portrait", "portrait", ["story", "portrait", "dialogue"], "old retired Spanish soldier, wise bitter eyes, SFW"),
+  makeAsset("story_ines_castilla_portrait", "portrait", ["story", "portrait", "dialogue"], "young rural Castilian woman before the levy, sober and dignified, SFW"),
+  makeAsset("story_sargento_valcarcel_portrait", "portrait", ["story", "portrait", "dialogue"], "veteran Spanish tercio recruiter with worn morion and dangerous smile, SFW"),
+  makeAsset("story_madre_recuerdo_portrait", "portrait", ["story", "portrait", "dialogue"], "remembered poor Castilian mother, sepia family relic portrait, SFW"),
 
   // Icons (4)
   makeAsset("asset_icon_coin_001", "icon", ["ui"], "single silver coin"),

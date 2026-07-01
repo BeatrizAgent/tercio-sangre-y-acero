@@ -68,7 +68,7 @@ async function main() {
     assert.ok(typeof store.equipItem === "function", "equipItem action exists");
     assert.ok(typeof store.startMission === "function", "startMission action exists");
     assert.ok(typeof store.resolveStoryChoice === "function", "resolveStoryChoice action exists");
-    assert.equal(store.storyProgress?.currentChapterId, "prologue_village", "story starts at prologue");
+    assert.equal(store.storyProgress?.currentChapterId, "cap1_choza_castellana", "story starts at chapter 1");
   }
 
   {
@@ -308,10 +308,30 @@ async function main() {
   {
     useGameStore.getState().resetState();
     const beforeXp = useGameStore.getState().soldier.xp;
-    const out = useGameStore.getState().resolveStoryChoice("prologue_village", "take_bread");
+    const out = useGameStore.getState().resolveStoryChoice("cap1_choza_castellana", "shield_brother");
     assert.equal(out.ok, true, "story choice succeeds");
-    assert.equal(useGameStore.getState().soldier.xp, beforeXp + 6, "story grants xp");
-    assert.equal(useGameStore.getState().storyProgress?.currentChapterId, "prologue_recruiter", "story advances");
+    assert.equal(useGameStore.getState().soldier.xp, beforeXp + 5, "story grants xp");
+    assert.equal(useGameStore.getState().storyProgress?.currentChapterId, "cap1_recuerdo_madre", "story advances");
+  }
+
+  {
+    useGameStore.getState().resetState();
+    useGameStore.setState({
+      storyProgress: {
+        arcId: "prologue_castilla",
+        currentChapterId: "cap1_recuerdo_madre",
+        completedChapterIds: ["cap1_choza_castellana"],
+        choices: { cap1_choza_castellana: "shield_brother" },
+      },
+    });
+    const bad = useGameStore.getState().resolveStoryChoice("cap1_recuerdo_madre", "sing_low", ["lullaby"]);
+    assert.equal(bad.ok, false, "bad puzzle answer blocks store action");
+    const good = useGameStore.getState().resolveStoryChoice("cap1_recuerdo_madre", "sing_low", [
+      "mantilla",
+      "rosary",
+      "lullaby",
+    ]);
+    assert.equal(good.ok, true, "good puzzle answer resolves store action");
   }
 
   // applyServerEvent: exhaustive -------------------------------------

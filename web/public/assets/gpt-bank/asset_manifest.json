@@ -1,5 +1,5 @@
 {
-  "count": 607,
+  "count": 617,
   "assets": [
     {
       "source": "armor/armet_celada_cerrada_visor.png",
@@ -6641,6 +6641,96 @@
       "background_reason": "no_magenta_border"
     },
     {
+      "source": "portraits/story/story_abuelo_hernan_portrait.png",
+      "asset": "portraits/story/story_abuelo_hernan_portrait.png",
+      "original_size": [
+        1024,
+        1536
+      ],
+      "clean_size": [
+        1024,
+        1536
+      ],
+      "cropped": false,
+      "background_removed": false,
+      "background_reason": "no_magenta_border"
+    },
+    {
+      "source": "portraits/story/story_ines_castilla_portrait.png",
+      "asset": "portraits/story/story_ines_castilla_portrait.png",
+      "original_size": [
+        1024,
+        1536
+      ],
+      "clean_size": [
+        1024,
+        1536
+      ],
+      "cropped": false,
+      "background_removed": false,
+      "background_reason": "no_magenta_border"
+    },
+    {
+      "source": "portraits/story/story_madre_recuerdo_portrait.png",
+      "asset": "portraits/story/story_madre_recuerdo_portrait.png",
+      "original_size": [
+        1023,
+        1537
+      ],
+      "clean_size": [
+        1023,
+        1537
+      ],
+      "cropped": false,
+      "background_removed": false,
+      "background_reason": "no_magenta_border"
+    },
+    {
+      "source": "portraits/story/story_martin_paje_portrait.png",
+      "asset": "portraits/story/story_martin_paje_portrait.png",
+      "original_size": [
+        1024,
+        1536
+      ],
+      "clean_size": [
+        1024,
+        1536
+      ],
+      "cropped": false,
+      "background_removed": false,
+      "background_reason": "no_magenta_border"
+    },
+    {
+      "source": "portraits/story/story_padre_viudo_portrait.png",
+      "asset": "portraits/story/story_padre_viudo_portrait.png",
+      "original_size": [
+        1024,
+        1536
+      ],
+      "clean_size": [
+        1024,
+        1536
+      ],
+      "cropped": false,
+      "background_removed": false,
+      "background_reason": "no_magenta_border"
+    },
+    {
+      "source": "portraits/story/story_sargento_valcarcel_portrait.png",
+      "asset": "portraits/story/story_sargento_valcarcel_portrait.png",
+      "original_size": [
+        1024,
+        1536
+      ],
+      "clean_size": [
+        1024,
+        1536
+      ],
+      "cropped": false,
+      "background_removed": false,
+      "background_reason": "no_magenta_border"
+    },
+    {
       "source": "props/food/food_pan_municion.png",
       "asset": "props/food/food_pan_municion.png",
       "original_size": [
@@ -7825,6 +7915,66 @@
     {
       "source": "scenes/events/stolen_baggage_blurred.png",
       "asset": "scenes/events/stolen_baggage_blurred.png",
+      "original_size": [
+        1672,
+        941
+      ],
+      "clean_size": [
+        1672,
+        941
+      ],
+      "cropped": false,
+      "background_removed": false,
+      "background_reason": "no_magenta_border"
+    },
+    {
+      "source": "scenes/events/story_castilla_abuelo_hogar.png",
+      "asset": "scenes/events/story_castilla_abuelo_hogar.png",
+      "original_size": [
+        1672,
+        941
+      ],
+      "clean_size": [
+        1672,
+        941
+      ],
+      "cropped": false,
+      "background_removed": false,
+      "background_reason": "no_magenta_border"
+    },
+    {
+      "source": "scenes/events/story_castilla_choza_hermanos.png",
+      "asset": "scenes/events/story_castilla_choza_hermanos.png",
+      "original_size": [
+        1672,
+        941
+      ],
+      "clean_size": [
+        1672,
+        941
+      ],
+      "cropped": false,
+      "background_removed": false,
+      "background_reason": "no_magenta_border"
+    },
+    {
+      "source": "scenes/events/story_castilla_despedida_camino.png",
+      "asset": "scenes/events/story_castilla_despedida_camino.png",
+      "original_size": [
+        1672,
+        941
+      ],
+      "clean_size": [
+        1672,
+        941
+      ],
+      "cropped": false,
+      "background_removed": false,
+      "background_reason": "no_magenta_border"
+    },
+    {
+      "source": "scenes/events/story_castilla_leva_veteranos.png",
+      "asset": "scenes/events/story_castilla_leva_veteranos.png",
       "original_size": [
         1672,
         941

@@ -52,6 +52,14 @@ The token names map 1:1 to the spec (e.g. `--sidebar-width`,
 - Tooltips: Use custom hover tooltips for stats, equipment slots, and
   status effects. Avoid inline help text to keep the layout clean and
   modern.
+- Compact game components (tooltips, item cards, slots, chips, stat rows)
+  must be size-bounded: use `min-w-0`, `truncate` or `line-clamp-*`,
+  `max-height`, and internal `overflow-y-auto` when content can exceed the
+  box. Do not let text resize the game shell or overflow the viewport.
+- Visible JSX text must not include literal Unicode escape strings such as
+  `\u00b7` or `\u2265`; render the real character/entity and add a UX test
+  for encoding-sensitive fixes. Compact item effects must show Spanish labels,
+  not raw keys such as `armor`, `damageMin`, or `damageMax`.
 - Viewport base for mockups: **1280x800**. Reference mockup canvas
   in `DESIGN/*.png` is **1672x941**.
 - Border radius cap: 6px. No glow, no neon, no fantasy palette.
@@ -81,6 +89,24 @@ Do not reintroduce Godot as the main client.
 - JSON seed data in `data/` as the single source of truth for items, ranks, missions, and assets.
 
 Use `pnpm` for package management.
+
+## Local Flask Backend
+
+`backend/` is the typed Flask migration backend for localhost testing. It is
+not the Dokploy production entrypoint yet.
+
+- Use `docker compose -f docker-compose.local.yml up --build` for the full
+  local stack: Next.js, Flask, and PostgreSQL.
+- If port 3000 is busy, set `TERCIO_WEB_PORT`, for example:
+  `TERCIO_WEB_PORT=3010`.
+- Flask exposes `/health`, `/api/health`, `/api/catalog`, and
+  `/api/character-names` first. Keep auth/state migration incremental.
+- Next.js proxies `/api/flask/:path*` to Flask when
+  `TERCIO_FLASK_PROXY_TARGET` is set.
+- Prisma remains the schema owner for now. Do not add Alembic or duplicate DB
+  migrations until Flask owns write endpoints.
+- Keep `docker-compose.dokploy.yml` and `Dockerfile.dokploy` separate from
+  local Flask work unless production deployment is explicitly requested.
 
 ## Asset Bank
 

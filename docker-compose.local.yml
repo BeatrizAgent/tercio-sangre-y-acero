@@ -1,0 +1,72 @@
+services:
+  postgres:
+    image: postgres:16-alpine
+    environment:
+      POSTGRES_DB: tercio_sangre_y_acero
+      POSTGRES_USER: tercio
+      POSTGRES_PASSWORD: tercio
+    ports:
+      - "5432:5432"
+    volumes:
+      - tercio-postgres-local:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U tercio -d tercio_sangre_y_acero"]
+      interval: 5s
+      timeout: 5s
+      retries: 20
+
+  backend:
+    build:
+      context: .
+      dockerfile: backend/Dockerfile
+    environment:
+      DATABASE_URL: postgresql://tercio:tercio@postgres:5432/tercio_sangre_y_acero?schema=public
+      TERCIO_CORS_ORIGIN: http://localhost:3000
+      TERCIO_DATA_DIR: /app/data
+    ports:
+      - "5000:5000"
+    volumes:
+      - ./backend/src:/app/src
+      - ./backend/tests:/app/tests
+      - ./data:/app/data:ro
+    depends_on:
+      postgres:
+        condition: service_healthy
+    healthcheck:
+      test: ["CMD", "python", "-c", "import urllib.request; urllib.request.urlopen('http://localhost:5000/health', timeout=3).read()"]
+      interval: 10s
+      timeout: 5s
+      retries: 10
+
+  web:
+    image: node:22-alpine
+    working_dir: /app/web
+    environment:
+      NODE_ENV: development
+      NEXT_TELEMETRY_DISABLED: "1"
+      DATABASE_URL: postgresql://tercio:tercio@postgres:5432/tercio_sangre_y_acero?schema=public
+      TERCIO_CORS_ORIGIN: http://localhost:3000
+      TERCIO_FLASK_PROXY_TARGET: http://backend:5000
+    ports:
+      - "${TERCIO_WEB_PORT:-3000}:3000"
+    volumes:
+      - .:/app
+      - tercio-web-node-modules:/app/web/node_modules
+      - tercio-web-next:/app/web/.next
+    depends_on:
+      postgres:
+        condition: service_healthy
+      backend:
+        condition: service_healthy
+    command: >
+      sh -c "corepack enable &&
+      pnpm install &&
+      pnpm exec prisma generate &&
+      pnpm exec prisma migrate deploy &&
+      pnpm db:seed &&
+      pnpm dev --hostname 0.0.0.0"
+
+volumes:
+  tercio-postgres-local:
+  tercio-web-node-modules:
+  tercio-web-next:

@@ -1,6 +1,7 @@
 .env
 .env.*
 !.env.example
+!.env.local.example
 .demo/
 .next/
 node_modules/
@@ -32,5 +33,6 @@ output/
 /web/[{]
 __pycache__/
 *.pyc
+*.egg-info/
 .DS_Store
 Thumbs.db

@@ -4,6 +4,17 @@ const corsOrigin = process.env.TERCIO_CORS_ORIGIN ?? "https://tercios.yampi.eu";
 
 const nextConfig: NextConfig = {
   allowedDevOrigins: ["127.0.0.1"],
+  async rewrites() {
+    const flaskTarget = process.env.TERCIO_FLASK_PROXY_TARGET;
+    if (!flaskTarget) return [];
+
+    return [
+      {
+        source: "/api/flask/:path*",
+        destination: `${flaskTarget}/api/:path*`,
+      },
+    ];
+  },
   async headers() {
     return [
       {

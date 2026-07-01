@@ -45,20 +45,6 @@ export const prologueStoryArc: StoryArc = {
         { id: "mother", name: "Madre de Diego", role: "Recuerdo", portraitAssetId: "story_madre_recuerdo_portrait" },
         { id: "martin", name: "Martin", role: "Hermanito", portraitAssetId: "story_martin_paje_portrait" },
       ],
-      puzzle: {
-        id: "mother_memory_order",
-        kind: "sequence",
-        title: "Orden de los recuerdos",
-        prompt: "Ordena los recuerdos como Diego se los muestra a Martin: primero lo que puede tocar, luego lo que puede besar, al final lo que puede oir.",
-        options: [
-          { id: "mantilla", label: "Mantilla", description: "Tela gastada con olor a humo limpio." },
-          { id: "rosary", label: "Rosario", description: "Cuentas de madera pulida." },
-          { id: "lullaby", label: "Tonada", description: "Una nana rota, casi olvidada." },
-        ],
-        answer: ["mantilla", "rosary", "lullaby"],
-        successText: "El orden calma al nino",
-        failureText: "Resuelve el puzle: Martin necesita un recuerdo claro antes de seguir.",
-      },
       choices: [
         {
           id: "sing_low",

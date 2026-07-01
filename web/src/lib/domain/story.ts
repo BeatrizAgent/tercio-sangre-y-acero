@@ -50,14 +50,16 @@ export function resolveStoryChoiceInState({
   chapterId,
   choiceId,
   puzzleAnswer,
+  mailItems = false,
   now = new Date(),
 }: {
   state: GameState;
   chapterId: string;
   choiceId: string;
   puzzleAnswer?: string[];
+  mailItems?: boolean;
   now?: Date;
-}): { next: GameState; result: ActionResult<{ reportId?: string }> } {
+}): { next: GameState; result: ActionResult<{ reportId?: string; mailedItems?: { itemId: string; quantity: number }[] }> } {
   const progress = normalizeStoryProgress(state.storyProgress);
   const rawChapter = getStoryChapter(chapterId);
   if (!rawChapter) return { next: state, result: fail("Capitulo desconocido.") };
@@ -84,7 +86,8 @@ export function resolveStoryChoiceInState({
   const blocked = canResolveStoryChoice(state, choice);
   if (blocked) return { next: state, result: fail(blocked) };
 
-  const soldier = applyStoryEffects(state.soldier, choice, now);
+  const soldier = applyStoryEffects(state.soldier, choice, now, mailItems);
+  const mailedItems = mailItems ? collectMailedItems(choice.effects) : [];
   const nextChapter = getNextStoryChapter(chapter.id);
   const nextProgress: StoryProgress = {
     arcId: PROLOGUE_STORY_ARC_ID,
@@ -118,11 +121,11 @@ export function resolveStoryChoiceInState({
         ...state.reports,
       ],
     },
-    result: ok(nextChapter ? "Capitulo resuelto." : "Prologo completado.", { reportId }),
+    result: ok(nextChapter ? "Capitulo resuelto." : "Prologo completado.", { reportId, mailedItems }),
   };
 }
 
-function applyStoryEffects(soldier: Soldier, choice: StoryChoice, now: Date): Soldier {
+function applyStoryEffects(soldier: Soldier, choice: StoryChoice, now: Date, mailItems: boolean): Soldier {
   let inventory: InventoryItem[] = inventoryWithAutoLayout(soldier.inventory, BACKPACK_COLS, BACKPACK_ROWS, BACKPACK_CHESTS);
 
   for (const item of choice.requirements?.items ?? []) {
@@ -131,7 +134,9 @@ function applyStoryEffects(soldier: Soldier, choice: StoryChoice, now: Date): So
       .filter((entry) => entry.quantity > 0);
   }
 
+  const equippedItemIds = new Set(Object.values(choice.effects.equipment ?? {}).filter(Boolean) as string[]);
   for (const item of choice.effects.items ?? []) {
+    if (mailItems && !equippedItemIds.has(item.itemId)) continue;
     inventory = addInventoryItem(inventory, item.itemId, item.quantity, BACKPACK_COLS, BACKPACK_ROWS, BACKPACK_CHESTS).inventory;
   }
 
@@ -177,6 +182,13 @@ function buildStoryReport(title: string, text: string, choice: StoryChoice, puzz
   }
   report += `*Decision: ${choice.label}*\n${choice.resultText}`;
   return report;
+}
+
+function collectMailedItems(effects: StoryChoice["effects"]): { itemId: string; quantity: number }[] {
+  const equippedItemIds = new Set(Object.values(effects.equipment ?? {}).filter(Boolean) as string[]);
+  return (effects.items ?? [])
+    .filter((item) => !equippedItemIds.has(item.itemId))
+    .map((item) => ({ itemId: item.itemId, quantity: item.quantity }));
 }
 
 function arraysEqual(a: string[] | undefined, b: string[] | undefined): boolean {

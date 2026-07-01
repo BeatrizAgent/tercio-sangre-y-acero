@@ -29,6 +29,7 @@ import { playDrumSound } from "@/lib/sounds";
 import { MissionDetailSkeleton } from "@/components/skeletons/mission-detail-skeleton";
 import { useGameData } from "@/lib/hooks/use-game-data";
 import type { MissionDefinition } from "@/lib/types";
+import { MAX_ACTION_POINTS, REGEN_TIME_MS } from "@/lib/domain/action-points";
 
 type IconId = React.ComponentProps<typeof UiAssetIcon>["id"];
 
@@ -322,7 +323,7 @@ export default function MissionDetailPage() {
   const params = useParams();
   const router = useRouter();
   const { status } = useGameData();
-  const { soldier, activeEvent, pendingMissionId, activeMission, hydrateState } = useGameStore();
+  const { soldier, activeEvent, pendingMissionId, hydrateState } = useGameStore();
   // useSyncExternalStore replaces the `useState(false) + useEffect(setTrue)`
   // pattern, avoiding the cascading-render lint warning. The server
   // snapshot is false; the client snapshot is true (no subscription is
@@ -334,19 +335,18 @@ export default function MissionDetailPage() {
   );
   const [resolving, setResolving] = useState(false);
   const [gateToken, setGateToken] = useState<string | null>(null);
-  const [countdown, setCountdown] = useState<number | null>(null);
   const [actionError, setActionError] = useState<string | null>(null);
   const [localRegenTimer, setLocalRegenTimer] = useState<string>("");
 
   useEffect(() => {
     const computeTimer = (): string => {
       const s = useGameStore.getState().soldier;
-      const pts = s.actionPoints !== undefined ? s.actionPoints : 12;
-      if (pts >= 12 || !s.lastRegenAt) {
+      const pts = s.actionPoints !== undefined ? s.actionPoints : MAX_ACTION_POINTS;
+      if (pts >= MAX_ACTION_POINTS || !s.lastRegenAt) {
         return "";
       }
 
-      const nextRegenTime = new Date(s.lastRegenAt).getTime() + 30 * 60 * 1000;
+      const nextRegenTime = new Date(s.lastRegenAt).getTime() + REGEN_TIME_MS;
       const now = Date.now();
       const remainingMs = nextRegenTime - now;
 
@@ -368,7 +368,7 @@ export default function MissionDetailPage() {
     const interval = window.setInterval(() => {
       const next = computeTimer();
       setLocalRegenTimer((current) => (current === next ? current : next));
-      if (next === "" && useGameStore.getState().soldier.actionPoints !== 12) {
+      if (next === "" && useGameStore.getState().soldier.actionPoints !== MAX_ACTION_POINTS) {
         useGameStore.getState().hydrateState({ ...useGameStore.getState() });
       }
     }, 1000);
@@ -377,7 +377,6 @@ export default function MissionDetailPage() {
       window.clearInterval(interval);
     };
   }, [soldier.actionPoints, soldier.lastRegenAt]);
-  const [clockTick, setClockTick] = useState(() => Date.now());
   const mountedRef = useRef(true);
 
   useEffect(() => {
@@ -387,36 +386,11 @@ export default function MissionDetailPage() {
     };
   }, []);
 
-  useEffect(() => {
-    if (!activeMission || activeMission.status !== "active") return;
-    const timer = window.setInterval(() => setClockTick(Date.now()), 1000);
-    return () => window.clearInterval(timer);
-  }, [activeMission]);
-
-  const handleGateCountdown = useCallback(async (waitMs: number) => {
-    const startedAt = Date.now();
-    setCountdown(Math.ceil(waitMs / 1000));
-    await new Promise<void>((resolve) => {
-      const tick = () => {
-        const remainingMs = Math.max(0, waitMs - (Date.now() - startedAt));
-        if (mountedRef.current) setCountdown(Math.ceil(remainingMs / 1000));
-        if (remainingMs <= 0) {
-          window.clearInterval(timer);
-          resolve();
-        }
-      };
-      const timer = window.setInterval(tick, 250);
-      tick();
-    });
-    if (mountedRef.current) setCountdown(null);
-  }, []);
-
   const handleEventChoice = async (choiceId: string) => {
-    if (!pendingMissionId || resolving || countdown !== null) return;
+    if (!pendingMissionId || resolving) return;
     setActionError(null);
     try {
       const gate = await prepareActionGateAction({ kind: "event", targetId: `${pendingMissionId}:${choiceId}` });
-      await handleGateCountdown(gate.waitMs);
       if (!mountedRef.current) return;
       setResolving(true);
       playDrumSound();
@@ -453,14 +427,12 @@ export default function MissionDetailPage() {
     return (
       <PageTransition>
         <div className="relative mx-auto max-w-3xl space-y-5">
-          {(resolving || countdown !== null) && (
+          {resolving && (
             <div className="fixed inset-0 z-50 flex items-center justify-center bg-background/90 p-4">
               <div className="game-panel flex items-center gap-4 border-2 border-iron p-5">
-                <UiAssetIcon id="missions" label="Resolviendo" className={`h-12 w-12 ${resolving ? "animate-spin" : ""}`} />
+                <UiAssetIcon id="missions" label="Resolviendo" className="h-12 w-12 animate-spin" />
                 <div>
-                  <h2 className="font-cinzel text-lg font-bold uppercase tracking-widest text-gold">
-                    {countdown !== null ? `Preparando ${countdown}s` : "Resolviendo"}
-                  </h2>
+                  <h2 className="font-cinzel text-lg font-bold uppercase tracking-widest text-gold">Resolviendo</h2>
                   <p className="font-mono text-[10px] uppercase tracking-wider text-blood-bright">Cruz de Borgoña · Tercio VIII</p>
                 </div>
               </div>
@@ -564,7 +536,7 @@ export default function MissionDetailPage() {
   const requiredRoll = targetPower - totalPower;
   const chance = requiredRoll <= 1 ? 100 : requiredRoll > 5 ? 0 : ((6 - requiredRoll) / 5) * 100;
   const isAgotado = soldier.fatigue >= 100;
-  const noActionPoints = (soldier.actionPoints !== undefined ? soldier.actionPoints : 12) <= 0;
+  const noActionPoints = (soldier.actionPoints !== undefined ? soldier.actionPoints : MAX_ACTION_POINTS) <= 0;
   const lootTable = mission ? lootTableDefinitions.find((tbl) => tbl.id === mission.lootTableId) : undefined;
 
   const relevantStatLabel: Record<string, string> = {
@@ -575,12 +547,11 @@ export default function MissionDetailPage() {
   };
 
   const handleMissionStart = async (missionId: string) => {
-    if (resolving || countdown !== null) return;
+    if (resolving) return;
     setActionError(null);
     try {
       const gate = await prepareActionGateAction({ kind: "mission", targetId: missionId });
       setGateToken(gate.token);
-      await handleGateCountdown(gate.waitMs);
       if (!mountedRef.current) return;
       const result = await startMissionAction({ missionId, gateToken: gate.token });
       if (result.ok && result.data?.state) {
@@ -597,7 +568,6 @@ export default function MissionDetailPage() {
       setActionError(result.message);
     } catch (error) {
       setActionError(error instanceof Error ? error.message : "No se pudo preparar la orden.");
-      setCountdown(null);
       setResolving(false);
     }
   };
@@ -632,28 +602,9 @@ export default function MissionDetailPage() {
     void handleMissionStart(mission.id);
   };
 
-  const activeForThisMission = activeMission?.status === "active" && activeMission.missionId === mission.id;
-  const activeElsewhere = activeMission?.status === "active" && activeMission.missionId !== mission.id;
-  const remainingMs = activeMission?.status === "active"
-    ? Math.max(0, new Date(activeMission.completesAt).getTime() - clockTick)
-    : 0;
-  const remainingSeconds = Math.ceil(remainingMs / 1000);
-  const remainingLabel = `${Math.floor(remainingSeconds / 60)}:${String(remainingSeconds % 60).padStart(2, "0")}`;
-
   return (
     <PageTransition>
         <div className="relative space-y-4">
-        {countdown !== null && !resolving && (
-          <div className="fixed inset-0 z-50 flex items-center justify-center bg-background/90 p-4">
-            <div className="game-panel flex items-center gap-4 border-2 border-iron p-5">
-              <UiAssetIcon id="missions" label="Preparando" className="h-12 w-12" />
-              <div>
-                <h2 className="font-cinzel text-lg font-bold uppercase tracking-widest text-gold">Preparando {countdown}s</h2>
-                <p className="font-mono text-[10px] uppercase tracking-wider text-blood-bright">Cruz de Borgoña · Tercio VIII</p>
-              </div>
-            </div>
-          </div>
-        )}
         {resolving && (
           <MissionCanvasResolver
             mission={mission}
@@ -741,9 +692,9 @@ export default function MissionDetailPage() {
                 <div className="rounded-xs border border-iron/40 bg-stone-950/40 p-2.5 space-y-1">
                   <div className="flex items-center justify-between font-mono text-[10px] uppercase">
                     <span className="text-text-muted">Puntos de Acción:</span>
-                    <span className="font-bold text-gold">{soldier.actionPoints !== undefined ? soldier.actionPoints : 12} / 12</span>
+                    <span className="font-bold text-gold">{soldier.actionPoints !== undefined ? soldier.actionPoints : MAX_ACTION_POINTS} / {MAX_ACTION_POINTS}</span>
                   </div>
-                  {soldier.actionPoints !== undefined && soldier.actionPoints < 12 && (
+                  {soldier.actionPoints !== undefined && soldier.actionPoints < MAX_ACTION_POINTS && (
                     <div className="font-mono text-[9px] text-right text-text-muted uppercase">
                       Próximo punto en: <span className="text-gold-soft">{localRegenTimer || "--:--"}</span>
                     </div>
@@ -752,15 +703,13 @@ export default function MissionDetailPage() {
 
                 <button
                   onClick={handleStart}
-                  disabled={isAgotado || resolving || countdown !== null || noActionPoints}
+                  disabled={isAgotado || resolving || noActionPoints}
                   className={`blood-button flex w-full items-center justify-center gap-2 py-3 text-sm ${
-                    isAgotado || resolving || countdown !== null || noActionPoints ? "cursor-not-allowed opacity-60" : ""
+                    isAgotado || resolving || noActionPoints ? "cursor-not-allowed opacity-60" : ""
                   }`}
                 >
                   <UiAssetIcon id="confirm" label="" className="h-5 w-5" />
-                  {countdown !== null
-                    ? `Preparando ${countdown}s`
-                    : resolving
+                  {resolving
                       ? "Resolviendo..."
                       : isAgotado
                         ? "Agotado"

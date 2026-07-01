@@ -2,7 +2,7 @@ import { createHmac, timingSafeEqual } from "node:crypto";
 
 export type ActionGateKind = "mission" | "arena" | "event" | "story";
 
-const DEFAULT_WAIT_MS = 10_000;
+const DEFAULT_WAIT_MS = 0;
 
 export interface PreparedActionGate {
   token: string;
@@ -14,7 +14,6 @@ export interface ActionGateResult {
   ok: boolean;
   message: string;
   notBefore?: number;
-  remainingMs?: number;
   nonce?: string;
 }
 
@@ -32,7 +31,6 @@ export function prepareActionGate({
   kind,
   targetId,
   nowMs = Date.now(),
-  waitMs = DEFAULT_WAIT_MS,
   secret,
 }: {
   kind: ActionGateKind;
@@ -41,7 +39,8 @@ export function prepareActionGate({
   waitMs?: number;
   secret: string;
 }): PreparedActionGate {
-  const notBefore = nowMs + waitMs;
+  const waitMs = DEFAULT_WAIT_MS;
+  const notBefore = nowMs;
   const nonce = `${nowMs.toString(36)}${Math.random().toString(36).slice(2, 10)}`;
   const payload = JSON.stringify({ kind, targetId, notBefore, nonce });
   const encoded = Buffer.from(payload, "utf8").toString("base64url");
@@ -79,14 +78,6 @@ export function verifyActionGate({
     };
     if (payload.kind !== kind || payload.targetId !== targetId || typeof payload.notBefore !== "number") {
       return { ok: false, message: "Orden no corresponde a esta acción." };
-    }
-    if (nowMs < payload.notBefore) {
-      return {
-        ok: false,
-        message: "Aún no han pasado los 10 segundos de preparación.",
-        notBefore: payload.notBefore,
-        remainingMs: payload.notBefore - nowMs,
-      };
     }
     return { ok: true, message: "Orden lista.", notBefore: payload.notBefore, nonce: payload.nonce };
   } catch {

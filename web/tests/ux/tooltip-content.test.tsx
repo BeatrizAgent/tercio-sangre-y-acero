@@ -32,6 +32,26 @@ describe("ItemTooltipContent", () => {
     expect(container.querySelector(".ui-asset-icon img")).not.toBeNull();
     expect(container.querySelector("span.inline-flex.h-4.w-4 img")).not.toBeNull();
   });
+
+  it("keeps dense item popovers bounded and free of encoding escapes", () => {
+    useGameStoreMock.mockReturnValue(createInitialState());
+    const { container } = render(<ItemTooltipContent itemId="weapon_tizona_001" />);
+
+    const text = container.textContent ?? "";
+    expect(container.querySelector(".tooltip-item-panel")).not.toBeNull();
+    expect(text).toContain("· Honor ≥");
+    expect(text).toContain("Armadura");
+    expect(text).toContain("Daño min.");
+    expect(text).toContain("Daño max.");
+    expect(text).not.toContain("\\u00b7");
+    expect(text).not.toContain("\\u2265");
+    expect(text).not.toContain("ComÃ");
+    expect(text).not.toContain("misiÃ");
+    expect(text).not.toContain("botÃ");
+    expect(text).not.toContain("damageMin");
+    expect(text).not.toContain("damageMax");
+    expect(text).not.toContain("Armor");
+  });
 });
 
 describe("WoundTooltipContent", () => {

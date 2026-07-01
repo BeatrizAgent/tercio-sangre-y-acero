@@ -324,14 +324,8 @@ async function main() {
         choices: { cap1_choza_castellana: "shield_brother" },
       },
     });
-    const bad = useGameStore.getState().resolveStoryChoice("cap1_recuerdo_madre", "sing_low", ["lullaby"]);
-    assert.equal(bad.ok, false, "bad puzzle answer blocks store action");
-    const good = useGameStore.getState().resolveStoryChoice("cap1_recuerdo_madre", "sing_low", [
-      "mantilla",
-      "rosary",
-      "lullaby",
-    ]);
-    assert.equal(good.ok, true, "good puzzle answer resolves store action");
+    const resolved = useGameStore.getState().resolveStoryChoice("cap1_recuerdo_madre", "sing_low");
+    assert.equal(resolved.ok, true, "chapter 2 resolves without a puzzle gate");
   }
 
   // applyServerEvent: exhaustive -------------------------------------

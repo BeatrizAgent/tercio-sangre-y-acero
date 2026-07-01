@@ -13,8 +13,8 @@ import { createTestState, withCoins } from "../helpers/state-fixtures";
   assert.equal(prologueStoryArc.chapters[0]?.id, "cap1_choza_castellana", "chapter 1 starts at the family hut");
   assert.deepEqual(
     prologueStoryArc.chapters.filter((chapter) => chapter.puzzle).map((chapter) => chapter.puzzle?.kind),
-    ["sequence"],
-    "chapter 1 keeps only the early tutorial puzzle",
+    [],
+    "prologue has no multi-step puzzles",
   );
   assert.ok(
     prologueStoryArc.chapters.filter((chapter) => chapter.mature).every((chapter) => chapter.presentation === "blurred"),
@@ -79,12 +79,11 @@ import { createTestState, withCoins } from "../helpers/state-fixtures";
     state,
     chapterId: "cap1_recuerdo_madre",
     choiceId: "sing_low",
-    puzzleAnswer: ["mantilla", "rosary", "lullaby"],
     now: new Date("2026-06-30T10:00:00.000Z"),
   });
 
-  assert.equal(out.result.ok, true, "valid sequence puzzle resolves");
-  assert.match(out.next.reports[0]?.report ?? "", /Puzle: El orden calma al nino/);
+  assert.equal(out.result.ok, true, "chapter 2 resolves without a puzzle gate");
+  assert.doesNotMatch(out.next.reports[0]?.report ?? "", /Puzle:/, "report has no puzzle line");
 }
 
 {
@@ -105,8 +104,7 @@ import { createTestState, withCoins } from "../helpers/state-fixtures";
     now: new Date("2026-06-30T10:00:00.000Z"),
   });
 
-  assert.equal(out.result.ok, false, "invalid puzzle answer blocks story");
-  assert.match(out.result.message, /Resuelve el puzle/);
+  assert.equal(out.result.ok, true, "stray puzzle answer is ignored; chapter resolves");
 }
 
 {

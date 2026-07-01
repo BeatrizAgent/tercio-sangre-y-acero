@@ -1,5 +1,5 @@
 // action-points.test.ts — exhaustive coverage of the action-point regen
-// logic that backs the /missions "12 puntos, 30 min" rule.
+// logic that backs the /missions "12 puntos, 10 min" rule.
 
 import assert from "node:assert/strict";
 import { MAX_ACTION_POINTS, REGEN_TIME_MS, regenerateActionPoints } from "../../src/lib/domain/action-points";

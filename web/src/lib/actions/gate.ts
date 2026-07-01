@@ -10,6 +10,5 @@ export async function prepareActionGateAction({
   kind: ActionGateKind;
   targetId: string;
 }) {
-  const waitMs = kind === "mission" || kind === "story" ? 0 : undefined;
-  return prepareActionGate({ kind, targetId, waitMs, secret: getActionGateSecret() });
+  return prepareActionGate({ kind, targetId, secret: getActionGateSecret() });
 }

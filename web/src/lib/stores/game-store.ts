@@ -23,7 +23,9 @@ import {
 } from "../domain/shop";
 import { equipItemInState, unequipItemInState } from "../domain/equipment";
 import {
+  trainCharacterStatBoostInState,
   trainCharacterStatInState,
+  trainSoldierStatBoostInState,
   trainSoldierStatInState,
 } from "../domain/training";
 import { treatWoundInState } from "../domain/wounds";
@@ -125,6 +127,8 @@ export function createInitialState(
 export interface GameStore extends GameState {
   trainStat: (stat: StatId) => ActionResult;
   trainCharacterStat: (characterId: string, stat: StatId) => ActionResult;
+  trainStatBoost: (stat: StatId) => ActionResult;
+  trainCharacterStatBoost: (characterId: string, stat: StatId) => ActionResult;
   setActiveCharacter: (characterId: string) => void;
   setFormationSlot: (characterId: string, slot: CharacterState["formationSlot"]) => void;
   buyItem: (itemId: string) => ActionResult;
@@ -173,6 +177,26 @@ export const useGameStore = create<GameStore>()(
         let result: ActionResult = { ok: false, message: "Entrenamiento no encontrado." };
         set((state) => {
           const out = trainCharacterStatInState(state, characterId, stat);
+          result = out.result;
+          return out.next;
+        });
+        return result;
+      },
+
+      trainStatBoost: (stat) => {
+        let result: ActionResult = { ok: false, message: "Entrenamiento no encontrado." };
+        set((state) => {
+          const out = trainSoldierStatBoostInState(state, stat);
+          result = out.result;
+          return out.next;
+        });
+        return result;
+      },
+
+      trainCharacterStatBoost: (characterId, stat) => {
+        let result: ActionResult = { ok: false, message: "Entrenamiento no encontrado." };
+        set((state) => {
+          const out = trainCharacterStatBoostInState(state, characterId, stat);
           result = out.result;
           return out.next;
         });

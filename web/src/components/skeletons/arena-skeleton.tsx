@@ -139,7 +139,7 @@ export function ArenaSkeleton() {
     <div className="space-y-5" aria-busy="true">
       <Header />
       <StatStrip />
-      <div className="grid gap-5 xl:grid-cols-[1.35fr_0.65fr]">
+      <div className="grid gap-5 xl:grid-cols-[minmax(0,3fr)_minmax(0,1fr)]">
         <RivalCard />
         <div className="space-y-5">
           <SideCard />

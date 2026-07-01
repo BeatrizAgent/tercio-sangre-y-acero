@@ -1,9 +1,13 @@
 "use client";
 
+// StoryModePanel: visual-novel style story viewer. Full-bleed scene, dialogue
+// box at the bottom, choices inline, outcome rendered as an overlay on the
+// same scene. No redundant rails/asides. Item rewards are delivered to the
+// mailbox by the server action when a database is active.
+
 import React, { useCallback, useEffect, useMemo, useState } from "react";
 import Link from "next/link";
 import { ArrowRight, FastForward, MessageSquare } from "lucide-react";
-import { Card } from "@/components/ui/card";
 import { UiAssetIcon } from "@/components/ui/ui-asset-icon";
 import { prepareActionGateAction } from "@/lib/actions/gate";
 import { resolveStoryChoiceAction } from "@/lib/actions/story";
@@ -22,44 +26,6 @@ interface StoryOutcome {
   reportId?: string;
   effects: StoryChoice["effects"];
 }
-
-const STORY_ACTS = [
-  {
-    id: 1,
-    title: "Acto 1: Castilla",
-    subtitle: "La leva de Castilla",
-    description: "Origen, familia, deuda y primer equipo.",
-    active: true,
-  },
-  {
-    id: 2,
-    title: "Acto 2: El camino español",
-    subtitle: "Génova a Milán",
-    description: "Marcha, hambre y paga pendiente.",
-    active: false,
-  },
-  {
-    id: 3,
-    title: "Acto 3: Flandes en llamas",
-    subtitle: "Flandes y el Rin",
-    description: "Frío, trincheras y disciplina.",
-    active: false,
-  },
-  {
-    id: 4,
-    title: "Acto 4: El asedio de Breda",
-    subtitle: "Picas contra murallas",
-    description: "Cerco largo bajo barro y pólvora.",
-    active: false,
-  },
-  {
-    id: 5,
-    title: "Acto 5: Rocroi",
-    subtitle: "El ocaso",
-    description: "La última prueba del viejo tercio.",
-    active: false,
-  },
-];
 
 const STAT_LABELS: Record<StatId, string> = {
   pike: "Pica",
@@ -82,6 +48,8 @@ interface RewardChip {
   tone?: "good" | "bad" | "neutral";
 }
 
+const SCENE_MIN_HEIGHT = "min-h-[calc(100vh-13rem)]";
+
 export function StoryModePanel({
   state,
   onHydrate,
@@ -91,12 +59,6 @@ export function StoryModePanel({
   onHydrate: (state: GameState) => void;
   onOpenCampaign: () => void;
 }) {
-  const [busyChoice, setBusyChoice] = useState<string | null>(null);
-  const [error, setError] = useState<string | null>(null);
-  const [selectedPuzzleOptionIds, setSelectedPuzzleOptionIds] = useState<string[]>([]);
-  const [outcome, setOutcome] = useState<StoryOutcome | null>(null);
-  const [currentStep, setCurrentStep] = useState(0);
-
   const progress = normalizeProgress(state.storyProgress);
   const complete = prologueStoryArc.chapters.every((chapter) => progress.completedChapterIds.includes(chapter.id));
   const rawActiveChapter =
@@ -107,28 +69,61 @@ export function StoryModePanel({
     [rawActiveChapter, state.soldier.background, state.soldier.name],
   );
 
-  const dialogueLines = activeChapter.dialogue ?? [];
-  const choiceStep = dialogueLines.length + 1;
-  const isChoiceStep = currentStep >= choiceStep;
-  const currentDialogue = !isChoiceStep && currentStep > 0 ? dialogueLines[currentStep - 1] : null;
-  const puzzleSolved = activeChapter.puzzle ? arraysEqual(selectedPuzzleOptionIds, activeChapter.puzzle.answer) : true;
-  const choiceGridClass = activeChapter.puzzle
-    ? "grid gap-3 lg:grid-cols-[minmax(240px,0.8fr)_minmax(280px,1fr)]"
-    : "mx-auto grid max-w-3xl gap-3";
-  const hasAside = Boolean(outcome || error);
+  return (
+    <section className="flex flex-col gap-3">
+      <StoryHeader progress={progress} activeChapterId={activeChapter.id} />
 
-  useEffect(() => {
-    setCurrentStep(0);
-    setSelectedPuzzleOptionIds([]);
-    setError(null);
-  }, [activeChapter.id]);
+      {complete ? (
+        <StoryCompletePanel progress={progress} onOpenCampaign={onOpenCampaign} />
+      ) : (
+        <StoryChapterView
+          key={activeChapter.id}
+          chapter={activeChapter}
+          soldierName={state.soldier.name}
+          soldierPortraitId={state.soldier.portraitAssetId}
+          onHydrate={onHydrate}
+        />
+      )}
+    </section>
+  );
+}
+
+function StoryChapterView({
+  chapter,
+  soldierName,
+  soldierPortraitId,
+  onHydrate,
+}: {
+  chapter: StoryChapter;
+  soldierName: string;
+  soldierPortraitId?: string;
+  onHydrate: (state: GameState) => void;
+}) {
+  const [busyChoice, setBusyChoice] = useState<string | null>(null);
+  const [error, setError] = useState<string | null>(null);
+  const [outcome, setOutcome] = useState<StoryOutcome | null>(null);
+  const [pendingHydrate, setPendingHydrate] = useState<GameState | null>(null);
+  const [currentStep, setCurrentStep] = useState(0);
+
+  const dialogueLines = chapter.dialogue ?? [];
+  const choiceStep = dialogueLines.length + 1;
+  const isChoiceStep = currentStep >= choiceStep && !outcome;
+  const currentDialogue = !isChoiceStep && currentStep > 0 ? dialogueLines[currentStep - 1] : null;
 
   const advance = useCallback(() => {
     setCurrentStep((step) => Math.min(step + 1, choiceStep));
   }, [choiceStep]);
 
+  const nextChapter = useCallback(() => {
+    if (pendingHydrate) onHydrate(pendingHydrate);
+    setPendingHydrate(null);
+    setOutcome(null);
+    setCurrentStep(0);
+  }, [pendingHydrate, onHydrate]);
+
   useEffect(() => {
     const handleKeyDown = (event: KeyboardEvent) => {
+      if (outcome) return;
       const active = document.activeElement?.tagName;
       if (active === "INPUT" || active === "TEXTAREA" || active === "BUTTON") return;
       if (event.code === "Space" || event.code === "Enter") {
@@ -138,9 +133,9 @@ export function StoryModePanel({
     };
     window.addEventListener("keydown", handleKeyDown);
     return () => window.removeEventListener("keydown", handleKeyDown);
-  }, [advance]);
+  }, [advance, outcome]);
 
-  const resolveChoice = async (chapter: StoryChapter, choice: StoryChoice) => {
+  const resolveChoice = async (choice: StoryChoice) => {
     if (busyChoice) return;
     setBusyChoice(choice.id);
     setError(null);
@@ -149,7 +144,6 @@ export function StoryModePanel({
       const result = await resolveStoryChoiceAction({
         chapterId: chapter.id,
         choiceId: choice.id,
-        puzzleAnswer: chapter.puzzle ? selectedPuzzleOptionIds : undefined,
         gateToken: gate.token,
       });
 
@@ -162,7 +156,7 @@ export function StoryModePanel({
           reportId: result.data.reportId,
           effects: choice.effects,
         });
-        onHydrate(result.data.state);
+        setPendingHydrate(result.data.state);
       } else {
         setError(result.message);
       }
@@ -173,128 +167,59 @@ export function StoryModePanel({
     }
   };
 
-  const togglePuzzleOption = (optionId: string) => {
-    setSelectedPuzzleOptionIds((current) =>
-      current.includes(optionId) ? current.filter((id) => id !== optionId) : [...current, optionId],
-    );
-  };
-
   return (
-    <section className="space-y-4">
-      <StoryHeader progress={progress} />
-      <StoryChapterRail progress={progress} activeChapterId={activeChapter.id} />
-
-      {complete ? (
-        <StoryCompletePanel progress={progress} onOpenCampaign={onOpenCampaign} />
-      ) : (
-        <div className={`grid gap-4 ${hasAside ? "xl:grid-cols-[minmax(0,1fr)_340px]" : ""}`}>
-          <div className="space-y-3">
-            <StoryNovelScene
-              chapter={activeChapter}
-              soldierName={state.soldier.name}
-              soldierPortraitId={state.soldier.portraitAssetId}
-              currentStep={currentStep}
-              choiceStep={choiceStep}
-              currentDialogue={currentDialogue}
-              onAdvance={advance}
-              onSkip={() => setCurrentStep(choiceStep)}
-              choiceContent={
-                <div className={choiceGridClass}>
-                  <StoryPuzzleControls
-                    chapter={activeChapter}
-                    selectedOptionIds={selectedPuzzleOptionIds}
-                    solved={puzzleSolved}
-                    onToggle={togglePuzzleOption}
-                  />
-                  <StoryChoiceList
-                    state={state}
-                    chapter={activeChapter}
-                    puzzleSolved={puzzleSolved}
-                    busyChoice={busyChoice}
-                    onResolve={(choice) => void resolveChoice(activeChapter, choice)}
-                  />
-                </div>
-              }
-            />
-          </div>
-
-          {hasAside && (
-            <aside className="space-y-3">
-              {outcome && <StoryOutcomePanel outcome={outcome} onNext={advance} />}
-              {error && (
-                <div className="rounded-xs border border-danger/40 bg-danger/10 px-3 py-2 font-mono text-[10px] uppercase tracking-wider text-danger">
-                  {error}
-                </div>
-              )}
-            </aside>
-          )}
-        </div>
-      )}
-
-      <StoryActRail />
-    </section>
+    <StoryNovelScene
+      chapter={chapter}
+      soldierName={soldierName}
+      soldierPortraitId={soldierPortraitId}
+      currentStep={currentStep}
+      choiceStep={choiceStep}
+      currentDialogue={currentDialogue}
+      onAdvance={advance}
+      onSkip={() => setCurrentStep(choiceStep)}
+      outcome={outcome}
+      error={error}
+      busyChoice={busyChoice}
+      onResolve={(choice) => void resolveChoice(choice)}
+      onNext={nextChapter}
+    />
   );
 }
 
-function StoryHeader({ progress }: { progress: StoryProgress }) {
+function StoryHeader({ progress, activeChapterId }: { progress: StoryProgress; activeChapterId: string }) {
+  const activeIndex = prologueStoryArc.chapters.findIndex((chapter) => chapter.id === activeChapterId);
   return (
-    <div className="page-header">
-      <div>
-        <p className="page-header__eyebrow">Modo historia</p>
-        <h2 className="page-header__title">{prologueStoryArc.title}</h2>
-        <p className="page-header__subtitle">{prologueStoryArc.subtitle}</p>
+    <div className="flex items-center justify-between gap-3 rounded-xs border border-iron/60 bg-stone-950/80 px-3 py-2">
+      <div className="min-w-0">
+        <p className="font-mono text-[9px] uppercase tracking-widest text-gold/70">Modo historia</p>
+        <h2 className="truncate font-cinzel text-sm font-bold uppercase tracking-wider text-gold-soft">
+          {prologueStoryArc.title}
+        </h2>
       </div>
-      <span className="rounded-xs border border-iron px-2 py-1 font-mono text-[10px] uppercase tracking-widest text-text-muted">
-        {progress.completedChapterIds.length}/{prologueStoryArc.chapters.length}
-      </span>
+      <div className="flex shrink-0 items-center gap-2">
+        <ol className="hidden items-center gap-1 sm:flex">
+          {prologueStoryArc.chapters.map((chapter, index) => {
+            const isCompleted = progress.completedChapterIds.includes(chapter.id);
+            const isActive = chapter.id === activeChapterId;
+            return (
+              <li
+                key={chapter.id}
+                title={`Cap. ${index + 1} — ${chapter.title}`}
+                className={`h-1.5 w-6 rounded-full ${
+                  isCompleted ? "bg-success" : isActive ? "bg-gold" : "bg-iron/40"
+                }`}
+              />
+            );
+          })}
+        </ol>
+        <span className="rounded-xs border border-iron px-2 py-0.5 font-mono text-[10px] uppercase tracking-widest text-text-muted">
+          {progress.completedChapterIds.length}/{prologueStoryArc.chapters.length}
+        </span>
+        <span className="hidden font-mono text-[9px] uppercase tracking-widest text-text-muted md:inline">
+          Cap. {Math.max(1, activeIndex + 1)}
+        </span>
+      </div>
     </div>
-  );
-}
-
-function StoryChapterRail({
-  progress,
-  activeChapterId,
-}: {
-  progress: StoryProgress;
-  activeChapterId: string;
-}) {
-  return (
-    <ol className="grid grid-cols-2 gap-2 sm:grid-cols-4 xl:grid-cols-8">
-      {prologueStoryArc.chapters.map((chapter, index) => {
-        const isCompleted = progress.completedChapterIds.includes(chapter.id);
-        const isActive = chapter.id === activeChapterId;
-        const stateIcon = isCompleted ? "confirm" : isActive ? storyChapterIcon(index) : "risk";
-        return (
-          <li
-            key={chapter.id}
-            className={`relative flex min-h-20 min-w-0 flex-col justify-between overflow-hidden rounded-xs border px-2 py-2 font-mono text-[9px] uppercase leading-tight ${
-              isCompleted
-                ? "border-success/50 bg-success/10 text-success"
-                : isActive
-                  ? "border-gold/60 bg-gold/10 text-gold"
-                  : "border-iron/30 bg-stone-950/70 text-text-muted opacity-55"
-            }`}
-          >
-            <div className="flex items-start gap-2">
-              <UiAssetIcon id={stateIcon} label="" className="h-7 w-7 opacity-95" />
-              <div className="min-w-0">
-                <span className="block text-[8px] text-text-muted">Cap. {index + 1}</span>
-                <span className="block truncate font-bold">{chapter.title}</span>
-              </div>
-            </div>
-            <div className="mt-2 flex items-center gap-1">
-              <span className="h-1.5 flex-1 rounded-full bg-black/60 ring-1 ring-inset ring-iron/30">
-                <span
-                  className={`block h-full rounded-full ${isCompleted ? "bg-success" : isActive ? "bg-gold" : "bg-iron/50"}`}
-                  style={{ width: isCompleted ? "100%" : isActive ? "55%" : "12%" }}
-                />
-              </span>
-              <span className="shrink-0 text-[7px]">{isCompleted ? "Resuelto" : isActive ? "Activo" : "Bloqueado"}</span>
-            </div>
-          </li>
-        );
-      })}
-    </ol>
   );
 }
 
@@ -305,9 +230,13 @@ function StoryNovelScene({
   currentStep,
   choiceStep,
   currentDialogue,
-  choiceContent,
   onAdvance,
   onSkip,
+  outcome,
+  error,
+  busyChoice,
+  onResolve,
+  onNext,
 }: {
   chapter: StoryChapter;
   soldierName: string;
@@ -315,12 +244,16 @@ function StoryNovelScene({
   currentStep: number;
   choiceStep: number;
   currentDialogue: StoryDialogueLine | null;
-  choiceContent: React.ReactNode;
   onAdvance: () => void;
   onSkip: () => void;
+  outcome: StoryOutcome | null;
+  error: string | null;
+  busyChoice: string | null;
+  onResolve: (choice: StoryChoice) => void;
+  onNext: () => void;
 }) {
   const scenePath = getAssetPathById(chapter.sceneAssetId) ?? "/assets/gpt-bank/scenes/events/story_castilla_choza_hermanos.png";
-  const isChoiceStep = currentStep >= choiceStep;
+  const isChoiceStep = currentStep >= choiceStep && !outcome;
   const activeSpeakerId = currentDialogue?.speakerId;
   const npcCharacter = getVisibleNpc(chapter, activeSpeakerId);
   const playerSpeaking = activeSpeakerId === "diego";
@@ -328,12 +261,13 @@ function StoryNovelScene({
   const playerPortrait =
     getPlayerPortraitPathById(soldierPortraitId) ?? "/assets/gpt-bank/characters/diego/portraits/diego_retrato_serio.png";
   const npcPortrait = getStoryPortraitPath(npcCharacter?.portraitAssetId);
+  const showPortraits = !outcome;
 
   return (
     <div
       role="dialog"
       aria-label={chapter.title}
-      className="relative min-h-[620px] overflow-hidden rounded-xs border border-gold/45 bg-stone-950 shadow-2xl"
+      className={`relative ${SCENE_MIN_HEIGHT} overflow-hidden rounded-xs border border-gold/45 bg-stone-950 shadow-2xl`}
     >
       <img
         src={scenePath}
@@ -342,12 +276,12 @@ function StoryNovelScene({
       />
       <div className="absolute inset-0 bg-gradient-to-t from-stone-950 via-stone-950/25 to-stone-950/75" />
 
-      <div className="relative z-10 flex min-h-[620px] flex-col justify-between">
+      <div className={`relative z-10 flex ${SCENE_MIN_HEIGHT} flex-col`}>
         <div className="pointer-events-none absolute left-3 right-3 top-3 z-30 flex items-start justify-between gap-3">
           <span className="rounded-xs border border-gold/35 bg-stone-950/78 px-3 py-1 font-mono text-[9px] uppercase tracking-widest text-gold-soft backdrop-blur-sm">
             {chapter.title}
           </span>
-          {!isChoiceStep && (
+          {!isChoiceStep && !outcome && (
             <button
               type="button"
               onClick={onSkip}
@@ -359,20 +293,16 @@ function StoryNovelScene({
           )}
         </div>
 
-        {isChoiceStep && (
-          <div className="absolute left-1/2 top-1/2 z-20 w-[min(92%,760px)] -translate-x-1/2 -translate-y-1/2 px-2 md:px-0">
-            {choiceContent}
-          </div>
-        )}
-
         <div className="grid flex-1 items-end gap-2 px-4 pt-16 md:grid-cols-2 md:px-12 md:pt-20">
-          <StoryPortrait
-            name={soldierName}
-            src={playerPortrait}
-            active={playerSpeaking || currentStep === 0}
-            muted={isChoiceStep || (Boolean(activeSpeakerId) && !playerSpeaking)}
-          />
-          {npcCharacter && (
+          {showPortraits && (
+            <StoryPortrait
+              name={soldierName}
+              src={playerPortrait}
+              active={playerSpeaking || currentStep === 0}
+              muted={isChoiceStep || (Boolean(activeSpeakerId) && !playerSpeaking)}
+            />
+          )}
+          {showPortraits && npcCharacter && (
             <StoryPortrait
               name={npcCharacter.name}
               src={npcPortrait ?? playerPortrait}
@@ -384,16 +314,14 @@ function StoryNovelScene({
         </div>
 
         <div className="p-3 md:p-4">
-          {isChoiceStep ? (
-            <div className="relative w-full rounded-xs border border-gold/45 bg-stone-950/92 p-4 text-left shadow-2xl backdrop-blur-md">
-              <span className="absolute -top-3 left-4 inline-flex items-center gap-1 rounded-xs border border-gold-soft bg-gold px-3 py-0.5 font-cinzel text-[9px] font-bold uppercase tracking-wider text-stone-950">
-                <UiAssetIcon id="order" label="" className="h-3.5 w-3.5" />
-                {speakerLabel(chapter, currentDialogue, soldierName, isChoiceStep)}
-              </span>
-              <p className="mt-1 min-h-14 font-serif text-sm leading-relaxed text-stone-100 md:text-base">
-                {chapter.puzzle ? chapter.puzzle.prompt : "Elige cómo proceder. Tu decisión cambia a Diego."}
-              </p>
+          {outcome ? (
+            <StoryOutcomeCard outcome={outcome} onNext={onNext} busy={busyChoice !== null} />
+          ) : error ? (
+            <div className="relative w-full rounded-xs border border-danger/40 bg-stone-950/92 p-4 text-left shadow-2xl backdrop-blur-md">
+              <p className="font-mono text-[10px] uppercase tracking-widest text-danger">{error}</p>
             </div>
+          ) : isChoiceStep ? (
+            <StoryChoiceList chapter={chapter} busyChoice={busyChoice} onResolve={onResolve} />
           ) : (
             <button
               type="button"
@@ -450,146 +378,85 @@ function StoryPortrait({
   );
 }
 
-function StoryPuzzleControls({
-  chapter,
-  selectedOptionIds,
-  solved,
-  onToggle,
-}: {
-  chapter: StoryChapter;
-  selectedOptionIds: string[];
-  solved: boolean;
-  onToggle: (optionId: string) => void;
-}) {
-  if (!chapter.puzzle) return null;
-
-  const selectedLabels = selectedOptionIds
-    .map((id) => chapter.puzzle?.options.find((option) => option.id === id)?.label)
-    .filter(Boolean);
-
-  return (
-    <div className="rounded-xs border border-iron/70 bg-stone-950/88 p-3 shadow-2xl backdrop-blur-md">
-      <div className="space-y-3">
-        <div className="flex items-center gap-2">
-          <UiAssetIcon id={solved ? "confirm" : "order"} label="" className="h-5 w-5" />
-          <p className="font-mono text-[9px] font-bold uppercase tracking-widest text-gold-soft">
-            {chapter.puzzle.title}
-          </p>
-        </div>
-        <div className="grid gap-2">
-          {chapter.puzzle.options.map((option) => {
-            const selectedIndex = selectedOptionIds.indexOf(option.id);
-            const selected = selectedIndex >= 0;
-            return (
-              <label
-                key={option.id}
-                className={`relative cursor-pointer rounded-xs border px-3 py-2 transition ${
-                  selected
-                    ? "border-gold bg-gold/10 text-gold-soft"
-                    : "border-iron bg-black/55 text-text-muted hover:border-gold/50"
-                }`}
-              >
-                <input type="checkbox" checked={selected} onChange={() => onToggle(option.id)} className="sr-only" />
-                <span className="block pr-8 font-cinzel text-sm font-bold">{option.label}</span>
-                {option.description && <span className="mt-1 block text-xs leading-relaxed">{option.description}</span>}
-                {selected && (
-                  <span className="absolute right-2 top-2 flex h-5 w-5 items-center justify-center rounded-full bg-gold font-mono text-[10px] font-bold text-stone-950">
-                    {selectedIndex + 1}
-                  </span>
-                )}
-              </label>
-            );
-          })}
-        </div>
-        <div className="rounded-xs border border-iron/50 bg-stone-950/70 px-3 py-2 font-mono text-[9px] uppercase tracking-widest text-text-muted">
-          {selectedLabels.length > 0 ? `Orden: ${selectedLabels.join(" > ")}` : "Selecciona en orden"}
-        </div>
-        <div className={`rounded-xs border px-3 py-2 font-mono text-[9px] uppercase tracking-widest ${solved ? "border-success/50 bg-success/10 text-success" : "border-warning/50 bg-warning/10 text-warning"}`}>
-          {solved ? "Puzle resuelto. Decide." : "Pendiente. La decisión sigue bloqueada."}
-        </div>
-      </div>
-    </div>
-  );
-}
-
 function StoryChoiceList({
-  state,
   chapter,
-  puzzleSolved,
   busyChoice,
   onResolve,
 }: {
-  state: StoryState;
   chapter: StoryChapter;
-  puzzleSolved: boolean;
   busyChoice: string | null;
   onResolve: (choice: StoryChoice) => void;
 }) {
   return (
-    <div className="space-y-2">
-      <div className="mx-auto flex w-fit items-center gap-2 rounded-xs border border-gold/25 bg-stone-950/85 px-3 py-1 shadow-2xl backdrop-blur-md">
-        <UiAssetIcon id="order" label="" className="h-5 w-5" />
-        <p className="font-mono text-[9px] font-bold uppercase tracking-widest text-gold-soft">Decisión</p>
-      </div>
-      <div className="space-y-3">
-        {chapter.choices.map((choice) => {
-          const blocked = storyChoiceBlockReason(state, choice, chapter, puzzleSolved);
-          return (
-            <button
-              key={choice.id}
-              type="button"
-              disabled={Boolean(blocked) || Boolean(busyChoice)}
-              onClick={() => onResolve(choice)}
-              style={{ clipPath: "polygon(2% 0, 100% 0, 98% 100%, 0 100%)" }}
-              className={`group w-full border px-5 py-3 text-left shadow-2xl backdrop-blur-md transition ${
-                blocked
-                  ? "cursor-not-allowed border-iron/30 bg-stone-950/75 opacity-60"
-                  : "border-gold/45 bg-black/88 hover:-translate-y-0.5 hover:border-gold hover:bg-stone-950/95"
-              }`}
-            >
-              <span className="flex items-center gap-3">
-                <UiAssetIcon id={blocked ? "risk" : "confirm"} label="" className="h-9 w-9 shrink-0 transition group-hover:scale-105" />
-                <span className="min-w-0 flex-1">
-                  <span className="block font-cinzel text-base font-bold text-stone-100 md:text-lg">{choice.label}</span>
-                  <StoryRewardPreview choice={choice} />
-                  {blocked && <span className="mt-2 block font-mono text-[9px] uppercase tracking-widest text-danger">{blocked}</span>}
-                  {busyChoice === choice.id && <span className="mt-2 block font-mono text-[9px] uppercase tracking-widest text-gold">Resolviendo...</span>}
-                </span>
-              </span>
-            </button>
-          );
-        })}
+    <div className="relative w-full space-y-2 rounded-xs border border-gold/45 bg-stone-950/92 p-4 text-left shadow-2xl backdrop-blur-md">
+      <span className="absolute -top-3 left-4 inline-flex items-center gap-1 rounded-xs border border-gold-soft bg-gold px-3 py-0.5 font-cinzel text-[9px] font-bold uppercase tracking-wider text-stone-950">
+        <UiAssetIcon id="order" label="" className="h-3.5 w-3.5" />
+        Decisión
+      </span>
+      <p className="mt-1 mb-2 font-serif text-sm leading-relaxed text-stone-100 md:text-base">
+        Elige cómo proceder. Tu decisión cambia a Diego.
+      </p>
+      <div className="grid gap-2">
+        {chapter.choices.map((choice) => (
+          <button
+            key={choice.id}
+            type="button"
+            disabled={Boolean(busyChoice)}
+            onClick={() => onResolve(choice)}
+            style={{ clipPath: "polygon(2% 0, 100% 0, 98% 100%, 0 100%)" }}
+            className={`group w-full border px-5 py-3 text-left shadow-xl backdrop-blur-md transition ${
+              busyChoice === choice.id
+                ? "border-gold bg-gold/10"
+                : "border-gold/45 bg-black/85 hover:-translate-y-0.5 hover:border-gold hover:bg-stone-950/95"
+            } disabled:cursor-not-allowed`}
+          >
+            <span className="flex items-center gap-3">
+              <UiAssetIcon
+                id={busyChoice === choice.id ? "order" : "confirm"}
+                label=""
+                className="h-7 w-7 shrink-0 transition group-hover:scale-105"
+              />
+              <span className="font-cinzel text-sm font-bold text-stone-100 md:text-base">{choice.label}</span>
+            </span>
+          </button>
+        ))}
       </div>
     </div>
   );
 }
 
-export function StoryRewardPreview({ choice }: { choice: StoryChoice }) {
-  const effects = rewardChips(choice.effects);
+function StoryOutcomeCard({ outcome, onNext, busy }: { outcome: StoryOutcome; onNext: () => void; busy: boolean }) {
+  const chips = rewardChips(outcome.effects);
+  const mailedItems = chips.filter((chip) => chip.imageSrc && chip.tone === "good");
   return (
-    <span className="mt-2 flex flex-wrap gap-1.5">
-      {effects.map((effect) => (
-        <StoryRewardChip key={effect.key} chip={effect} compact />
-      ))}
-    </span>
-  );
-}
-
-function StoryOutcomePanel({ outcome, onNext }: { outcome: StoryOutcome; onNext: () => void }) {
-  return (
-    <div className="rounded-xs border border-gold/40 bg-gold/10 p-3 shadow-inner">
-      <p className="font-mono text-[10px] uppercase tracking-widest text-gold">{outcome.message}</p>
-      <h3 className="mt-1 font-cinzel text-base font-bold uppercase text-gold-soft">{outcome.chapterTitle}</h3>
-      <p className="mt-2 text-sm leading-relaxed text-text-muted">
-        <span className="font-semibold text-text">{outcome.choiceLabel}.</span> {outcome.resultText}
+    <div className="relative w-full rounded-xs border border-gold/50 bg-stone-950/95 p-5 text-left shadow-2xl backdrop-blur-md">
+      <span className="absolute -top-3 left-4 rounded-xs border border-gold-soft bg-gold px-3 py-0.5 font-cinzel text-[9px] font-bold uppercase tracking-wider text-stone-950">
+        {outcome.chapterTitle}
+      </span>
+      <p className="mt-1 font-mono text-[10px] uppercase tracking-widest text-gold">{outcome.message}</p>
+      <p className="mt-2 font-serif text-sm leading-relaxed text-stone-100 md:text-base">
+        <span className="font-semibold text-gold-soft">{outcome.choiceLabel}.</span> {outcome.resultText}
       </p>
-      <div className="mt-3 flex flex-wrap gap-1.5">
-        {rewardChips(outcome.effects).map((effect) => (
-          <StoryRewardChip key={effect.key} chip={effect} />
-        ))}
-      </div>
-      <div className="mt-4 grid gap-2">
-        <button type="button" onClick={onNext} className="blood-button inline-flex items-center justify-center gap-2 px-3 py-2 text-xs">
+      {chips.length > 0 && (
+        <div className="mt-3 flex flex-wrap gap-1.5">
+          {chips.map((chip) => (
+            <StoryRewardChip key={chip.key} chip={chip} />
+          ))}
+        </div>
+      )}
+      {mailedItems.length > 0 && (
+        <p className="mt-2 inline-flex items-center gap-1 font-mono text-[9px] uppercase tracking-widest text-gold/70">
+          <UiAssetIcon id="mailbox" label="" className="h-3.5 w-3.5" />
+          Objetos enviados al buzón
+        </p>
+      )}
+      <div className="mt-4 flex flex-wrap gap-2">
+        <button
+          type="button"
+          onClick={onNext}
+          disabled={busy}
+          className="blood-button inline-flex items-center justify-center gap-2 px-3 py-2 text-xs"
+        >
           <ArrowRight className="h-4 w-4" />
           Siguiente capítulo
         </button>
@@ -602,17 +469,17 @@ function StoryOutcomePanel({ outcome, onNext }: { outcome: StoryOutcome; onNext:
           </Link>
         )}
         <Link
-          href="/soldier"
+          href="/mailbox"
           className="inline-flex items-center justify-center rounded-xs border border-iron px-3 py-2 font-mono text-[10px] uppercase tracking-widest text-text-muted transition hover:border-gold/60 hover:text-gold"
         >
-          Abrir soldado
+          Abrir buzón
         </Link>
       </div>
     </div>
   );
 }
 
-function StoryRewardChip({ chip, compact = false }: { chip: RewardChip; compact?: boolean }) {
+function StoryRewardChip({ chip }: { chip: RewardChip }) {
   const toneClass =
     chip.tone === "bad"
       ? "border-danger/35 bg-danger/10 text-danger"
@@ -624,18 +491,12 @@ function StoryRewardChip({ chip, compact = false }: { chip: RewardChip; compact?
     <span
       title={`${chip.label}: ${chip.value}`}
       aria-label={`${chip.label}: ${chip.value}`}
-      className={`inline-flex items-center gap-1 rounded-xs border font-mono font-bold uppercase tracking-wider ${toneClass} ${
-        compact ? "px-1.5 py-0.5 text-[9px]" : "px-2 py-1 text-[10px]"
-      }`}
+      className={`inline-flex items-center gap-1 rounded-xs border font-mono font-bold uppercase tracking-wider px-2 py-1 text-[10px] ${toneClass}`}
     >
       {chip.imageSrc ? (
-        <img
-          src={chip.imageSrc}
-          alt=""
-          className={`${compact ? "h-4 w-4" : "h-5 w-5"} shrink-0 object-contain`}
-        />
+        <img src={chip.imageSrc} alt="" className="h-5 w-5 shrink-0 object-contain" />
       ) : chip.iconId ? (
-        <UiAssetIcon id={chip.iconId} label="" className={`${compact ? "h-4 w-4" : "h-5 w-5"} shrink-0`} />
+        <UiAssetIcon id={chip.iconId} label="" className="h-5 w-5 shrink-0" />
       ) : null}
       <span className="leading-none">{chip.value}</span>
     </span>
@@ -650,118 +511,52 @@ function StoryCompletePanel({
   onOpenCampaign: () => void;
 }) {
   return (
-    <div className="grid gap-4 md:grid-cols-[1fr_0.8fr]">
-      <div className="scene-frame relative min-h-[360px] overflow-hidden rounded-xs border border-gold/50 bg-stone-950">
-        <img
-          src={featuredAssetPaths.campaignMap}
-          alt="Mapa de campaña desbloqueado"
-          className="h-full min-h-[360px] w-full object-cover opacity-65"
-        />
-        <div className="pointer-events-none absolute inset-0 bg-gradient-to-t from-background/95 via-background/45 to-transparent" />
-        <div className="absolute bottom-4 left-4 right-4">
-          <span className="mb-2 inline-flex rounded-xs border border-success/50 bg-success/10 px-2 py-1 font-mono text-[9px] uppercase tracking-widest text-success">
-            Prólogo cerrado
-          </span>
-          <h3 className="font-cinzel text-2xl font-bold uppercase tracking-wider text-gold">Diego ya no vuelve igual</h3>
-          <p className="mt-2 max-w-2xl text-sm leading-relaxed text-text-muted">
-            La aldea queda atrás. La deuda, el barro y la primera sangre ya pesan en la mochila.
-          </p>
-          <div className="mt-4 flex flex-wrap gap-2">
-            <button type="button" onClick={onOpenCampaign} className="blood-button inline-flex items-center gap-2 px-4 py-2 text-xs">
-              <UiAssetIcon id="missions" label="" className="h-5 w-5" />
-              Abrir campaña
-            </button>
-            <Link
-              href="/reports"
-              className="inline-flex items-center justify-center rounded-xs border border-iron px-4 py-2 font-mono text-[10px] uppercase tracking-widest text-text-muted transition hover:border-gold/60 hover:text-gold"
-            >
-              Ver reportes
-            </Link>
-          </div>
+    <div
+      className={`relative ${SCENE_MIN_HEIGHT} overflow-hidden rounded-xs border border-gold/50 bg-stone-950 shadow-2xl`}
+    >
+      <img
+        src={featuredAssetPaths.campaignMap}
+        alt="Mapa de campaña desbloqueado"
+        className="h-full min-h-[360px] w-full object-cover opacity-65"
+      />
+      <div className="pointer-events-none absolute inset-0 bg-gradient-to-t from-background/95 via-background/45 to-transparent" />
+      <div className="absolute bottom-4 left-4 right-4">
+        <span className="mb-2 inline-flex rounded-xs border border-success/50 bg-success/10 px-2 py-1 font-mono text-[9px] uppercase tracking-widest text-success">
+          Prólogo cerrado
+        </span>
+        <h3 className="font-cinzel text-2xl font-bold uppercase tracking-wider text-gold">Diego ya no vuelve igual</h3>
+        <p className="mt-2 max-w-2xl text-sm leading-relaxed text-text-muted">
+          La aldea queda atrás. La deuda, el barro y la primera sangre ya pesan en la mochila.
+        </p>
+        <div className="mt-4 flex flex-wrap gap-2">
+          <button type="button" onClick={onOpenCampaign} className="blood-button inline-flex items-center gap-2 px-4 py-2 text-xs">
+            <UiAssetIcon id="missions" label="" className="h-5 w-5" />
+            Abrir campaña
+          </button>
+          <Link
+            href="/reports"
+            className="inline-flex items-center justify-center rounded-xs border border-iron px-4 py-2 font-mono text-[10px] uppercase tracking-widest text-text-muted transition hover:border-gold/60 hover:text-gold"
+          >
+            Ver reportes
+          </Link>
         </div>
-      </div>
-
-      <Card title="Camino elegido" iconId="order">
-        <ol className="space-y-2">
+        <ol className="mt-4 grid gap-2 sm:grid-cols-2 lg:grid-cols-4">
           {prologueStoryArc.chapters.map((chapter, index) => {
             const choice = chapter.choices.find((entry) => entry.id === progress.choices[chapter.id]);
             return (
               <li key={chapter.id} className="rounded-xs border border-iron/60 bg-stone-950/70 p-2">
                 <p className="font-mono text-[9px] uppercase tracking-widest text-text-muted">Cap. {index + 1}</p>
-                <p className="mt-0.5 font-cinzel text-sm font-bold uppercase text-gold-soft">{chapter.title}</p>
-                <p className="mt-1 text-xs leading-relaxed text-text-muted">{choice?.label ?? "Sin decisión registrada"}</p>
+                <p className="mt-0.5 font-cinzel text-xs font-bold uppercase text-gold-soft">{chapter.title}</p>
+                <p className="mt-1 text-[11px] leading-relaxed text-text-muted">
+                  {choice?.label ?? "Sin decisión registrada"}
+                </p>
               </li>
             );
           })}
         </ol>
-      </Card>
-    </div>
-  );
-}
-
-export function StoryActRail() {
-  return (
-    <div className="mt-2">
-      <h3 className="mb-2 border-b border-iron/10 pb-1 font-cinzel text-xs font-bold uppercase tracking-wider text-gold-soft">
-        Campaña de Diego
-      </h3>
-      <div className="grid gap-3 sm:grid-cols-2 xl:grid-cols-5">
-        {STORY_ACTS.map((act) => (
-          <div
-            key={act.id}
-            className={`relative min-h-28 overflow-hidden rounded-xs border p-3 ${
-              act.active ? "border-gold/40 bg-gold/10" : "border-iron/30 bg-stone-950/80 opacity-70"
-            }`}
-          >
-            <div className="flex items-start gap-2">
-              <UiAssetIcon id={act.active ? storyActIcon(act.id) : "risk"} label="" className="h-8 w-8 opacity-90" />
-              <div className="min-w-0">
-                <p className="font-mono text-[8px] uppercase tracking-widest text-text-muted">
-                  {act.active ? "Activo" : "Bloqueado"}
-                </p>
-                <h4 className="mt-1 font-cinzel text-xs font-bold uppercase text-gold-soft">{act.title}</h4>
-                <p className="font-mono text-[9px] text-gold/60">{act.subtitle}</p>
-              </div>
-            </div>
-            <p className="mt-2 text-[10px] leading-normal text-text-muted">{act.description}</p>
-          </div>
-        ))}
       </div>
     </div>
   );
-}
-
-function storyChapterIcon(index: number): UiIconId {
-  const icons: UiIconId[] = ["barracks", "risk", "coins", "wound", "training", "equipment", "missions", "battleReports"];
-  return icons[index] ?? "order";
-}
-
-function storyActIcon(actId: number): UiIconId {
-  const icons: Record<number, UiIconId> = {
-    1: "city",
-    2: "longMissions",
-    3: "missions",
-    4: "shield",
-    5: "battleReports",
-  };
-  return icons[actId] ?? "order";
-}
-
-function storyChoiceBlockReason(
-  state: StoryState,
-  choice: StoryChoice,
-  chapter: StoryChapter,
-  puzzleSolved: boolean,
-) {
-  if (chapter.puzzle && !puzzleSolved) return "Resuelve el puzle";
-  if (choice.requirements?.coins && state.soldier.coins < choice.requirements.coins) {
-    return `Faltan ${choice.requirements.coins - state.soldier.coins} doblones`;
-  }
-  for (const item of choice.requirements?.items ?? []) {
-    const owned = state.soldier.inventory.find((entry) => entry.itemId === item.itemId)?.quantity ?? 0;
-    if (owned < item.quantity) return `Falta ${item.quantity - owned} ${getItem(item.itemId)?.name ?? item.itemId}`;
-  }
-  return null;
 }
 
 function rewardChips(effects: StoryChoice["effects"]): RewardChip[] {
@@ -882,10 +677,6 @@ function speakerLabel(
   if (!dialogue) return "Narrador";
   if (dialogue.speakerId === "diego") return soldierName;
   return chapter.characters?.find((character) => character.id === dialogue.speakerId)?.name ?? dialogue.speakerId;
-}
-
-function arraysEqual(left: string[], right: string[]) {
-  return left.length === right.length && left.every((value, index) => value === right[index]);
 }
 
 function signed(value: number) {

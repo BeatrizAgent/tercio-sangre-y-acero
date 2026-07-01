@@ -92,7 +92,7 @@ describe("missions flow", () => {
     expect(screen.queryByRole("link", { name: /Desplegar/ })).not.toBeInTheDocument();
   });
 
-  it("renders story puzzle controls for puzzle chapters", () => {
+  it("renders chapter 2 as a simple choice chapter (no puzzle)", () => {
     installReadyStore({
       storyProgress: {
         arcId: "prologue_castilla",
@@ -106,9 +106,9 @@ describe("missions flow", () => {
 
     expect(screen.getByRole("dialog", { name: /El pan de la madre/ })).toBeInTheDocument();
     fireEvent.click(screen.getByRole("button", { name: /Saltar/ }));
-    expect(screen.getByText(/Ordena los recuerdos/)).toBeInTheDocument();
-    expect(screen.getAllByRole("checkbox")).toHaveLength(3);
-    expect(screen.getByRole("button", { name: /Canturrear bajo/ })).toBeDisabled();
+    expect(screen.getByRole("button", { name: /Canturrear bajo/ })).toBeEnabled();
+    expect(screen.queryByText(/Ordena los recuerdos/)).not.toBeInTheDocument();
+    expect(screen.queryAllByRole("checkbox")).toHaveLength(0);
   });
 
   it("shows campaign as the default mode", () => {
@@ -117,15 +117,6 @@ describe("missions flow", () => {
     render(<MissionsPage />);
 
     expect(screen.getByRole("heading", { name: /Mapa de campaña/ })).toBeInTheDocument();
-  });
-
-  it("groups story progress into five stable acts", () => {
-    installReadyStore();
-    searchParamsMock.mockReturnValue(new URLSearchParams("mode=story"));
-    render(<MissionsPage />);
-
-    expect(screen.getAllByText(/Acto \d/)).toHaveLength(5);
-    expect(screen.queryByText("Acto 6")).not.toBeInTheDocument();
   });
 
   it("renders the mission detail start button", () => {

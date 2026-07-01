@@ -62,7 +62,7 @@ interface PopoverPosition {
 function estimatePopoverSize(type: TooltipType): { width: number; height: number } {
   switch (type) {
     case "item":
-      return { width: 288, height: 280 };
+      return { width: 288, height: 560 };
     case "stat":
       return { width: 220, height: 180 };
     case "wound":
@@ -235,9 +235,19 @@ export function Tooltip({
     showTooltip();
   };
 
-  const handleMouseLeave = () => {
+  const hideTooltip = () => {
     setVisible(false);
     setPositioned(false);
+  };
+
+  const handleMouseLeave = (e: React.MouseEvent) => {
+    const nextTarget = e.relatedTarget as Node | null;
+    if (nextTarget && popoverRef.current?.contains(nextTarget)) return;
+    hideTooltip();
+  };
+
+  const handlePopoverMouseLeave = () => {
+    hideTooltip();
   };
 
   const handlePointerDown = (e: React.PointerEvent) => {
@@ -287,7 +297,8 @@ export function Tooltip({
         zIndex: 9999,
         visibility: positioned ? "visible" : "hidden",
       }}
-      className="bg-stone-950/95 backdrop-blur-md border border-gold/45 text-text rounded-xs shadow-2xl pointer-events-none"
+      className="tooltip-popover pointer-events-auto bg-stone-950/95 backdrop-blur-md border border-gold/45 text-text rounded-xs shadow-2xl"
+      onMouseLeave={handlePopoverMouseLeave}
     >
       <TooltipBody
         type={type}

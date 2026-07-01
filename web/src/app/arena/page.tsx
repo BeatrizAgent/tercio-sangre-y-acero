@@ -26,7 +26,7 @@ export default function ArenaPage() {
   const [notice, setNotice] = useState<{ text: string; ok: boolean } | null>(null);
   const [opponents, setOpponents] = useState<ArenaOpponent[]>([]);
   const [opponentsLoading, setOpponentsLoading] = useState(true);
-  const [activeDuel, setActiveDuel] = useState<{ opponentId: string; seconds: number; resolving: boolean } | null>(null);
+  const [activeDuel, setActiveDuel] = useState<{ opponentId: string; resolving: boolean } | null>(null);
   const mountedRef = useRef(true);
   const wins = arenaResults.filter((result) => result.success).length;
   const losses = arenaResults.length - wins;
@@ -76,12 +76,8 @@ export default function ArenaPage() {
     setNotice(null);
     try {
       const gate = await prepareActionGateAction({ kind: "arena", targetId: opponentId });
-      setActiveDuel({ opponentId, seconds: Math.ceil(gate.waitMs / 1000), resolving: false });
-      await runCountdown(gate.waitMs, (seconds) => {
-        if (mountedRef.current) setActiveDuel({ opponentId, seconds, resolving: false });
-      });
       if (!mountedRef.current) return;
-      setActiveDuel({ opponentId, seconds: 0, resolving: true });
+      setActiveDuel({ opponentId, resolving: true });
       const result = await fightArenaOpponentAction({ opponentId, gateToken: gate.token });
       if (result.ok && result.data?.state) {
         hydrateState(result.data.state);
@@ -128,7 +124,7 @@ export default function ArenaPage() {
               <p className="text-sm text-text-muted">Duelos locales contra rivales NPC. Sin espera real; solo fatiga, heridas y paga.</p>
             </div>
           </div>
-          <Badge variant={canFight ? "gold" : "danger"}>{activeDuel ? "Preparando duelo" : canFight ? "Lista para duelo" : "Agotado"}</Badge>
+          <Badge variant={canFight ? "gold" : "danger"}>{activeDuel ? "Resolviendo duelo" : canFight ? "Lista para duelo" : "Agotado"}</Badge>
         </div>
 
         {notice && (
@@ -155,26 +151,9 @@ export default function ArenaPage() {
           </div>
         </section>
 
-        <div className="grid gap-5 xl:grid-cols-[1.35fr_0.65fr]">
+        <div className="grid gap-5 xl:grid-cols-[minmax(0,3fr)_minmax(0,1fr)]">
           <Card title="Cartel de Rivales" iconId="arena">
             <div className="grid gap-3">
-              {activeDuel && (
-                <div className="border border-gold/45 bg-stone-900/90 p-4 rounded-xs text-center space-y-2 animate-pulse">
-                  <span className="font-cinzel text-xs font-bold uppercase tracking-wider text-gold-soft flex items-center justify-center gap-2">
-                    <UiAssetIcon id="arena" label="" className="h-4 w-4 text-gold animate-spin" />
-                    PREPARANDO DUELO EN LA TABERNA...
-                  </span>
-                  <p className="text-[11px] text-text-muted font-mono uppercase">
-                    Los soldados se posicionan. Quedan {activeDuel.seconds} segundos para chocar el acero.
-                  </p>
-                  <div className="w-full bg-stone-950 h-1.5 border border-iron/45 rounded-full overflow-hidden">
-                    <div
-                      className="bg-gold h-full transition-all duration-300"
-                      style={{ width: `${(activeDuel.seconds / 10) * 100}%` }}
-                    />
-                  </div>
-                </div>
-              )}
               {opponentsLoading && <RivalCardSkeletonList count={3} />}
               {!opponentsLoading && opponents.map((opponent) => {
                 const isTooTired = soldier.fatigue + opponent.fatigue > 115;
@@ -186,7 +165,6 @@ export default function ArenaPage() {
                     disabled={!canFight || Boolean(activeDuel)}
                     fatigueWarning={isTooTired}
                     playerPower={playerPower}
-                    countdown={duelState?.seconds}
                     resolving={duelState?.resolving ?? false}
                     onFight={() => handleFight(opponent.id)}
                   />
@@ -294,7 +272,6 @@ function ArenaOpponentCard({
   disabled,
   fatigueWarning,
   playerPower,
-  countdown,
   resolving,
   onFight,
 }: {
@@ -302,7 +279,6 @@ function ArenaOpponentCard({
   disabled: boolean;
   fatigueWarning: boolean;
   playerPower: number;
-  countdown?: number;
   resolving: boolean;
   onFight: () => void;
 }) {
@@ -415,9 +391,9 @@ function ArenaOpponentCard({
               disabled={disabled}
               onClick={onFight}
               className="blood-button inline-flex min-h-12 items-center justify-center gap-2 px-4 py-2 text-xs disabled:opacity-40"
-              aria-busy={resolving || Boolean(countdown)}
+              aria-busy={resolving}
             >
-              {resolving || countdown ? (
+              {resolving ? (
                 <span
                   className="h-3 w-3 animate-spin rounded-full border-2 border-current border-t-transparent"
                   aria-hidden="true"
@@ -425,29 +401,13 @@ function ArenaOpponentCard({
               ) : (
                 <UiAssetIcon id="arena" label="" className="h-5 w-5" />
               )}
-              {resolving ? "Resolviendo..." : countdown ? `Preparando ${countdown}s` : "Batirse"}
+              {resolving ? "Resolviendo..." : "Batirse"}
             </button>
           </div>
         </div>
       </div>
     </section>
   );
-}
-
-function runCountdown(waitMs: number, onTick: (seconds: number) => void) {
-  return new Promise<void>((resolve) => {
-    const startedAt = Date.now();
-    const tick = () => {
-      const remainingMs = Math.max(0, waitMs - (Date.now() - startedAt));
-      onTick(Math.ceil(remainingMs / 1000));
-      if (remainingMs <= 0) {
-        window.clearInterval(timer);
-        resolve();
-      }
-    };
-    const timer = window.setInterval(tick, 250);
-    tick();
-  });
 }
 
 function ArenaStat({ icon, label, value, danger = false }: { icon: React.ComponentProps<typeof UiAssetIcon>["id"]; label: string; value: string; danger?: boolean }) {

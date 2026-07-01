@@ -29,6 +29,38 @@ export const trainingOptions: readonly TrainingOption[] = catalogTraining.map((t
   requiredRankId: t.requiredRankId,
 }));
 
+/**
+ * "Mejorar" is the big jump: 3 points for 5x coins, slightly more fatigue.
+ * It mirrors the second button in DESIGN/entrenamiento.png and is only
+ * available every 5 levels (or always for the first 10) to keep the
+ * upgrade ladder readable.
+ */
+export const BOOST_GAIN = 3;
+export const BOOST_COIN_MULTIPLIER = 5;
+export const BOOST_FATIGUE_BONUS = 2;
+
+export interface BoostCost {
+  coins: number;
+  fatigue: number;
+}
+
+export function boostCostFor(option: TrainingOption): BoostCost {
+  return {
+    coins: option.cost.coins * BOOST_COIN_MULTIPLIER,
+    fatigue: option.fatigue + BOOST_FATIGUE_BONUS,
+  };
+}
+
+/**
+ * Whether "Mejorar" should be rendered for this stat. We surface it for
+ * the first 10 levels unconditionally, then only at multiples of 5 so the
+ * upgrade feels like a milestone.
+ */
+export function isBoostMilestone(currentLevel: number): boolean {
+  if (currentLevel < 10) return true;
+  return currentLevel % 5 === 0;
+}
+
 export function getTraining(trainingId: string | undefined) {
   return catalogGetTraining(trainingId);
 }

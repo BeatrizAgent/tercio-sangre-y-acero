@@ -23,7 +23,7 @@ const RARITY_STYLES: Record<Rarity, { label: string; color: string; ring: string
     bar: "bg-teal-400",
   },
   epic: {
-    label: "Epica",
+    label: "Épica",
     color: "text-blood-bright",
     ring: "border-blood/60",
     bg: "bg-blood/15",

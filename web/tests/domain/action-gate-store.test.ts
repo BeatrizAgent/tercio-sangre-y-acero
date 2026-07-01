@@ -13,12 +13,12 @@ const gate = prepareActionGate({
 });
 
 assert.equal(
-  consumeActionGate({ token: gate.token, kind: "mission", targetId: "mission_test", nowMs: now + 10_000 }).ok,
+  consumeActionGate({ token: gate.token, kind: "mission", targetId: "mission_test", nowMs: now }).ok,
   true,
   "first consume succeeds",
 );
 assert.equal(
-  consumeActionGate({ token: gate.token, kind: "mission", targetId: "mission_test", nowMs: now + 10_001 }).ok,
+  consumeActionGate({ token: gate.token, kind: "mission", targetId: "mission_test", nowMs: now + 1 }).ok,
   false,
   "second consume rejects replay",
 );

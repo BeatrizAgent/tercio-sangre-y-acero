@@ -8,6 +8,7 @@ import { playPageSound } from "@/lib/sounds";
 import { regions } from "@/lib/regions";
 import { useGameStore } from "@/lib/game-store";
 import { prologueStoryArc } from "@/lib/game-data";
+import { MAX_ACTION_POINTS, REGEN_TIME_MS } from "@/lib/domain/action-points";
 
 interface NavLinkProps {
   href: string;
@@ -55,12 +56,12 @@ export function SidebarNav() {
     const computeTimer = (): string => {
       const state = useGameStore.getState();
       const s = state.soldier;
-      const pts = s.actionPoints !== undefined ? s.actionPoints : 12;
-      if (pts >= 12 || !s.lastRegenAt) {
+      const pts = s.actionPoints !== undefined ? s.actionPoints : MAX_ACTION_POINTS;
+      if (pts >= MAX_ACTION_POINTS || !s.lastRegenAt) {
         return "";
       }
 
-      const nextRegenTime = new Date(s.lastRegenAt).getTime() + 30 * 60 * 1000;
+      const nextRegenTime = new Date(s.lastRegenAt).getTime() + REGEN_TIME_MS;
       const now = Date.now();
       const remainingMs = nextRegenTime - now;
 
@@ -84,7 +85,7 @@ export function SidebarNav() {
       setRegenTimer((current) => (current === next ? current : next));
       // When the timer resets to empty, the store has already advanced to
       // max; trigger a rehydrate so the UI shows the new value immediately.
-      if (next === "" && useGameStore.getState().soldier.actionPoints !== 12) {
+      if (next === "" && useGameStore.getState().soldier.actionPoints !== MAX_ACTION_POINTS) {
         useGameStore.getState().hydrateState({ ...useGameStore.getState() });
       }
     }, 1000);
@@ -124,13 +125,13 @@ export function SidebarNav() {
               Puntos Acción
             </span>
             <span className="font-mono text-xs font-bold text-gold">
-              {soldier.actionPoints !== undefined ? soldier.actionPoints : 12} / 12
+              {soldier.actionPoints !== undefined ? soldier.actionPoints : MAX_ACTION_POINTS} / {MAX_ACTION_POINTS}
             </span>
           </div>
           <div className="w-full bg-stone-900 border border-iron/40 h-1.5 rounded-full overflow-hidden">
             <div
               className="bg-gold h-full transition-all duration-300"
-              style={{ width: `${((soldier.actionPoints !== undefined ? soldier.actionPoints : 12) / 12) * 100}%` }}
+              style={{ width: `${((soldier.actionPoints !== undefined ? soldier.actionPoints : MAX_ACTION_POINTS) / MAX_ACTION_POINTS) * 100}%` }}
             />
           </div>
           {regenTimer && (

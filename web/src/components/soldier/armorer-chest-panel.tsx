@@ -8,7 +8,6 @@ import { useEffect, useMemo, useRef, useState } from "react";
 import { ItemChestGrid, VENDOR_CHEST_GRID, footprintPx } from "@/components/soldier/item-chest-grid";
 import { UiAssetIcon } from "@/components/ui/ui-asset-icon";
 import { Tooltip } from "@/components/ui/tooltip";
-import { CountdownTimer } from "@/components/game/countdown-timer";
 import { getItem, getItemFootprint, getItemImagePath, shopInventory, itemDefinitions } from "@/lib/game-data";
 import type { ShopItem } from "@/lib/types";
 
@@ -401,7 +400,7 @@ export function ArmorerChestPanel({
         {nextRefreshAt && (
           <div className="ml-auto flex flex-wrap items-center gap-2">
             <span className="self-center font-mono text-[10px] uppercase tracking-wider text-text-muted">
-              Nuevo inventario en: <CountdownTimer endsAt={nextRefreshAt} />
+              Inventario disponible
             </span>
             {onRefresh && (
               <button

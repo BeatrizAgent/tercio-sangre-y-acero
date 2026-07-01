@@ -16,7 +16,6 @@ import type { GameState } from "@/lib/types";
 import { getItem, getItemImagePath } from "@/lib/game-data";
 import { Tooltip } from "@/components/ui/tooltip";
 import { rarityStyle, rarityLabel } from "@/lib/item-format";
-import { CountdownTimer } from "@/components/game/countdown-timer";
 import { SYSTEM_AUCTION_PLAN, SYSTEM_AUCTION_REFRESH_HOURS } from "@/lib/data/system-auctions";
 
 export default function MarketPage() {
@@ -30,7 +29,6 @@ export default function MarketPage() {
   const [notice, setNotice] = useState<string | null>(null);
   const [busy, setBusy] = useState(false);
   const [activeTab, setActiveTab] = useState<"system" | "p2p" | "history">("system");
-  const [nowMs, setNowMs] = useState(0);
 
   const sellableItems = useMemo(
     () => soldier.inventory.filter((item) => item.quantity > 0),
@@ -61,16 +59,6 @@ export default function MarketPage() {
     return () => window.clearTimeout(timer);
   }, [status]);
 
-  useEffect(() => {
-    const tick = () => setNowMs(new Date().getTime());
-    const first = window.setTimeout(tick, 0);
-    const interval = window.setInterval(tick, 1000);
-    return () => {
-      window.clearTimeout(first);
-      window.clearInterval(interval);
-    };
-  }, []);
-
   const run = async (work: () => Promise<void>) => {
     setBusy(true);
     setNotice(null);
@@ -96,7 +84,6 @@ export default function MarketPage() {
   const myBids = useMemo(() => {
     return auctions.filter((a) => a.isWinning || (a.isMine && !a.isSystem));
   }, [auctions]);
-  const nextSystemRefreshAt = systemAuctions[0]?.endsAt ?? null;
   const winningSystemAuctions = systemAuctions.filter((auction) => auction.isWinning).length;
 
   if (status !== "ready") {
@@ -210,10 +197,8 @@ export default function MarketPage() {
                     </div>
                   </div>
                   <div className="grid min-w-56 gap-1.5 border border-gold/25 bg-background/75 p-3 text-right rounded-xs">
-                    <span className="font-mono text-[9px] uppercase tracking-wider text-text-muted">Cierre del ciclo</span>
-                    {nextSystemRefreshAt && (
-                      <CountdownTimer endsAt={nextSystemRefreshAt} onExpiry={() => void refreshAuctions()} />
-                    )}
+                    <span className="font-mono text-[9px] uppercase tracking-wider text-text-muted">Ciclo activo</span>
+                    <span className="font-mono text-xs font-bold uppercase tracking-wider text-gold">Lotes abiertos</span>
                     <span className="font-mono text-[9px] uppercase text-text-muted">
                       {systemAuctions.length} lotes - {winningSystemAuctions} ganando
                     </span>
@@ -233,10 +218,6 @@ export default function MarketPage() {
                         Subastas oficiales de intendencia. La puja máxima al final del ciclo se lleva el pertrecho.
                       </p>
                     </div>
-                  </div>
-                  <div className="flex items-center gap-2 bg-stone-900/80 border border-iron px-3 py-1 rounded-xs">
-                    <span className="text-[10px] uppercase font-mono text-text-muted">Se cierra en:</span>
-                    <CountdownTimer endsAt={systemAuctions[0].endsAt} onExpiry={() => void refreshAuctions()} />
                   </div>
                 </div>
               )}
@@ -434,7 +415,7 @@ export default function MarketPage() {
                         <div className="min-w-0">
                           <div className="truncate font-cinzel text-sm font-bold uppercase text-gold-soft">{auction.itemName}</div>
                           <div className="font-mono text-[9px] uppercase text-text-muted flex items-center gap-1">
-                            Expira: <CountdownTimer endsAt={auction.endsAt} onExpiry={() => void refreshAuctions()} />
+                            Estado: <span className="font-bold text-gold">Activa</span>
                           </div>
                         </div>
                         <div className="font-mono text-xs text-text">
@@ -489,7 +470,7 @@ export default function MarketPage() {
               ) : (
                 <div className="space-y-3">
                   {myBids.map((auction) => {
-                    const hasEnded = (nowMs > 0 && new Date(auction.endsAt).getTime() <= nowMs) || auction.status !== "active";
+                    const hasEnded = new Date(auction.endsAt).getTime() <= Date.now() || auction.status !== "active";
                     const isWinner = auction.isWinning;
 
                     return (

@@ -65,4 +65,14 @@ describe("ArenaPage", () => {
     // Page renders without throwing.
     expect(container.firstChild).not.toBeNull();
   });
+
+  it("keeps the duel board at a readable 75/25 desktop split", () => {
+    installReadyStore();
+    const { container } = render(<ArenaPage />);
+    const hasReadableArenaSplit = Array.from(container.querySelectorAll(".grid")).some((element) =>
+      element.className.includes("xl:grid-cols-[minmax(0,3fr)_minmax(0,1fr)]"),
+    );
+
+    expect(hasReadableArenaSplit).toBe(true);
+  });
 });

@@ -12,7 +12,7 @@ import { UiAssetIcon } from "../ui-asset-icon";
 import type { StatId } from "@/lib/types";
 
 const SLOT_LABEL: Record<string, string> = {
-  head: "Morri\u00f3n / Cabeza",
+  head: "Morrión / Cabeza",
   body: "Coraza / Cuerpo",
   mainHand: "Arma Principal",
   offHand: "Arma Secundaria",
@@ -21,6 +21,30 @@ const SLOT_LABEL: Record<string, string> = {
   accessory: "Reliquia / Accesorio",
   consumable: "Consumible",
 };
+
+const EFFECT_LABEL: Record<string, string> = {
+  armor: "Armadura",
+  Armor: "Armadura",
+  damageMin: "Daño min.",
+  DamageMin: "Daño min.",
+  damageMax: "Daño max.",
+  DamageMax: "Daño max.",
+  honor: "Honor",
+  fatigue: "Fatiga",
+  woundTreatment: "Cura",
+  coins_pct: "Botín",
+  chance: "Prob.",
+  duration: "Duración",
+};
+
+function isStatId(key: string): key is StatId {
+  return key in STAT_INFO;
+}
+
+function effectLabel(key: string): string {
+  if (isStatId(key)) return STAT_INFO[key].name;
+  return EFFECT_LABEL[key] ?? key.replace(/([a-z])([A-Z])/g, "$1 $2");
+}
 
 export function ItemTooltipContent({ itemId }: { itemId?: string }) {
   const { soldier } = useGameStore();
@@ -31,20 +55,22 @@ export function ItemTooltipContent({ itemId }: { itemId?: string }) {
   const equippedItemId = soldier.equipment[item.slot];
   const hasComparison = Boolean(equippedItemId) && equippedItemId !== item.id;
   const equippedItem = hasComparison ? getItem(equippedItemId!) : null;
+  const itemEffects = item.effects as Record<string, number | undefined>;
+  const equippedEffects = (equippedItem?.effects ?? {}) as Record<string, number | undefined>;
 
   const allStatKeys = Array.from(
     new Set([
-      ...Object.keys(item.effects),
-      ...(equippedItem ? Object.keys(equippedItem.effects) : []),
+      ...Object.keys(itemEffects),
+      ...(equippedItem ? Object.keys(equippedEffects) : []),
     ]),
-  ) as StatId[];
+  );
 
   const rarity = rarityStyle(item.rarity);
 
   return (
-    <div className="w-72 p-4 space-y-3">
-      <div className="grid grid-cols-[48px_minmax(0,1fr)] gap-3 items-start pb-2.5 border-b border-iron/40">
-        <div className="asset-icon-frame h-12 w-12 shrink-0 overflow-hidden rounded-xs p-1">
+    <div className="tooltip-item-panel space-y-2.5 p-3">
+      <div className="grid grid-cols-[44px_minmax(0,1fr)] gap-2.5 items-start pb-2 border-b border-iron/40">
+        <div className="asset-icon-frame h-11 w-11 shrink-0 overflow-hidden rounded-xs p-1">
           <img
             src={getItemImagePath(itemId)}
             alt={item.name}
@@ -74,16 +100,16 @@ export function ItemTooltipContent({ itemId }: { itemId?: string }) {
       </div>
 
       {item.requirements && (
-        <div className="text-[10px] font-mono text-amber-300 bg-amber-900/15 border border-amber-700/40 px-2 py-1 rounded-xs">
+        <div className="flex min-w-0 flex-wrap gap-x-2 gap-y-0.5 rounded-xs border border-amber-700/40 bg-amber-900/15 px-2 py-1 font-mono text-[10px] leading-snug text-amber-300">
           {item.requirements.minRank && (
-            <span>
+            <span className="min-w-0 truncate">
               Requiere rango:{" "}
               <strong className="capitalize">{item.requirements.minRank.replace(/_/g, " ")}</strong>
             </span>
           )}
           {item.requirements.minHonor !== undefined && (
-            <span className="ml-2">
-              \u00b7 Honor \u2265 <strong>{item.requirements.minHonor}</strong>
+            <span className="min-w-0 truncate">
+              · Honor ≥ <strong>{item.requirements.minHonor}</strong>
             </span>
           )}
         </div>
@@ -95,12 +121,12 @@ export function ItemTooltipContent({ itemId }: { itemId?: string }) {
             Pasivas ({item.passives.length})
           </span>
           {item.passives.map((p) => (
-            <div key={p.id} className="text-[10px] font-sans text-text leading-snug">
+            <div key={p.id} className="min-w-0 text-[10px] font-sans text-text leading-snug">
               <span className={`font-bold ${rarity.color}`}>{p.name}</span>
-              <span className="text-text-muted text-[9px] font-mono uppercase ml-1.5">
+              <span className="ml-1.5 font-mono text-[9px] uppercase text-text-muted">
                 [{TRIGGER_LABEL[p.trigger]}]
               </span>
-              <div className="text-text-muted text-[10px] italic mt-0.5">
+              <div className="mt-0.5 line-clamp-2 text-[10px] italic text-text-muted">
                 {passiveShortLine(p)}
               </div>
             </div>
@@ -108,7 +134,7 @@ export function ItemTooltipContent({ itemId }: { itemId?: string }) {
         </div>
       )}
 
-      <div className="space-y-1.5 font-mono text-[11px]">
+      <div className="space-y-1 font-mono text-[10px]">
         <span className="text-[9px] uppercase tracking-widest text-text-muted/70 block mb-1">
           Modificadores:
         </span>
@@ -116,18 +142,18 @@ export function ItemTooltipContent({ itemId }: { itemId?: string }) {
           <div className="text-text-muted italic text-[10px]">Sin modificadores de atributos.</div>
         ) : (
           allStatKeys.map((key) => {
-            const val = Number(item.effects[key] ?? 0);
-            const eqVal = equippedItem ? Number(equippedItem.effects[key] ?? 0) : 0;
+            const val = Number(itemEffects[key] ?? 0);
+            const eqVal = equippedItem ? Number(equippedEffects[key] ?? 0) : 0;
             const diff = val - eqVal;
-            const statLabel = STAT_INFO[key]?.name ?? key;
+            const statLabel = effectLabel(key);
             const sign = val >= 0 ? "+" : "";
             return (
               <div
                 key={key}
-                className="grid grid-cols-[minmax(0,1fr)_auto] items-center gap-2 py-1 border-b border-iron/10 last:border-0"
+                className="grid min-h-6 grid-cols-[minmax(0,1fr)_auto] items-center gap-2 border-b border-iron/10 py-0.5 last:border-0"
               >
                 <span className="flex min-w-0 items-center gap-1.5 text-text-muted">
-                  {trainingAssetPaths[key] && (
+                  {isStatId(key) && trainingAssetPaths[key] && (
                     <span className="inline-flex h-4 w-4 shrink-0 items-center justify-center rounded-xs border border-iron/35 bg-stone-950/65 p-0.5">
                       <img
                         src={trainingAssetPaths[key]}
@@ -137,7 +163,7 @@ export function ItemTooltipContent({ itemId }: { itemId?: string }) {
                       />
                     </span>
                   )}
-                  <span className="truncate capitalize">{statLabel}</span>
+                  <span className="truncate">{statLabel}</span>
                 </span>
                 <span className="flex shrink-0 items-center gap-1.5 font-bold leading-none">
                   <span className={val > 0 ? "text-success" : val < 0 ? "text-danger" : "text-text"}>
@@ -160,12 +186,12 @@ export function ItemTooltipContent({ itemId }: { itemId?: string }) {
         )}
       </div>
 
-      <p className="text-xs font-serif italic text-text-muted leading-relaxed border-t border-iron/20 pt-2 pb-1">
+      <p className="line-clamp-3 border-t border-iron/20 pt-2 pb-0.5 font-serif text-xs italic leading-relaxed text-text-muted">
         &quot;{item.description}&quot;
       </p>
 
-      <div className="flex justify-between items-center text-[10px] font-mono border-t border-iron/40 pt-2 text-text-muted">
-        <span>Valor Sugerido</span>
+      <div className="flex min-w-0 items-center justify-between gap-2 border-t border-iron/40 pt-2 font-mono text-[10px] text-text-muted">
+        <span className="truncate">Valor Sugerido</span>
         <span className="inline-flex shrink-0 items-center gap-1 text-gold font-bold leading-none">
           <UiAssetIcon id="coins" label="" className="h-4 w-4 shrink-0" />
           <span>{item.value} dob.</span>

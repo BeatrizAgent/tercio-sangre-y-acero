@@ -9,7 +9,6 @@
 import { useState, useMemo } from "react";
 import { ScrollText } from "lucide-react";
 import { UiAssetIcon } from "@/components/ui/ui-asset-icon";
-import { CountdownTimer } from "@/components/game/countdown-timer";
 import { churchBlessings, churchInventory, getItem } from "@/lib/game-data";
 import { playCoinSound } from "@/lib/sounds";
 import type { ActionResult } from "@/lib/domain/result";
@@ -127,7 +126,7 @@ export function ChaplainChestPanel({
         {nextRefreshAt && (
           <div className="ml-auto flex flex-wrap items-center gap-2">
             <span className="self-center font-mono text-[10px] uppercase tracking-wider text-text-muted">
-              Nuevo inventario en: <CountdownTimer endsAt={nextRefreshAt} />
+              Inventario disponible
             </span>
             {onRefresh && (
               <button

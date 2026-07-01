@@ -118,6 +118,22 @@ Reglas:
   viewport). Esto es intencional: el juego es denso, no quiere
   estiurse.
 
+### 2.6 Componentes compactos y overlays
+
+- Todo componente que viva dentro de cajas pequenas (tooltip, slot,
+  badge, chip, card de tienda, fila de stat) debe declarar limites de
+  ancho/alto. Nada de texto visible sin `min-w-0` + `truncate`,
+  `line-clamp-*` u `overflow-wrap` segun el caso.
+- Tooltip de item: ancho **288px**, `max-width: calc(100vw - 24px)`,
+  `max-height: min(560px, calc(100vh - 24px))`, scroll vertical interno.
+  La caja nunca debe crecer fuera del viewport para mostrar mas lore.
+- Labels compactos deben usar espanol corto: "Armadura", "Daño min.",
+  "Daño max.", "Cura", "Botín". No mostrar claves crudas tipo
+  `damageMin`, `DamageMax`, `armor`.
+- JSX visible no debe contener escapes Unicode literales (`\u00b7`,
+  `\u2265`, etc.). Usar el caracter real o entidad HTML. Cualquier fix
+  de encoding debe incluir test UX que pruebe que no aparece mojibake.
+
 ## 3. Grids y slots por pantalla
 
 ### 3.1 `/soldier` (Hoja de servicio)

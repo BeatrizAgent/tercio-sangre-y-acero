@@ -1,7 +1,7 @@
 import type { Soldier } from "../types";
 
 export const MAX_ACTION_POINTS = 12;
-export const REGEN_TIME_MS = 30 * 60 * 1000; // 30 minutes
+export const REGEN_TIME_MS = 10 * 60 * 1000; // 10 minutes
 
 export function regenerateActionPoints(
   soldier: Soldier,

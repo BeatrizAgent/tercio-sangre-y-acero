@@ -108,6 +108,56 @@ not the Dokploy production entrypoint yet.
 - Keep `docker-compose.dokploy.yml` and `Dockerfile.dokploy` separate from
   local Flask work unless production deployment is explicitly requested.
 
+## Agent Release Flow
+
+Use this flow when an agent is asked to validate, prepare, or ship gameplay
+changes. Keep local/pre-production and production strictly separate.
+
+### Pre-Production Local Flow
+
+- Start from repo root: `C:\Users\elyam\Documents\games\medieval-game`.
+- Inspect `git status --short --branch` before touching files. Do not stage or
+  revert unrelated changes.
+- For a clean local stack, agents may run:
+  `docker compose -f docker-compose.local.yml down -v --remove-orphans`.
+  This is allowed only for this repo's local compose services and volumes.
+- Bring up the full local stack with:
+  `docker compose -f docker-compose.local.yml up --build -d`.
+- If port 3000 is occupied, use PowerShell:
+  `$env:TERCIO_WEB_PORT="3010"; docker compose -f docker-compose.local.yml up --build -d`.
+- Confirm containers with `docker compose -f docker-compose.local.yml ps`.
+- If migrations or seed data have not run, execute them in the web service:
+  `docker compose -f docker-compose.local.yml exec -T web pnpm exec prisma migrate deploy`
+  and `docker compose -f docker-compose.local.yml exec -T web pnpm db:seed`.
+- Create test users through `/api/auth/create`, not by hand-editing DB rows.
+  Save any returned token or `tercio_session` cookie under `output/` when a
+  test run needs reusable auth evidence.
+- Validate before reporting success:
+  `docker compose -f docker-compose.local.yml exec -T backend pytest`,
+  `docker compose -f docker-compose.local.yml exec -T backend ruff check .`,
+  `docker compose -f docker-compose.local.yml exec -T backend pyright`,
+  and `pnpm --dir web validate`.
+- Smoke the active local URL (`localhost:3000` or `localhost:3010`) plus
+  Flask direct (`localhost:5000`) and the Next proxy (`/api/flask/health`).
+
+### Production Flow
+
+- Production is Dokploy + Next.js + Prisma/PostgreSQL. Flask is not the
+  production entrypoint until explicitly promoted.
+- Do not deploy, push, restart Dokploy services, or edit production env vars
+  unless the user explicitly asks for production work.
+- Production schema changes use Prisma migrations. Do not use `prisma db push`
+  in production.
+- Keep `DATABASE_URL` and `CRON_SECRET` as Dokploy secrets. Never commit real
+  secrets or copied production env files.
+- Deploy with root context and `Dockerfile.dokploy`; keep
+  `docker-compose.local.yml` for local/pre-production only.
+- After any production deploy, verify live HTTP behavior, not only local tests:
+  auth/create or resume, `/api/game/state`, key page route, and any touched API.
+- If production fails while local passes, capture container logs, response
+  status/body, route, commit hash, and Dokploy app/container identifiers before
+  changing code.
+
 ## Asset Bank
 
 `GPT-ASSETS` is the canonical visual bank. Images are prompted manually in ChatGPT, saved into `GPT-ASSETS`, cleaned locally, then indexed into JSON.

@@ -3,7 +3,6 @@ import path from "node:path";
 
 const root = process.cwd();
 const required = [
-  "src/app/barracks/page.tsx",
   "src/app/training/page.tsx",
   "src/app/armory/page.tsx",
   "src/app/inventory/page.tsx",

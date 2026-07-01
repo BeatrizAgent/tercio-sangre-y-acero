@@ -36,6 +36,11 @@ const nextConfig: NextConfig = {
       },
     ];
   },
+  async redirects() {
+    return [
+      { source: "/barracks", destination: "/soldier", permanent: true },
+    ];
+  },
 };
 
 export default nextConfig;
